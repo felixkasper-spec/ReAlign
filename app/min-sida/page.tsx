@@ -6,12 +6,26 @@ import { getSubscription } from "@/lib/subscription";
 import { createCheckoutSession, openBillingPortal } from "./actions";
 import styles from "./page.module.css";
 
-const checkoutMessages: Record<string, string> = {
-  success: "Klart! Din prenumeration är aktiv.",
-  cancel: "Betalningen avbröts — inget drogs från ditt kort.",
-  error: "Något gick fel vid betalningen. Försök gärna igen.",
-  not_configured: "Betalning är inte konfigurerat än — hör av dig till oss.",
-};
+function checkoutMessage(checkout: string | undefined, active: boolean) {
+  switch (checkout) {
+    case "success":
+      // Stripe bekräftar att betalningen gick igenom, men vår egen
+      // webhook kan ta några sekunder på sig att skriva klart i
+      // databasen — påstå därför inte "aktiv" förrän vi verkligen ser
+      // det i subscription.active.
+      return active
+        ? "Klart! Din prenumeration är aktiv."
+        : "Betalningen gick igenom — det kan ta någon minut innan kontot uppdateras här.";
+    case "cancel":
+      return "Betalningen avbröts — inget drogs från ditt kort.";
+    case "error":
+      return "Något gick fel vid betalningen. Försök gärna igen.";
+    case "not_configured":
+      return "Betalning är inte konfigurerat än — hör av dig till oss.";
+    default:
+      return null;
+  }
+}
 
 export default async function MinSidaPage({
   searchParams,
@@ -75,8 +89,10 @@ export default async function MinSidaPage({
           </form>
         </section>
 
-        {checkout && checkoutMessages[checkout] && (
-          <p className={styles.checkoutMessage}>{checkoutMessages[checkout]}</p>
+        {checkoutMessage(checkout, subscription.active) && (
+          <p className={styles.checkoutMessage}>
+            {checkoutMessage(checkout, subscription.active)}
+          </p>
         )}
 
         <section className={styles.premiumPanel}>
