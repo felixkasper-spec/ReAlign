@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runners Stretch — Övning — Hållning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+  .wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 32px; max-width:1160px; margin:0 auto;
+  }
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a.active{color:var(--text); font-weight:600;}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+
+  /* BREADCRUMB */
+  .breadcrumb{
+    display:flex; align-items:center; gap:8px;
+    font-size:0.86rem; color:var(--text-soft);
+    padding:8px 0 4px;
+  }
+  .breadcrumb a:hover{color:var(--sage);}
+  .breadcrumb .sep{color:var(--line);}
+  .breadcrumb .current{color:var(--text);}
+
+  /* MAIN LAYOUT */
+  .ex-layout{
+    max-width:760px; margin:0 auto;
+    padding:14px 0 70px;
+  }
+
+  /* VIDEO */
+  .video-wrap{margin-bottom:16px;}
+  .video-frame{
+    position:relative; width:100%; aspect-ratio:16/9;
+    border-radius:18px; overflow:hidden; background:var(--surface);
+    box-shadow:0 20px 50px -20px rgba(43,46,42,0.25);
+  }
+  .video-frame iframe{
+    position:absolute; inset:0; width:100%; height:100%; border:none;
+  }
+  .video-caption{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:14px; font-size:0.82rem; color:var(--text-soft);
+  }
+  .fav-btn{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line); border-radius:100px;
+    padding:9px 16px; font-size:0.85rem; font-weight:600; color:var(--text);
+    cursor:pointer; background:#fff;
+  }
+  .fav-btn .h{color:var(--warm);}
+  .fav-btn.active{border-color:var(--warm); background:var(--warm-soft);}
+  .share-btn{
+    display:flex; align-items:center; gap:6px;
+    border:1px solid var(--line); border-radius:100px;
+    padding:9px 16px; font-size:0.85rem; font-weight:600; color:var(--text);
+    cursor:pointer; background:#fff;
+  }
+  .share-btn.copied{border-color:var(--sage); background:#E4EBE3; color:var(--sage);}
+
+  /* CONTENT COLUMN */
+  .ex-head{margin-bottom:12px;}
+  .ex-head h1{font-size:1.9rem; margin-top:4px;}
+  .ex-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+  .tag{
+    font-size:0.76rem; padding:5px 13px; border-radius:100px;
+    background:var(--surface); color:var(--text-soft);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .tag.body{color:var(--sage); background:#E4EBE3;}
+  .tag.level{color:var(--warm); background:var(--warm-soft);}
+
+  .meta-row{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+    margin:14px 0 18px;
+    padding:12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item{font-size:0.8rem; color:var(--text-soft);}
+  .meta-item b{display:block; font-family:'Newsreader', serif; font-size:1.15rem; color:var(--text); font-weight:500; margin-bottom:2px;}
+
+  .ex-section{margin-bottom:20px;}
+  .ex-section h2{font-size:1.15rem; font-weight:500; margin-bottom:12px;}
+  .ex-section p{font-size:0.95rem; color:var(--text-soft);}
+  .ex-section p + p{margin-top:12px;}
+  .bullet-list{list-style:none;}
+  .bullet-item{display:flex; gap:10px; font-size:0.95rem; color:var(--text-soft); padding:7px 0;}
+  .bullet-item .dot2{width:5px; height:5px; border-radius:50%; background:var(--sage); margin-top:9px; flex-shrink:0;}
+
+  .tips-box{
+    background:var(--surface); border-radius:16px; padding:22px 24px;
+  }
+  .tips-box .eyebrow{margin-bottom:10px;}
+  .tip-line{display:flex; gap:10px; font-size:0.9rem; padding:6px 0;}
+  .tip-line .dot2{width:5px; height:5px; border-radius:50%; background:var(--warm); margin-top:8px; flex-shrink:0;}
+
+  .cta-row{display:flex; gap:12px; margin-top:8px;}
+  .cta-row .btn{flex:1; text-align:center;}
+
+  /* RELATED */
+  .related{padding:20px 0 80px; border-top:1px solid var(--line);}
+  .related .section-head{margin-bottom:28px; display:flex; justify-content:space-between; align-items:baseline;}
+  .related h2{font-size:1.5rem;}
+  .related a.all{font-size:0.85rem; color:var(--sage); font-weight:600;}
+  .related-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;}
+  .rel-card{border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff;}
+  .rel-thumb{height:110px; background:var(--surface); display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:0.85rem;}
+  .rel-body{padding:14px 16px;}
+  .rel-body h3{font-size:0.92rem; font-weight:500; margin-bottom:6px;}
+  .rel-body .tag{font-size:0.68rem; padding:4px 10px;}
+
+  footer{padding:40px 0; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+
+  @media (max-width: 900px){
+    .ex-layout{grid-template-columns:1fr;}
+    .video-wrap{position:static;}
+    .navlinks{display:none;}
+    .related-grid{grid-template-columns:repeat(2, 1fr);}
+  }
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="breadcrumb">
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <span class="sep">/</span>
+    <span class="current">Runners Stretch</span>
+  </div>
+
+  <div class="ex-layout">
+
+    <!-- VIDEO -->
+    <div class="video-wrap">
+      <div class="video-frame">
+        <iframe src="https://player.vimeo.com/video/1218400414?h=e7ff7c02d5&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-caption">
+        <span>Video</span>
+        <div style="display:flex; gap:8px;">
+          <button class="fav-btn"><span class="h">♡</span>Spara som favorit</button>
+          <button class="share-btn" id="shareBtn">↗ Dela</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div>
+      <div class="ex-head">
+        <span class="eyebrow">Knä &amp; ben</span>
+        <h1>Runners Stretch</h1>
+        <div class="ex-tags">
+          <span class="tag body">Knä &amp; ben</span>
+          <span class="tag">Stol</span>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta-item"><b>2 x 45 sek</b>Per sida</div>
+        <div class="meta-item"><b>Stretch</b>Vad &amp; baklår</div>
+      </div>
+
+      <div class="ex-section">
+        <h2>Om övningen</h2>
+        <p>Övningen syftar till att släppa på stelheter i vaderna och baklåren och främjar stående med raka fötter genom att minska på tendensen till utåtvridna fötter och inåtvridna knän.</p>
+      </div>
+
+      <div class="ex-section">
+        <h2>Utförande</h2>
+        <ul class="bullet-list">
+          <li class="bullet-item"><span class="dot2"></span>Ställ dig framför en stol med höger fot under stolen och vänster fot en bit bakom så att du känner en stretch i vänster vad.</li>
+          <li class="bullet-item"><span class="dot2"></span>Håll fötterna på en rak linje med knäna raka och fördela vikten jämnt mellan båda fötterna. Håll tillbaka höger höft så att höfterna förblir i nivå; annars tenderar höger höft att rotera framåt.</li>
+          <li class="bullet-item"><span class="dot2"></span>Utöva ett lätt statiskt tryck framåt med höger fot och behåll detta under hela övningen. Luta dig nu mjukt framåt från höfterna tills du känner en stretch i höger baksida lår och en stark stretch i vänster vad. Fördjupa stretchen genom att luta dig mer framåt varje gång du andas ut, och se till att båda fötterna pekar rakt fram (dvs. tredje tån ska vara rakt fram).</li>
+          <li class="bullet-item"><span class="dot2"></span>Byt sida efter ett antal andetag och upprepa övningen det antal gånger du valt. Om du inte känner en stretch i vänster vad kan du prova att flytta bak vänster fot ytterligare. Kontrollera också att foten verkligen pekar rakt fram.</li>
+          <li class="bullet-item"><span class="dot2"></span>Om du har svårt att känna stretchen i höger baksida lår kan du ställa fötterna i höftbredd och böja höger knä lite för att bättre komma åt baksidan av låret när du lutar dig framåt.</li>
+        </ul>
+      </div>
+
+      <div class="ex-section">
+        <div class="tips-box">
+          <div class="tip-line"><span class="dot2"></span>Ingen övning får göra ont, då kan du skippa just den övningen. Målet med varje övning ska vara att känna att övningen tar just där den ska ta — antingen en känsla av stretch/töjning om övningen är en stretch eller av aktivering/träning om övningen är en träningsövning. Följ därför instruktionerna så noggrant som möjligt för att hitta känslan på rätt ställe.</div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Lägg till i eget program</a>
+        <a class="btn btn-ghost" style="border:1px solid var(--line);" href="hallning-ovningsbank.html">Tillbaka till Övningsbank</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <section class="related">
+    <div class="section-head">
+      <h2>Fler övningar för Knä &amp; ben</h2>
+      <a class="all" href="hallning-ovningsbank.html">Se alla →</a>
+    </div>
+    <div class="related-grid" id="relatedGrid"></div>
+  </section>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div class="foot-row">
+      <div class="logo" style="font-size:1.05rem;"><span class="mark" style="width:10px;height:10px;"></span>ReAlign</div>
+      <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Platshållare för relaterade övningar — ersätts med riktig data när fler övningar finns
+  const related = [
+    {title:"Wall Single Heel Raises", level:"Nybörjare"},
+    {title:"Standing Quad Stretch", level:"Nybörjare"},
+    {title:"Step-Ups - Långsam", level:"Nybörjare"},
+    {title:"Kneeling Groin Stretch", level:"Nybörjare"},
+  ];
+  const grid = document.getElementById('relatedGrid');
+  related.forEach(r => {
+    const card = document.createElement('a');
+    card.href = "hallning-ovning-detalj.html";
+    card.className = 'rel-card';
+    card.style.display = 'block';
+    card.innerHTML = `
+      <div class="rel-thumb">▶</div>
+      <div class="rel-body">
+        <h3>${r.title}</h3>
+        <span class="tag">${r.level}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  const shareBtn = document.getElementById('shareBtn');
+  if(shareBtn){
+    shareBtn.addEventListener('click', function(){
+      const url = window.location.href;
+      const text = 'Kolla in den här övningen från ReAlign Metoden:';
+      if(navigator.share){
+        navigator.share({ title: document.title, text: text, url: url });
+      } else {
+        navigator.clipboard.writeText(url);
+        const original = shareBtn.innerHTML;
+        shareBtn.textContent = 'Länk kopierad ✓';
+        shareBtn.classList.add('copied');
+        setTimeout(function(){ shareBtn.innerHTML = original; shareBtn.classList.remove('copied'); }, 2000);
+      }
+    });
+  }
+
+  document.querySelector('.fav-btn').addEventListener('click', function(){
+    this.classList.toggle('active');
+    const h = this.querySelector('.h');
+    h.textContent = this.classList.contains('active') ? '♥' : '♡';
+  });
+</script>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

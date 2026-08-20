@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ergonomi — Hållning</title>
+<meta name="description" content="Så sitter, står och lyfter du rätt. Praktiska guider för skrivbordsarbete, sömn och vardagsrörelser.">
+<meta property="og:title" content="Ergonomi i vardagen — ReAlign Metoden">
+<meta property="og:description" content="Så sitter, står och lyfter du rätt. Praktiska guider för skrivbordsarbete, sömn och vardagsrörelser.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+  .wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+
+  nav{display:flex; align-items:center; justify-content:space-between; padding:26px 32px; max-width:1160px; margin:0 auto;}
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a.active{color:var(--text); font-weight:600;}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+
+  header.page{padding:36px 0 20px; max-width:640px;}
+  header.page h1{font-size:2.7rem; margin-top:12px;}
+  header.page p{color:var(--text-soft); margin-top:14px; font-size:1.02rem;}
+
+  .intro-video{margin:32px 0 8px;}
+  .video-frame{
+    position:relative; width:100%; aspect-ratio:16/9;
+    border-radius:18px; overflow:hidden; background:var(--surface);
+    box-shadow:0 20px 50px -20px rgba(43,46,42,0.25);
+  }
+  .video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:none;}
+  .video-frame.small{margin-bottom:24px;}
+  .intro-video .caption{margin-top:12px; font-size:0.82rem; color:var(--text-soft);}
+
+  .podcast-section{padding:60px 0; border-bottom:1px solid var(--line);}
+  .podcast-section .eyebrow{margin-bottom:10px;}
+  .podcast-section h2{font-size:2rem; margin-bottom:14px;}
+  .podcast-section p{color:var(--text-soft); font-size:0.95rem; max-width:560px; margin-bottom:26px;}
+  .spotify-frame{border-radius:14px; overflow:hidden; max-width:640px;}
+
+  .awareness{
+    background:var(--surface); border-radius:20px; padding:34px 38px;
+    margin-bottom:36px;
+  }
+  .awareness .eyebrow{margin-bottom:10px;}
+  .awareness h2{font-size:1.4rem; margin-bottom:12px;}
+  .awareness p{color:var(--text-soft); font-size:0.92rem; max-width:680px; margin-bottom:20px;}
+  .awareness-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;}
+  .awareness-item{background:var(--bg); border-radius:12px; padding:16px 18px; border:1px solid var(--line);}
+  .awareness-item b{display:block; font-size:0.86rem; margin-bottom:4px;}
+  .awareness-item span{font-size:0.82rem; color:var(--text-soft);}
+
+  .extra-section{padding:70px 0; border-bottom:1px solid var(--line);}
+  .extra-head{margin-bottom:36px; max-width:640px;}
+  .extra-head .eyebrow{margin-bottom:10px;}
+  .extra-head h2{font-size:2rem;}
+  .extra-head p{color:var(--text-soft); margin-top:12px; font-size:0.95rem;}
+  .extra-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;}
+  .extra-card{border:1px solid var(--line); border-radius:16px; padding:24px;}
+  .extra-card h3{font-size:1.1rem; margin-bottom:12px;}
+  .extra-card ul{list-style:none;}
+  .extra-card li{font-size:0.88rem; color:var(--text-soft); padding:6px 0 6px 16px; position:relative;}
+  .extra-card li::before{content:''; position:absolute; left:0; top:14px; width:5px; height:5px; border-radius:50%; background:var(--sage);}
+
+  /* JUMP NAV — sticky row of everyday situations, this IS the page's structure */
+  .jumpnav{
+    position:sticky; top:0; z-index:10;
+    background:var(--bg);
+    display:flex; gap:10px; padding:22px 0;
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+  }
+  .jump{
+    font-size:0.86rem; font-weight:600; color:var(--text-soft);
+    padding:9px 18px; border-radius:100px; white-space:nowrap;
+    border:1px solid var(--line);
+  }
+  .jump.active{background:var(--sage); color:#fff; border-color:var(--sage);}
+
+  .situation{
+    padding:70px 0; border-bottom:1px solid var(--line);
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:start;
+  }
+  .situation:last-of-type{border-bottom:none;}
+  .sit-label{position:sticky; top:90px;}
+  .sit-label .eyebrow{margin-bottom:10px;}
+  .sit-label h2{font-size:2rem;}
+  .sit-label p{color:var(--text-soft); margin-top:14px; font-size:0.95rem;}
+
+  .compare{
+    display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:24px;
+  }
+  .compare-card{
+    border-radius:16px; padding:22px;
+    border:1px solid var(--line);
+  }
+  .compare-card.bad{background:#F7EFE9; border-color:#E9D3C0;}
+  .compare-card.good{background:var(--surface); border-color:var(--sage-light);}
+  .compare-card .lbl{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem;
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:12px; display:block;
+  }
+  .compare-card.bad .lbl{color:#B9714A;}
+  .compare-card.good .lbl{color:var(--sage);}
+  .compare-card .body-illo{
+    height:120px; border-radius:10px; margin-bottom:14px;
+    background:repeating-linear-gradient(135deg, rgba(0,0,0,0.03) 0 2px, transparent 2px 10px);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .compare-card.bad .body-illo{border-left:3px solid #C67A50;}
+  .compare-card.good .body-illo{border-left:3px solid var(--sage);}
+  .compare-card ul{list-style:none;}
+  .compare-card li{font-size:0.86rem; padding:4px 0; color:var(--text);}
+
+  .tip-row{
+    display:flex; gap:14px; padding:14px 0; border-top:1px solid var(--line);
+  }
+  .tip-row:first-of-type{border-top:none;}
+  .tip-num{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--sage);
+    flex-shrink:0; width:20px; padding-top:2px;
+  }
+  .tip-row p{font-size:0.92rem;}
+
+  footer{padding:60px 0 40px; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line); margin-top:20px;}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+
+  @media (max-width: 880px){
+    .situation{grid-template-columns:1fr; gap:26px;}
+    .sit-label{position:static;}
+    .compare{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+    header.page h1{font-size:2.1rem;}
+    .awareness-grid{grid-template-columns:1fr 1fr;}
+    .extra-grid{grid-template-columns:1fr;}
+  }
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="#" class="active">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">Ergonomi</span>
+    <h1>Vardagens rörelser, rätt utförda.</h1>
+    <p>Små justeringar i hur du sitter, står och lyfter gör stor skillnad över tid. Här är det posturalt korrekta sättet att göra det du redan gör varje dag.</p>
+  </header>
+
+  <div class="intro-video">
+    <div class="video-frame">
+      <iframe src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="caption">Introduktion till postural medvetenhet</div>
+  </div>
+
+  <div class="awareness">
+    <span class="eyebrow">Innan du börjar</span>
+    <h2>Bli posturalt medveten</h2>
+    <p>Det är lätt att dåliga hållnings- och rörelsevanor underminerar effekten av din träning. Vanliga exempel är att stå och luta på ena höften, korsa benen när du sitter, sitta ihopkrupen med krum bröstrygg och framåtlutade axlar, eller bära väskan på samma axel varje gång. Genom att bli medveten om dessa vanor och korrigera dem kan du snabbare skapa bestående förbättringar.</p>
+    <div class="awareness-grid">
+      <div class="awareness-item"><b>Observera</b><span>Var uppmärksam på din hållning när du står, sitter eller går.</span></div>
+      <div class="awareness-item"><b>Analysera</b><span>Hur ser din hållning faktiskt ut när du står och sitter?</span></div>
+      <div class="awareness-item"><b>Repetitiva rörelser</b><span>Använder du ena sidan av kroppen mer än den andra?</span></div>
+      <div class="awareness-item"><b>Nyfikenhet</b><span>Finns det andra vanor som kan bidra till obalanser?</span></div>
+    </div>
+  </div>
+
+  <div class="jumpnav" id="jumpnav">
+    <a class="jump active" data-t="sitta">Sitta</a>
+    <a class="jump" data-t="sta">Stå</a>
+    <a class="jump" data-t="lyfta">Lyfta</a>
+    <a class="jump" data-t="skarm">Skärmarbete</a>
+    <a class="jump" data-t="sova">Sova</a>
+    <a class="jump" data-t="fler-vanor">Fler vanor</a>
+    <a class="jump" data-t="lyssna">Lyssna</a>
+  </div>
+
+  <section class="situation" id="sitta">
+    <div class="sit-label">
+      <span class="eyebrow">01 — Vid skrivbordet</span>
+      <h2>Sitta</h2>
+      <p>De flesta av oss sitter 6–9 timmar per dag. Det handlar inte om att sitta "perfekt" hela tiden, utan om att undvika samma statiska position för länge.</p>
+    </div>
+    <div>
+      <div class="video-frame small">
+        <iframe src="https://player.vimeo.com/video/1218399947?h=1a3cddd537&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="compare">
+        <div class="compare-card bad">
+          <span class="lbl">Vanligt fel</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Höfterna glider fram, ryggen rundas</li>
+            <li>Huvudet skjuts framåt mot skärmen</li>
+            <li>Axlarna dras upp mot öronen</li>
+          </ul>
+        </div>
+        <div class="compare-card good">
+          <span class="lbl">Bättre sätt</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Sittben i botten av stolen, höfter något över knän</li>
+            <li>Öron, axlar och höft i linje</li>
+            <li>Fötterna platt i golvet, axlar avslappnade</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-row"><span class="tip-num">01</span><p>Sitt med fötterna platt i golvet och en naturlig svank. Vill du ha en extra hållningsstärkande position, sitt långt fram på stolskanten med rak rygg.</p></div>
+      <div class="tip-row"><span class="tip-num">02</span><p>Om du korsar benen, växla sida då och då för att undvika snedbelastning.</p></div>
+      <div class="tip-row"><span class="tip-num">03</span><p>I soffan: använd kuddar bakom ryggen som stöd för svanken, och byt position med jämna mellanrum.</p></div>
+      <div class="tip-row"><span class="tip-num">04</span><p>Res dig upp minst en gång per 30 minuter — även en kort paus bryter den statiska belastningen.</p></div>
+      <div class="tip-row"><span class="tip-num">05</span><p>Skärmens överkant i höjd med ögonen, en armlängd bort.</p></div>
+      <div class="tip-row"><span class="tip-num">06</span><p>Häng inte i ländryggsstödet — aktivera bålen lätt istället för att kollapsa in i stolen.</p></div>
+    </div>
+  </section>
+
+  <section class="situation" id="sta">
+    <div class="sit-label">
+      <span class="eyebrow">02 — I kön, vid disken</span>
+      <h2>Stå</h2>
+      <p>Stående vila är sällan verklig vila för kroppen — vanan att luta sig i en höft belastar snett över tid.</p>
+    </div>
+    <div>
+      <div class="video-frame small">
+        <iframe src="https://player.vimeo.com/video/1218400129?h=a58bf4e414&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="compare">
+        <div class="compare-card bad">
+          <span class="lbl">Vanligt fel</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Tyngden vilar i en höft ("skevstående")</li>
+            <li>Knäna låsta bakåt</li>
+            <li>Bröstkorgen sjunker, magen faller fram</li>
+          </ul>
+        </div>
+        <div class="compare-card good">
+          <span class="lbl">Bättre sätt</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Vikt jämnt fördelad över båda fötterna</li>
+            <li>Mjuka, olåsta knän</li>
+            <li>Bäckenet i neutralt läge, bröstkorg lyft</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-row"><span class="tip-num">01</span><p>Stå med fötterna i höftbredd, pekandes rakt fram, med jämn belastning på båda fötterna. Föreställ dig en tråd som drar rakt upp genom hjässan, och slappna av i mage, ländrygg och säte.</p></div>
+      <div class="tip-row"><span class="tip-num">02</span><p>Om du har för vana att hänga på en höft, växla sida regelbundet för att undvika snedbelastning.</p></div>
+      <div class="tip-row"><span class="tip-num">03</span><p>Byt ståställning aktivt istället för att fastna i en position — kroppen gillar variation, inte perfekt hållning i timmar.</p></div>
+      <div class="tip-row"><span class="tip-num">04</span><p>Stå gärna med en fot lätt förhöjd (t.ex. på en pallkant) om du står länge i köket.</p></div>
+    </div>
+  </section>
+
+  <!-- ANNONSPLATS: banner mellan situationer, efter var 2:a sektion -->
+
+  <section class="situation" id="lyfta">
+    <div class="sit-label">
+      <span class="eyebrow">03 — Flyttkartonger, matkassar</span>
+      <h2>Lyfta</h2>
+      <p>De flesta ryggskador vid lyft sker inte av tunga saker, utan av lätta saker lyfta fel — ofta i en vriden position.</p>
+    </div>
+    <div>
+      <div class="video-frame small">
+        <iframe src="https://player.vimeo.com/video/1218398436?h=3622425e3c&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="compare">
+        <div class="compare-card bad">
+          <span class="lbl">Vanligt fel</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Böjer i ryggen med raka ben</li>
+            <li>Vrider bålen samtidigt som man lyfter</li>
+            <li>Håller lasten långt från kroppen</li>
+          </ul>
+        </div>
+        <div class="compare-card good">
+          <span class="lbl">Bättre sätt</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Böj i höft och knä, håll ryggen lång</li>
+            <li>Vänd hela kroppen med fötterna, inte bålen</li>
+            <li>Håll lasten nära kroppen genom hela lyftet</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-row"><span class="tip-num">01</span><p>Böj knäna och håll ryggen rak — fäll dig framåt från höfterna eller gör ett utfall istället för att böja i ländryggen.</p></div>
+      <div class="tip-row"><span class="tip-num">02</span><p>När du bär saker, håll skulderbladen bakåt och bröstryggen rak för att avlasta axlar och nacke.</p></div>
+      <div class="tip-row"><span class="tip-num">03</span><p>Andas ut på vägen upp — det stabiliserar bålen naturligt.</p></div>
+      <div class="tip-row"><span class="tip-num">04</span><p>Osäker på vikten? Testa att luta lasten innan du lyfter den helt, istället för att chansa.</p></div>
+    </div>
+  </section>
+
+  <section class="situation" id="skarm">
+    <div class="sit-label">
+      <span class="eyebrow">04 — Mobil &amp; laptop</span>
+      <h2>Skärmarbete</h2>
+      <p>"Tech-neck" — den framåtböjda nackhållningen vid mobil och laptop — är en av de vanligaste orsakerna till nack- och axelspänning idag.</p>
+    </div>
+    <div>
+      <div class="compare">
+        <div class="compare-card bad">
+          <span class="lbl">Vanligt fel</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Mobilen hålls lågt, hakan pressas mot bröstet</li>
+            <li>Laptop i knät med böjd nacke</li>
+          </ul>
+        </div>
+        <div class="compare-card good">
+          <span class="lbl">Bättre sätt</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Lyft mobilen till ögonhöjd istället för att böja nacken</li>
+            <li>Höj laptopen och använd separat tangentbord vid längre arbete</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-row"><span class="tip-num">01</span><p>Korta, återkommande pauser slår långa sporadiska — sikta på rörelse varje halvtimme.</p></div>
+    </div>
+  </section>
+
+  <!-- ANNONSPLATS: banner mellan situationer -->
+
+  <section class="situation" id="sova">
+    <div class="sit-label">
+      <span class="eyebrow">05 — Nattens 7–8 timmar</span>
+      <h2>Sova</h2>
+      <p>En tredjedel av livet spenderas liggande — sovställning och kuddhöjd påverkar hållningen minst lika mycket som dagens rörelser.</p>
+    </div>
+    <div>
+      <div class="compare">
+        <div class="compare-card bad">
+          <span class="lbl">Vanligt fel</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Sover på mage med vriden nacke</li>
+            <li>För hög eller för platt kudde i sidoläge</li>
+          </ul>
+        </div>
+        <div class="compare-card good">
+          <span class="lbl">Bättre sätt</span>
+          <div class="body-illo"></div>
+          <ul>
+            <li>Rygg- eller sidoläge med neutral nacke</li>
+            <li>Kudde mellan knäna i sidoläge avlastar höft och bäcken</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-row"><span class="tip-num">01</span><p>Välj en madrass som stödjer ryggradens naturliga kurvatur, och variera gärna mellan att sova på sidan och på ryggen.</p></div>
+      <div class="tip-row"><span class="tip-num">02</span><p>Undvik för många kuddar under huvudet — det skapar en framskjuten huvudposition ("gamnacke").</p></div>
+      <div class="tip-row"><span class="tip-num">03</span><p>Ligg inte på mage med huvudet vridet åt samma håll för länge — det kan skapa obalans i både nacke och bäcken.</p></div>
+      <div class="tip-row"><span class="tip-num">04</span><p>Kuddhöjden ska hålla nacken i linje med resten av ryggraden — varken böjd upp eller ner.</p></div>
+    </div>
+  </section>
+
+  <section class="extra-section" id="fler-vanor">
+    <div class="extra-head">
+      <span class="eyebrow">07 — Fler vardagsvanor</span>
+      <h2>Det som händer mellan träningspassen</h2>
+      <p>Postural träning ger bäst resultat tillsammans med medvetna vanor i resten av vardagen — andning, gång, löpning, cykling och till och med vilka skor och kläder du väljer.</p>
+    </div>
+    <div class="extra-grid">
+      <div class="extra-card">
+        <h3>Andning</h3>
+        <ul>
+          <li>Slappna av i magen och andas med hjälp av diafragman — magen och nedre bröstkorgen ska expandera vid inandning.</li>
+          <li>Det är naturligt att magmusklerna spänns vid lyft och ansträngning, inte i vila som sittande, stående eller gång.</li>
+        </ul>
+      </div>
+      <div class="extra-card">
+        <h3>Gång</h3>
+        <ul>
+          <li>Slappna av i magen och gå med en naturlig steglängd, där foten landar under kroppen snarare än framför.</li>
+          <li>Låt armarna röra sig naturligt längs kroppen och håll fötterna raka.</li>
+        </ul>
+      </div>
+      <div class="extra-card">
+        <h3>Löpning</h3>
+        <ul>
+          <li>Håll kroppen upprätt genom "tråden" och slappna av i fötter och underben.</li>
+          <li>Undvik för långa steg — det ger en felaktig hällandning och onödig belastning på knän, höfter och ländrygg.</li>
+        </ul>
+      </div>
+      <div class="extra-card">
+        <h3>Cykling</h3>
+        <ul>
+          <li>Ställ in sadeln så att benen är nästan raka längst ner i pedalrörelsen.</li>
+          <li>Håll kroppen upprätt, knäna riktade framåt, slappna av i magen och undvik att gunga i sidled. Sikta på en lätt framåttippning av bäckenet för rätt momentum.</li>
+        </ul>
+      </div>
+      <div class="extra-card">
+        <h3>Skor &amp; kläder</h3>
+        <ul>
+          <li>Välj skor som tillåter fotens naturliga bredd och längd, med mjuka sulor som ger fotens naturliga böjrörelse.</li>
+          <li>Undvik höga klackar eller trånga skor för ofta.</li>
+          <li>Åtsittande byxor kring bäckenet, t.ex. lågmidjade jeans, kan skapa stelhet.</li>
+        </ul>
+      </div>
+      <div class="extra-card">
+        <h3>Väskor &amp; plånbok</h3>
+        <ul>
+          <li>Byt sida regelbundet när du bär väska eller handväska, eller använd ryggsäck för jämnare viktfördelning.</li>
+          <li>Undvik att bära plånboken i bakfickan — det kan skapa snedbelastning när du sitter.</li>
+        </ul>
+      </div>
+      <div class="extra-card">
+        <h3>Allmänna tips</h3>
+        <ul>
+          <li>Sitter du mycket på jobbet? Använd ett höj- och sänkbart skrivbord och växla mellan att stå och sitta.</li>
+          <li>Ta trapporna istället för hissen — bra träning för vader, lår, rumpa och höfter.</li>
+          <li>Gå en kort promenad på lunchen, eller kliv av bussen en hållplats tidigare.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="podcast-section" id="lyssna">
+    <span class="eyebrow">08 — Lyssna vidare</span>
+    <h2>Fördjupning i podcastform</h2>
+    <p>Vill du gräva djupare i tankarna bakom postural träning och ergonomi? Lyssna på avsnittet direkt här, utan att lämna sidan.</p>
+    <div class="spotify-frame">
+      <iframe src="https://open.spotify.com/embed/episode/6T3rxc52NXbu0zL4yoE2Cq" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div class="foot-row">
+      <div class="logo" style="font-size:1.05rem;"><span class="mark" style="width:10px;height:10px;"></span>ReAlign</div>
+      <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.situation, .extra-section, .podcast-section');
+  const jumps = document.querySelectorAll('.jump');
+  jumps.forEach(j => {
+    j.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById(j.dataset.t).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        jumps.forEach(j => j.classList.toggle('active', j.dataset.t === entry.target.id));
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  sections.forEach(s => obs.observe(s));
+</script>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

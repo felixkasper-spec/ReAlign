@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program — Hållning</title>
+<meta name="description" content="Strukturerade hållningsprogram byggda kring ett specifikt syfte. Följ dem som de är, eller bygg ditt eget.">
+<meta property="og:title" content="Färdiga träningsprogram — ReAlign Metoden">
+<meta property="og:description" content="Strukturerade hållningsprogram byggda kring ett specifikt syfte. Följ dem som de är, eller bygg ditt eget.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+  .wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+
+  nav{display:flex; align-items:center; justify-content:space-between; padding:26px 32px; max-width:1240px; margin:0 auto;}
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a.active{color:var(--text); font-weight:600;}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+
+  header.page{padding:36px 0 8px;}
+  header.page h1{font-size:2.6rem; margin-top:12px;}
+  header.page p{color:var(--text-soft); margin-top:12px; max-width:540px;}
+
+  /* PURPOSE FILTER — programs are organized by what problem they solve, not generic tabs */
+  .purpose-row{
+    display:flex; gap:10px; padding:30px 0 6px; flex-wrap:wrap;
+  }
+  .purpose{
+    font-size:0.86rem; font-weight:600; color:var(--text-soft);
+    padding:9px 18px; border-radius:100px; border:1px solid var(--line); cursor:pointer;
+  }
+  .purpose.active{background:var(--sage); color:#fff; border-color:var(--sage);}
+
+  .level-row{
+    display:flex; align-items:center; gap:16px;
+    padding:22px 0 34px; border-bottom:1px solid var(--line); margin-bottom:36px;
+  }
+  .level-row .lbl{font-size:0.85rem; color:var(--text-soft);}
+  .level-dots{display:flex; gap:6px;}
+  .lvl-opt{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    padding:6px 13px; border-radius:100px; border:1px solid var(--line); color:var(--text-soft); cursor:pointer;
+  }
+  .lvl-opt.on{border-color:var(--sage); color:var(--sage); background:#E4EBE3;}
+
+  /* FEATURED PROGRAM */
+  .featured{
+    display:grid; grid-template-columns:1fr 1fr;
+    background:var(--sage); border-radius:24px;
+    overflow:hidden; margin-bottom:56px;
+    color:#F4F6F2;
+  }
+  .featured-copy{padding:48px;}
+  .featured .eyebrow{color:var(--warm-soft);}
+  .featured h2{color:#fff; font-size:1.9rem; margin:14px 0 14px;}
+  .featured p{color:#DCE4DA; font-size:0.95rem; margin-bottom:26px; max-width:400px;}
+  .featured-meta{display:flex; gap:22px; margin-bottom:28px;}
+  .featured-meta div{font-size:0.8rem; color:#DCE4DA;}
+  .featured-meta b{display:block; font-family:'Newsreader', serif; color:#fff; font-size:1.2rem; font-weight:500;}
+  .featured-img{
+    background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+    position:relative;
+  }
+  .featured-img::after{
+    content:'';
+    position:absolute; inset:24px;
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:14px;
+  }
+
+  /* PROGRAM GRID */
+  .grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; margin-bottom:60px;}
+  .prog-card{
+    border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease;
+    background:#fff; display:flex; flex-direction:column;
+  }
+  .prog-card:hover{border-color:var(--sage-light); transform:translateY(-2px);}
+  .prog-top{
+    height:110px; padding:18px 20px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .prog-top .lvl-badge{
+    align-self:flex-start;
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem;
+    padding:4px 10px; border-radius:100px; background:var(--surface); color:var(--sage);
+  }
+  .prog-body{padding:0 20px 22px;}
+  .prog-body h3{font-size:1.15rem; font-weight:500; margin-bottom:8px;}
+  .prog-body p{font-size:0.87rem; color:var(--text-soft); margin-bottom:16px;}
+  .prog-stats{
+    display:flex; justify-content:space-between;
+    padding-top:14px; border-top:1px solid var(--line);
+    font-size:0.78rem; color:var(--text-soft);
+  }
+  .prog-stats b{color:var(--text); font-weight:600;}
+
+  footer{padding:60px 0 40px; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+
+  @media (max-width: 900px){
+    .grid{grid-template-columns:repeat(2, 1fr);}
+    .featured{grid-template-columns:1fr;}
+    .featured-img{display:none;}
+    .navlinks{display:none;}
+  }
+  @media (max-width: 560px){
+    .grid{grid-template-columns:1fr;}
+  }
+  .tips-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    background:var(--surface); border:none; border-radius:14px;
+    padding:16px 22px; margin-bottom:28px; cursor:pointer;
+    font-family:'Public Sans', sans-serif; font-size:0.92rem; font-weight:600; color:var(--text);
+  }
+  .tips-toggle .chev{transition:transform 0.2s; color:var(--sage); font-size:0.8rem;}
+  .tips-toggle.open .chev{transform:rotate(180deg);}
+  .tips-panel{
+    max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+    margin:-20px 0 0;
+  }
+  .tips-panel.open{max-height:1400px; margin:-8px 0 28px;}
+  .tips-panel-inner{background:var(--surface); border-radius:14px; padding:24px 26px 8px; margin-top:-20px;}
+  .tips-panel-inner h3{font-size:1rem; font-weight:500; margin-bottom:14px;}
+  .tips-panel-inner ul{list-style:none;}
+  .tips-panel-inner li{
+    font-size:0.88rem; color:var(--text-soft); padding:0 0 16px 18px; position:relative;
+  }
+  .tips-panel-inner li::before{
+    content:''; position:absolute; left:0; top:8px; width:5px; height:5px;
+    border-radius:50%; background:var(--sage);
+  }
+  .tips-panel-inner .closing{font-size:0.88rem; color:var(--text); font-weight:500; padding-bottom:20px;}
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="#" class="active">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <h1>Färdiga program</h1>
+    <p>Strukturerade träningsprogram byggda kring ett specifikt syfte — följ dem som de är, eller använd dem som grund för ditt eget.</p>
+  </header>
+
+  <button class="tips-toggle" id="tipsToggle">
+    <span>💡 Tips att tänka på under träning för bästa möjliga resultat</span>
+    <span class="chev">▾</span>
+  </button>
+  <div class="tips-panel" id="tipsPanel">
+    <div class="tips-panel-inner">
+      <h3>Hur du kan tänka angående din träning</h3>
+      <p style="font-size:0.88rem; color:var(--text-soft); margin-bottom:16px;">Nedan följer de allra viktigaste riktlinjerna att tänka på i samband med träningen:</p>
+      <ul>
+        <li>Fokusera på att endast aktivera de muskler som ska jobba och slappna av i övriga muskler för att minska kompensation och främja rätt muskelaktivering.</li>
+        <li>Inta rätt position i början av varje övning och behåll den genom hela rörelsen för att aktivera rätt muskler och undvika felaktig belastning.</li>
+        <li>I de övningar med gradvis ökande tryck: börja med lätt muskelaktivering (cirka 1% av maximal kapacitet) och öka gradvis till cirka 40% av max på 2–3 sekunder.</li>
+        <li>Kom till ett fullt stopp mellan varje repetition, gör varje rörelse kontrollerat, undvik att rycka dig igenom övningen.</li>
+        <li>Vid stretching: Slappna av i muskeln som stretchas och håll det utsträckta läget. Öka stretchingen mjukt med varje utandning.</li>
+        <li>Utför övningarna i angiven ordning, ofta har ordningen på övningarna ett syfte.</li>
+        <li>Antalet repetitioner är en riktlinje; stoppa övningen tidigare än angett antal ifall du känner att du tappar tekniken, sikta på att göra fler nästa gång du gör övningen.</li>
+        <li>Gör fler repetitioner på den sida som känns svagare/mindre funktionell tills balans uppnås.</li>
+        <li>Fokusera på att övningarna känns lika på båda sidor för att uppnå optimal balans och funktion.</li>
+        <li>Ingen övning ska göra ont! Vid smärta, kontrollera tekniken och justera om nödvändigt, minska antalet repetitioner, eller hoppa över övningen om smärtan kvarstår.</li>
+        <li>Var närvarande i kroppen under träningen för att snabbare uppnå förbättringar; notera skillnader i spänning, balans och smärta före och efter passet.</li>
+        <li>Drick ett stort glas vatten innan träningen för att optimera effekten på de djupa posturala musklerna.</li>
+        <li>Läs instruktionerna noggrant för varje övning för att säkerställa korrekt utförande.</li>
+      </ul>
+      <p class="closing">Följer du dessa tips har du gett dig själv bästa möjliga förutsättningar, både i resultatsväg samt säkerhetsväg!</p>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--surface); border-radius:16px; padding:18px 24px; margin-bottom:16px;">
+    <p style="font-size:0.9rem; color:var(--text); margin:0;">Osäker på vilket program som passar dig? Svara på fem korta frågor.</p>
+    <a class="btn btn-primary" style="white-space:nowrap;" href="hallning-personaliserat.html">Hitta mitt program →</a>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--surface); border-radius:16px; padding:18px 24px; margin-bottom:24px;">
+    <p style="font-size:0.9rem; color:var(--text); margin:0;"><b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt Bålträning och Kontorsvardag, är helt gratis. Resten ingår i Premium.</p>
+    <a class="btn btn-primary" style="white-space:nowrap;" href="hallning-min-sida.html">Bli Premium – 149 kr/mån →</a>
+  </div>
+
+  <div class="purpose-row">
+    <span class="purpose active">Alla</span>
+    <span class="purpose">Helkropp</span>
+    <span class="purpose">Ländrygg- höft</span>
+    <span class="purpose">Nacke &amp; axlar</span>
+    <span class="purpose">Kontorsvardag</span>
+    <span class="purpose">Gymträning</span>
+    <span class="purpose">Bålträning</span>
+  </div>
+  <div class="level-row">
+    <span class="lbl">Nivå:</span>
+    <div class="level-dots">
+      <span class="lvl-opt on">Nybörjare</span>
+      <span class="lvl-opt on">Medel</span>
+      <span class="lvl-opt on">Avancerad</span>
+    </div>
+  </div>
+
+  <!-- ANNONSPLATS: banner, mellan filter och utvalt program -->
+
+  <div class="featured">
+    <div class="featured-copy">
+      <span class="eyebrow">Rekommenderat för dig</span>
+      <h2>Helkropp - Nivå 2</h2>
+      <p>Vårt mest använda program på kliniken. En bra start på att motverka de vanligaste effekterna av en kropp ur balans.</p>
+      <div class="featured-meta">
+        <div><b>2 veckor</b>Längd</div>
+        <div><b>15 min</b>Per pass</div>
+        <div><b>4x/vecka</b>Frekvens</div>
+        <div><b>Nybörjare</b>Nivå</div>
+      </div>
+      <a class="btn btn-primary" href="hallning-program-helkropp-niva-2.html">Starta programmet</a>
+    </div>
+    <div class="featured-img" style="background-image:url('https://images.unsplash.com/photo-1718862403436-616232ec6005?auto=format&fit=crop&w=700&h=600&q=80'); background-size:cover; background-position:center;"></div>
+  </div>
+
+  <div class="grid" id="progGrid"></div>
+
+  <div style="background:var(--surface); border-radius:20px; padding:34px 38px; margin:12px 0 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+    <div style="max-width:600px;">
+      <span class="eyebrow">Hittar du inte rätt program?</span>
+      <h3 style="font-size:1.2rem; margin:8px 0 8px; font-weight:500;">Låt oss bygga ett åt dig</h3>
+      <p style="color:var(--text-soft); font-size:0.9rem;">Boka en videosamtals-analys med en av våra kliniker. Vi går igenom din kropp tillsammans och bygger sedan ett eget program utifrån vad vi ser — helt skräddarsytt för dig.</p>
+    </div>
+    <a class="btn btn-primary" style="white-space:nowrap;" href="hallning-analys.html">Boka videosamtals-analys →</a>
+  </div>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div class="foot-row">
+      <div class="logo" style="font-size:1.05rem;"><span class="mark" style="width:10px;height:10px;"></span>ReAlign</div>
+      <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('tipsToggle').addEventListener('click', () => {
+    document.getElementById('tipsToggle').classList.toggle('open');
+    document.getElementById('tipsPanel').classList.toggle('open');
+  });
+  const programs = [
+    {title:"Helkropp - Nivå 1", purpose:"Helkropp", level:"Nybörjare", weeks:"3 veckor", freq:"3-5x/vecka", slug:"helkropp-niva-1", premium:false},
+    {title:"Helkropp - Nivå 2", purpose:"Helkropp", level:"Nybörjare", weeks:"3 veckor", freq:"3-5x/vecka", slug:"helkropp-niva-2", premium:false},
+    {title:"Helkropp - Nivå 3", purpose:"Helkropp", level:"Medel", weeks:"2 veckor", freq:"4x/vecka", slug:"helkropp-niva-3", premium:true},
+    {title:"Helkropp - Nivå 4", purpose:"Helkropp", level:"Medel", weeks:"2 veckor", freq:"4x/vecka", slug:"helkropp-niva-4", premium:true},
+    {title:"Helkropp - Nivå 5", purpose:"Helkropp", level:"Avancerad", weeks:"2 veckor", freq:"4x/vecka", slug:"helkropp-niva-5", premium:true},
+    {title:"Höfter - Nivå 1", purpose:"Höft & bäcken", level:"Nybörjare", weeks:"Engångspass", freq:"7 övningar", slug:"hofter-niva-1", premium:false},
+    {title:"Höfter - Nivå 2", purpose:"Höft & bäcken", level:"Nybörjare", weeks:"Engångspass", freq:"6 övningar", slug:"hofter-niva-2", premium:true},
+    {title:"Höfter - Nivå 3", purpose:"Höft & bäcken", level:"Medel", weeks:"Engångspass", freq:"5 övningar", slug:"hofter-niva-3", premium:true},
+    {title:"Axlar/nacke/skulderblad - Nivå 1", purpose:"Axlar/nacke/skulderblad", level:"Nybörjare", weeks:"Engångspass", freq:"8 övningar", slug:"axlar-nacke-skulderblad-niva-1", premium:false},
+    {title:"Axlar/nacke/skulderblad - Nivå 2", purpose:"Axlar/nacke/skulderblad", level:"Nybörjare", weeks:"Engångspass", freq:"7 övningar", slug:"axlar-nacke-skulderblad-niva-2", premium:true},
+    {title:"Axlar/nacke/skulderblad - Nivå 3", purpose:"Axlar/nacke/skulderblad", level:"Medel", weeks:"Engångspass", freq:"6 övningar", slug:"axlar-nacke-skulderblad-niva-3", premium:true},
+    {title:"Bålträning", purpose:"Bålträning", level:"Nybörjare", weeks:"Engångspass", freq:"6 övningar", slug:"baltraning", premium:false},
+    {title:"Kontorsvardag", purpose:"Kontorsvardag", level:"Nybörjare", weeks:"Engångspass", freq:"5 övningar", slug:"kontorsvardag", premium:false},
+    {title:"Gymträning - Underkropp", purpose:"Gymträning", level:"Medel", weeks:"Engångspass", freq:"6 övningar", slug:"gym-underkropp", premium:true},
+    {title:"Gymträning - Överkropp", purpose:"Gymträning", level:"Medel", weeks:"Engångspass", freq:"7 övningar", slug:"gym-overkropp", premium:true},
+    {title:"Gymträning - Helkropp", purpose:"Gymträning", level:"Medel", weeks:"Engångspass", freq:"7 övningar", slug:"gym-helkropp", premium:true},
+  ];
+
+  // ANNONSPLATS: infoga en annonsruta i grid-flödet var 6:e programkort
+  const grid = document.getElementById('progGrid');
+  programs.forEach(p => {
+    const card = document.createElement(p.slug ? 'a' : 'div');
+    card.className = 'prog-card';
+    if(p.slug){
+      card.href = `hallning-program-${p.slug}.html`;
+      card.style.display = 'block';
+    }
+    card.innerHTML = `
+      <div class="prog-top">
+        <span class="lvl-badge">${p.level}</span>
+        ${p.premium ? '<span class="lvl-badge" style="background:var(--warm-soft); color:var(--warm);">Premium</span>' : '<span class="lvl-badge" style="background:#E4EBE3; color:var(--sage);">Gratis</span>'}
+      </div>
+      <div class="prog-body">
+        <h3>${p.title}</h3>
+        <p>${p.purpose}</p>
+        <div class="prog-stats">
+          <span><b>${p.weeks}</b></span>
+          <span><b>${p.freq}</b></span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.querySelectorAll('.purpose').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.purpose').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.lvl-opt').forEach(l => {
+    l.addEventListener('click', () => l.classList.toggle('on'));
+  });
+</script>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

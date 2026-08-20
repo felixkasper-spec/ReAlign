@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vanliga frågor — ReAlign Metoden</title>
+<meta name="description" content="Svar på de vanligaste frågorna om postural träning, säkerhet, utrustning och vad du kan förvänta dig av ReAlign Metoden.">
+<meta property="og:title" content="Vanliga frågor — ReAlign Metoden">
+<meta property="og:description" content="Svar på de vanligaste frågorna om postural träning, säkerhet, utrustning och vad du kan förvänta dig av ReAlign Metoden.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7; --surface: #EEF1EC; --text: #2B2E2A; --text-soft: #6B7267;
+    --sage: #5E7461; --sage-light: #8A9A8B; --warm: #D98E5C; --warm-soft: #F1D9C4; --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:'Public Sans', sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  h1,h2{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);}
+  .wrap{max-width:760px; margin:0 auto; padding:0 32px;}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:26px 32px; max-width:1160px; margin:0 auto;}
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+  header.page{padding:40px 0 20px;}
+  header.page h1{font-size:2.5rem; margin-top:12px;}
+  header.page p{color:var(--text-soft); margin-top:14px; font-size:1rem; max-width:560px;}
+  .faq-group{margin-top:36px;}
+  .faq-group .eyebrow{display:block; margin-bottom:14px;}
+  .faq-item{border-top:1px solid var(--line); padding:20px 0;}
+  .faq-item:last-child{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    background:none; border:none; cursor:pointer; text-align:left;
+    font-family:'Public Sans', sans-serif; font-size:1rem; font-weight:600; color:var(--text); padding:0;
+  }
+  .faq-q .chev{color:var(--sage); transition:transform 0.2s; flex-shrink:0;}
+  .faq-item.open .faq-q .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height 0.25s ease;}
+  .faq-item.open .faq-a{max-height:300px; margin-top:12px;}
+  .faq-a p{font-size:0.92rem; color:var(--text-soft);}
+  .disclaimer{background:var(--surface); border-radius:16px; padding:22px 26px; margin:50px 0 30px; font-size:0.88rem; color:var(--text-soft);}
+  .disclaimer b{color:var(--text);}
+  footer{padding:40px 0; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line); margin-top:20px; text-align:center;}
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">Vanliga frågor</span>
+    <h1>Svar innan du börjar.</h1>
+    <p>Det vanligaste folk undrar innan de sätter igång — om säkerhet, utrustning, tid och vad man kan förvänta sig.</p>
+  </header>
+
+  <div class="faq-group">
+    <span class="eyebrow">Komma igång</span>
+
+    <div class="faq-item open">
+      <button class="faq-q"><span>Är postural träning säkert för mig?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>För de allra flesta, ja. Övningarna är byggda för att vara skonsamma och ska aldrig göra ont — känner du smärta ska du justera tekniken, minska antal repetitioner, eller hoppa över just den övningen. Har du en pågående skada, är gravid, eller är osäker av någon annan anledning, rekommenderar vi att du pratar med en av våra kliniker eller din vårdgivare innan du börjar.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><span>Behöver jag någon utrustning?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Nej, de flesta övningarna kräver ingen utrustning alls. Vissa använder en stol, en vägg eller en kudde — vanliga saker du redan har hemma. Ett fåtal mer avancerade övningar är byggda för gymredskap, men det framgår tydligt på varje övning och program.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><span>Hur lång tid innan jag märker skillnad?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Många känner en skillnad redan efter första passet — en lätthetskänsla i kroppen. Mer varaktiga förändringar i hållning och styrka tar längre tid, ofta några veckor av regelbunden träning, eftersom det handlar om att bygga upp riktig muskelstyrka i de djupa hållningsmusklerna.</p></div>
+    </div>
+  </div>
+
+  <div class="faq-group">
+    <span class="eyebrow">Träningen</span>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Hur ofta bör jag träna?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Det varierar per program, men de flesta rekommenderar 3–5 pass i veckan. Varje övningssida och programsida visar rekommenderad frekvens. Även korta pass ett par gånger i veckan gör skillnad — det viktigaste är regelbundenhet.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><span>Kan jag kombinera det här med annan träning?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Ja, absolut. Postural träning kompletterar annan träning bra eftersom den bygger upp de djupa musklerna som stabiliserar kroppen — vilket ofta förbättrar prestationen i annan träning också.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><span>Vad är skillnaden mellan programmen och övningsbanken?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Programmen är färdiga, ordnade sekvenser byggda kring ett specifikt syfte — följ dem steg för steg. Övningsbanken är alla enskilda övningar samlade, för dig som vill söka efter en specifik övning eller bygga ett eget program.</p></div>
+    </div>
+  </div>
+
+  <div class="faq-group">
+    <span class="eyebrow">Konto & priser</span>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Kostar det något?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Nej, allt innehåll — program, övningsbank, ergonomiguider och Min sida — är helt kostnadsfritt att använda. Om vi någon gång inför betalfunktioner i framtiden kommer vi vara tydliga med det i förväg.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><span>Vad ingår i videosamtals-analysen?</span><span class="chev">▾</span></button>
+      <div class="faq-a"><p>Ett videosamtal med en av våra kliniker där vi går igenom din kropp och hållning tillsammans, följt av ett program skräddarsytt exakt utifrån vad vi ser hos dig.</p></div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <b>Viktigt att veta:</b> Innehållet på ReAlign Metoden ersätter inte medicinsk rådgivning. Har du en befintlig skada, kronisk smärta eller är osäker av någon annan anledning, prata med en läkare, fysioterapeut eller en av våra kliniker innan du påbörjar ett nytt träningsprogram.
+  </div>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.faq-item').classList.toggle('open');
+    });
+  });
+</script>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

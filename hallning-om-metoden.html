@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Om postural träning — ReAlign Metoden</title>
+<meta name="description" content="Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.">
+<meta property="og:title" content="Om metoden — ReAlign Metoden">
+<meta property="og:description" content="Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7; --surface: #EEF1EC; --text: #2B2E2A; --text-soft: #6B7267;
+    --sage: #5E7461; --sage-light: #8A9A8B; --warm: #D98E5C; --warm-soft: #F1D9C4; --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:'Public Sans', sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);}
+  .wrap{max-width:980px; margin:0 auto; padding:0 32px;}
+
+  nav{display:flex; align-items:center; justify-content:space-between; padding:26px 32px; max-width:980px; margin:0 auto;}
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:30px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+  .btn-lg{padding:14px 26px; font-size:0.96rem;}
+
+  .hero{padding:50px 0 30px; max-width:680px;}
+  .hero h1{font-size:2.8rem; line-height:1.1; margin:16px 0 20px;}
+  .hero h1 em{font-style:italic; color:var(--sage);}
+  .hero p{color:var(--text-soft); font-size:1.05rem;}
+
+  .section{padding:60px 0; border-top:1px solid var(--line);}
+  .section:first-of-type{border-top:none;}
+  .section-head{max-width:600px; margin-bottom:28px;}
+  .section-head h2{font-size:1.9rem; margin-top:10px;}
+  .section p{color:var(--text-soft); font-size:0.97rem; max-width:640px;}
+  .section p + p{margin-top:14px;}
+
+  .compare2{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:10px;}
+  .comp-col{border-radius:18px; padding:28px 26px;}
+  .comp-col.trad{background:#F7EFE9; border:1px solid #E9D3C0;}
+  .comp-col.postural{background:var(--surface); border:1px solid var(--sage-light);}
+  .comp-col .lbl{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:14px; display:block;}
+  .comp-col.trad .lbl{color:#B9714A;}
+  .comp-col.postural .lbl{color:var(--sage);}
+  .comp-col ul{list-style:none;}
+  .comp-col li{font-size:0.9rem; padding:7px 0; color:var(--text);}
+
+  .reason-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:10px;}
+  .reason{border:1px solid var(--line); border-radius:14px; padding:18px 20px; font-size:0.9rem;}
+  .reason b{display:block; font-family:'Newsreader', serif; font-weight:500; font-size:1rem; margin-bottom:4px;}
+
+  .muscle-note{
+    display:flex; gap:16px; align-items:flex-start;
+    background:var(--warm-soft); border-radius:16px; padding:24px 28px; margin-top:30px;
+  }
+  .muscle-note .ic{font-size:1.2rem; color:var(--warm); flex-shrink:0;}
+  .muscle-note p{font-size:0.9rem; color:#5A4530; max-width:none;}
+  .muscle-note b{color:#2B2E2A;}
+
+  .cta-band{background:var(--sage); border-radius:24px; padding:50px; text-align:center; margin:60px 0;}
+  .cta-band h2{color:#fff; font-size:1.8rem; margin:12px 0 14px;}
+  .cta-band p{color:#DCE4DA; max-width:420px; margin:0 auto 24px; font-size:0.94rem;}
+  .cta-band .eyebrow{color:var(--warm-soft);}
+
+  footer{padding:20px 0 40px; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+
+  @media (max-width: 800px){
+    .navlinks{display:none;}
+    .hero h1{font-size:2.1rem;}
+    .compare2, .reason-grid{grid-template-columns:1fr;}
+    .cta-band{padding:34px 26px;}
+  }
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Om metoden</span>
+    <h1>Vad är egentligen <em>postural träning</em>?</h1>
+    <p>Inte stretching. Inte styrketräning i vanlig mening. Postural träning handlar om att återge kroppen dess naturliga förmåga att bära och fördela belastning — muskel för muskel, tills helheten fungerar som den ska.</p>
+  </div>
+
+  <div class="section" style="border-top:none; padding-top:0;">
+    <div style="background:var(--surface); border-radius:20px; padding:28px 32px;">
+      <span class="eyebrow">Fördjupning</span>
+      <p style="margin:10px 0 18px; font-size:0.95rem; color:var(--text);">Om du vill fördjupa dig ytterligare i filosofin bakom träningen, rekommenderar vi att du lyssnar på detta podcast-avsnitt.</p>
+      <div style="border-radius:14px; overflow:hidden; max-width:640px;">
+        <iframe src="https://open.spotify.com/embed/episode/7kRVHZhGfmsZCOqJjtyPFF" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="eyebrow">Grundorsaken</span>
+      <h2>Varför gör det ont — egentligen?</h2>
+    </div>
+    <p>Kronisk värk i kroppen handlar sällan om en enskild skada. Oftast har muskler och leder gradvis förlorat sin förmåga att fördela den belastning kroppen utsätts för i vardagen. När det sker tar andra muskler över — ofta ytligare muskler som inte är gjorda för att bära det ansvaret långsiktigt. Resultatet blir över- eller snedbelastning, och till slut smärta och sämre prestationsförmåga.</p>
+    <p>Det är därför så många upplever att lindring från olika behandlingar eller träningsformer bara håller i sig en kort period — grundorsaken, den förlorade belastningsfördelningen, är fortfarande kvar.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="eyebrow">Skillnaden</span>
+      <h2>Postural träning vs. traditionell träning &amp; rehab</h2>
+    </div>
+    <div class="compare2">
+      <div class="comp-col trad">
+        <span class="lbl">Traditionellt</span>
+        <ul>
+          <li>Fokuserar på symptomet — den onda punkten</li>
+          <li>Tränar ofta samma ytliga muskler som redan kompenserar</li>
+          <li>Lindring är vanligtvis tillfällig</li>
+          <li>Sällan koppling mellan kroppens olika delar</li>
+        </ul>
+      </div>
+      <div class="comp-col postural">
+        <span class="lbl">Postural träning</span>
+        <ul>
+          <li>Fokuserar på grundorsaken — belastningsfördelningen</li>
+          <li>Väcker och stärker de djupare hållningsmusklerna</li>
+          <li>Byggd för varaktig, bestående förändring</li>
+          <li>Ser och tränar kroppen som ett sammanhängande system</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="eyebrow">Vem passar det för</span>
+      <h2>Vanliga anledningar att börja</h2>
+    </div>
+    <p>Postural träning passar de flesta — oavsett ålder eller träningsbakgrund. Några vanliga skäl till att man börjar:</p>
+    <div class="reason-grid">
+      <div class="reason"><b>Återkommande spänningar</b>Nacke, axlar eller rygg som ständigt känns stel eller öm.</div>
+      <div class="reason"><b>Stillasittande vardag</b>Kontorsarbete och skärmtid som satt tydliga spår i hållningen.</div>
+      <div class="reason"><b>Återkommande skador</b>Samma typ av besvär som kommer tillbaka gång på gång.</div>
+      <div class="reason"><b>Begränsad rörlighet</b>Stelhet som gör vardagliga rörelser tyngre än de borde vara.</div>
+      <div class="reason"><b>Vill prestera bättre</b>Idrottare som vill träna smartare och minska skaderisk.</div>
+      <div class="reason"><b>Vill bara må bättre</b>Ingen akut smärta — men en känsla av att kroppen kunde fungera bättre.</div>
+    </div>
+  </div>
+
+  <div class="section" style="border-top:none; padding-top:0;">
+    <div class="muscle-note">
+      <span class="ic">◐</span>
+      <p><b>Det handlar om hållningsmusklerna.</b> Ländrygg, mage, säte och nacke är inte designade för att hålla uppe kroppen i sig — det är hållningsmusklernas jobb. När de tappar styrka tar de ytliga musklerna över, vilket sliter på kroppen på sikt. Det är därför vår träning bygger på progressiv belastningsökning specifikt riktad mot dessa muskler, precis som i våra <a href="hallning-program.html" style="color:var(--sage); text-decoration:underline;">färdiga program</a>.</p>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <span class="eyebrow">Redo att testa själv</span>
+    <h2>Känn skillnaden på egen kropp.</h2>
+    <p>Helt gratis. Prova ett kort program redan idag och känn skillnaden direkt.</p>
+    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+      <a class="btn btn-primary btn-lg" href="hallning-program-helkropp-niva-1.html">Testa ett kort program</a>
+      <a class="btn btn-primary btn-lg" href="hallning-program.html">Alla program</a>
+    </div>
+  </div>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div class="foot-row">
+      <div class="logo" style="font-size:1.05rem;"><span class="mark" style="width:10px;height:10px;"></span>ReAlign</div>
+      <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Min sida — Hållning</title>
+<meta name="description" content="Din träning, samlad. Schemalägg pass, spara favoriter och följ din utveckling.">
+<meta property="og:title" content="Min sida — ReAlign Metoden">
+<meta property="og:description" content="Din träning, samlad. Schemalägg pass, spara favoriter och följ din utveckling.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+
+  /* SHELL LAYOUT — app-style sidebar, distinct from marketing nav since this is behind login */
+  .shell{display:grid; grid-template-columns:230px 1fr; min-height:100vh;}
+  .sidebar{
+    background:#F3F5F1; border-right:1px solid var(--line);
+    padding:26px 20px; display:flex; flex-direction:column;
+  }
+  .logo{font-family:'Newsreader', serif; font-size:1.2rem; font-weight:500; display:flex; align-items:center; gap:9px; padding:0 6px 30px;}
+  .logo .mark{width:12px; height:12px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:5px; top:12px; width:1.5px; height:18px; background:var(--sage-light);}
+  .side-link{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 14px; border-radius:10px;
+    font-size:0.92rem; color:var(--text-soft); margin-bottom:2px;
+  }
+  .side-link .ic{width:16px; text-align:center; font-size:0.9rem;}
+  .side-link.active{background:var(--surface); color:var(--text); font-weight:600;}
+  .side-link:hover{color:var(--text);}
+  .side-bottom{margin-top:auto; padding-top:20px; border-top:1px solid var(--line);}
+  .user-chip{display:flex; align-items:center; gap:10px; padding:8px 6px; font-size:0.88rem;}
+  .avatar{width:32px; height:32px; border-radius:50%; background:var(--sage-light); flex-shrink:0;}
+
+  .main{padding:40px 44px 80px; overflow-x:hidden;}
+  .topbar{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:36px; flex-wrap:wrap; gap:20px;}
+  .topbar h1{font-size:2rem;}
+  .topbar p{color:var(--text-soft); margin-top:6px; font-size:0.95rem;}
+  .btn{padding:11px 20px; border-radius:100px; font-size:0.88rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-outline{background:transparent; border:1px solid var(--line); color:var(--text);}
+
+  .stat-row{display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; margin-bottom:40px;}
+  .stat{background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px 22px;}
+  .stat .eyebrow{margin-bottom:10px;}
+  .stat .val{font-family:'Newsreader', serif; font-size:1.9rem;}
+  .stat .val span{font-size:1rem; color:var(--text-soft); font-family:'Public Sans';}
+
+  .cols{display:grid; grid-template-columns:1.4fr 1fr; gap:26px; align-items:start;}
+
+  .panel{background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px 28px; margin-bottom:26px;}
+  .panel-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+  .panel-head h2{font-size:1.2rem; font-weight:500;}
+  .panel-head a{font-size:0.82rem; color:var(--sage); font-weight:600;}
+
+  /* WEEK SCHEDULE */
+  .week{display:grid; grid-template-columns:repeat(7, 1fr); gap:8px;}
+  .day{
+    border-radius:12px; padding:12px 8px; text-align:center;
+    background:var(--surface); font-size:0.78rem; color:var(--text-soft);
+  }
+  .day .d{font-family:'IBM Plex Mono', monospace; font-size:0.68rem; margin-bottom:8px; display:block;}
+  .day .dot{width:6px; height:6px; border-radius:50%; background:var(--sage); margin:0 auto;}
+  .day.today{background:var(--sage); color:#fff;}
+  .day.today .d{color:var(--warm-soft);}
+  .day.today .dot{background:#fff;}
+  .day.empty .dot{background:var(--line);}
+  .day.done .dot{background:var(--warm);}
+
+  /* LOG LIST */
+  .log-item{
+    display:flex; align-items:center; gap:14px;
+    padding:13px 0; border-top:1px solid var(--line);
+  }
+  .log-item:first-child{border-top:none;}
+  .log-icon{
+    width:38px; height:38px; border-radius:10px;
+    background:var(--surface); display:flex; align-items:center; justify-content:center;
+    color:var(--sage); font-size:0.95rem; flex-shrink:0;
+  }
+  .log-icon.warm{background:var(--warm-soft); color:var(--warm);}
+  .log-info{flex-grow:1;}
+  .log-info .t{font-size:0.92rem; font-weight:500;}
+  .log-info .s{font-size:0.78rem; color:var(--text-soft);}
+  .log-status{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem;
+    padding:4px 10px; border-radius:100px; background:var(--surface); color:var(--sage);
+    white-space:nowrap;
+  }
+  .log-status.pending{background:var(--warm-soft); color:var(--warm);}
+
+  /* FAVORITES GRID */
+  .fav-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;}
+  .fav-card{
+    border:1px solid var(--line); border-radius:12px; padding:14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .fav-card .h{width:22px; height:22px; color:var(--warm); font-size:0.9rem;}
+  .fav-card .t{font-size:0.85rem; font-weight:500;}
+  .fav-card .m{font-size:0.72rem; color:var(--text-soft);}
+
+  /* PROGRAM BUILDER */
+  .builder-list{display:flex; flex-direction:column; gap:0;}
+  .build-row{
+    display:flex; align-items:center; gap:14px;
+    padding:12px 14px; border:1px solid var(--line); border-radius:12px; margin-bottom:10px;
+  }
+  .build-row .grip{color:var(--line); font-size:0.9rem; cursor:grab;}
+  .build-row .t{flex-grow:1; font-size:0.88rem;}
+  .build-row .rm{color:var(--text-soft); font-size:0.85rem; cursor:pointer;}
+  .add-row{
+    display:flex; align-items:center; gap:10px;
+    padding:12px 14px; border:1.5px dashed var(--line); border-radius:12px;
+    color:var(--sage); font-size:0.88rem; font-weight:600; cursor:pointer; justify-content:center;
+  }
+
+  @media (max-width: 980px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{display:none;}
+    .cols{grid-template-columns:1fr;}
+    .stat-row{grid-template-columns:repeat(2, 1fr);}
+    .main{padding:28px 22px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+    <a class="side-link active"><span class="ic">◐</span>Översikt</a>
+    <a class="side-link"><span class="ic">▤</span>Mina program</a>
+    <a class="side-link"><span class="ic">♡</span>Favoriter</a>
+    <a class="side-link"><span class="ic">▦</span>Schema</a>
+    <a class="side-link"><span class="ic">↗</span>Progression</a>
+    <a class="side-link"><span class="ic">✎</span>Coachning</a>
+    <div class="side-bottom">
+      <div class="user-chip"><span class="avatar"></span>Anna Karlsson</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <span class="eyebrow">Min sida</span>
+        <h1>Hej Anna 👋</h1>
+        <p>Du har tränat 4 gånger denna vecka. Bra jobbat.</p>
+      </div>
+      <button class="btn btn-primary">+ Logga pass</button>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><span class="eyebrow">Streak</span><div class="val">12 <span>dagar</span></div></div>
+      <div class="stat"><span class="eyebrow">Denna vecka</span><div class="val">4 <span>pass</span></div></div>
+      <div class="stat"><span class="eyebrow">Favoriter</span><div class="val">18 <span>övningar</span></div></div>
+      <div class="stat"><span class="eyebrow">Egna program</span><div class="val">2 <span>aktiva</span></div></div>
+    </div>
+
+    <div class="cols">
+      <div>
+        <div class="panel">
+          <div class="panel-head"><h2>Den här veckan</h2><a href="#">Se schema →</a></div>
+          <div class="week">
+            <div class="day done"><span class="d">MÅN</span><span class="dot"></span></div>
+            <div class="day done"><span class="d">TIS</span><span class="dot"></span></div>
+            <div class="day empty"><span class="d">ONS</span><span class="dot"></span></div>
+            <div class="day done"><span class="d">TOR</span><span class="dot"></span></div>
+            <div class="day today"><span class="d">FRE</span><span class="dot"></span></div>
+            <div class="day empty"><span class="d">LÖR</span><span class="dot"></span></div>
+            <div class="day empty"><span class="d">SÖN</span><span class="dot"></span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Senaste aktivitet</h2><a href="#">Se allt →</a></div>
+          <div class="log-item">
+            <div class="log-icon">✓</div>
+            <div class="log-info"><div class="t">Morgonrutin — nacke</div><div class="s">Idag, 07:20 · 4 övningar</div></div>
+            <div class="log-status">Klar</div>
+          </div>
+          <div class="log-item">
+            <div class="log-icon warm">▶</div>
+            <div class="log-info"><div class="t">Höftmobilitet, nivå 2</div><div class="s">Idag, 17:00 · Schemalagt</div></div>
+            <div class="log-status pending">Väntar</div>
+          </div>
+          <div class="log-item">
+            <div class="log-icon">✓</div>
+            <div class="log-info"><div class="t">Eget program: Skrivbordspaus</div><div class="s">Igår, 12:40 · 3 övningar</div></div>
+            <div class="log-status">Klar</div>
+          </div>
+          <div class="log-item">
+            <div class="log-icon">✓</div>
+            <div class="log-info"><div class="t">Ergonomicheck: Sittställning</div><div class="s">Igår, 09:10</div></div>
+            <div class="log-status">Klar</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Bygg eget program</h2></div>
+          <div class="builder-list">
+            <div class="build-row"><span class="grip">⋮⋮</span><span class="t">Hakindragning</span><span class="rm">✕</span></div>
+            <div class="build-row"><span class="grip">⋮⋮</span><span class="t">Skulderbladsklämning</span><span class="rm">✕</span></div>
+            <div class="build-row"><span class="grip">⋮⋮</span><span class="t">Bröstöppnare i dörrkarm</span><span class="rm">✕</span></div>
+            <div class="add-row">+ Lägg till övning från favoriter</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <div class="panel-head"><h2>Favoritövningar</h2><a href="#">Se alla →</a></div>
+          <div class="fav-grid">
+            <div class="fav-card"><span class="h">♥</span><span class="t">Väggängel</span><span class="m">Nacke & axlar</span></div>
+            <div class="fav-card"><span class="h">♥</span><span class="t">Höftrotation</span><span class="m">Höft & bäcken</span></div>
+            <div class="fav-card"><span class="h">♥</span><span class="t">Y-T-W raises</span><span class="m">Axlar & rygg</span></div>
+            <div class="fav-card"><span class="h">♥</span><span class="t">Käkavslappning</span><span class="m">Nacke</span></div>
+          </div>
+        </div>
+
+        <div class="panel" style="background:var(--sage); border:none;">
+          <span class="eyebrow" style="color:var(--warm-soft);">Redo för nästa steg?</span>
+          <h3 style="color:#fff; font-size:1.1rem; margin:8px 0 8px; font-weight:500;">Boka en videosamtals-analys</h3>
+          <p style="color:#DCE4DA; font-size:0.85rem; margin-bottom:10px;">Få ett program skräddarsytt exakt för din kropp, byggt av en av våra kliniker efter ett videosamtal med dig.</p>
+          <p style="color:#fff; font-size:0.9rem; font-weight:600; margin-bottom:16px;">650 kr</p>
+          <a class="btn btn-primary" style="width:100%; text-align:center; display:block;" href="hallning-analys.html">Boka videosamtal →</a>
+        </div>
+
+        <div class="panel" style="border:1px solid var(--warm); background:var(--warm-soft);">
+          <span class="eyebrow" style="color:var(--warm);">Uppgradera</span>
+          <h3 style="font-size:1.1rem; margin:8px 0 8px; font-weight:500;">Bli Premium</h3>
+          <p style="font-size:0.85rem; color:var(--text); margin-bottom:10px;">Lås upp alla programnivåer, Gymträning, progressionsspårning och veckobrev.</p>
+          <p style="font-size:0.95rem; font-weight:600; color:var(--text); margin-bottom:16px;">149 kr/mån</p>
+          <a class="btn btn-primary" style="width:100%; text-align:center; display:block;" href="hallning-program.html">Se vad som ingår →</a>
+        </div>
+
+        <div class="panel" style="text-align:center;">
+          <span class="eyebrow">Gillar du ReAlign Metoden?</span>
+          <h3 style="font-size:1.05rem; margin:8px 0 10px; font-weight:500;">Tipsa en vän</h3>
+          <p style="font-size:0.85rem; color:var(--text-soft); margin-bottom:16px;">Dela länken så kan de börja träna gratis, precis som du.</p>
+          <button id="shareBtn" class="btn btn-ghost" style="width:100%; border:1px solid var(--line);">Dela länk →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  document.getElementById('shareBtn')?.addEventListener('click', function(){
+    var url = 'https://cleerklinik.se';
+    var text = 'Jag använder ReAlign Metoden för hållningsträning — kolla in det här:';
+    if (navigator.share) {
+      navigator.share({ title: 'ReAlign Metoden', text: text, url: url });
+    } else {
+      navigator.clipboard.writeText(url);
+      var btn = document.getElementById('shareBtn');
+      var original = btn.textContent;
+      btn.textContent = 'Länk kopierad ✓';
+      setTimeout(function(){ btn.textContent = original; }, 2000);
+    }
+  });
+</script>
+
+</body>
+</html>

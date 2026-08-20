@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Om oss — Cleer Klinik</title>
+<meta name="description" content="Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.">
+<meta property="og:title" content="Om oss — Cleer Klinik">
+<meta property="og:description" content="Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7; --surface: #EEF1EC; --text: #2B2E2A; --text-soft: #6B7267;
+    --sage: #5E7461; --sage-light: #8A9A8B; --warm: #D98E5C; --warm-soft: #F1D9C4; --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:'Public Sans', sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);}
+  .wrap{max-width:900px; margin:0 auto; padding:0 32px;}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:26px 32px; max-width:1160px; margin:0 auto;}
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+  header.page{padding:40px 0 30px;}
+  header.page h1{font-size:2.6rem; margin-top:12px;}
+  header.page p{color:var(--text-soft); margin-top:16px; font-size:1.02rem; max-width:600px;}
+  .section{padding:44px 0; border-top:1px solid var(--line);}
+  .section h2{font-size:1.5rem; margin-bottom:14px;}
+  .section p{color:var(--text-soft); font-size:0.96rem; max-width:640px;}
+  .team-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:24px;}
+  .team-card{}
+  .team-photo{aspect-ratio:1; border-radius:16px; background:var(--surface); margin-bottom:14px;}
+  .team-card h3{font-size:1.05rem; font-weight:500; margin-bottom:3px;}
+  .team-card .role{font-size:0.82rem; color:var(--sage); font-family:'IBM Plex Mono', monospace; margin-bottom:8px;}
+  .team-card p{font-size:0.88rem; color:var(--text-soft);}
+  .values{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; margin-top:24px;}
+  .value-card{background:var(--surface); border-radius:16px; padding:22px;}
+  .value-card b{display:block; margin-bottom:8px; font-size:0.98rem;}
+  .value-card p{font-size:0.86rem; color:var(--text-soft);}
+  .cta-band{background:var(--sage); border-radius:24px; padding:50px 40px; text-align:center; margin:50px 0;}
+  .cta-band h2{color:#fff; font-size:1.7rem; margin-bottom:14px;}
+  .cta-band p{color:#DCE4DA; max-width:480px; margin:0 auto 24px;}
+  footer{padding:40px 0; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line); margin-top:20px; text-align:center;}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+  @media (max-width: 700px){
+    .team-grid, .values{grid-template-columns:1fr !important;}
+    .team-photo{max-width:220px;}
+    header.page h1{font-size:2rem;}
+  }
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">Om oss</span>
+    <h1>Cleer Klinik.</h1>
+    <p>Cleer Klinik grundades för att hjälpa människor komma åt grundorsaken till sin smärta och stelhet — inte bara lindra symptomen. Vi arbetar med postural träning, en metod som ser kroppen som en helhet.</p>
+  </header>
+
+  <section class="section" style="border-top:none;">
+    <h2>Varför Cleer finns</h2>
+    <p>Under min tid som elitfotbollsspelare hade jag alltid tillgång till duktiga fysioterapeuter, tränare och läkare — ändå skadade jag mig gång på gång, och kroppen kändes konstant svag och tung. Det väckte ett intresse för att förstå vad som faktiskt bygger allmän hälsa och funktion i kroppen, snarare än att bara behandla symptom.</p>
+    <p style="margin-top:16px;">Vändpunkten kom när jag stötte på Postural Träning. Äntligen kändes kroppen bra igen, och skadorna uteblev. Det öppnade upp för ett helt nytt sätt att tänka kring rörelse och hälsa — ett som skiljer sig markant från traditionell sjukvård och sjukgymnastik.</p>
+    <p style="margin-top:16px;">2020 startade jag och min kollega Christopher Cleer Klinik. Efter fem år på heltid med Postural Träning, och fantastisk respons från våra patienter, såg vi ett tydligt mönster: nästan alla behövde jobba med samma grundläggande delar. Modern livsstil verkar sätta kroppen ur balans på ett specifikt sätt, oftast kopplat till bäcken, ryggrad och skulderblad som tappat sin position. Även de med besvär i axlar, knän eller nacke fick bäst resultat när vi utgick från dessa delar och kompletterade med riktad lokal träning.</p>
+    <p style="margin-top:16px;">Den insikten — att så många av oss bär på samma obalanser — är det som ligger bakom den här hemsidan: tanken att våra vanligaste program kan hjälpa en stor majoritet, även utan en personlig analys. Jag är utbildad Postural Terapeut via Optimum-Metoden och har hittills tagit emot och hjälpt över 1 500 personer. Nu vill jag nå fler — och erbjuda ett alternativ för dig som ännu inte lyckats få ordning på dina problem.</p>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Grundaren</span>
+    <h2>Vem som driver Cleer</h2>
+    <div class="team-grid" style="grid-template-columns:220px 1fr; align-items:start;">
+      <div class="team-card">
+        <div class="team-photo" style="background-image:url('grundare-foto.jpg'); background-size:cover; background-position:center 20%;"></div>
+      </div>
+      <div class="team-card">
+        <h3>Felix Eliasson</h3>
+        <div class="role">Grundare, Postural Terapeut</div>
+        <p>Utbildad Postural Terapeut via Optimum-Metoden. Bakgrund inom elitfotboll, med fem års heltidserfarenhet av Postural Träning och över 1 500 hjälpta patienter.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Kliniken</span>
+    <h2>Där det hela började</h2>
+    <p>Cleer Klinik grundades tillsammans med min kollega Christopher, och det är här grunden till träningen och programmen på den här sidan har formats.</p>
+    <div style="margin-top:24px; border-radius:20px; overflow:hidden; aspect-ratio:16/9;">
+      <img src="klinik-foto.jpg" alt="Cleer Klinik" style="width:100%; height:100%; object-fit:cover; display:block;">
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Vad vi står för</span>
+    <h2>Våra principer</h2>
+    <div class="values">
+      <div class="value-card">
+        <b>Grundorsak, inte symptom</b>
+        <p>Vi lindrar inte bara — vi tränar upp musklerna som faktiskt ska bära kroppen.</p>
+      </div>
+      <div class="value-card">
+        <b>Hela kroppen, inte delar</b>
+        <p>Nacke, rygg och höft hänger ihop. Vi tränar dem som en helhet.</p>
+      </div>
+      <div class="value-card">
+        <b>Tillgängligt för alla</b>
+        <p>Program, övningsbank och ergonomiguider är fria att använda, oavsett var du bor.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <span class="eyebrow" style="color:var(--warm-soft);">Vill du träffa oss?</span>
+    <h2>Boka en personlig videosamtals-analys</h2>
+    <p>Vi går igenom din kropp tillsammans och bygger ett program skräddarsytt för dig.</p>
+    <a class="btn btn-primary" href="hallning-analys.html">Boka videosamtal →</a>
+  </div>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

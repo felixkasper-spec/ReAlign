@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gymträning - Överkropp — Program — Hållning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+  .wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 32px; max-width:1160px; margin:0 auto;
+  }
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a.active{color:var(--text); font-weight:600;}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+
+  .breadcrumb{
+    display:flex; align-items:center; gap:8px;
+    font-size:0.86rem; color:var(--text-soft);
+    padding:14px 0 6px;
+  }
+  .breadcrumb a:hover{color:var(--sage);}
+  .breadcrumb .sep{color:var(--line);}
+  .breadcrumb .current{color:var(--text);}
+
+  .prog-layout{max-width:760px; margin:0 auto; padding:20px 0 80px;}
+
+  .prog-head{margin-bottom:24px;}
+  .prog-head h1{font-size:2.3rem; margin-top:10px;}
+  .prog-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
+  .tag{
+    font-size:0.76rem; padding:5px 13px; border-radius:100px;
+    background:var(--surface); color:var(--text-soft);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .tag.level{color:var(--warm); background:var(--warm-soft);}
+  .tag.type{color:var(--sage); background:#E4EBE3;}
+  .tag.warmup{color:var(--warm); background:var(--warm-soft);}
+
+  .prog-intro{color:var(--text-soft); font-size:0.98rem; margin:18px 0 26px; max-width:600px;}
+
+  .meta-row{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+    margin:0 0 32px;
+    padding:20px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .meta-item{font-size:0.8rem; color:var(--text-soft);}
+  .meta-item b{display:block; font-family:'Newsreader', serif; font-size:1.15rem; color:var(--text); font-weight:500; margin-bottom:2px;}
+
+  .starter-note{
+    background:var(--surface); border-radius:16px; padding:20px 24px; margin-bottom:24px;
+  }
+  .starter-note .eyebrow{margin-bottom:8px;}
+  .starter-note p{font-size:0.92rem; color:var(--text);}
+  .starter-note p + p{margin-top:10px;}
+
+  .ex-list{list-style:none; counter-reset:step; margin-bottom:36px;}
+  .ex-list-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px;}
+  .ex-list-head h2{font-size:1.3rem;}
+  .ex-list-head span{font-size:0.82rem; color:var(--text-soft);}
+
+  .ex-row{
+    display:flex; align-items:center; gap:18px;
+    padding:16px 4px; border-top:1px solid var(--line);
+    transition:background 0.15s;
+  }
+  .ex-row:first-child{border-top:none;}
+  .ex-row:hover{background:var(--surface);}
+  .ex-row.soon{opacity:0.6; cursor:default;}
+  .ex-row.soon:hover{background:transparent;}
+  .ex-num{
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem; color:var(--sage);
+    width:28px; height:28px; border-radius:50%; border:1px solid var(--sage-light);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .ex-thumb{
+    width:64px; height:48px; border-radius:8px; background:var(--surface);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--text-soft);
+    font-size:0.85rem; overflow:hidden; position:relative;
+  }
+  .ex-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .ex-info{flex:1; min-width:0;}
+  .ex-info h3{font-size:0.98rem; font-weight:500; margin-bottom:5px;}
+  .ex-info .ex-tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .ex-info .tag{font-size:0.68rem; padding:3px 10px;}
+  .ex-arrow{color:var(--text-soft); font-size:1.1rem; flex-shrink:0;}
+  .soon-badge{
+    font-family:'IBM Plex Mono', monospace; font-size:0.65rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--warm); background:var(--warm-soft);
+    padding:3px 9px; border-radius:100px; flex-shrink:0;
+  }
+
+  .cta-row{display:flex; gap:12px; margin-top:36px;}
+  .cta-row .btn{flex:1; text-align:center;}
+
+  footer{padding:40px 0; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line); margin-top:40px;}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+
+  @media (max-width: 700px){
+    .navlinks{display:none;}
+    .meta-row{grid-template-columns:1fr 1fr;}
+    .ex-thumb{display:none;}
+  }
+  .tips-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    background:var(--surface); border:none; border-radius:14px;
+    padding:16px 22px; margin-bottom:28px; cursor:pointer;
+    font-family:'Public Sans', sans-serif; font-size:0.92rem; font-weight:600; color:var(--text);
+  }
+  .tips-toggle .chev{transition:transform 0.2s; color:var(--sage); font-size:0.8rem;}
+  .tips-toggle.open .chev{transform:rotate(180deg);}
+  .tips-panel{
+    max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+    margin:-20px 0 0;
+  }
+  .tips-panel.open{max-height:1400px; margin:-8px 0 28px;}
+  .tips-panel-inner{background:var(--surface); border-radius:14px; padding:24px 26px 8px; margin-top:-20px;}
+  .tips-panel-inner h3{font-size:1rem; font-weight:500; margin-bottom:14px;}
+  .tips-panel-inner ul{list-style:none;}
+  .tips-panel-inner li{
+    font-size:0.88rem; color:var(--text-soft); padding:0 0 16px 18px; position:relative;
+  }
+  .tips-panel-inner li::before{
+    content:''; position:absolute; left:0; top:8px; width:5px; height:5px;
+    border-radius:50%; background:var(--sage);
+  }
+  .tips-panel-inner .closing{font-size:0.88rem; color:var(--text); font-weight:500; padding-bottom:20px;}
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html" class="active">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="breadcrumb">
+    <a href="hallning-program.html">Program</a>
+    <span class="sep">/</span>
+    <span class="current">Gymträning - Överkropp</span>
+  </div>
+
+  <div class="prog-layout">
+    <div class="prog-head">
+      <span class="eyebrow">Gymträning</span>
+      <h1>Gymträning - Överkropp.</h1>
+      <div class="prog-tags">
+        <span class="tag level">Medel</span>
+        <span class="tag type">Nacke & axlar & skulderblad</span>
+        <span class="tag">Gymträning</span>
+      </div>
+    </div>
+
+    <div style="border-radius:18px; overflow:hidden; aspect-ratio:21/9; margin-bottom:24px;">
+      <img src="cablecross__shoulder_rotation.jpg" alt="Gymträning - Överkropp" style="width:100%; height:100%; object-fit:cover; display:block;">
+    </div>
+
+    <p class="prog-intro">Cablecross-baserad överkroppsträning instruerad enligt ReAlign Metoden — med fokus på skulderblad och hållning genom hela rörelsebanan, inte bara den stora muskeln som gör jobbet.</p>
+
+    <div class="meta-row">
+      <div class="meta-item"><b>7</b>Övningar</div>
+      <div class="meta-item"><b>Medel</b>Nivå</div>
+      <div class="meta-item"><b>Överkropp</b>Fokus</div>
+    </div>
+
+    <button class="tips-toggle" id="tipsToggle">
+      <span>💡 Tips att tänka på under träning för bästa möjliga resultat</span>
+      <span class="chev">▾</span>
+    </button>
+    <div class="tips-panel" id="tipsPanel">
+      <div class="tips-panel-inner">
+        <h3>Hur du kan tänka angående din träning</h3>
+        <p style="font-size:0.88rem; color:var(--text-soft); margin-bottom:16px;">Nedan följer de allra viktigaste riktlinjerna att tänka på i samband med träningen:</p>
+        <ul>
+          <li>Fokusera på att endast aktivera de muskler som ska jobba och slappna av i övriga muskler för att minska kompensation och främja rätt muskelaktivering.</li>
+          <li>Inta rätt position i början av varje övning och behåll den genom hela rörelsen för att aktivera rätt muskler och undvika felaktig belastning.</li>
+          <li>I de övningar med gradvis ökande tryck: börja med lätt muskelaktivering (cirka 1% av maximal kapacitet) och öka gradvis till cirka 40% av max på 2–3 sekunder.</li>
+          <li>Kom till ett fullt stopp mellan varje repetition, gör varje rörelse kontrollerat, undvik att rycka dig igenom övningen.</li>
+          <li>Vid stretching: Slappna av i muskeln som stretchas och håll det utsträckta läget. Öka stretchingen mjukt med varje utandning.</li>
+          <li>Utför övningarna i angiven ordning, ofta har ordningen på övningarna ett syfte.</li>
+          <li>Antalet repetitioner är en riktlinje; stoppa övningen tidigare än angett antal ifall du känner att du tappar tekniken, sikta på att göra fler nästa gång du gör övningen.</li>
+          <li>Gör fler repetitioner på den sida som känns svagare/mindre funktionell tills balans uppnås.</li>
+          <li>Fokusera på att övningarna känns lika på båda sidor för att uppnå optimal balans och funktion.</li>
+          <li>Ingen övning ska göra ont! Vid smärta, kontrollera tekniken och justera om nödvändigt, minska antalet repetitioner, eller hoppa över övningen om smärtan kvarstår.</li>
+          <li>Var närvarande i kroppen under träningen för att snabbare uppnå förbättringar; notera skillnader i spänning, balans och smärta före och efter passet.</li>
+          <li>Drick ett stort glas vatten innan träningen för att optimera effekten på de djupa posturala musklerna.</li>
+          <li>Läs instruktionerna noggrant för varje övning för att säkerställa korrekt utförande.</li>
+        </ul>
+        <p class="closing">Följer du dessa tips har du gett dig själv bästa möjliga förutsättningar, både i resultatsväg samt säkerhetsväg!</p>
+      </div>
+    </div>
+
+    <div class="starter-note">
+      <span class="eyebrow">Så tränar du med ReAlign Metoden</span>
+      <p>Övningarna nedan är instruerade specifikt för att, utöver de muskler som har huvuduppgiften i varje rörelse, samtidigt aktivera dina posturala hållningsmuskler. Var noggrann med detaljerna i varje övning — det är det som gör träningen mer funktionell än traditionell gymträning, och lär hållningsmusklerna att jobba i mer verkliga sammanhang, istället för att bara isolera de stora muskelgrupperna.</p>
+      <p>Börja alltid med uppvärmningen nedan innan du går vidare till huvudövningarna.</p>
+    </div>
+
+    <ul class="ex-list">
+      <div class="ex-list-head">
+        <h2>Uppvärmning</h2>
+        <span>4 st, 1 set var</span>
+      </div>
+
+      <a class="ex-row" href="hallning-ovning-squatting-at-door.html">
+        <span class="ex-num">1</span>
+        <span class="ex-thumb"><img src="squatting_at_door.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Squatting at Door</h3>
+          <span class="ex-tags"><span class="tag">Helkropp</span><span class="tag warmup">1 set – uppvärmning</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-standing-arm-circles.html">
+        <span class="ex-num">2</span>
+        <span class="ex-thumb"><img src="standing_arm_circles.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Standing Arm Circles</h3>
+          <span class="ex-tags"><span class="tag">Nacke & axlar & skulderblad</span><span class="tag warmup">1 set – uppvärmning</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-standing-forward-bends-sides-up-down.html">
+        <span class="ex-num">3</span>
+        <span class="ex-thumb"><img src="standing_forward_bends_sides_up_down.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Standing Forward Bends</h3>
+          <span class="ex-tags"><span class="tag">Helkropp</span><span class="tag warmup">1 set – uppvärmning</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-postural-plank.html">
+        <span class="ex-num">4</span>
+        <span class="ex-thumb"><img src="postural_plank.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Postural Plank</h3>
+          <span class="ex-tags"><span class="tag">Helkropp</span><span class="tag warmup">1 set – uppvärmning</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+    </ul>
+
+    <ul class="ex-list">
+      <div class="ex-list-head">
+        <h2>Övningar i programmet</h2>
+        <span>7 st, i ordning</span>
+      </div>
+
+      <a class="ex-row" href="hallning-ovning-cablecross-shoulder-rotation.html">
+        <span class="ex-num">1</span>
+        <span class="ex-thumb"><img src="cablecross__shoulder_rotation.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Cablecross - Shoulder Rotation</h3>
+          <span class="ex-tags"><span class="tag">Nacke & axlar & skulderblad</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-cablecross-shoulder-abduction.html">
+        <span class="ex-num">2</span>
+        <span class="ex-thumb"><img src="Cablecross__Shoulder_Abduction.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Cablecross - Shoulder Abduction</h3>
+          <span class="ex-tags"><span class="tag">Nacke & axlar & skulderblad</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-cablecross-one-arm-rows.html">
+        <span class="ex-num">3</span>
+        <span class="ex-thumb"><img src="Cablecross__One_Arm_Rows.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Cablecross - One Arm Rows</h3>
+          <span class="ex-tags"><span class="tag">Rygg</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-cablecross-one-arm-pulldown.html">
+        <span class="ex-num">4</span>
+        <span class="ex-thumb"><img src="Cablecross__One_Arm_Pulldown.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Cablecross - One Arm Pulldown</h3>
+          <span class="ex-tags"><span class="tag">Rygg</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-cablecross-one-arm-press.html">
+        <span class="ex-num">5</span>
+        <span class="ex-thumb"><img src="Cablecross__One_arm_press.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Cablecross - One Arm Press</h3>
+          <span class="ex-tags"><span class="tag">Nacke & axlar & skulderblad</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-standing-curlpress.html">
+        <span class="ex-num">6</span>
+        <span class="ex-thumb"><img src="standing_curlpress.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Standing Curlpress</h3>
+          <span class="ex-tags"><span class="tag">Nacke & axlar & skulderblad</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+      <a class="ex-row" href="hallning-ovning-postural-plank.html">
+        <span class="ex-num">7</span>
+        <span class="ex-thumb"><img src="postural_plank.jpg" alt=""></span>
+        <span class="ex-info">
+          <h3>Postural Plank</h3>
+          <span class="ex-tags"><span class="tag">Helkropp</span></span>
+        </span>
+        <span class="ex-arrow">→</span>
+      </a>
+    </ul>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="hallning-min-sida.html">Starta programmet</a>
+      <a class="btn btn-ghost" style="border:1px solid var(--line);" href="hallning-program.html">Tillbaka till Program</a>
+    </div>
+    <div style="text-align:center; margin-top:14px;">
+      <button id="shareProgBtn" style="background:none; border:none; color:var(--sage); font-size:0.85rem; font-weight:600; cursor:pointer;">↗ Dela detta program</button>
+    </div>
+  </div>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div class="foot-row">
+      <div class="logo" style="font-size:1.05rem;"><span class="mark" style="width:10px;height:10px;"></span>ReAlign</div>
+      <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('shareProgBtn')?.addEventListener('click', function(){
+    const btn = this;
+    const url = window.location.href;
+    const text = 'Kolla in det här programmet från ReAlign Metoden:';
+    if(navigator.share){
+      navigator.share({ title: document.title, text: text, url: url });
+    } else {
+      navigator.clipboard.writeText(url);
+      const original = btn.textContent;
+      btn.textContent = 'Länk kopierad ✓';
+      setTimeout(function(){ btn.textContent = original; }, 2000);
+    }
+  });
+
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+    var tt = document.getElementById('tipsToggle');
+    var tp = document.getElementById('tipsPanel');
+    if(tt && tp){ tt.addEventListener('click', function(){ tt.classList.toggle('open'); tp.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

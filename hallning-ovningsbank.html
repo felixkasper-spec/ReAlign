@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Övningsbank — Hållning</title>
+<meta name="description" content="66 posturala övningar, filtrerbara på kroppsdel och utrustning. Spara dina favoriter.">
+<meta property="og:title" content="Övningsbank — ReAlign Metoden">
+<meta property="og:description" content="66 posturala övningar, filtrerbara på kroppsdel och utrustning. Spara dina favoriter.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+  .wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 32px; max-width:1240px; margin:0 auto;
+  }
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a.active{color:var(--text); font-weight:600;}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+
+  header.page{padding:36px 0 30px;}
+  header.page h1{font-size:2.6rem; margin-top:12px;}
+  header.page p{color:var(--text-soft); margin-top:12px; max-width:520px;}
+
+  .searchbar{
+    margin-top:28px; display:flex; align-items:center; gap:12px;
+    background:var(--surface); border-radius:14px; padding:14px 20px;
+    max-width:520px;
+  }
+  .searchbar input{
+    border:none; background:transparent; outline:none;
+    font-family:'Public Sans'; font-size:0.95rem; color:var(--text);
+    width:100%;
+  }
+  .searchbar input::placeholder{color:var(--text-soft);}
+  .searchbar .ic{color:var(--sage); font-size:0.95rem;}
+
+  .layout{
+    display:grid; grid-template-columns:250px 1fr; gap:44px;
+    padding:36px 0 100px; align-items:start;
+  }
+
+  .filters{
+    position:sticky; top:24px;
+    border:1px solid var(--line); border-radius:18px;
+    padding:26px;
+  }
+  .filter-group{margin-bottom:26px;}
+  .filter-group:last-child{margin-bottom:0;}
+  .filter-title{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--text-soft);
+    margin-bottom:12px;
+  }
+  .filter-opt{
+    display:flex; align-items:center; gap:10px;
+    font-size:0.9rem; padding:6px 0; cursor:pointer; color:var(--text);
+  }
+  .filter-opt .box{
+    width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line);
+    flex-shrink:0;
+  }
+  .filter-opt.checked .box{background:var(--sage); border-color:var(--sage);}
+  .filter-opt .count{margin-left:auto; color:var(--text-soft); font-size:0.78rem;}
+  .clear-filters{
+    margin-top:20px; font-size:0.82rem; color:var(--sage);
+    font-weight:600; cursor:pointer;
+  }
+
+  .results-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:22px; font-size:0.88rem; color:var(--text-soft);
+  }
+  .sort{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem;
+    color:var(--sage); display:flex; align-items:center; gap:6px;
+  }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;
+  }
+  .ex-card{
+    border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease;
+    background:#fff;
+  }
+  .ex-card:hover{border-color:var(--sage-light); transform:translateY(-2px);}
+  .ex-thumb{
+    height:150px; position:relative;
+    background:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ex-thumb .level-badge{
+    position:absolute; top:12px; left:12px;
+    background:rgba(255,255,255,0.92);
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem;
+    padding:4px 10px; border-radius:100px; color:var(--sage);
+  }
+  .ex-thumb .fav{
+    position:absolute; top:10px; right:10px;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(255,255,255,0.92);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.95rem; color:var(--text-soft); cursor:pointer;
+  }
+  .ex-thumb .fav.active{color:var(--warm);}
+  .ex-thumb .play{
+    width:46px; height:46px; border-radius:50%;
+    background:rgba(43,46,42,0.72); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:0.85rem;
+  }
+  .ex-body{padding:18px 20px 20px;}
+  .ex-body h3{font-size:1.05rem; font-weight:500; margin-bottom:8px;}
+  .ex-meta{
+    display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;
+  }
+  .tag{
+    font-size:0.7rem; padding:4px 10px; border-radius:100px;
+    background:var(--surface); color:var(--text-soft);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .tag.body{color:var(--sage); background:#E4EBE3;}
+  .ex-body .dur{font-size:0.8rem; color:var(--text-soft);}
+
+  .load-more{
+    display:block; margin:44px auto 0;
+    padding:13px 30px; border-radius:100px;
+    border:1px solid var(--line); background:transparent;
+    font-family:'Public Sans'; font-size:0.9rem; font-weight:600;
+    color:var(--text); cursor:pointer;
+  }
+
+  @media (max-width: 900px){
+    .layout{grid-template-columns:1fr;}
+    .filters{position:static;}
+    .grid{grid-template-columns:repeat(2, 1fr);}
+    .navlinks{display:none;}
+  }
+  @media (max-width: 560px){
+    .grid{grid-template-columns:1fr;}
+  }
+  .tips-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    background:var(--surface); border:none; border-radius:14px;
+    padding:16px 22px; margin-bottom:28px; cursor:pointer;
+    font-family:'Public Sans', sans-serif; font-size:0.92rem; font-weight:600; color:var(--text);
+  }
+  .tips-toggle .chev{transition:transform 0.2s; color:var(--sage); font-size:0.8rem;}
+  .tips-toggle.open .chev{transform:rotate(180deg);}
+  .tips-panel{
+    max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+  }
+  .tips-panel.open{max-height:1400px; margin-bottom:28px;}
+  .tips-panel-inner{background:var(--surface); border-radius:14px; padding:24px 26px 8px;}
+  .tips-panel-inner h3{font-size:1rem; font-weight:500; margin-bottom:14px;}
+  .tips-panel-inner ul{list-style:none;}
+  .tips-panel-inner li{
+    font-size:0.88rem; color:var(--text-soft); padding:0 0 16px 18px; position:relative;
+  }
+  .tips-panel-inner li::before{
+    content:''; position:absolute; left:0; top:8px; width:5px; height:5px;
+    border-radius:50%; background:var(--sage);
+  }
+  .tips-panel-inner .closing{font-size:0.88rem; color:var(--text); font-weight:500; padding-bottom:20px;}
+  nav{position:relative;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="#" class="active">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">66 övningar</span>
+    <h1>Övningsbank</h1>
+    <p>Varje övning för sig, filtrerbar på kroppsdel, utrustning och svårighetsgrad. Spara favoriter direkt till Min sida.</p>
+    <div class="searchbar">
+      <span class="ic">⌕</span>
+      <input type="text" id="searchInput" placeholder="Sök övning, t.ex. 'nacke' eller 'höftrotation'…">
+    </div>
+  </header>
+
+  <button class="tips-toggle" id="tipsToggle">
+    <span>💡 Tips att tänka på under träning för bästa möjliga resultat</span>
+    <span class="chev">▾</span>
+  </button>
+  <div class="tips-panel" id="tipsPanel">
+    <div class="tips-panel-inner">
+      <h3>Hur du kan tänka angående din träning</h3>
+      <p style="font-size:0.88rem; color:var(--text-soft); margin-bottom:16px;">Nedan följer de allra viktigaste riktlinjerna att tänka på i samband med träningen:</p>
+      <ul>
+        <li>Fokusera på att endast aktivera de muskler som ska jobba och slappna av i övriga muskler för att minska kompensation och främja rätt muskelaktivering.</li>
+        <li>Inta rätt position i början av varje övning och behåll den genom hela rörelsen för att aktivera rätt muskler och undvika felaktig belastning.</li>
+        <li>I de övningar med gradvis ökande tryck: börja med lätt muskelaktivering (cirka 1% av maximal kapacitet) och öka gradvis till cirka 40% av max på 2–3 sekunder.</li>
+        <li>Kom till ett fullt stopp mellan varje repetition, gör varje rörelse kontrollerat, undvik att rycka dig igenom övningen.</li>
+        <li>Vid stretching: Slappna av i muskeln som stretchas och håll det utsträckta läget. Öka stretchingen mjukt med varje utandning.</li>
+        <li>Utför övningarna i angiven ordning, ofta har ordningen på övningarna ett syfte.</li>
+        <li>Antalet repetitioner är en riktlinje; stoppa övningen tidigare än angett antal ifall du känner att du tappar tekniken, sikta på att göra fler nästa gång du gör övningen.</li>
+        <li>Gör fler repetitioner på den sida som känns svagare/mindre funktionell tills balans uppnås.</li>
+        <li>Fokusera på att övningarna känns lika på båda sidor för att uppnå optimal balans och funktion.</li>
+        <li>Ingen övning ska göra ont! Vid smärta, kontrollera tekniken och justera om nödvändigt, minska antalet repetitioner, eller hoppa över övningen om smärtan kvarstår.</li>
+        <li>Var närvarande i kroppen under träningen för att snabbare uppnå förbättringar; notera skillnader i spänning, balans och smärta före och efter passet.</li>
+        <li>Drick ett stort glas vatten innan träningen för att optimera effekten på de djupa posturala musklerna.</li>
+        <li>Läs instruktionerna noggrant för varje övning för att säkerställa korrekt utförande.</li>
+      </ul>
+      <p class="closing">Följer du dessa tips har du gett dig själv bästa möjliga förutsättningar, både i resultatsväg samt säkerhetsväg!</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="filters">
+      <div class="filter-group">
+        <div class="filter-title">Kroppsdel</div>
+        <div class="filter-opt" data-type="body" data-value="Nacke & axlar & skulderblad"><span class="box"></span>Nacke &amp; axlar &amp; skulderblad<span class="count">17</span></div>
+        <div class="filter-opt" data-type="body" data-value="Rygg"><span class="box"></span>Rygg<span class="count">10</span></div>
+        <div class="filter-opt" data-type="body" data-value="Höft & bäcken"><span class="box"></span>Höft &amp; bäcken<span class="count">19</span></div>
+        <div class="filter-opt" data-type="body" data-value="Knä & ben"><span class="box"></span>Knä &amp; ben<span class="count">7</span></div>
+        <div class="filter-opt" data-type="body" data-value="Helkropp"><span class="box"></span>Helkropp<span class="count">13</span></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-title">Utrustning</div>
+        <div class="filter-opt" data-type="equip" data-value="Ingen utrustning"><span class="box"></span>Ingen utrustning<span class="count">39</span></div>
+        <div class="filter-opt" data-type="equip" data-value="Gym"><span class="box"></span>Gym<span class="count">9</span></div>
+        <div class="filter-opt" data-type="equip" data-value="Hantlar/kettlebell"><span class="box"></span>Hantlar/kettlebell<span class="count">2</span></div>
+        <div class="filter-opt" data-type="equip" data-value="Stol"><span class="box"></span>Stol<span class="count">10</span></div>
+        <div class="filter-opt" data-type="equip" data-value="Vägg"><span class="box"></span>Vägg<span class="count">6</span></div>
+      </div>
+      <div class="clear-filters">Rensa filter</div>
+    </aside>
+
+    <main>
+      <div class="results-bar">
+        <span id="resultsCount">Visar alla 66 övningar</span>
+        <span class="sort">Sortera: Populärast ▾</span>
+      </div>
+
+      <div class="grid" id="exGrid"></div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  document.getElementById('tipsToggle').addEventListener('click', () => {
+    document.getElementById('tipsToggle').classList.toggle('open');
+    document.getElementById('tipsPanel').classList.toggle('open');
+  });
+  const exercises = [
+    {title:"Kneeling Groin Stretch", slug:"kneeling-groin-stretch", body:"Höft & bäcken", equip:"Ingen utrustning", img:"kneeling_groin_stretch.jpg"},
+    {title:"Wall QL Stretch", slug:"wall-ql-stretch", body:"Rygg", equip:"Ingen utrustning", img:"wall_QL_stretch.jpg"},
+    {title:"Supine Foot Circles", slug:"supine-foot-circles", body:"Höft & bäcken", equip:"Ingen utrustning", img:"supine_foot_circles.jpg"},
+    {title:"Wall Single Heel Raises", slug:"wall-single-heel-raises", body:"Knä & ben", equip:"Ingen utrustning", img:"wall_single_heel_raises.jpg"},
+    {title:"Walking Steam Engines", slug:"walking-steam-engines", body:"Helkropp", equip:"Ingen utrustning", img:"walking_steam_engines.jpg"},
+    {title:"Sumo-Squats", slug:"sumo-squats", body:"Helkropp", equip:"Gym", img:"sumo_squats__gym.jpg"},
+    {title:"Static Back Goal Post Presses", slug:"static-back-goal-post-presses", body:"Nacke & axlar & skulderblad", equip:"Stol", img:"static_back_goal_post_presses.jpg"},
+    {title:"Static Dog Position", slug:"static-dog-position", body:"Rygg", equip:"Ingen utrustning", img:"static_dog_position.jpg"},
+    {title:"Static Back Reverse Presses", slug:"static-back-reverse-presses", body:"Nacke & axlar & skulderblad", equip:"Stol", img:"static_back_reverse_presses.jpg"},
+    {title:"Static Back Knee Squeezes", slug:"static-back-knee-squeezes", body:"Höft & bäcken", equip:"Ingen utrustning", img:"static_back_knee_squeezes.jpg"},
+    {title:"Step-Ups - Långsam", slug:"step-ups-langsam", body:"Knä & ben", equip:"Ingen utrustning", img:"step_ups__la_ngsam.jpg"},
+    {title:"Standups", slug:"standups", body:"Helkropp", equip:"Stol", img:"standups.jpg"},
+    {title:"Standing Shoulder Rolls", slug:"standing-shoulder-rolls", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"standing_shoulder_rolls.jpg"},
+    {title:"Standing One Arm Chest Stretch", slug:"standing-one-arm-chest-stretch", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"standing_one_arm_chest_stretch.jpg"},
+    {title:"Standing Quad Stretch", slug:"standing-quad-stretch", body:"Höft & bäcken", equip:"Ingen utrustning", img:"standing_quad_stretch.jpg"},
+    {title:"Standing Arm Circles", slug:"standing-arm-circles", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"standing_arm_circles.jpg"},
+    {title:"Standing Arm Rotation", slug:"standing-arm-rotation", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"standing_arm_rotations_.jpg"},
+    {title:"Standing Wall Clock", slug:"standing-wall-clock", body:"Nacke & axlar & skulderblad", equip:"Vägg", img:"standing_wall_clock.jpg"},
+    {title:"Standing Shoulder Shrugs", slug:"standing-shoulder-shrugs", body:"Nacke & axlar & skulderblad", equip:"Vägg", img:"standing_shoulder_shrugs.jpg"},
+    {title:"Standing Curlpress", slug:"standing-curlpress", body:"Nacke & axlar & skulderblad", equip:"Hantlar/kettlebell", img:"standing_curlpress.jpg"},
+    {title:"Standing Bicep Stretch", slug:"standing-bicep-stretch", body:"Nacke & axlar & skulderblad", equip:"Vägg", img:"standing_bicep_stretch.jpg"},
+    {title:"Squatting at Door", slug:"squatting-at-door", body:"Helkropp", equip:"Ingen utrustning", img:"squatting_at_door.jpg"},
+    {title:"Squats", slug:"squats-gym", body:"Helkropp", equip:"Gym", img:"squats_gym.jpg"},
+    {title:"Back Extension with Rotation", slug:"back-extension-rotation", body:"Rygg", equip:"Ingen utrustning", img:"back_extension_with_rotation.jpg"},
+    {title:"Spidey Crawls", slug:"spidey-crawls", body:"Höft & bäcken", equip:"Ingen utrustning", img:"spidey_crawls.jpg"},
+    {title:"Pelvic Rolls", slug:"pelvic-rolls", body:"Höft & bäcken", equip:"Ingen utrustning", img:"pelvic_rolls.jpg"},
+    {title:"Squatting Overhead", slug:"squatting-overhead", body:"Helkropp", equip:"Ingen utrustning", img:"squatting_overhead.jpg"},
+    {title:"Sitting Overhead Extension", slug:"sitting-overhead-extension", body:"Nacke & axlar & skulderblad", equip:"Stol", img:"sitting_overhead_extenision.jpg"},
+    {title:"Sitting Single Hip Lifts", slug:"sitting-single-hip-lifts", body:"Höft & bäcken", equip:"Stol", img:"sitting_single_hip_lifts.jpg"},
+    {title:"Sitting One Leg Hip Stretch", slug:"sitting-one-leg-hip-stretch", body:"Höft & bäcken", equip:"Stol", img:"sitting_one_leg_hip_stretch.jpg"},
+    {title:"Sitting Arm Circles", slug:"sitting-arm-circles", body:"Nacke & axlar & skulderblad", equip:"Stol", img:"sitting_arm_circles.jpg"},
+    {title:"Postural Squats", slug:"postural-squats", body:"Helkropp", equip:"Ingen utrustning", img:"postural_squats.jpg"},
+    {title:"Sitting Cats And Dogs", slug:"sitting-cats-and-dogs", body:"Höft & bäcken", equip:"Stol", img:"sitting_cats_and_dogs.jpg"},
+    {title:"Sitting Knee Squeezes", slug:"sitting-knee-squeezes", body:"Höft & bäcken", equip:"Stol", img:"sitting_knee_squeezes.jpg"},
+    {title:"Romanian Deadlift - Single Leg", slug:"romanian-deadlift-single-leg", body:"Knä & ben", equip:"Hantlar/kettlebell", img:"romanian_deadlifts__single_leg.jpg"},
+    {title:"Postural Pushups", slug:"postural-pushups", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"postural_pushups.jpg"},
+    {title:"Lateral Lunges Wall", slug:"lateral-lunges-wall", body:"Höft & bäcken", equip:"Vägg", img:"lateral_lunges_wall.jpg"},
+    {title:"Romanian Deadlift", slug:"romanian-deadlift", body:"Helkropp", equip:"Gym", img:"romanian_deadlift.jpg"},
+    {title:"Runners Stretch", slug:"runners-stretch", body:"Knä & ben", equip:"Stol", img:"runners_stretch.jpg"},
+    {title:"Pelvic Rolls Wall", slug:"pelvic-rolls-wall", body:"Höft & bäcken", equip:"Vägg", img:"pelvic_rolls_wall.jpg"},
+    {title:"Hip Flexor Situps", slug:"hip-flexor-situps", body:"Höft & bäcken", equip:"Ingen utrustning", img:"postural_situps.jpg"},
+    {title:"Lunges Forward", slug:"lunges-forward", body:"Knä & ben", equip:"Ingen utrustning", img:"lunges_forward.jpg"},
+    {title:"Inner Thigh Lifts", slug:"inner-thigh-lifts", body:"Höft & bäcken", equip:"Vägg", img:"inner_thigh_lifts.jpg"},
+    {title:"Kneeling Table Top Stretch", slug:"kneeling-table-top-stretch", body:"Rygg", equip:"Stol", img:"kneeling_table_top_stretch.jpg"},
+    {title:"Hooklying Knee Squeezes", slug:"hooklying-knee-squeezes", body:"Höft & bäcken", equip:"Ingen utrustning", img:"hooklying_knee_squeezes.jpg"},
+    {title:"Hooklying Neck Training", slug:"hooklying-neck-training", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"hooklying_neck_training.jpg"},
+    {title:"Hooklying Single Hip Lifts", slug:"hooklying-single-hip-lifts", body:"Höft & bäcken", equip:"Ingen utrustning", img:"hooklying_single_hip_lifts.jpg"},
+    {title:"Crocodile Crunches", slug:"crocodile-crunches", body:"Helkropp", equip:"Ingen utrustning", img:"crocodile_crunches.jpg"},
+    {title:"Downward Dog", slug:"downward-dog", body:"Rygg", equip:"Ingen utrustning", img:"downward_dogs.jpg"},
+    {title:"Wide Cobra", slug:"wide-cobra", body:"Rygg", equip:"Ingen utrustning", img:"wide_cobra.jpg"},
+    {title:"Cross Crawling", slug:"cross-crawling", body:"Helkropp", equip:"Ingen utrustning", img:"cross_crawling.jpg"},
+    {title:"Deadlift", slug:"deadlift", body:"Helkropp", equip:"Gym", img:"deadlifts.jpg"},
+    {title:"Cats and Dogs", slug:"cats-and-dogs", body:"Rygg", equip:"Ingen utrustning", img:"cats_and_dogs.jpg"},
+    {title:"Postural Plank", slug:"postural-plank", body:"Helkropp", equip:"Ingen utrustning", img:"postural_plank.jpg"},
+    {title:"Cablecross - Shoulder Rotation", slug:"cablecross-shoulder-rotation", body:"Nacke & axlar & skulderblad", equip:"Gym", img:"cablecross__shoulder_rotation.jpg"},
+    {title:"Cablecross - Shoulder Abduction", slug:"cablecross-shoulder-abduction", body:"Nacke & axlar & skulderblad", equip:"Gym", img:"Cablecross__Shoulder_Abduction.jpg"},
+    {title:"Cablecross - One Arm Rows", slug:"cablecross-one-arm-rows", body:"Rygg", equip:"Gym", img:"Cablecross__One_Arm_Rows.jpg"},
+    {title:"Cablecross - One Arm Pulldown", slug:"cablecross-one-arm-pulldown", body:"Rygg", equip:"Gym", img:"Cablecross__One_Arm_Pulldown.jpg"},
+    {title:"Cablecross - One Arm Press", slug:"cablecross-one-arm-press", body:"Nacke & axlar & skulderblad", equip:"Gym", img:"Cablecross__One_arm_press.jpg"},
+    {title:"Bench Step-Ups", slug:"bench-step-ups", body:"Knä & ben", equip:"Ingen utrustning", img:"Bench_StepUps.jpg"},
+    {title:"Bear Crawls", slug:"bear-crawls", body:"Helkropp", equip:"Ingen utrustning", img:"Bear_Crawls.jpg"},
+    {title:"Ankle Knee Crossover Twist", slug:"ankle-knee-crossover-twist", body:"Höft & bäcken", equip:"Ingen utrustning", img:"Ankle_Knee_Crossover_Twist.jpg"},
+    {title:"Active Cobra", slug:"active-cobra", body:"Höft & bäcken", equip:"Ingen utrustning", img:"Active_Cobra.jpg"},
+    {title:"Active Floor Clock", slug:"active-floor-clock", body:"Rygg", equip:"Ingen utrustning", img:"Active_Floor_Clock.jpg"},
+    {title:"Bridges Wide", slug:"bridges-wide", body:"Höft & bäcken", equip:"Ingen utrustning", img:"Bridges_Wide.jpg"},
+    {title:"Bridge Single Leg", slug:"bridge-single-leg", body:"Höft & bäcken", equip:"Ingen utrustning", img:"Bridge_Single_Leg.jpg"},
+    {title:"3 Position Heel Raises", slug:"3-position-heel-raises", body:"Knä & ben", equip:"Ingen utrustning", img:"3_Position_Heel_Raises.jpg"},
+    {title:"Hand Leg Opposite Lifts On Hands And Knees", slug:"hand-leg-opposite-lifts-on-hands-and-knees", body:"Helkropp", equip:"Ingen utrustning", img:"hand_leg_opposite_lifts.jpg"},
+    {title:"Static Dog Neck Retractions", slug:"static-dog-neck-retractions", body:"Nacke & axlar & skulderblad", equip:"Ingen utrustning", img:"static_dog_neck_retractions.jpg"},
+    {title:"Wall Sidelying Hip Lifts", slug:"wall-sidelying-hip-lifts", body:"Höft & bäcken", equip:"Vägg", img:"wall_sidelying_hip_lifts.jpg"},
+    {title:"Flutter Kicks", slug:"flutter-kicks", body:"Helkropp", equip:"Ingen utrustning", img:"flutter_kicks.jpg"},
+    {title:"Static Back Arm Rotations", slug:"static-back-arm-rotations", body:"Nacke & axlar & skulderblad", equip:"Stol", img:"static_back_arm_rotations.jpg"},
+    {title:"Static Back Pullover Presses", slug:"static-back-pullover-presses", body:"Nacke & axlar & skulderblad", equip:"Stol", img:"static_back_pullover_presses.jpg"},
+    {title:"Chair Quad Stretch", slug:"chair-quad-stretch", body:"Höft & bäcken", equip:"Stol", img:"chair_quad_stretch.jpg"},
+    {title:"Standing Forward Bends Sides-Up-Down", slug:"standing-forward-bends-sides-up-down", body:"Rygg", equip:"Ingen utrustning", img:"standing_forward_bends_sides_up_down.jpg"},
+    {title:"Airbench", slug:"airbench", body:"Helkropp", equip:"Vägg", img:"airbench.jpg"},
+  ];
+
+  // ANNONSPLATS: infoga en annonsruta i grid-flödet var 6:e övningskort (i % 6 === 5)
+  const grid = document.getElementById('exGrid');
+  const resultsCount = document.getElementById('resultsCount');
+  const searchInput = document.getElementById('searchInput');
+  const filterOpts = document.querySelectorAll('.filter-opt');
+  const TOTAL = exercises.length;
+
+  function norm(str){
+    return str.toLowerCase()
+      .replace(/å/g,'a').replace(/ä/g,'a').replace(/ö/g,'o');
+  }
+
+  function getActiveFilters(){
+    const active = { body: [], equip: [] };
+    filterOpts.forEach(opt => {
+      if (opt.classList.contains('checked')) {
+        active[opt.dataset.type].push(opt.dataset.value);
+      }
+    });
+    return active;
+  }
+
+  function renderCard(ex, i){
+    const card = document.createElement('a');
+    card.href = `hallning-ovning-${ex.slug}.html`;
+    card.className = 'ex-card';
+    card.style.display = 'block';
+    card.innerHTML = `
+      <div class="ex-thumb">
+        <img src="${ex.img}" alt="${ex.title}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+        <span class="fav ${i % 5 === 0 ? 'active' : ''}">${i % 5 === 0 ? '♥' : '♡'}</span>
+        <div class="play">▶</div>
+      </div>
+      <div class="ex-body">
+        <h3>${ex.title}</h3>
+        <div class="ex-meta">
+          <span class="tag body">${ex.body}</span>
+          <span class="tag">${ex.equip}</span>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  function bindCardEvents(){
+    document.querySelectorAll('.fav').forEach(f => {
+      f.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        f.classList.toggle('active');
+        f.textContent = f.classList.contains('active') ? '♥' : '♡';
+      });
+    });
+  }
+
+  function applyFilters(){
+    const query = norm(searchInput.value.trim());
+    const active = getActiveFilters();
+
+    const filtered = exercises.filter(ex => {
+      const matchesQuery = query === '' || norm(ex.title).includes(query);
+      const matchesBody = active.body.length === 0 || active.body.includes(ex.body);
+      const matchesEquip = active.equip.length === 0 || active.equip.includes(ex.equip);
+      return matchesQuery && matchesBody && matchesEquip;
+    });
+
+    grid.innerHTML = '';
+    filtered.forEach((ex, i) => grid.appendChild(renderCard(ex, i)));
+    bindCardEvents();
+
+    if (filtered.length === TOTAL) {
+      resultsCount.textContent = `Visar alla ${TOTAL} övningar`;
+    } else if (filtered.length === 0) {
+      resultsCount.textContent = `Inga övningar matchade din sökning`;
+    } else {
+      resultsCount.textContent = `Visar ${filtered.length} av ${TOTAL} övningar`;
+    }
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+
+  filterOpts.forEach(opt => {
+    opt.addEventListener('click', () => {
+      opt.classList.toggle('checked');
+      applyFilters();
+    });
+  });
+
+  document.querySelector('.clear-filters').addEventListener('click', () => {
+    filterOpts.forEach(opt => opt.classList.remove('checked'));
+    searchInput.value = '';
+    applyFilters();
+  });
+
+  applyFilters();
+</script>
+
+<script>
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>

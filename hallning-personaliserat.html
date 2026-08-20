@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personaliserade program — Hållning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --surface: #EEF1EC;
+    --text: #2B2E2A;
+    --text-soft: #6B7267;
+    --sage: #5E7461;
+    --sage-light: #8A9A8B;
+    --warm: #D98E5C;
+    --warm-soft: #F1D9C4;
+    --line: #DADFD8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Public Sans', sans-serif; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sage);
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 32px;}
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 32px; max-width:1160px; margin:0 auto; position:relative;
+  }
+  .logo{font-family:'Newsreader', serif; font-size:1.35rem; font-weight:500; display:flex; align-items:center; gap:9px;}
+  .logo .mark{width:14px; height:14px; border-radius:50%; background:var(--sage); position:relative;}
+  .logo .mark::after{content:''; position:absolute; left:6px; top:14px; width:1.5px; height:22px; background:var(--sage-light);}
+  .navlinks{display:flex; gap:36px; font-size:0.94rem; color:var(--text-soft);}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{display:flex; gap:14px; align-items:center;}
+  .btn{padding:10px 20px; border-radius:100px; font-size:0.9rem; font-weight:600; cursor:pointer; border:none; display:inline-block;}
+  .btn-primary{background:var(--warm); color:#2B2E2A;}
+  .btn-ghost{background:transparent; color:var(--text); padding:10px 6px;}
+  .menu-toggle{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--text); padding:4px 8px; line-height:1;}
+  @media (max-width: 900px){
+    .menu-toggle{display:block;}
+    .navlinks{display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:6px 32px 18px; border-bottom:1px solid var(--line); gap:0; z-index:80; box-shadow:0 12px 24px -12px rgba(0,0,0,0.15);}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:13px 0; border-top:1px solid var(--line); font-size:1rem;}
+    .navlinks a:first-child{border-top:none;}
+  }
+
+  header.page{padding:34px 0 10px;}
+  header.page h1{font-size:2.1rem; margin-top:8px;}
+  header.page p{color:var(--text-soft); font-size:0.98rem; margin-top:12px; max-width:560px;}
+
+  .progress-track{
+    display:flex; gap:6px; margin:28px 0 34px;
+  }
+  .progress-seg{flex:1; height:4px; border-radius:100px; background:var(--line);}
+  .progress-seg.done{background:var(--sage);}
+
+  .q-card{display:none;}
+  .q-card.active{display:block;}
+  .q-num{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--sage); margin-bottom:10px;}
+  .q-card h2{font-size:1.4rem; margin-bottom:22px;}
+  .opt{
+    display:flex; align-items:center; gap:14px;
+    border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; margin-bottom:12px; cursor:pointer;
+    transition:border-color 0.15s, background 0.15s;
+  }
+  .opt:hover{border-color:var(--sage-light);}
+  .opt.selected{border-color:var(--sage); background:var(--surface);}
+  .opt .dot3{
+    width:18px; height:18px; border-radius:50%; border:2px solid var(--line);
+    flex-shrink:0; position:relative;
+  }
+  .opt.selected .dot3{border-color:var(--sage);}
+  .opt.selected .dot3::after{
+    content:''; position:absolute; inset:3px; border-radius:50%; background:var(--sage);
+  }
+  .opt span.label{font-size:0.98rem;}
+
+  .q-nav{display:flex; justify-content:space-between; margin-top:28px;}
+
+  .result-wrap{display:none;}
+  .result-wrap.active{display:block;}
+  .result-head{margin-bottom:24px;}
+  .result-head h2{font-size:1.7rem; margin-top:8px;}
+  .step-card{
+    border:1px solid var(--line); border-radius:16px; padding:18px 22px; margin-bottom:14px;
+    display:flex; align-items:flex-start; gap:14px;
+  }
+  .step-num{
+    width:28px; height:28px; border-radius:50%; background:var(--sage); color:#fff;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem; margin-top:2px;
+  }
+  .step-card p{font-size:0.95rem;}
+  .step-card .badge{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:0.66rem;
+    padding:3px 9px; border-radius:100px; margin-left:8px; vertical-align:middle;
+  }
+  .badge.free{background:#E4EBE3; color:var(--sage);}
+  .badge.premium{background:var(--warm-soft); color:var(--warm);}
+
+  .note-box{
+    background:var(--surface); border-radius:14px; padding:18px 20px; margin:20px 0;
+    font-size:0.88rem; color:var(--text-soft);
+  }
+
+  .link-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:22px;}
+  .link-row .btn{flex:1; text-align:center; min-width:180px;}
+
+  .restart{
+    text-align:center; margin-top:20px;
+  }
+  .restart button{
+    background:none; border:none; color:var(--sage); font-size:0.88rem; font-weight:600; cursor:pointer;
+  }
+
+  .v15-teaser{
+    margin-top:60px; padding:28px 30px; border-radius:18px; background:var(--surface);
+  }
+  .v15-teaser h3{font-size:1.15rem; margin-bottom:10px;}
+  .v15-teaser p{font-size:0.9rem; color:var(--text-soft);}
+
+  footer{padding:40px 0; color:var(--text-soft); font-size:0.85rem; border-top:1px solid var(--line); margin-top:50px;}
+  .foot-row{display:flex; justify-content:space-between; align-items:center;}
+  @media (max-width: 700px){
+    .foot-row{flex-direction:column; gap:14px; text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="hallning-prototyp.html"><span class="mark"></span>ReAlign</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Öppna meny">☰</button>
+  <div class="navlinks" id="navLinks">
+    <a href="hallning-program.html">Program</a>
+    <a href="hallning-ovningsbank.html">Övningsbank</a>
+    <a href="hallning-ergonomi.html">Ergonomi</a>
+    <a href="hallning-om-metoden.html">Om metoden</a>
+    <a href="hallning-analys.html">Analysera dig</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="hallning-min-sida.html">Logga in</a>
+    <a class="btn btn-primary" href="hallning-min-sida.html">Kom igång</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">Personaliserade program</span>
+    <h1>Hitta rätt program för dig.</h1>
+    <p>Svara på fem korta frågor så sätter vi ihop en rekommendation utifrån var det gör ont, din erfarenhet och din vardag — helt automatiskt, direkt.</p>
+  </header>
+
+  <div class="progress-track" id="progressTrack"></div>
+
+  <form id="quizForm">
+    <!-- Q1 -->
+    <div class="q-card active" data-q="1">
+      <div class="q-num">Fråga 1 av 5</div>
+      <h2>Var känns det mest just nu?</h2>
+      <div class="opt" data-name="pain" data-value="nacke"><span class="dot3"></span><span class="label">Nacke, axlar &amp; skulderblad</span></div>
+      <div class="opt" data-name="pain" data-value="rygg"><span class="dot3"></span><span class="label">Rygg</span></div>
+      <div class="opt" data-name="pain" data-value="hoft"><span class="dot3"></span><span class="label">Höft &amp; bäcken</span></div>
+      <div class="opt" data-name="pain" data-value="helkropp"><span class="dot3"></span><span class="label">Hela kroppen / vet inte riktigt</span></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" data-q="2">
+      <div class="q-num">Fråga 2 av 5</div>
+      <h2>Hur ser din vardag ut mest av tiden?</h2>
+      <div class="opt" data-name="lifestyle" data-value="stillasittande"><span class="dot3"></span><span class="label">Mycket stillasittande / kontorsjobb</span></div>
+      <div class="opt" data-name="lifestyle" data-value="aktiv"><span class="dot3"></span><span class="label">Aktiv, rör mig redan en del</span></div>
+      <div class="opt" data-name="lifestyle" data-value="blandat"><span class="dot3"></span><span class="label">Blandat</span></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" data-q="3">
+      <div class="q-num">Fråga 3 av 5</div>
+      <h2>Hur van är du vid postural träning sedan innan?</h2>
+      <div class="opt" data-name="experience" data-value="ny"><span class="dot3"></span><span class="label">Helt ny på det här</span></div>
+      <div class="opt" data-name="experience" data-value="bekvam"><span class="dot3"></span><span class="label">Har tränat ett tag, känner mig ganska bekväm</span></div>
+      <div class="opt" data-name="experience" data-value="erfaren"><span class="dot3"></span><span class="label">Erfaren, vill utmanas</span></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card" data-q="4">
+      <div class="q-num">Fråga 4 av 5</div>
+      <h2>Vilken utrustning har du tillgång till?</h2>
+      <div class="opt" data-name="equipment" data-value="ingen"><span class="dot3"></span><span class="label">Inget alls, bara golvet</span></div>
+      <div class="opt" data-name="equipment" data-value="hemma"><span class="dot3"></span><span class="label">Hemma med enkla saker (stol, vägg)</span></div>
+      <div class="opt" data-name="equipment" data-value="gym"><span class="dot3"></span><span class="label">Gym</span></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" data-q="5">
+      <div class="q-num">Fråga 5 av 5</div>
+      <h2>Hur mycket tid vill du lägga per pass?</h2>
+      <div class="opt" data-name="time" data-value="kort"><span class="dot3"></span><span class="label">Kort (10–15 min)</span></div>
+      <div class="opt" data-name="time" data-value="medel"><span class="dot3"></span><span class="label">Medel (20–30 min)</span></div>
+      <div class="opt" data-name="time" data-value="fullt"><span class="dot3"></span><span class="label">Så mycket som behövs</span></div>
+    </div>
+
+    <div class="q-nav">
+      <button type="button" class="btn btn-ghost" id="backBtn" style="border:1px solid var(--line); visibility:hidden;">← Tillbaka</button>
+      <button type="button" class="btn btn-primary" id="nextBtn" disabled>Nästa →</button>
+    </div>
+  </form>
+
+  <!-- RESULT -->
+  <div class="result-wrap" id="resultWrap">
+    <div class="result-head">
+      <span class="eyebrow">Din rekommendation</span>
+      <h2 id="resultHeadline">Ditt program</h2>
+    </div>
+    <div class="note-box" id="comboNote" style="display:none; background:var(--warm-soft); color:var(--text);"></div>
+    <div id="resultSteps"></div>
+    <div class="note-box" id="resultNote" style="display:none;"></div>
+    <div class="link-row" id="resultLinks"></div>
+    <div class="restart"><button type="button" id="restartBtn">Börja om →</button></div>
+  </div>
+
+  <div class="v15-teaser">
+    <span class="eyebrow">Kommer snart</span>
+    <h3>Full funktionsanalys</h3>
+    <p>Vi bygger just nu en fördjupad version där du gör enkla rörelsetester hemma via video, och får ett program byggt specifikt kring dina egna obalanser — inte bara var det gör ont. Håll utkik.</p>
+  </div>
+
+  <footer>
+    <div style="display:flex; gap:22px; justify-content:center; margin-bottom:18px; font-size:0.85rem; flex-wrap:wrap;">
+      <a href="hallning-om-oss.html" style="color:var(--text-soft);">Om oss</a>
+      <a href="hallning-faq.html" style="color:var(--text-soft);">Vanliga frågor</a>
+      <a href="hallning-kontakt.html" style="color:var(--text-soft);">Kontakt</a>
+    </div>
+    <div class="foot-row">
+      <div class="logo" style="font-size:1.05rem;"><span class="mark" style="width:10px;height:10px;"></span>ReAlign</div>
+      <div>© 2026 ReAlign Metoden · Skapad av Cleer Klinik</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const answers = {};
+  const questions = [1,2,3,4,5];
+  let current = 1;
+
+  const progressTrack = document.getElementById('progressTrack');
+  questions.forEach(() => {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    progressTrack.appendChild(seg);
+  });
+
+  function updateProgress(){
+    document.querySelectorAll('.progress-seg').forEach((seg, i) => {
+      seg.classList.toggle('done', i < current);
+    });
+  }
+  updateProgress();
+
+  function showQuestion(n){
+    document.querySelectorAll('.q-card').forEach(c => c.classList.toggle('active', +c.dataset.q === n));
+    document.getElementById('backBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+    const name = document.querySelector(`.q-card[data-q="${n}"] .opt`).dataset.name;
+    document.getElementById('nextBtn').disabled = !answers[name];
+    document.getElementById('nextBtn').textContent = n === 5 ? 'Se mitt program →' : 'Nästa →';
+    updateProgress();
+  }
+
+  document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const name = opt.dataset.name;
+      document.querySelectorAll(`.opt[data-name="${name}"]`).forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      answers[name] = opt.dataset.value;
+      document.getElementById('nextBtn').disabled = false;
+    });
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if(current < 5){
+      current++;
+      showQuestion(current);
+    } else {
+      showResult();
+    }
+  });
+  document.getElementById('backBtn').addEventListener('click', () => {
+    if(current > 1){
+      current--;
+      showQuestion(current);
+    }
+  });
+  document.getElementById('restartBtn').addEventListener('click', () => {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    current = 1;
+    document.getElementById('quizForm').style.display = 'block';
+    document.getElementById('resultWrap').classList.remove('active');
+    showQuestion(1);
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  function categoryFor(pain){
+    if(pain === 'nacke') return {name:'Axlar/nacke/skulderblad', prefix:'axlar-nacke-skulderblad', maxLevel:3};
+    if(pain === 'hoft') return {name:'Höft & bäcken', prefix:'hofter', maxLevel:3};
+    return {name:'Helkropp', prefix:'helkropp', maxLevel:5}; // rygg + helkropp/vet inte
+  }
+
+  function levelFor(experience, maxLevel){
+    let level = 1, note = '';
+    if(experience === 'bekvam') level = 2;
+    if(experience === 'erfaren'){
+      level = 2;
+      note = 'Kör Nivå 2 i minst 2 veckor, 4–5 gånger i veckan, innan du går vidare till nästa nivå.';
+    }
+    return {level: Math.min(level, maxLevel), note};
+  }
+
+  function timeLabel(time){
+    if(time === 'kort') return 'Kort';
+    if(time === 'medel') return 'Medel';
+    return 'Fullt';
+  }
+
+  function isPremium(prefix, level){
+    if(prefix === 'helkropp') return level > 2; // Helkropp Nivå 1–2 är gratis
+    return level > 1; // övriga kategorier: bara Nivå 1 är gratis
+  }
+
+  function badgeHtml(prefix, level){
+    return isPremium(prefix, level)
+      ? '<span class="badge premium">Premium</span>'
+      : '<span class="badge free">Gratis</span>';
+  }
+
+  function showResult(){
+    document.getElementById('quizForm').style.display = 'none';
+    document.getElementById('resultWrap').classList.add('active');
+
+    const cat = categoryFor(answers.pain);
+    const lvl = levelFor(answers.experience, cat.maxLevel);
+    const catProgram = { title: cat.name + ' - Nivå ' + lvl.level, slug: cat.prefix + '-niva-' + lvl.level, level: lvl.level, prefix: cat.prefix };
+    const tLabel = timeLabel(answers.time);
+
+    const stepsEl = document.getElementById('resultSteps');
+    const linksEl = document.getElementById('resultLinks');
+    const noteEl = document.getElementById('resultNote');
+    const comboNoteReset = document.getElementById('comboNote');
+    comboNoteReset.style.display = 'none';
+    stepsEl.innerHTML = '';
+    linksEl.innerHTML = '';
+    let noteText = lvl.note;
+
+    if(answers.equipment === 'gym'){
+      document.getElementById('resultHeadline').textContent = 'Kombinera gym med postural grundträning';
+      const comboNoteEl = document.getElementById('comboNote');
+      comboNoteEl.style.display = 'block';
+      comboNoteEl.textContent = 'I början mår kroppen mycket bra av att jobba mer fokuserat på hållningsmusklerna, därför föreslår vi att du kombinerar gymträningen med mer specifika övningar.';
+
+      let gymSlug, gymTitle;
+      if(answers.pain === 'nacke'){ gymSlug = 'gym-overkropp'; gymTitle = 'Gymträning - Överkropp'; }
+      else if(answers.pain === 'hoft'){ gymSlug = 'gym-underkropp'; gymTitle = 'Gymträning - Underkropp'; }
+      else { gymSlug = 'gym-helkropp'; gymTitle = 'Gymträning - Helkropp'; }
+
+      stepsEl.innerHTML = `
+        <div class="step-card"><span class="step-num">1</span><p><b>${gymTitle}</b> <span class="badge premium">Premium</span><br>2 gånger i veckan.</p></div>
+        <div class="step-card"><span class="step-num">2</span><p><b>${catProgram.title}</b> ${badgeHtml(catProgram.prefix, catProgram.level)}<br>2–3 gånger i veckan, som grundträning parallellt.</p></div>
+        <div class="step-card"><span class="step-num">3</span><p>Efter 2–3 veckor: byt ut steg 2 mot nästa nivå i samma kategori, fortsatt i kombination med ${gymTitle}.</p></div>
+      `;
+      // noteText behåller bara ev. nivåprogressionsnotis (comboNote hanterar gym-förklaringen)
+      linksEl.innerHTML = `
+        <a class="btn btn-primary" href="hallning-program-${gymSlug}.html">Öppna ${gymTitle} →</a>
+        <a class="btn btn-ghost" style="border:1px solid var(--line);" href="hallning-program-${catProgram.slug}.html">Öppna ${catProgram.title} →</a>
+      `;
+    } else {
+      document.getElementById('resultHeadline').textContent = catProgram.title;
+
+      if(cat.prefix !== 'helkropp'){
+        const comboNoteEl = document.getElementById('comboNote');
+        comboNoteEl.style.display = 'block';
+        comboNoteEl.textContent = 'Ett riktat program löser sällan hela problemet på egen hand — kroppen hänger ihop. Därför föreslår vi att du kombinerar med ett kort helkroppspass, så att helheten inte glöms bort.';
+      }
+
+      let stepsHtml = `<div class="step-card"><span class="step-num">1</span><p><b>${catProgram.title}</b> ${badgeHtml(catProgram.prefix, catProgram.level)}<br>Ditt huvudsakliga fokusprogram.</p></div>`;
+
+      if(cat.prefix !== 'helkropp'){
+        stepsHtml += `<div class="step-card"><span class="step-num">2</span><p><b>Helkropp - Nivå 1</b> (${tLabel}) <span class="badge free">Gratis</span><br>Som komplement, varannan träningsdag.</p></div>`;
+      }
+
+      if(answers.lifestyle === 'stillasittande'){
+        const n = cat.prefix !== 'helkropp' ? 3 : 2;
+        stepsHtml += `<div class="step-card"><span class="step-num">${n}</span><p><b>Kontorsvardag</b> <span class="badge free">Gratis</span><br>Några gånger i veckan som ett kort tillägg — perfekt vid skrivbordet.</p></div>`;
+      }
+
+      stepsEl.innerHTML = stepsHtml;
+
+      linksEl.innerHTML = `<a class="btn btn-primary" href="hallning-program-${catProgram.slug}.html">Öppna ${catProgram.title} →</a>`;
+      if(cat.prefix !== 'helkropp'){
+        linksEl.innerHTML += `<a class="btn btn-ghost" style="border:1px solid var(--line);" href="hallning-program-helkropp-niva-1.html?variant=${answers.time}">Öppna Helkropp - Nivå 1 →</a>`;
+      }
+    }
+
+    if(noteText.trim()){
+      noteEl.style.display = 'block';
+      noteEl.textContent = noteText.trim();
+    } else {
+      noteEl.style.display = 'none';
+    }
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  (function(){
+    var t = document.getElementById('menuToggle');
+    var m = document.getElementById('navLinks');
+    if(t && m){ t.addEventListener('click', function(){ m.classList.toggle('open'); }); }
+  })();
+</script>
+</body>
+</html>
