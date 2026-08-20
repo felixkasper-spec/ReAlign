@@ -1,0 +1,39 @@
+.footer {
+  padding: 60px 0 40px;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+
+.linkRow {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  margin-bottom: 18px;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.linkRow a {
+  color: var(--text-soft);
+}
+
+.footRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sage);
+}
