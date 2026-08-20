@@ -1,9 +1,9 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function createCheckoutSession() {
   const supabase = await createClient();
@@ -15,7 +15,7 @@ export async function createCheckoutSession() {
     redirect("/login");
   }
 
-  const origin = (await headers()).get("origin");
+  const origin = await getBaseUrl();
   const priceId = process.env.STRIPE_PRICE_ID;
 
   if (!priceId) {
@@ -68,7 +68,7 @@ export async function openBillingPortal() {
     redirect("/min-sida");
   }
 
-  const origin = (await headers()).get("origin");
+  const origin = await getBaseUrl();
 
   const session = await stripe.billingPortal.sessions.create({
     customer: sub.stripe_customer_id,

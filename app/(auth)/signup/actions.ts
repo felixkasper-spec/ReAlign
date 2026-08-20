@@ -1,12 +1,12 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
-  const origin = (await headers()).get("origin");
+  const origin = await getBaseUrl();
 
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
