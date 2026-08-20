@@ -2,9 +2,23 @@ import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
+import { getSubscription } from "@/lib/subscription";
+import { createCheckoutSession, openBillingPortal } from "./actions";
 import styles from "./page.module.css";
 
-export default async function MinSidaPage() {
+const checkoutMessages: Record<string, string> = {
+  success: "Klart! Din prenumeration är aktiv.",
+  cancel: "Betalningen avbröts — inget drogs från ditt kort.",
+  error: "Något gick fel vid betalningen. Försök gärna igen.",
+  not_configured: "Betalning är inte konfigurerat än — hör av dig till oss.",
+};
+
+export default async function MinSidaPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ checkout?: string }>;
+}) {
+  const { checkout } = await searchParams;
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -37,11 +51,14 @@ export default async function MinSidaPage() {
     redirect("/login");
   }
 
-  const { data: favorites } = await supabase
-    .from("favorites")
-    .select("exercise_id, exercises ( id, slug, title, body_part )")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+  const [{ data: favorites }, subscription] = await Promise.all([
+    supabase
+      .from("favorites")
+      .select("exercise_id, exercises ( id, slug, title, body_part )")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
+    getSubscription(),
+  ]);
 
   return (
     <>
@@ -56,6 +73,54 @@ export default async function MinSidaPage() {
               Logga ut
             </button>
           </form>
+        </section>
+
+        {checkout && checkoutMessages[checkout] && (
+          <p className={styles.checkoutMessage}>{checkoutMessages[checkout]}</p>
+        )}
+
+        <section className={styles.premiumPanel}>
+          {subscription.active ? (
+            <>
+              <span className="eyebrow" style={{ color: "var(--warm)" }}>
+                Premium
+              </span>
+              <h3 className={styles.premiumTitle}>Din prenumeration är aktiv</h3>
+              <p className={styles.premiumText}>
+                Nästa förnyelse:{" "}
+                {subscription.currentPeriodEnd
+                  ? new Date(subscription.currentPeriodEnd).toLocaleDateString(
+                      "sv-SE",
+                    )
+                  : "okänt datum"}
+              </p>
+              <form action={openBillingPortal}>
+                <button
+                  className="btn btn-ghost"
+                  style={{ border: "1px solid var(--line)" }}
+                >
+                  Hantera prenumeration →
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              <span className="eyebrow" style={{ color: "var(--warm)" }}>
+                Uppgradera
+              </span>
+              <h3 className={styles.premiumTitle}>Bli Premium</h3>
+              <p className={styles.premiumText}>
+                Lås upp alla programnivåer, Gymträning, progressionsspårning
+                och veckobrev.
+              </p>
+              <p className={styles.premiumPrice}>149 kr/mån</p>
+              <form action={createCheckoutSession}>
+                <button className="btn btn-primary">
+                  Bli Premium →
+                </button>
+              </form>
+            </>
+          )}
         </section>
 
         <section className={styles.favSection}>

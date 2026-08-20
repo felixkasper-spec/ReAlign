@@ -13,6 +13,44 @@
   margin-bottom: 24px;
 }
 
+.checkoutMessage {
+  background: var(--surface);
+  border: 1px solid var(--sage);
+  color: var(--sage);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  max-width: 480px;
+  margin-bottom: 12px;
+}
+
+.premiumPanel {
+  border: 1px solid var(--warm);
+  background: var(--warm-soft);
+  border-radius: 20px;
+  padding: 32px 34px;
+  max-width: 420px;
+  margin-top: 8px;
+}
+
+.premiumTitle {
+  font-size: 1.3rem;
+  margin: 10px 0 8px;
+  font-weight: 500;
+}
+
+.premiumText {
+  color: var(--text);
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+
+.premiumPrice {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+}
+
 .favSection {
   padding: 20px 0 80px;
   border-top: 1px solid var(--line);
