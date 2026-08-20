@@ -36,10 +36,10 @@ export default function Header() {
         ))}
       </div>
       <div className={styles.navcta}>
-        <Link className="btn btn-ghost" href="/min-sida">
+        <Link className="btn btn-ghost" href="/login">
           Logga in
         </Link>
-        <Link className="btn btn-primary" href="/min-sida">
+        <Link className="btn btn-primary" href="/signup">
           Kom igång
         </Link>
       </div>

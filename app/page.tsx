@@ -380,7 +380,7 @@ export default function Home() {
               löpande, och kommer vara tydliga innan något någonsin blir
               betalt.
             </p>
-            <Link className="btn btn-primary btn-lg" href="/min-sida">
+            <Link className="btn btn-primary btn-lg" href="/signup">
               Kom igång gratis
             </Link>
           </div>

@@ -1,0 +1,89 @@
+.wrap {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px 96px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 40px 36px;
+}
+
+.card h1 {
+  font-size: 1.7rem;
+  margin: 14px 0 8px;
+}
+
+.card > p {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.field input {
+  font: inherit;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+}
+
+.field input:focus {
+  outline: 2px solid var(--sage-light);
+  outline-offset: 1px;
+}
+
+.submit {
+  width: 100%;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.error {
+  background: var(--warm-soft);
+  color: #8a4a1f;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
+.success {
+  background: var(--surface);
+  border: 1px solid var(--sage);
+  color: var(--sage);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
+.switch {
+  margin-top: 22px;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+.switch a {
+  color: var(--sage);
+  font-weight: 600;
+}
