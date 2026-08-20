@@ -36,6 +36,9 @@ export async function createCheckoutSession() {
     client_reference_id: user.id,
     success_url: `${origin}/min-sida?checkout=success`,
     cancel_url: `${origin}/min-sida?checkout=cancel`,
+    // Managed Payments kräver en momskod per produkt som vi inte satt upp
+    // (vi sköter momshanteringen på annat håll) — stäng av den här.
+    managed_payments: { enabled: false },
   });
 
   if (!session.url) {
