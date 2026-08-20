@@ -1,0 +1,28 @@
+.favBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  background: #fff;
+  font-family: inherit;
+}
+
+.favBtn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.favBtn.active {
+  border-color: var(--warm);
+  background: var(--warm-soft);
+}
+
+.heart {
+  color: var(--warm);
+}

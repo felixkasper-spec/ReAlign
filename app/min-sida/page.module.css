@@ -12,3 +12,58 @@
   color: var(--text-soft);
   margin-bottom: 24px;
 }
+
+.favSection {
+  padding: 20px 0 80px;
+  border-top: 1px solid var(--line);
+  margin-top: 20px;
+}
+
+.favTitle {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.empty {
+  color: var(--text-soft);
+}
+
+.link {
+  color: var(--sage);
+  font-weight: 600;
+}
+
+.favGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.favCard {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.favHeart {
+  color: var(--warm);
+  margin-bottom: 6px;
+}
+
+.favName {
+  font-weight: 500;
+}
+
+.favMeta {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+@media (max-width: 880px) {
+  .favGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
