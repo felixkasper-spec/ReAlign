@@ -1,0 +1,94 @@
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { createClient } from "@/lib/supabase/server";
+import { programMeta } from "@/lib/program-meta";
+import styles from "./page.module.css";
+
+export default async function ProgramIndexPage() {
+  const supabase = await createClient();
+  const { data: programs } = await supabase
+    .from("programs")
+    .select("id, slug, title, tier")
+    .order("category")
+    .order("level");
+
+  return (
+    <>
+      <Header />
+      <div className="wrap">
+        <section style={{ paddingBottom: 0 }}>
+          <span className="eyebrow">Program</span>
+          <h1 className={styles.title}>Hitta ditt program.</h1>
+          <p className={styles.intro}>
+            Strukturerade program för olika syften och nivåer — från
+            nackspänning till hållningskorrigering.
+          </p>
+        </section>
+
+        <div className={styles.banner}>
+          <p>Osäker på vilket program som passar dig? Svara på fem korta frågor.</p>
+          <Link className="btn btn-primary" href="/analys" style={{ whiteSpace: "nowrap" }}>
+            Hitta mitt program →
+          </Link>
+        </div>
+
+        <div className={`${styles.banner} ${styles.bannerFree}`}>
+          <p>
+            <b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt
+            Bålträning och Kontorsvardag, är helt gratis. Resten ingår i
+            Premium.
+          </p>
+          <Link className="btn btn-primary" href="/min-sida" style={{ whiteSpace: "nowrap" }}>
+            Bli Premium – 149 kr/mån →
+          </Link>
+        </div>
+
+        <div className={styles.grid}>
+          {(programs ?? []).map((p) => {
+            const meta = programMeta[p.slug];
+            return (
+              <Link key={p.id} href={`/program/${p.slug}`} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <span className={styles.badge}>{meta?.level ?? ""}</span>
+                  <span
+                    className={`${styles.badge} ${
+                      p.tier === "premium" ? styles.premium : styles.free
+                    }`}
+                  >
+                    {p.tier === "premium" ? "Premium" : "Gratis"}
+                  </span>
+                </div>
+                <h3>{p.title}</h3>
+                <p className={styles.purpose}>{meta?.purpose}</p>
+                <div className={styles.stats}>
+                  <span>{meta?.weeks}</span>
+                  <span>{meta?.freq}</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className={styles.ctaBanner}>
+          <div style={{ maxWidth: 600 }}>
+            <span className="eyebrow">Hittar du inte rätt program?</span>
+            <h3 style={{ fontSize: "1.2rem", margin: "8px 0 8px", fontWeight: 500 }}>
+              Låt oss bygga ett åt dig
+            </h3>
+            <p style={{ color: "var(--text-soft)", fontSize: "0.9rem" }}>
+              Boka en videosamtals-analys med en av våra kliniker. Vi går
+              igenom din kropp tillsammans och bygger sedan ett eget program
+              utifrån vad vi ser — helt skräddarsytt för dig.
+            </p>
+          </div>
+          <Link className="btn btn-primary" href="/analys" style={{ whiteSpace: "nowrap" }}>
+            Boka videosamtals-analys →
+          </Link>
+        </div>
+
+        <Footer />
+      </div>
+    </>
+  );
+}

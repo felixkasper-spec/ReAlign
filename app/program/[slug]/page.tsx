@@ -1,0 +1,172 @@
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import ShareButton from "@/components/ShareButton";
+import TrainingTips from "@/components/TrainingTips";
+import { createClient } from "@/lib/supabase/server";
+import { getSubscription } from "@/lib/subscription";
+import { programMeta } from "@/lib/program-meta";
+import VariantPicker, { type VariantExercise } from "./VariantPicker";
+import styles from "./page.module.css";
+
+export default async function ProgramPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ langd?: string }>;
+}) {
+  const { slug } = await params;
+  const { langd } = await searchParams;
+  const supabase = await createClient();
+
+  const { data: program } = await supabase
+    .from("programs")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (!program) {
+    notFound();
+  }
+
+  const { data: rows } = await supabase
+    .from("program_exercises")
+    .select("variant, is_warmup, order_index, exercises ( slug, title, body_part )")
+    .eq("program_id", program.id)
+    .order("order_index");
+
+  const variants: Record<string, VariantExercise[]> = {};
+  const warmup: VariantExercise[] = [];
+
+  for (const row of rows ?? []) {
+    const ex = row.exercises as unknown as VariantExercise | null;
+    if (!ex) continue;
+    if (row.is_warmup) {
+      warmup.push(ex);
+      continue;
+    }
+    const key = row.variant as string;
+    variants[key] = variants[key] ?? [];
+    variants[key].push(ex);
+  }
+
+  const subscription = program.tier === "premium" ? await getSubscription() : null;
+  const locked = program.tier === "premium" && !subscription?.active;
+
+  const meta = programMeta[program.slug];
+  const exerciseCount = (variants.full ?? []).length;
+
+  return (
+    <>
+      <Header />
+      <div className={`wrap ${styles.wrap}`}>
+        <div className={styles.breadcrumb}>
+          <Link href="/program">Program</Link>
+          <span className={styles.sep}>/</span>
+          <span className={styles.current}>{program.title}</span>
+        </div>
+
+        <div className={styles.progHead}>
+          <span className="eyebrow">{meta?.purpose ?? program.category}</span>
+          <h1>{program.title}</h1>
+          <div className={styles.progTags}>
+            {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
+            <span className="tag">{meta?.purpose ?? program.category}</span>
+            <span className="tag">
+              {program.tier === "premium" ? "Premium" : "Gratis"}
+            </span>
+          </div>
+        </div>
+
+        {program.hero_image && (
+          <div className={styles.heroImage}>
+            <Image src={program.hero_image} alt={program.title} fill sizes="900px" />
+          </div>
+        )}
+
+        {program.description && <p className={styles.progIntro}>{program.description}</p>}
+
+        <div className={styles.metaRow}>
+          <div className={styles.metaItem}>
+            <b>{exerciseCount || warmup.length}</b>Övningar
+          </div>
+          {meta?.level && (
+            <div className={styles.metaItem}>
+              <b>{meta.level}</b>Nivå
+            </div>
+          )}
+          <div className={styles.metaItem}>
+            <b>{meta?.purpose ?? program.category}</b>Fokus
+          </div>
+        </div>
+
+        <TrainingTips />
+
+        {locked ? (
+          <div className={styles.lockedBox}>
+            <span className="eyebrow" style={{ color: "var(--warm)" }}>
+              Premium
+            </span>
+            <h3 style={{ fontSize: "1.2rem", margin: "10px 0 8px", fontWeight: 500 }}>
+              Det här programmet ingår i Premium
+            </h3>
+            <p style={{ color: "var(--text)", fontSize: "0.92rem", marginBottom: 18 }}>
+              Lås upp {program.title} och resten av programbiblioteket för
+              149 kr/mån.
+            </p>
+            <Link className="btn btn-primary" href="/min-sida">
+              Bli Premium →
+            </Link>
+          </div>
+        ) : (
+          <>
+            {warmup.length > 0 && (
+              <div style={{ marginBottom: 30 }}>
+                <div className={styles.exListHead}>
+                  <h2>Uppvärmning</h2>
+                  <span>{warmup.length} st</span>
+                </div>
+                {warmup.map((ex, i) => (
+                  <Link
+                    key={ex.slug}
+                    href={`/ovningsbank/${ex.slug}`}
+                    className={styles.exRow}
+                  >
+                    <span className={styles.exNum}>{i + 1}</span>
+                    <span className={styles.exInfo}>
+                      <h3>{ex.title}</h3>
+                      <span className="tag">{ex.body_part}</span>
+                      <span className={`tag ${styles.tagWarmup}`}>
+                        1 set – uppvärmning
+                      </span>
+                    </span>
+                    <span className={styles.exArrow}>→</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <VariantPicker variants={variants} defaultVariant={langd ?? "full"} />
+          </>
+        )}
+
+        <div className={styles.ctaRow}>
+          <Link className="btn btn-primary" href="/min-sida">
+            Starta programmet
+          </Link>
+          <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">
+            Tillbaka till Program
+          </Link>
+        </div>
+        <div style={{ textAlign: "center", marginTop: 14 }}>
+          <ShareButton title={program.title} />
+        </div>
+
+        <Footer />
+      </div>
+    </>
+  );
+}
