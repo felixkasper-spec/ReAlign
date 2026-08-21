@@ -4,7 +4,27 @@ import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { createCheckoutSession, openBillingPortal } from "./actions";
+import {
+  scheduleSession,
+  markSessionDone,
+  deleteSession,
+} from "./schedule-actions";
 import styles from "./page.module.css";
+
+function formatScheduled(iso: string) {
+  const date = new Date(iso);
+  const today = new Date();
+  const isToday = date.toDateString() === today.toDateString();
+  const time = date.toLocaleTimeString("sv-SE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  if (isToday) return `Idag ${time}`;
+  return (
+    date.toLocaleDateString("sv-SE", { day: "numeric", month: "short" }) +
+    ` ${time}`
+  );
+}
 
 function checkoutMessage(checkout: string | undefined, active: boolean) {
   switch (checkout) {
@@ -65,14 +85,30 @@ export default async function MinSidaPage({
     redirect("/login");
   }
 
-  const [{ data: favorites }, subscription] = await Promise.all([
-    supabase
-      .from("favorites")
-      .select("exercise_id, exercises ( id, slug, title, body_part )")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false }),
-    getSubscription(),
-  ]);
+  const [{ data: favorites }, subscription, { data: programs }, { data: upcoming }, { data: recent }] =
+    await Promise.all([
+      supabase
+        .from("favorites")
+        .select("exercise_id, exercises ( id, slug, title, body_part )")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
+      getSubscription(),
+      supabase.from("programs").select("id, title").order("title"),
+      supabase
+        .from("logged_sessions")
+        .select("id, title, scheduled_for")
+        .eq("user_id", user.id)
+        .is("completed_at", null)
+        .not("scheduled_for", "is", null)
+        .order("scheduled_for", { ascending: true }),
+      supabase
+        .from("logged_sessions")
+        .select("id, title, completed_at")
+        .eq("user_id", user.id)
+        .not("completed_at", "is", null)
+        .order("completed_at", { ascending: false })
+        .limit(5),
+    ]);
 
   return (
     <>
@@ -81,7 +117,7 @@ export default async function MinSidaPage({
         <section className={styles.hero}>
           <span className="eyebrow">Min sida</span>
           <h1>Hej{user.email ? `, ${user.email}` : ""}!</h1>
-          <p>Schema och träningslogg landar här i nästa steg av utbyggnaden.</p>
+          <p>Schemalägg pass, håll koll på favoriter och din prenumeration.</p>
           <form action="/auth/signout" method="post">
             <button className="btn btn-ghost" style={{ border: "1px solid var(--line)" }}>
               Logga ut
@@ -135,6 +171,72 @@ export default async function MinSidaPage({
                   Bli Premium →
                 </button>
               </form>
+            </>
+          )}
+        </section>
+
+        <section className={styles.scheduleSection}>
+          <h2 className={styles.favTitle}>Schema</h2>
+
+          <form action={scheduleSession} className={styles.scheduleForm}>
+            <select name="programId" className={styles.select} defaultValue="">
+              <option value="">Eget pass...</option>
+              {(programs ?? []).map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.title}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name="title"
+              placeholder="Namn på passet"
+              required
+              className={styles.textInput}
+            />
+            <input type="date" name="date" required className={styles.dateInput} />
+            <input type="time" name="time" required className={styles.timeInput} />
+            <button className="btn btn-primary" type="submit">
+              Schemalägg
+            </button>
+          </form>
+
+          {upcoming && upcoming.length > 0 && (
+            <div className={styles.dash}>
+              {upcoming.map((s) => (
+                <div className={styles.dashRow} key={s.id}>
+                  <span>{s.title}</span>
+                  <div className={styles.dashActions}>
+                    <span className={styles.status}>
+                      {formatScheduled(s.scheduled_for!)}
+                    </span>
+                    <form action={markSessionDone.bind(null, s.id)}>
+                      <button type="submit" className={styles.iconBtn} title="Markera som klar">
+                        ✓
+                      </button>
+                    </form>
+                    <form action={deleteSession.bind(null, s.id)}>
+                      <button type="submit" className={styles.iconBtn} title="Ta bort">
+                        ✕
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {recent && recent.length > 0 && (
+            <>
+              <h3 className={styles.subTitle}>Senast genomfört</h3>
+              <div className={styles.dash}>
+                {recent.map((s) => (
+                  <div className={styles.dashRow} key={s.id}>
+                    <span>{s.title}</span>
+                    <span className={`${styles.status} ${styles.done}`}>Klar</span>
+                  </div>
+                ))}
+              </div>
             </>
           )}
         </section>

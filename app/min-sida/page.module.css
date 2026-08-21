@@ -51,6 +51,105 @@
   margin-bottom: 18px;
 }
 
+.scheduleSection {
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  margin-top: 20px;
+}
+
+.subTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 24px 0 12px;
+  color: var(--text-soft);
+}
+
+.scheduleForm {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.select,
+.textInput,
+.dateInput,
+.timeInput {
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+}
+
+.textInput {
+  flex: 1;
+  min-width: 160px;
+}
+
+.dash {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 8px 22px;
+}
+
+.dashRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+  gap: 12px;
+}
+
+.dashRow:last-child {
+  border-bottom: none;
+}
+
+.dashActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.status {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  color: var(--sage);
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.status.done {
+  color: var(--warm);
+  background: var(--warm-soft);
+}
+
+.iconBtn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.78rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+}
+
+.iconBtn:hover {
+  border-color: var(--sage);
+  color: var(--sage);
+}
+
 .favSection {
   padding: 20px 0 80px;
   border-top: 1px solid var(--line);
