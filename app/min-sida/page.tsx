@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SubmitButton from "@/components/SubmitButton";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { createCheckoutSession, openBillingPortal } from "./actions";
@@ -196,9 +197,9 @@ export default async function MinSidaPage({
             />
             <input type="date" name="date" required className={styles.dateInput} />
             <input type="time" name="time" required className={styles.timeInput} />
-            <button className="btn btn-primary" type="submit">
+            <SubmitButton className="btn btn-primary" pendingText="Sparar...">
               Schemalägg
-            </button>
+            </SubmitButton>
           </form>
 
           {upcoming && upcoming.length > 0 && (
