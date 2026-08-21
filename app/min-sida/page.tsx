@@ -329,9 +329,9 @@ export default async function MinSidaPage({
           {(!favorites || favorites.length === 0) && (
             <p className={styles.empty}>
               Inga sparade favoriter än.{" "}
-              <a href="/ovningsbank" className={styles.link}>
+              <Link href="/ovningsbank" className={styles.link}>
                 Bläddra i övningsbanken →
-              </a>
+              </Link>
             </p>
           )}
           {favorites && favorites.length > 0 && (

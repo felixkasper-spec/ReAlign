@@ -1,0 +1,65 @@
+.wrap {
+  margin: 24px 0;
+}
+
+.toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.chev {
+  transition: transform 0.15s ease;
+}
+
+.toggle.open .chev {
+  transform: rotate(180deg);
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 26px;
+  margin-top: 10px;
+}
+
+.panel h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.intro {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  margin-bottom: 16px;
+}
+
+.panel ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel li {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+}
+
+.closing {
+  margin-top: 16px;
+  font-size: 0.88rem;
+  color: var(--text);
+  font-weight: 500;
+}

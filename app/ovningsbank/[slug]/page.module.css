@@ -1,0 +1,224 @@
+.wrap {
+  max-width: 1160px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--text-soft);
+  padding: 8px 0 4px;
+}
+
+.breadcrumb a:hover {
+  color: var(--sage);
+}
+
+.sep {
+  color: var(--line);
+}
+
+.current {
+  color: var(--text);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 14px 0 40px;
+}
+
+.videoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 20px 50px -20px rgba(43, 46, 42, 0.25);
+}
+
+.videoFrame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.videoCaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+.exHead {
+  margin-bottom: 12px;
+}
+
+.exHead h1 {
+  font-size: 1.9rem;
+  margin-top: 4px;
+}
+
+.exTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tagBody {
+  color: var(--sage);
+  background: #e4ebe3;
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 14px;
+  margin: 14px 0 18px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.metaItem {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.exSection {
+  margin-bottom: 20px;
+}
+
+.exSection h2 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.exSection p {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+}
+
+.exSection p + p {
+  margin-top: 12px;
+}
+
+.bulletList {
+  list-style: none;
+}
+
+.bulletItem {
+  display: flex;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  padding: 7px 0;
+}
+
+.dot2 {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sage);
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+
+.tipsBox {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 22px 24px;
+}
+
+.tipLine {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  padding: 6px 0;
+}
+
+.tipLine .dot2 {
+  background: var(--warm);
+}
+
+.ctaRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.related {
+  padding: 20px 0 80px;
+  border-top: 1px solid var(--line);
+}
+
+.relatedHead {
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.relatedHead h2 {
+  font-size: 1.5rem;
+}
+
+.allLink {
+  font-size: 0.85rem;
+  color: var(--sage);
+  font-weight: 600;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.relCard {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.relThumb {
+  height: 110px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+
+.relBody {
+  padding: 14px 16px;
+}
+
+.relBody h3 {
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .relatedGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
