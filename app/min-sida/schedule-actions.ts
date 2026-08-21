@@ -52,6 +52,33 @@ export async function scheduleSession(formData: FormData) {
   revalidatePath("/min-sida");
 }
 
+export async function logSessionNow(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const title = (formData.get("title") as string)?.trim();
+  const notes = (formData.get("notes") as string)?.trim() || null;
+
+  if (!title) {
+    return;
+  }
+
+  await supabase.from("logged_sessions").insert({
+    user_id: user.id,
+    title,
+    notes,
+    completed_at: new Date().toISOString(),
+  });
+
+  revalidatePath("/min-sida");
+}
+
 export async function markSessionDone(sessionId: string) {
   const supabase = await createClient();
   const {

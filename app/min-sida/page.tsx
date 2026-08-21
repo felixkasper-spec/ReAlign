@@ -1,16 +1,28 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubmitButton from "@/components/SubmitButton";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
+import { getProgressionStats } from "@/lib/progression";
 import { createCheckoutSession, openBillingPortal } from "./actions";
 import {
   scheduleSession,
+  logSessionNow,
   markSessionDone,
   deleteSession,
 } from "./schedule-actions";
 import styles from "./page.module.css";
+
+const categoryLabels: Record<string, string> = {
+  helkropp: "Helkropp",
+  hofter: "Höft & bäcken",
+  "axlar-nacke-skulderblad": "Axlar/nacke/skulderblad",
+  gym: "Gymträning",
+  bal: "Bålträning",
+  kontorsvardag: "Kontorsvardag",
+};
 
 function formatScheduled(iso: string) {
   const date = new Date(iso);
@@ -111,6 +123,10 @@ export default async function MinSidaPage({
         .limit(5),
     ]);
 
+  const progression = subscription.active
+    ? await getProgressionStats(supabase, user.id)
+    : null;
+
   return (
     <>
       <Header />
@@ -176,8 +192,69 @@ export default async function MinSidaPage({
           )}
         </section>
 
+        <section className={styles.progressionPanel}>
+          <span className="eyebrow">Progression</span>
+          <h3 className={styles.premiumTitle}>Din träning över tid</h3>
+          {progression ? (
+            <>
+              <div className={styles.statRow}>
+                <div className={styles.stat}>
+                  <b>{progression.weekCount}</b>
+                  <span>pass senaste 7 dagarna</span>
+                </div>
+                <div className={styles.stat}>
+                  <b>{progression.monthCount}</b>
+                  <span>pass senaste 30 dagarna</span>
+                </div>
+                <div className={styles.stat}>
+                  <b>{progression.streak}</b>
+                  <span>{progression.streak === 1 ? "dags streak" : "dagars streak"}</span>
+                </div>
+              </div>
+              {progression.byCategory.length > 0 && (
+                <div className={styles.categoryList}>
+                  {progression.byCategory.map((c) => (
+                    <div key={c.category} className={styles.categoryRow}>
+                      <span>{categoryLabels[c.category] ?? c.category}</span>
+                      <span className={styles.status}>{c.count} pass</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <p className={styles.premiumText}>
+              Progressionsspårning ingår i Premium — se hur din träning
+              utvecklas över tid, per vecka och per kategori.
+            </p>
+          )}
+        </section>
+
         <section className={styles.scheduleSection}>
           <h2 className={styles.favTitle}>Schema</h2>
+
+          <form action={logSessionNow} className={styles.scheduleForm}>
+            <input
+              type="text"
+              name="title"
+              placeholder="Logga ett pass du redan gjort..."
+              required
+              className={styles.textInput}
+            />
+            <input
+              type="text"
+              name="notes"
+              placeholder="Kommentar (valfritt)"
+              className={styles.textInput}
+            />
+            <SubmitButton
+              className="btn btn-ghost"
+              style={{ border: "1px solid var(--line)" }}
+              pendingText="Loggar..."
+            >
+              Logga nu
+            </SubmitButton>
+          </form>
 
           <form action={scheduleSession} className={styles.scheduleForm}>
             <select name="programId" className={styles.select} defaultValue="">
@@ -238,6 +315,11 @@ export default async function MinSidaPage({
                   </div>
                 ))}
               </div>
+              <p style={{ marginTop: 14 }}>
+                <Link href="/min-sida/historik" className={styles.link}>
+                  Se all historik →
+                </Link>
+              </p>
             </>
           )}
         </section>

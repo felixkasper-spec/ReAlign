@@ -51,6 +51,52 @@
   margin-bottom: 18px;
 }
 
+.progressionPanel {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 32px 34px;
+  max-width: 560px;
+  margin-top: 20px;
+}
+
+.statRow {
+  display: flex;
+  gap: 32px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat b {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.stat span {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.categoryList {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.categoryRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.88rem;
+}
+
 .scheduleSection {
   padding: 20px 0;
   border-top: 1px solid var(--line);
