@@ -1,0 +1,104 @@
+.wrap {
+  max-width: 900px;
+}
+
+.pageHead {
+  padding: 56px 0 44px;
+  text-align: center;
+}
+
+.pageHead h1 {
+  font-size: 2.6rem;
+  margin-top: 14px;
+}
+
+.pageHead p {
+  color: var(--text-soft);
+  margin-top: 14px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 70px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+
+.item:first-child {
+  border-top: none;
+}
+
+.itemIc {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sage);
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.itemBody {
+  flex-grow: 1;
+}
+
+.itemBody h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.itemBody p {
+  font-size: 0.86rem;
+  color: var(--text-soft);
+}
+
+.badge {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: var(--warm-soft);
+  color: var(--warm);
+  white-space: nowrap;
+}
+
+.ctaBand {
+  background: var(--sage);
+  border-radius: 24px;
+  padding: 50px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.ctaBand h2 {
+  color: #fff;
+  font-size: 1.7rem;
+  margin: 12px 0 14px;
+}
+
+.ctaBand p {
+  color: #dce4da;
+  max-width: 420px;
+  margin: 0 auto 24px;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 700px) {
+  .pageHead h1 {
+    font-size: 2rem;
+  }
+}

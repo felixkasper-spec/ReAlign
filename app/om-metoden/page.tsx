@@ -1,0 +1,175 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import styles from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Om postural träning — ReAlign Metoden",
+  description:
+    "Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.",
+};
+
+export default function OmMetodenPage() {
+  return (
+    <>
+      <Header />
+      <div className={`wrap ${styles.wrap}`}>
+        <div className={styles.hero}>
+          <span className="eyebrow">Om metoden</span>
+          <h1>
+            Vad är egentligen <em>postural träning</em>?
+          </h1>
+          <p>
+            Inte stretching. Inte styrketräning i vanlig mening. Postural
+            träning handlar om att återge kroppen dess naturliga förmåga att
+            bära och fördela belastning — muskel för muskel, tills helheten
+            fungerar som den ska.
+          </p>
+        </div>
+
+        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
+          <div className={styles.deepDive}>
+            <span className="eyebrow">Fördjupning</span>
+            <p>
+              Om du vill fördjupa dig ytterligare i filosofin bakom
+              träningen, rekommenderar vi att du lyssnar på detta
+              podcast-avsnitt.
+            </p>
+            <div className={styles.spotifyFrame}>
+              <iframe
+                src="https://open.spotify.com/embed/episode/7kRVHZhGfmsZCOqJjtyPFF"
+                width="100%"
+                height="152"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <div className={styles.sectionHead}>
+            <span className="eyebrow">Grundorsaken</span>
+            <h2>Varför gör det ont — egentligen?</h2>
+          </div>
+          <p>
+            Kronisk värk i kroppen handlar sällan om en enskild skada.
+            Oftast har muskler och leder gradvis förlorat sin förmåga att
+            fördela den belastning kroppen utsätts för i vardagen. När det
+            sker tar andra muskler över — ofta ytligare muskler som inte är
+            gjorda för att bära det ansvaret långsiktigt. Resultatet blir
+            över- eller snedbelastning, och till slut smärta och sämre
+            prestationsförmåga.
+          </p>
+          <p>
+            Det är därför så många upplever att lindring från olika
+            behandlingar eller träningsformer bara håller i sig en kort
+            period — grundorsaken, den förlorade belastningsfördelningen,
+            är fortfarande kvar.
+          </p>
+        </div>
+
+        <div className={styles.section}>
+          <div className={styles.sectionHead}>
+            <span className="eyebrow">Skillnaden</span>
+            <h2>Postural träning vs. traditionell träning &amp; rehab</h2>
+          </div>
+          <div className={styles.compare2}>
+            <div className={`${styles.compCol} ${styles.trad}`}>
+              <span className={styles.lbl}>Traditionellt</span>
+              <ul>
+                <li>Fokuserar på symptomet — den onda punkten</li>
+                <li>Tränar ofta samma ytliga muskler som redan kompenserar</li>
+                <li>Lindring är vanligtvis tillfällig</li>
+                <li>Sällan koppling mellan kroppens olika delar</li>
+              </ul>
+            </div>
+            <div className={`${styles.compCol} ${styles.postural}`}>
+              <span className={styles.lbl}>Postural träning</span>
+              <ul>
+                <li>Fokuserar på grundorsaken — belastningsfördelningen</li>
+                <li>Väcker och stärker de djupare hållningsmusklerna</li>
+                <li>Byggd för varaktig, bestående förändring</li>
+                <li>Ser och tränar kroppen som ett sammanhängande system</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <div className={styles.sectionHead}>
+            <span className="eyebrow">Vem passar det för</span>
+            <h2>Vanliga anledningar att börja</h2>
+          </div>
+          <p>
+            Postural träning passar de flesta — oavsett ålder eller
+            träningsbakgrund. Några vanliga skäl till att man börjar:
+          </p>
+          <div className={styles.reasonGrid}>
+            <div className={styles.reason}>
+              <b>Återkommande spänningar</b>Nacke, axlar eller rygg som
+              ständigt känns stel eller öm.
+            </div>
+            <div className={styles.reason}>
+              <b>Stillasittande vardag</b>Kontorsarbete och skärmtid som
+              satt tydliga spår i hållningen.
+            </div>
+            <div className={styles.reason}>
+              <b>Återkommande skador</b>Samma typ av besvär som kommer
+              tillbaka gång på gång.
+            </div>
+            <div className={styles.reason}>
+              <b>Begränsad rörlighet</b>Stelhet som gör vardagliga rörelser
+              tyngre än de borde vara.
+            </div>
+            <div className={styles.reason}>
+              <b>Vill prestera bättre</b>Idrottare som vill träna smartare
+              och minska skaderisk.
+            </div>
+            <div className={styles.reason}>
+              <b>Vill bara må bättre</b>Ingen akut smärta — men en känsla av
+              att kroppen kunde fungera bättre.
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
+          <div className={styles.muscleNote}>
+            <span className={styles.ic}>◐</span>
+            <p>
+              <b>Det handlar om hållningsmusklerna.</b> Ländrygg, mage, säte
+              och nacke är inte designade för att hålla uppe kroppen i sig —
+              det är hållningsmusklernas jobb. När de tappar styrka tar de
+              ytliga musklerna över, vilket sliter på kroppen på sikt. Det
+              är därför vår träning bygger på progressiv belastningsökning
+              specifikt riktad mot dessa muskler, precis som i våra{" "}
+              <Link href="/program" style={{ color: "var(--sage)", textDecoration: "underline" }}>
+                färdiga program
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.ctaBand}>
+          <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
+            Redo att testa själv
+          </span>
+          <h2>Känn skillnaden på egen kropp.</h2>
+          <p>Helt gratis. Prova ett kort program redan idag och känn skillnaden direkt.</p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link className="btn btn-primary btn-lg" href="/program/helkropp-niva-1?langd=kort">
+              Testa ett kort program
+            </Link>
+            <Link className="btn btn-primary btn-lg" href="/program">
+              Alla program
+            </Link>
+          </div>
+        </div>
+
+        <Footer />
+      </div>
+    </>
+  );
+}

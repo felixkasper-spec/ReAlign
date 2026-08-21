@@ -1,0 +1,53 @@
+.faqGroup {
+  margin-top: 36px;
+}
+
+.faqGroup > span {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.faqItem {
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+}
+
+.faqItem:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.faqQ {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  padding: 0;
+}
+
+.chev {
+  color: var(--sage);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.faqItem.open .chev {
+  transform: rotate(180deg);
+}
+
+.faqA {
+  margin-top: 12px;
+}
+
+.faqA p {
+  font-size: 0.92rem;
+  color: var(--text-soft);
+}
