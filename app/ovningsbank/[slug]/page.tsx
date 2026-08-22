@@ -80,7 +80,7 @@ export default async function ExercisePage({
         </div>
 
         <div className={styles.layout}>
-          <div>
+          <div className={styles.videoWrap}>
             {exercise.video_url && (
               <div className={styles.videoFrame}>
                 <iframe
