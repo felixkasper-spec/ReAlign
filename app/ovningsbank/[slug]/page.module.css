@@ -196,6 +196,7 @@
 }
 
 .relThumb {
+  position: relative;
   height: 110px;
   background: var(--surface);
   display: flex;
@@ -203,6 +204,10 @@
   justify-content: center;
   color: var(--text-soft);
   font-size: 0.85rem;
+}
+
+.relThumb img {
+  object-fit: cover;
 }
 
 .relBody {

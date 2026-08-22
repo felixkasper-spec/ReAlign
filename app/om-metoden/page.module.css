@@ -233,7 +233,9 @@
     order: -1;
   }
   .reasonImage {
-    min-height: 220px;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 4 / 5;
   }
   .compare2,
   .reasonGrid {

@@ -157,4 +157,8 @@
   .grid {
     grid-template-columns: 1fr;
   }
+  .cardThumb {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
 }

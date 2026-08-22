@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -5,6 +6,7 @@ import Footer from "@/components/Footer";
 import FavoriteButton from "@/components/FavoriteButton";
 import ShareButton from "@/components/ShareButton";
 import { createClient } from "@/lib/supabase/server";
+import { hasThumbnail } from "../thumbnails";
 import styles from "./page.module.css";
 
 function renderInstructions(text: string) {
@@ -165,7 +167,18 @@ export default async function ExercisePage({
             <div className={styles.relatedGrid}>
               {related.map((r) => (
                 <Link key={r.id} href={`/ovningsbank/${r.slug}`} className={styles.relCard}>
-                  <div className={styles.relThumb}>▶</div>
+                  {hasThumbnail(r.slug) ? (
+                    <div className={`img-duo ${styles.relThumb}`}>
+                      <Image
+                        src={`/exercises/${r.slug}.jpg`}
+                        alt={r.title}
+                        fill
+                        sizes="(max-width: 880px) 50vw, 25vw"
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles.relThumb}>▶</div>
+                  )}
                   <div className={styles.relBody}>
                     <h3>{r.title}</h3>
                   </div>
