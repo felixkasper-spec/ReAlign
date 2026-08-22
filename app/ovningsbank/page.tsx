@@ -32,7 +32,7 @@ export default async function OvningsbankPage() {
     <>
       <Header />
       <div className="wrap">
-        <section style={{ paddingBottom: 0 }}>
+        <div className={styles.pageHead}>
           <span className="eyebrow">{exercises?.length ?? 0} övningar</span>
           <h1 className={styles.title}>Övningsbank</h1>
           <p className={styles.intro}>
@@ -40,7 +40,7 @@ export default async function OvningsbankPage() {
             Spara favoriter direkt till Min sida.
           </p>
           <TrainingTips />
-        </section>
+        </div>
 
         {(exercises ?? []).length === 0 ? (
           <p className={styles.empty}>

@@ -1,6 +1,10 @@
+.pageHead {
+  padding-top: 30px;
+}
+
 .title {
   font-size: 2.2rem;
-  margin: 14px 0 12px;
+  margin: 10px 0 10px;
 }
 
 .intro {
