@@ -183,55 +183,49 @@ export default function ErgonomiPage() {
     <>
       <Header />
       <div className="wrap">
-        <header className={styles.pageHead}>
+        <div className={styles.pageHead}>
           <span className="eyebrow">Ergonomi</span>
-          <h1>Vardagens rörelser, rätt utförda.</h1>
-          <p>
-            Små justeringar i hur du sitter, står och lyfter gör stor
-            skillnad över tid. Här är det posturalt korrekta sättet att göra
-            det du redan gör varje dag.
-          </p>
-        </header>
-
-        <div className={styles.introVideo}>
-          <div className={styles.videoFrame}>
-            <iframe
-              src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className={styles.caption}>Introduktion till postural medvetenhet</div>
         </div>
 
-        <div className={styles.awareness}>
-          <span className="eyebrow">Innan du börjar</span>
-          <h2>Bli posturalt medveten</h2>
-          <p>
-            Det är lätt att dåliga hållnings- och rörelsevanor underminerar
-            effekten av din träning. Vanliga exempel är att stå och luta på
-            ena höften, korsa benen när du sitter, sitta ihopkrupen med krum
-            bröstrygg och framåtlutade axlar, eller bära väskan på samma axel
-            varje gång. Genom att bli medveten om dessa vanor och korrigera
-            dem kan du snabbare skapa bestående förbättringar.
-          </p>
-          <div className={styles.awarenessGrid}>
-            <div className={styles.awarenessItem}>
-              <b>Observera</b>
-              <span>Var uppmärksam på din hållning när du står, sitter eller går.</span>
+        <div className={styles.introRow}>
+          <div className={styles.awareness}>
+            <span className="eyebrow">Innan du börjar</span>
+            <h2>Bli posturalt medveten</h2>
+            <p>
+              Vanliga exempel är att stå och luta på ena höften, korsa benen
+              när du sitter, eller bära väskan på samma axel varje gång. Bli
+              medveten om dina vanor för att snabbare skapa bestående
+              förbättringar.
+            </p>
+            <div className={styles.awarenessGrid}>
+              <div className={styles.awarenessItem}>
+                <b>Observera</b>
+                <span>Var uppmärksam på din hållning när du står, sitter eller går.</span>
+              </div>
+              <div className={styles.awarenessItem}>
+                <b>Analysera</b>
+                <span>Hur ser din hållning faktiskt ut när du står och sitter?</span>
+              </div>
+              <div className={styles.awarenessItem}>
+                <b>Repetitiva rörelser</b>
+                <span>Använder du ena sidan av kroppen mer än den andra?</span>
+              </div>
+              <div className={styles.awarenessItem}>
+                <b>Nyfikenhet</b>
+                <span>Finns det andra vanor som kan bidra till obalanser?</span>
+              </div>
             </div>
-            <div className={styles.awarenessItem}>
-              <b>Analysera</b>
-              <span>Hur ser din hållning faktiskt ut när du står och sitter?</span>
+          </div>
+
+          <div className={styles.introVideo}>
+            <div className={styles.videoFrame}>
+              <iframe
+                src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
             </div>
-            <div className={styles.awarenessItem}>
-              <b>Repetitiva rörelser</b>
-              <span>Använder du ena sidan av kroppen mer än den andra?</span>
-            </div>
-            <div className={styles.awarenessItem}>
-              <b>Nyfikenhet</b>
-              <span>Finns det andra vanor som kan bidra till obalanser?</span>
-            </div>
+            <div className={styles.caption}>Introduktion till postural medvetenhet</div>
           </div>
         </div>
 
@@ -251,6 +245,7 @@ export default function ErgonomiPage() {
                     src={s.videoUrl}
                     allow="autoplay; fullscreen; picture-in-picture"
                     allowFullScreen
+                    loading="lazy"
                   />
                 </div>
               )}
