@@ -26,6 +26,16 @@ export default async function SignupPage({
 
         <form action={signup}>
           <div className={styles.field}>
+            <label htmlFor="firstName">Förnamn</label>
+            <input
+              id="firstName"
+              name="firstName"
+              type="text"
+              autoComplete="given-name"
+              required
+            />
+          </div>
+          <div className={styles.field}>
             <label htmlFor="email">E-post</label>
             <input
               id="email"

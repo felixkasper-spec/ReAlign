@@ -1,48 +1,16 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import HeaderClient from "./HeaderClient";
 
-import Link from "next/link";
-import { useState } from "react";
-import styles from "./Header.module.css";
+export default async function Header() {
+  let loggedIn = false;
 
-const navLinks = [
-  { href: "/program", label: "Program" },
-  { href: "/ovningsbank", label: "Övningsbank" },
-  { href: "/ergonomi", label: "Ergonomi" },
-  { href: "/om-metoden", label: "Om metoden" },
-  { href: "/analys", label: "Analysera dig" },
-];
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    loggedIn = !!user;
+  }
 
-export default function Header() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <nav className={styles.nav}>
-      <Link className={styles.logo} href="/">
-        <span className={styles.mark} />
-        ReAlign
-      </Link>
-      <button
-        className={styles.menuToggle}
-        aria-label="Öppna meny"
-        onClick={() => setOpen((v) => !v)}
-      >
-        ☰
-      </button>
-      <div className={`${styles.navlinks} ${open ? styles.open : ""}`}>
-        {navLinks.map((link) => (
-          <Link key={link.href} href={link.href}>
-            {link.label}
-          </Link>
-        ))}
-      </div>
-      <div className={styles.navcta}>
-        <Link className="btn btn-ghost" href="/login">
-          Logga in
-        </Link>
-        <Link className="btn btn-primary" href="/signup">
-          Kom igång
-        </Link>
-      </div>
-    </nav>
-  );
+  return <HeaderClient loggedIn={loggedIn} />;
 }
