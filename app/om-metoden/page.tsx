@@ -4,6 +4,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
+import { getSpotifyOembed } from "@/lib/spotify";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -12,7 +13,11 @@ export const metadata: Metadata = {
     "Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.",
 };
 
-export default function OmMetodenPage() {
+const EPISODE_ID = "7kRVHZhGfmsZCOqJjtyPFF";
+
+export default async function OmMetodenPage() {
+  const podcastPreview = await getSpotifyOembed(EPISODE_ID);
+
   return (
     <>
       <Header />
@@ -166,7 +171,7 @@ export default function OmMetodenPage() {
               podcast-avsnitt.
             </p>
             <div className={styles.spotifyFrame}>
-              <SpotifyEmbed episodeId="7kRVHZhGfmsZCOqJjtyPFF" />
+              <SpotifyEmbed episodeId={EPISODE_ID} preview={podcastPreview} />
             </div>
           </div>
         </div>
