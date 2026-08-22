@@ -122,6 +122,16 @@
   display: block;
 }
 
+.cardThumb {
+  position: relative;
+  height: 130px;
+  margin-bottom: 16px;
+}
+
+.cardThumb img {
+  object-fit: cover;
+}
+
 .cardTop h3 {
   font-size: 1.05rem;
   font-weight: 500;

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,7 +10,7 @@ export default async function ProgramIndexPage() {
   const supabase = await createClient();
   const { data: programs } = await supabase
     .from("programs")
-    .select("id, slug, title, tier")
+    .select("id, slug, title, tier, hero_image")
     .order("category")
     .order("level");
 
@@ -17,14 +18,14 @@ export default async function ProgramIndexPage() {
     <>
       <Header />
       <div className="wrap">
-        <section style={{ paddingBottom: 0 }}>
+        <div className={styles.pageHead}>
           <span className="eyebrow">Program</span>
           <h1 className={styles.title}>Hitta ditt program.</h1>
           <p className={styles.intro}>
             Strukturerade program för olika syften och nivåer — från
             nackspänning till hållningskorrigering.
           </p>
-        </section>
+        </div>
 
         <div className={styles.banner}>
           <p>Osäker på vilket program som passar dig? Svara på fem korta frågor.</p>
@@ -49,6 +50,16 @@ export default async function ProgramIndexPage() {
             const meta = programMeta[p.slug];
             return (
               <Link key={p.id} href={`/program/${p.slug}`} className={styles.card}>
+                {p.hero_image && (
+                  <div className={`img-duo ${styles.cardThumb}`}>
+                    <Image
+                      src={p.hero_image}
+                      alt={p.title}
+                      fill
+                      sizes="(max-width: 880px) 100vw, 320px"
+                    />
+                  </div>
+                )}
                 <div className={styles.cardTop}>
                   <span className={styles.badge}>{meta?.level ?? ""}</span>
                   <span

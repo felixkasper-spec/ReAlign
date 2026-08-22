@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import FavoriteButton from "@/components/FavoriteButton";
 import styles from "./page.module.css";
+import { hasThumbnail } from "./thumbnails";
 
 export type ExerciseListItem = {
   id: string;
@@ -134,6 +136,16 @@ export default function OvningsbankClient({
             {filtered.map((exercise) => (
               <div key={exercise.id} className={styles.card}>
                 <Link href={`/ovningsbank/${exercise.slug}`} className={styles.cardTop}>
+                  {hasThumbnail(exercise.slug) && (
+                    <div className={`img-duo ${styles.cardThumb}`}>
+                      <Image
+                        src={`/exercises/${exercise.slug}.jpg`}
+                        alt={exercise.title}
+                        fill
+                        sizes="(max-width: 880px) 100vw, 320px"
+                      />
+                    </div>
+                  )}
                   <h3>{exercise.title}</h3>
                   <div className={styles.tags}>
                     {exercise.equipment && (
