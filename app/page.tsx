@@ -51,7 +51,7 @@ export default function Home() {
               </Link>
               <Link
                 className="btn btn-ghost btn-lg"
-                href="/program/helkropp-niva-1?langd=kort"
+                href="/program/helkropp-niva-2?langd=kort"
               >
                 Testa ett kort program — 5 min
               </Link>
@@ -86,7 +86,7 @@ export default function Home() {
           </div>
           <div className={styles.twoWays}>
             <Link
-              href="/program/helkropp-niva-1?langd=kort"
+              href="/program/helkropp-niva-2?langd=kort"
               className={`${styles.wayCard} ${styles.sage}`}
             >
               <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
@@ -154,8 +154,7 @@ export default function Home() {
           >
             <span className={styles.stars}>★★★★★</span>
             <span>
-              <b>5.0</b> på Google · baserat på recensioner från våra
-              patienter
+              <b>5.0</b> på Google
             </span>
             <span style={{ color: "var(--sage)" }}>→</span>
           </a>
@@ -190,42 +189,6 @@ export default function Home() {
                 <p>— Patientrecension</p>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section style={{ paddingTop: 0 }}>
-          <div className={styles.photoBand}>
-            <div className={`img-duo ${styles.bandImage}`}>
-              <Image
-                src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=900&h=700&q=80"
-                alt="Person i medelåldern som stretchar hemma"
-                fill
-                sizes="(max-width: 880px) 100vw, 33vw"
-              />
-            </div>
-            <div className={`img-duo warm ${styles.bandImage}`}>
-              <Image
-                src="https://images.unsplash.com/photo-1718862403436-616232ec6005?auto=format&fit=crop&w=600&h=700&q=80"
-                alt="Person i medelåldern med yogamatta"
-                fill
-                sizes="(max-width: 880px) 100vw, 33vw"
-              />
-            </div>
-            <div className={`img-duo ${styles.bandImage}`}>
-              <Image
-                src="https://images.unsplash.com/photo-1764173040171-57f79264b358?auto=format&fit=crop&w=600&h=700&q=80"
-                alt="Person i medelåldern som tränar"
-                fill
-                sizes="(max-width: 880px) 100vw, 33vw"
-              />
-            </div>
-            <div className={styles.bandCaption}>
-              <span className="eyebrow">Verklig rörelse</span>
-              <p>
-                Bilder byts ut mot riktigt material från kliniken och
-                ReAlign-appen när sidan byggs på riktigt.
-              </p>
-            </div>
           </div>
         </section>
 
@@ -371,18 +334,52 @@ export default function Home() {
         </section>
 
         <section id="priser">
-          <div className={styles.pricingBox}>
+          <div className="section-head" style={{ textAlign: "center", margin: "0 auto 40px" }}>
             <span className="eyebrow">Priser</span>
-            <h2>Helt gratis att använda.</h2>
-            <p>
-              Program, övningsbank, ergonomiguider och min sida — allt
-              ingår, ingen betalning krävs. Vi lägger till fler funktioner
-              löpande, och kommer vara tydliga innan något någonsin blir
-              betalt.
+            <h2 style={{ marginTop: 10 }}>Vad ingår på varje nivå.</h2>
+            <p style={{ marginTop: 10, color: "var(--text-soft)" }}>
+              Du kommer långt utan att ens skapa konto — och det mesta
+              förblir gratis även med ett.
             </p>
-            <Link className="btn btn-primary btn-lg" href="/signup">
-              Kom igång gratis
-            </Link>
+          </div>
+          <div className={styles.tierGrid}>
+            <div className={styles.tierCard}>
+              <span className="eyebrow">Utan konto</span>
+              <p className={styles.tierPrice}>0 kr</p>
+              <ul className={styles.tierList}>
+                <li>Bläddra bland alla program &amp; övningar</li>
+                <li>Se instruktionsvideor för varje övning</li>
+                <li>Läs ergonomiguider för sitta, stå och lyfta</li>
+              </ul>
+            </div>
+            <div className={styles.tierCard}>
+              <span className="eyebrow">Gratis konto</span>
+              <p className={styles.tierPrice}>0 kr</p>
+              <ul className={styles.tierList}>
+                <li>Allt i &quot;Utan konto&quot;</li>
+                <li>Spara favoritövningar</li>
+                <li>Schemalägg och logga dina träningspass</li>
+                <li>Program på Nivå 1–2 i varje kategori</li>
+              </ul>
+              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/signup">
+                Skapa gratis konto
+              </Link>
+            </div>
+            <div className={`${styles.tierCard} ${styles.tierHighlight}`}>
+              <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
+                Premium
+              </span>
+              <p className={styles.tierPrice}>149 kr/mån</p>
+              <ul className={styles.tierList}>
+                <li>Allt i &quot;Gratis konto&quot;</li>
+                <li>Alla programnivåer, inklusive Gymträning</li>
+                <li>Detaljerad progressionsspårning</li>
+                <li>Veckobrev med tips och uppföljning</li>
+              </ul>
+              <Link className="btn btn-primary" href="/signup">
+                Bli Premium
+              </Link>
+            </div>
           </div>
         </section>
 

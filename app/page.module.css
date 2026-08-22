@@ -210,36 +210,6 @@
   margin-top: 20px;
 }
 
-/* PHOTO BAND */
-.photoBand {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr;
-  gap: 20px;
-}
-
-.bandImage {
-  position: relative;
-  height: 280px;
-}
-
-.bandImage img {
-  object-fit: cover;
-}
-
-.bandCaption {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-top: 22px;
-}
-
-.bandCaption p {
-  color: var(--text-soft);
-  font-size: 0.92rem;
-  max-width: 380px;
-}
-
 /* PROGRAM CARDS */
 .cards3 {
   display: grid;
@@ -398,30 +368,61 @@
 }
 
 /* PRICING */
-.pricingBox {
+.tierGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.tierCard {
   background: var(--surface);
-  border-radius: 24px;
-  padding: 56px;
-  text-align: center;
+  border-radius: 20px;
+  padding: 30px 28px;
+  display: flex;
+  flex-direction: column;
 }
 
-.pricingBox h2 {
-  font-size: 2rem;
-  margin: 14px 0 14px;
+.tierHighlight {
+  background: var(--sage);
+  color: #fff;
 }
 
-.pricingBox p {
-  color: var(--text-soft);
-  max-width: 480px;
-  margin: 0 auto 28px;
+.tierPrice {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.7rem;
+  margin: 12px 0 18px;
+}
+
+.tierList {
+  list-style: none;
+  flex-grow: 1;
+  margin-bottom: 22px;
+}
+
+.tierList li {
+  font-size: 0.9rem;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+}
+
+.tierList li:first-child {
+  border-top: none;
+}
+
+.tierHighlight .tierList li {
+  border-top-color: rgba(255, 255, 255, 0.25);
+  color: #f3f5f1;
+}
+
+.tierHighlight :global(.btn-primary) {
+  background: #fff;
+  color: var(--text);
 }
 
 @media (max-width: 880px) {
-  .photoBand {
+  .tierGrid {
     grid-template-columns: 1fr;
-  }
-  .bandImage {
-    height: 220px;
   }
   .hero {
     grid-template-columns: 1fr;
