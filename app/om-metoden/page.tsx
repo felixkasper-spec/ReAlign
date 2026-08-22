@@ -31,7 +31,7 @@ export default function OmMetodenPage() {
           </div>
           <div className={`img-duo ${styles.heroImage}`}>
             <Image
-              src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=700&h=560&q=80"
+              src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=700&h=560&q=80&sat=-100&con=6&bri=5"
               alt="Postural träning i solnedgången"
               fill
               sizes="(max-width: 800px) 100vw, 440px"
@@ -97,7 +97,7 @@ export default function OmMetodenPage() {
           <div className={styles.reasonRow}>
             <div className={`img-duo warm ${styles.reasonImage}`}>
               <Image
-                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&h=700&q=80"
+                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&h=700&q=80&sat=-100&con=6&bri=5"
                 alt="Person tränar bålstyrka på matta"
                 fill
                 sizes="(max-width: 800px) 100vw, 340px"

@@ -122,16 +122,15 @@ section {
   font-family: var(--font-mono), monospace;
 }
 
-/* Duotone-tonade bilder — placeholder-foton tonade i sage/warm så de känns avsiktliga, inte slumpmässiga stockbilder */
+/* Duotone-tonade bilder — placeholder-foton tonade i sage/warm så de känns avsiktliga, inte slumpmässiga stockbilder.
+   Gråskala/kontrast/ljusstyrka bakas in i själva bildfilen (Unsplash-parametrar eller förbehandlade lokala jpg:er)
+   istället för en CSS filter() här — en filter()+mix-blend-mode-kombo på bilden är dyr att rendera om på mobilens
+   GPU vid varje scroll/repaint, särskilt med många bilder på en sida. */
 .img-duo {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
   background: var(--surface);
-}
-
-.img-duo img {
-  filter: grayscale(1) contrast(1.06) brightness(1.05);
 }
 
 .img-duo::after {

@@ -71,7 +71,7 @@ export default function Home() {
 
           <div className={`img-duo ${styles.heroImage}`}>
             <Image
-              src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=700&h=900&q=80"
+              src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=700&h=900&q=80&sat=-100&con=6&bri=5"
               alt="Person i medelåldern som är aktiv utomhus"
               fill
               sizes="(max-width: 880px) 100vw, 550px"
@@ -208,7 +208,7 @@ export default function Home() {
             <Link className={styles.card} href="/program">
               <div className={`img-duo ${styles.cardThumb}`}>
                 <Image
-                  src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=600&h=400&q=80"
+                  src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
                   alt="Person i medelåldern som är aktiv"
                   fill
                   sizes="(max-width: 880px) 100vw, 33vw"
@@ -229,7 +229,7 @@ export default function Home() {
             <Link className={styles.card} href="/ovningsbank">
               <div className={`img-duo ${styles.cardThumb}`}>
                 <Image
-                  src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=600&h=400&q=80"
+                  src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
                   alt="Person i medelåldern som utför en övning"
                   fill
                   sizes="(max-width: 880px) 100vw, 33vw"
@@ -250,7 +250,7 @@ export default function Home() {
             <Link className={styles.card} href="/ergonomi">
               <div className={`img-duo warm ${styles.cardThumb}`}>
                 <Image
-                  src="https://images.unsplash.com/photo-1713946598456-a25ab3645730?auto=format&fit=crop&w=600&h=400&q=80"
+                  src="https://images.unsplash.com/photo-1713946598456-a25ab3645730?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
                   alt="Person som stretchar vid skrivbordet"
                   fill
                   sizes="(max-width: 880px) 100vw, 33vw"
