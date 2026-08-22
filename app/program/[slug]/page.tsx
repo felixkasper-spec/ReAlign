@@ -154,9 +154,11 @@ export default async function ProgramPage({
         )}
 
         <div className={styles.ctaRow}>
-          <Link className="btn btn-primary" href="/min-sida">
-            Starta programmet
-          </Link>
+          {!locked && (
+            <Link className="btn btn-primary" href="/min-sida">
+              Starta programmet
+            </Link>
+          )}
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">
             Tillbaka till Program
           </Link>
