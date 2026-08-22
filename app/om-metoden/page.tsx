@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -15,40 +16,31 @@ export default function OmMetodenPage() {
     <>
       <Header />
       <div className={`wrap ${styles.wrap}`}>
-        <div className={styles.hero}>
-          <span className="eyebrow">Om metoden</span>
-          <h1>
-            Vad är egentligen <em>postural träning</em>?
-          </h1>
-          <p>
-            Inte stretching. Inte styrketräning i vanlig mening. Postural
-            träning handlar om att återge kroppen dess naturliga förmåga att
-            bära och fördela belastning — muskel för muskel, tills helheten
-            fungerar som den ska.
-          </p>
-        </div>
-
-        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
-          <div className={styles.deepDive}>
-            <span className="eyebrow">Fördjupning</span>
+        <div className={styles.heroRow}>
+          <div className={styles.hero}>
+            <span className="eyebrow">Om metoden</span>
+            <h1>
+              Vad är egentligen <em>postural träning</em>?
+            </h1>
             <p>
-              Om du vill fördjupa dig ytterligare i filosofin bakom
-              träningen, rekommenderar vi att du lyssnar på detta
-              podcast-avsnitt.
+              Inte stretching. Inte styrketräning i vanlig mening. Postural
+              träning handlar om att återge kroppen dess naturliga förmåga
+              att bära och fördela belastning — muskel för muskel, tills
+              helheten fungerar som den ska.
             </p>
-            <div className={styles.spotifyFrame}>
-              <iframe
-                src="https://open.spotify.com/embed/episode/7kRVHZhGfmsZCOqJjtyPFF"
-                width="100%"
-                height="152"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              />
-            </div>
+          </div>
+          <div className={`img-duo ${styles.heroImage}`}>
+            <Image
+              src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=700&h=560&q=80"
+              alt="Postural träning i solnedgången"
+              fill
+              sizes="(max-width: 800px) 100vw, 440px"
+              priority
+            />
           </div>
         </div>
 
-        <div className={styles.section}>
+        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
           <div className={styles.sectionHead}>
             <span className="eyebrow">Grundorsaken</span>
             <h2>Varför gör det ont — egentligen?</h2>
@@ -102,34 +94,46 @@ export default function OmMetodenPage() {
             <span className="eyebrow">Vem passar det för</span>
             <h2>Vanliga anledningar att börja</h2>
           </div>
-          <p>
-            Postural träning passar de flesta — oavsett ålder eller
-            träningsbakgrund. Några vanliga skäl till att man börjar:
-          </p>
-          <div className={styles.reasonGrid}>
-            <div className={styles.reason}>
-              <b>Återkommande spänningar</b>Nacke, axlar eller rygg som
-              ständigt känns stel eller öm.
+          <div className={styles.reasonRow}>
+            <div className={`img-duo warm ${styles.reasonImage}`}>
+              <Image
+                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&h=700&q=80"
+                alt="Person tränar bålstyrka på matta"
+                fill
+                sizes="(max-width: 800px) 100vw, 340px"
+              />
             </div>
-            <div className={styles.reason}>
-              <b>Stillasittande vardag</b>Kontorsarbete och skärmtid som
-              satt tydliga spår i hållningen.
-            </div>
-            <div className={styles.reason}>
-              <b>Återkommande skador</b>Samma typ av besvär som kommer
-              tillbaka gång på gång.
-            </div>
-            <div className={styles.reason}>
-              <b>Begränsad rörlighet</b>Stelhet som gör vardagliga rörelser
-              tyngre än de borde vara.
-            </div>
-            <div className={styles.reason}>
-              <b>Vill prestera bättre</b>Idrottare som vill träna smartare
-              och minska skaderisk.
-            </div>
-            <div className={styles.reason}>
-              <b>Vill bara må bättre</b>Ingen akut smärta — men en känsla av
-              att kroppen kunde fungera bättre.
+            <div>
+              <p style={{ marginBottom: 10 }}>
+                Postural träning passar de flesta — oavsett ålder eller
+                träningsbakgrund. Några vanliga skäl till att man börjar:
+              </p>
+              <div className={styles.reasonGrid}>
+                <div className={styles.reason}>
+                  <b>Återkommande spänningar</b>Nacke, axlar eller rygg som
+                  ständigt känns stel eller öm.
+                </div>
+                <div className={styles.reason}>
+                  <b>Stillasittande vardag</b>Kontorsarbete och skärmtid som
+                  satt tydliga spår i hållningen.
+                </div>
+                <div className={styles.reason}>
+                  <b>Återkommande skador</b>Samma typ av besvär som kommer
+                  tillbaka gång på gång.
+                </div>
+                <div className={styles.reason}>
+                  <b>Begränsad rörlighet</b>Stelhet som gör vardagliga
+                  rörelser tyngre än de borde vara.
+                </div>
+                <div className={styles.reason}>
+                  <b>Vill prestera bättre</b>Idrottare som vill träna
+                  smartare och minska skaderisk.
+                </div>
+                <div className={styles.reason}>
+                  <b>Vill bara må bättre</b>Ingen akut smärta — men en
+                  känsla av att kroppen kunde fungera bättre.
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -149,6 +153,26 @@ export default function OmMetodenPage() {
               </Link>
               .
             </p>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <div className={styles.deepDive}>
+            <span className="eyebrow">Fördjupning</span>
+            <p>
+              Om du vill fördjupa dig ytterligare i filosofin bakom
+              träningen, rekommenderar vi att du lyssnar på detta
+              podcast-avsnitt.
+            </p>
+            <div className={styles.spotifyFrame}>
+              <iframe
+                src="https://open.spotify.com/embed/episode/7kRVHZhGfmsZCOqJjtyPFF"
+                width="100%"
+                height="152"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
 

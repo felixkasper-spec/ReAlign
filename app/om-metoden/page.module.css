@@ -2,9 +2,27 @@
   max-width: 980px;
 }
 
-.hero {
+.heroRow {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
   padding: 50px 0 30px;
+}
+
+.hero {
   max-width: 680px;
+}
+
+.heroImage {
+  position: relative;
+  height: 380px;
+  border-radius: 22px;
+}
+
+.heroImage img {
+  object-fit: cover;
+  object-position: center 30%;
 }
 
 .hero h1 {
@@ -115,9 +133,27 @@
   color: var(--text);
 }
 
+.reasonRow {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.reasonImage {
+  position: relative;
+  height: 100%;
+  min-height: 340px;
+  border-radius: 20px;
+}
+
+.reasonImage img {
+  object-fit: cover;
+}
+
 .reasonGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   margin-top: 10px;
 }
@@ -187,6 +223,17 @@
 @media (max-width: 800px) {
   .hero h1 {
     font-size: 2.1rem;
+  }
+  .heroRow,
+  .reasonRow {
+    grid-template-columns: 1fr;
+  }
+  .heroImage {
+    height: 260px;
+    order: -1;
+  }
+  .reasonImage {
+    min-height: 220px;
   }
   .compare2,
   .reasonGrid {
