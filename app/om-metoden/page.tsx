@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SpotifyEmbed from "@/components/SpotifyEmbed";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -165,13 +166,7 @@ export default function OmMetodenPage() {
               podcast-avsnitt.
             </p>
             <div className={styles.spotifyFrame}>
-              <iframe
-                src="https://open.spotify.com/embed/episode/7kRVHZhGfmsZCOqJjtyPFF"
-                width="100%"
-                height="152"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              />
+              <SpotifyEmbed episodeId="7kRVHZhGfmsZCOqJjtyPFF" />
             </div>
           </div>
         </div>

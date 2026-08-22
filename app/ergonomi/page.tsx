@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SpotifyEmbed from "@/components/SpotifyEmbed";
 import JumpNav from "./JumpNav";
 import styles from "./page.module.css";
 
@@ -311,13 +312,7 @@ export default function ErgonomiPage() {
             ergonomi? Lyssna på avsnittet direkt här, utan att lämna sidan.
           </p>
           <div className={styles.spotifyFrame}>
-            <iframe
-              src="https://open.spotify.com/embed/episode/6T3rxc52NXbu0zL4yoE2Cq"
-              width="100%"
-              height="152"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            />
+            <SpotifyEmbed episodeId="6T3rxc52NXbu0zL4yoE2Cq" />
           </div>
         </section>
 
