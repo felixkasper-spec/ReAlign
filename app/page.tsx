@@ -43,7 +43,7 @@ export default function Home() {
               hållning.
             </p>
             <div className={styles.heroNote}>
-              🎉 Helt gratis — inga betalplaner, bara träning.
+              🎉 Gratis att komma igång — inget kort krävs.
             </div>
             <div className={styles.heroCtas}>
               <Link className="btn btn-primary btn-lg" href="/program">
