@@ -180,6 +180,7 @@
   overflow: hidden;
   aspect-ratio: 16 / 10;
   position: relative;
+  background: var(--surface);
 }
 
 .videoBox iframe {
