@@ -56,13 +56,6 @@ export default function Home() {
               <Link className="btn btn-primary btn-lg" href="/program">
                 Se alla program →
               </Link>
-              <Link
-                className="btn btn-ghost btn-lg"
-                style={{ border: "1px solid var(--line)" }}
-                href="/om-metoden"
-              >
-                Om metoden →
-              </Link>
             </div>
             <div className={styles.trust}>
               <div>
