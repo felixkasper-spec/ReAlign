@@ -27,9 +27,15 @@
 }
 
 .founderPhoto {
+  position: relative;
   aspect-ratio: 1;
   border-radius: 16px;
   background: var(--surface);
+  overflow: hidden;
+}
+
+.founderPhoto img {
+  object-fit: cover;
 }
 
 .founderGrid h3 {
@@ -51,10 +57,16 @@
 }
 
 .klinikPhoto {
+  position: relative;
   margin-top: 24px;
   border-radius: 20px;
   aspect-ratio: 16 / 9;
   background: var(--surface);
+  overflow: hidden;
+}
+
+.klinikPhoto img {
+  object-fit: cover;
 }
 
 .values {

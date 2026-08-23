@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -69,7 +70,14 @@ export default function OmOssPage() {
           <span className="eyebrow">Grundaren</span>
           <h2>Vem som driver ReAlign</h2>
           <div className={styles.founderGrid}>
-            <div className={styles.founderPhoto} />
+            <div className={styles.founderPhoto}>
+              <Image
+                src="/om-oss/felix.jpg"
+                alt="Felix Eliasson"
+                fill
+                sizes="220px"
+              />
+            </div>
             <div>
               <h3>Felix Eliasson</h3>
               <div className={styles.role}>Grundare, Postural Terapeut</div>
@@ -90,7 +98,14 @@ export default function OmOssPage() {
             och det är här grunden till träningen och programmen på den här
             sidan har formats.
           </p>
-          <div className={styles.klinikPhoto} />
+          <div className={styles.klinikPhoto}>
+            <Image
+              src="/om-oss/team.jpg"
+              alt="Christopher och Felix på Cleer Klinik"
+              fill
+              sizes="(max-width: 880px) 100vw, 800px"
+            />
+          </div>
         </section>
 
         <section className={styles.section}>
