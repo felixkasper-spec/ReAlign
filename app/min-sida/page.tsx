@@ -479,6 +479,16 @@ export default async function MinSidaPage({
               >
                 Boka videosamtal →
               </Link>
+              <p
+                style={{
+                  color: "rgba(255, 255, 255, 0.75)",
+                  fontSize: "0.78rem",
+                  marginTop: 10,
+                  textAlign: "center",
+                }}
+              >
+                ✓ Går att betala med friskvårdsbidrag
+              </p>
             </section>
 
             <section
