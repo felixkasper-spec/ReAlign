@@ -30,7 +30,7 @@ export default function Home() {
       <div className="wrap">
         <section className={styles.hero}>
           <div>
-            <span className="eyebrow">Helkroppsbalans · inte symptomjakt</span>
+            <span className="eyebrow">ReAlign · En kropp i balans</span>
             <h1>
               Kroppen är ett system.
               <br />
@@ -40,28 +40,32 @@ export default function Home() {
               <strong>Hållningsträning — på riktigt.</strong> Ländrygg, mage,
               säte, nacke — ingen av dessa är till för att hålla uppe
               kroppen. Lär känna musklerna som faktiskt är designade för
-              hållning.
+              att hålla kroppen i balans.
             </p>
             <div className={styles.heroNote}>
               🎉 Gratis att komma igång — inget kort krävs.
             </div>
             <div className={styles.heroCtas}>
+              <Link
+                className="btn btn-primary btn-lg"
+                href="/program/helkropp-niva-2?langd=kort"
+              >
+                Testa ett kort program — 5 minuter
+              </Link>
               <Link className="btn btn-primary btn-lg" href="/program">
                 Se alla program →
               </Link>
               <Link
                 className="btn btn-ghost btn-lg"
-                href="/program/helkropp-niva-2?langd=kort"
+                style={{ border: "1px solid var(--line)" }}
+                href="/om-metoden"
               >
-                Testa ett kort program — 5 min
+                Om metoden →
               </Link>
             </div>
             <div className={styles.trust}>
               <div>
-                <b>Helkropp</b>i fokus, inte delar
-              </div>
-              <div>
-                <b>120+</b>övningar
+                <b>Hela kroppen</b>i fokus, inte delar
               </div>
               <div>
                 <b>Träning som passar dig</b>oavsett nivå
@@ -123,7 +127,7 @@ export default function Home() {
               <span className="eyebrow">Personlig rådgivning</span>
               <h3>Vill du ha ett program skräddarsytt exakt för din kropp?</h3>
               <p>
-                Boka en videosamtals-analys med en av våra kliniker. Du får
+                Boka en videosamtals-analys med en av våra terapeuter på kliniken. Du får
                 inte bara en bedömning — vi bygger ett eget program åt dig
                 utifrån vad vi ser.
               </p>

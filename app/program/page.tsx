@@ -88,7 +88,7 @@ export default async function ProgramIndexPage() {
               Låt oss bygga ett åt dig
             </h3>
             <p style={{ color: "var(--text-soft)", fontSize: "0.9rem" }}>
-              Boka en videosamtals-analys med en av våra kliniker. Vi går
+              Boka en videosamtals-analys med en av våra terapeuter på kliniken. Vi går
               igenom din kropp tillsammans och bygger sedan ett eget program
               utifrån vad vi ser — helt skräddarsytt för dig.
             </p>

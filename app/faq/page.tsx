@@ -15,7 +15,7 @@ const groups: FaqGroup[] = [
     items: [
       {
         q: "Är postural träning säkert för mig?",
-        a: "För de allra flesta, ja. Övningarna är byggda för att vara skonsamma och ska aldrig göra ont — känner du smärta ska du justera tekniken, minska antal repetitioner, eller hoppa över just den övningen. Har du en pågående skada, är gravid, eller är osäker av någon annan anledning, rekommenderar vi att du pratar med en av våra kliniker eller din vårdgivare innan du börjar.",
+        a: "För de allra flesta, ja. Övningarna är byggda för att vara skonsamma och ska aldrig göra ont — känner du smärta ska du justera tekniken, minska antal repetitioner, eller hoppa över just den övningen. Har du en pågående skada, är gravid, eller är osäker av någon annan anledning, rekommenderar vi att du pratar med en av våra terapeuter på kliniken eller din vårdgivare innan du börjar.",
       },
       {
         q: "Behöver jag någon utrustning?",
@@ -53,7 +53,7 @@ const groups: FaqGroup[] = [
       },
       {
         q: "Vad ingår i videosamtals-analysen?",
-        a: "Ett videosamtal med en av våra kliniker där vi går igenom din kropp och hållning tillsammans, följt av ett program skräddarsytt exakt utifrån vad vi ser hos dig. Detta är alltid ett separat köp, oavsett om du har Premium eller inte.",
+        a: "Ett videosamtal med en av våra terapeuter på kliniken där vi går igenom din kropp och hållning tillsammans, följt av ett program skräddarsytt exakt utifrån vad vi ser hos dig. Detta är alltid ett separat köp, oavsett om du har Premium eller inte.",
       },
     ],
   },

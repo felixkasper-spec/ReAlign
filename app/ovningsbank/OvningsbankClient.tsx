@@ -69,7 +69,7 @@ export default function OvningsbankClient({
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Sök övning, t.ex. 'nacke' eller 'höftrotation'…"
+          placeholder="Sök övning"
           className={styles.searchInput}
         />
       </div>

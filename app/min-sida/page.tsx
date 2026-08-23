@@ -178,7 +178,9 @@ export default async function MinSidaPage({
   const baseUrl = await getBaseUrl();
 
   return (
-    <div className={styles.shell}>
+    <>
+      <Header />
+      <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <Link className={styles.logo} href="/">
           <span className={styles.mark} />
@@ -210,18 +212,6 @@ export default async function MinSidaPage({
           </form>
         </div>
       </aside>
-
-      <div className={styles.mobileBar}>
-        <Link className={styles.logo} href="/">
-          <span className={styles.mark} />
-          ReAlign
-        </Link>
-        <form action="/auth/signout" method="post">
-          <button type="submit" className={styles.signout}>
-            Logga ut
-          </button>
-        </form>
-      </div>
 
       <main className={styles.main}>
         <div className={styles.topbar} id="oversikt">
@@ -482,7 +472,7 @@ export default async function MinSidaPage({
               </h3>
               <p style={{ color: "#DCE4DA", fontSize: "0.85rem", marginBottom: 10 }}>
                 Få ett program skräddarsytt exakt för din kropp, byggt av en
-                av våra kliniker efter ett videosamtal med dig.
+                av våra terapeuter på kliniken efter ett videosamtal med dig.
               </p>
               <Link
                 className="btn btn-primary"
@@ -608,6 +598,7 @@ export default async function MinSidaPage({
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </>
   );
 }

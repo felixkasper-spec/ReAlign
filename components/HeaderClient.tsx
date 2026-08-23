@@ -26,7 +26,8 @@ export default function HeaderClient({ loggedIn }: { loggedIn: boolean }) {
         aria-label="Öppna meny"
         onClick={() => setOpen((v) => !v)}
       >
-        ☰
+        <span className={styles.menuIcon}>☰</span>
+        <span className={styles.menuLabel}>Meny</span>
       </button>
       <div className={`${styles.navlinks} ${open ? styles.open : ""}`}>
         {navLinks.map((link) => (
@@ -34,15 +35,34 @@ export default function HeaderClient({ loggedIn }: { loggedIn: boolean }) {
             {link.label}
           </Link>
         ))}
+        {!loggedIn && (
+          <Link href="/login" className={styles.mobileLogin}>
+            Logga in
+          </Link>
+        )}
+        {loggedIn && (
+          <form action="/auth/signout" method="post" className={styles.mobileLogin}>
+            <button type="submit" className={styles.mobileLogout}>
+              Logga ut
+            </button>
+          </form>
+        )}
       </div>
       <div className={styles.navcta}>
         {loggedIn ? (
-          <Link className="btn btn-primary" href="/min-sida">
-            Min sida
-          </Link>
+          <>
+            <form action="/auth/signout" method="post" className={styles.desktopOnly}>
+              <button type="submit" className="btn btn-ghost">
+                Logga ut
+              </button>
+            </form>
+            <Link className="btn btn-primary" href="/min-sida">
+              Min sida
+            </Link>
+          </>
         ) : (
           <>
-            <Link className="btn btn-ghost" href="/login">
+            <Link className={`btn btn-ghost ${styles.desktopOnly}`} href="/login">
               Logga in
             </Link>
             <Link className="btn btn-primary" href="/signup">
