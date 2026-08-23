@@ -117,7 +117,7 @@ export default async function ExercisePage({
 
         {programNav && (programNav.prev || programNav.next) && (
           <div className={styles.programNav}>
-            {programNav.prev ? (
+            {programNav.prev && (
               <Link
                 href={`/ovningsbank/${programNav.prev.slug}?program=${programSlug}&variant=${variant}`}
                 className={styles.programNavLink}
@@ -125,10 +125,8 @@ export default async function ExercisePage({
                 <span className={styles.programNavDir}>← Föregående</span>
                 <span className={styles.programNavTitle}>{programNav.prev.title}</span>
               </Link>
-            ) : (
-              <span />
             )}
-            {programNav.next ? (
+            {programNav.next && (
               <Link
                 href={`/ovningsbank/${programNav.next.slug}?program=${programSlug}&variant=${variant}`}
                 className={`${styles.programNavLink} ${styles.programNavRight}`}
@@ -136,8 +134,6 @@ export default async function ExercisePage({
                 <span className={styles.programNavDir}>Nästa →</span>
                 <span className={styles.programNavTitle}>{programNav.next.title}</span>
               </Link>
-            ) : (
-              <span />
             )}
           </div>
         )}
