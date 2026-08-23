@@ -99,17 +99,14 @@ export default function Home() {
               <span className="btn btn-primary">Testa nu →</span>
             </Link>
             <Link href="/analys" className={`${styles.wayCard} ${styles.plain}`}>
-              <div className={styles.wayCardTop}>
-                <span className="eyebrow">Mer precist</span>
-                <span className={styles.badgeSoon}>Kommer snart</span>
-              </div>
-              <h3>Analysera din kropp</h3>
+              <span className="eyebrow">Mer precist</span>
+              <h3>Hitta rätt program</h3>
               <p>
-                Enkla och tydliga tester för att se var din kropp bär sina
-                obalanser — och vilka övningar som passar just dig.
+                Svara på fem korta frågor om var det gör ont och din vardag —
+                få en programrekommendation direkt, helt automatiskt.
               </p>
               <span className="btn btn-ghost" style={{ border: "1px solid var(--line)" }}>
-                Se förhandsvisning →
+                Hitta mitt program →
               </span>
             </Link>
           </div>

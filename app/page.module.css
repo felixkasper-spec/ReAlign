@@ -110,21 +110,6 @@
   margin-bottom: 20px;
 }
 
-.wayCardTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.badgeSoon {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.68rem;
-  padding: 4px 11px;
-  border-radius: 100px;
-  background: var(--warm-soft);
-  color: var(--warm);
-}
-
 /* ADVISORY BANNER */
 .advisory {
   background: var(--surface);
@@ -429,6 +414,8 @@
   .hero {
     grid-template-columns: 1fr;
     padding-top: 40px;
+    padding-left: 0;
+    padding-right: 0;
   }
   .cards3,
   .testimonialGrid,
