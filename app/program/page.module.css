@@ -14,34 +14,9 @@
 }
 
 .scrollCue {
-  display: none;
-  width: 44px;
-  height: 44px;
-  margin: 4px auto 26px;
-  border-radius: 50%;
   border: 1px solid var(--line);
   background: #fff;
-  align-items: center;
-  justify-content: center;
   color: var(--sage);
-  font-size: 1.15rem;
-  animation: scrollCueBounce 2.2s ease-in-out infinite;
-}
-
-@keyframes scrollCueBounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scrollCue {
-    animation: none;
-  }
 }
 
 .banner {
@@ -159,14 +134,16 @@
 }
 
 @media (max-width: 880px) {
+  .pageHead {
+    position: relative;
+    min-height: calc(100vh - 100px);
+    min-height: calc(100dvh - 100px);
+  }
   .grid {
     grid-template-columns: 1fr;
   }
   .cardThumb {
     height: auto;
     aspect-ratio: 16 / 10;
-  }
-  .scrollCue {
-    display: flex;
   }
 }

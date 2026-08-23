@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TrainingTips from "@/components/TrainingTips";
+import ScrollCue from "@/components/ScrollCue";
 import { createClient } from "@/lib/supabase/server";
 import { getExerciseCategories } from "@/lib/exercise-categories";
 import OvningsbankClient from "./OvningsbankClient";
@@ -77,9 +78,7 @@ export default async function OvningsbankPage() {
             Spara favoriter direkt till Min sida.
           </p>
           <TrainingTips />
-          <a href="#ovningslista" className={styles.scrollCue} aria-label="Till övningsbanken">
-            ↓
-          </a>
+          <ScrollCue href="#ovningslista" label="Till övningsbanken" className={styles.scrollCue} />
         </div>
 
         {sortedExercises.length === 0 ? (

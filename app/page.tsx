@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import ScrollCue from "@/components/ScrollCue";
 import styles from "./page.module.css";
 
 const testimonials = [
@@ -65,9 +66,6 @@ export default function Home() {
                 <b>Träning som passar dig</b>oavsett nivå
               </div>
             </div>
-            <a href="#nyfiken" className={styles.heroScrollCue} aria-label="Läs mer">
-              ↓
-            </a>
           </div>
 
           <div className={`img-duo ${styles.heroImage}`}>
@@ -79,6 +77,7 @@ export default function Home() {
               priority
             />
           </div>
+          <ScrollCue href="#nyfiken" label="Läs mer" className={styles.heroScrollCue} />
         </section>
 
         <section className={styles.twoWaysSection} style={{ paddingBottom: 44 }} id="nyfiken">

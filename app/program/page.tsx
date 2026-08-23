@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollCue from "@/components/ScrollCue";
 import { createClient } from "@/lib/supabase/server";
 import { programMeta } from "@/lib/program-meta";
 import styles from "./page.module.css";
@@ -39,9 +40,7 @@ export default async function ProgramIndexPage() {
             Strukturerade program för olika syften och nivåer — från
             nackspänning till hållningskorrigering.
           </p>
-          <a href="#programlista" className={styles.scrollCue} aria-label="Till programmen">
-            ↓
-          </a>
+          <ScrollCue href="#programlista" label="Till programmen" className={styles.scrollCue} />
         </div>
 
         <div className={styles.banner}>
