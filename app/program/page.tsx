@@ -56,11 +56,14 @@ export default async function ProgramIndexPage() {
         </div>
 
         <div className={`${styles.banner} ${styles.bannerFree}`}>
-          <p>
-            <b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt
-            Bålträning och Kontorsvardag, är helt gratis. Resten ingår i
-            Premium.
-          </p>
+          <div>
+            <p>
+              <b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt
+              Bålträning och Kontorsvardag, är helt gratis. Resten ingår i
+              Premium.
+            </p>
+            <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
+          </div>
           <Link className="btn btn-primary" href="/min-sida" style={{ whiteSpace: "nowrap" }}>
             Bli Premium – 149 kr/mån →
           </Link>
@@ -113,6 +116,7 @@ export default async function ProgramIndexPage() {
               igenom din kropp tillsammans och bygger sedan ett eget program
               utifrån vad vi ser — helt skräddarsytt för dig.
             </p>
+            <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
           </div>
           <Link className="btn btn-primary" href="/analys" style={{ whiteSpace: "nowrap" }}>
             Boka videosamtals-analys →

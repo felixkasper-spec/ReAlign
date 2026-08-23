@@ -411,6 +411,23 @@
   color: var(--text);
 }
 
+.friskvard {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.tierHighlight .friskvard {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.advisoryNote {
+  font-size: 0.8rem;
+  color: var(--sage);
+  margin-top: 10px;
+}
+
 @media (max-width: 880px) {
   .tierGrid {
     grid-template-columns: 1fr;

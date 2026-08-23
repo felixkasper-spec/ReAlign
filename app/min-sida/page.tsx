@@ -534,6 +534,9 @@ export default async function MinSidaPage({
                       Bli Premium →
                     </button>
                   </form>
+                  <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
+                    ✓ Går att betala med friskvårdsbidrag
+                  </p>
                 </>
               )}
             </section>

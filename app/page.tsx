@@ -124,6 +124,7 @@ export default function Home() {
                 inte bara en bedömning — vi bygger ett eget program åt dig
                 utifrån vad vi ser.
               </p>
+              <p className={styles.advisoryNote}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
             <Link
               className="btn btn-primary"
@@ -366,6 +367,7 @@ export default function Home() {
               <Link className="btn btn-primary" href="/signup">
                 Bli Premium
               </Link>
+              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
           </div>
         </section>

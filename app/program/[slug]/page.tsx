@@ -121,6 +121,9 @@ export default async function ProgramPage({
             <Link className="btn btn-primary" href="/min-sida">
               Bli Premium →
             </Link>
+            <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
+              ✓ Går att betala med friskvårdsbidrag
+            </p>
           </div>
         ) : (
           <>

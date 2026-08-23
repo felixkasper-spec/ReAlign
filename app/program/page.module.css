@@ -39,6 +39,18 @@
   margin-bottom: 30px;
 }
 
+.friskvard {
+  font-size: 0.78rem;
+  color: var(--sage);
+  margin-top: 6px;
+}
+
+.banner .friskvard {
+  font-size: 0.78rem;
+  color: var(--sage);
+  margin: 6px 0 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
