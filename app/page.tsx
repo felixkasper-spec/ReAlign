@@ -144,18 +144,12 @@ export default function Home() {
             </h2>
           </div>
 
-          <a
-            href="https://g.page/r/CZwRJa9X-cYqEBM/review"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.googleRating}
-          >
+          <div className={styles.googleRating}>
             <span className={styles.stars}>★★★★★</span>
             <span>
               <b>5.0</b> på Google
             </span>
-            <span style={{ color: "var(--sage)" }}>→</span>
-          </a>
+          </div>
 
           <div className={styles.testimonialGrid}>
             <VimeoEmbed
