@@ -9,7 +9,7 @@ export default function AnalysPage() {
       <Header />
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
-          <span className="eyebrow">Personaliserade program</span>
+          <span className="eyebrow">Personlig träningsplan</span>
           <h1>Hitta rätt program för dig.</h1>
           <p>
             Svara på fem korta frågor så sätter vi ihop en rekommendation
