@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubmitButton from "@/components/SubmitButton";
+import DatePicker from "@/components/DatePicker";
+import TimePicker from "@/components/TimePicker";
 import ShareButton from "./ShareButton";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
@@ -286,7 +288,7 @@ export default async function MinSidaPage({
 
             <section className={styles.panel}>
               <div className={styles.panelHead}>
-                <h2>Logga & schemalägg</h2>
+                <h2>Logga ett pass</h2>
               </div>
 
               <form action={logSessionNow} className={styles.scheduleForm}>
@@ -311,6 +313,12 @@ export default async function MinSidaPage({
                   Logga nu
                 </SubmitButton>
               </form>
+            </section>
+
+            <section className={styles.panel}>
+              <div className={styles.panelHead}>
+                <h2>Schemalägg ett pass</h2>
+              </div>
 
               <form action={scheduleSession} className={styles.scheduleForm}>
                 <select name="programId" className={styles.select} defaultValue="">
@@ -328,18 +336,8 @@ export default async function MinSidaPage({
                   required
                   className={styles.textInput}
                 />
-                <input
-                  type="date"
-                  name="date"
-                  required
-                  className={styles.dateInput}
-                />
-                <input
-                  type="time"
-                  name="time"
-                  required
-                  className={styles.timeInput}
-                />
+                <DatePicker name="date" required />
+                <TimePicker name="time" required />
                 <SubmitButton className="btn btn-primary" pendingText="Sparar...">
                   Schemalägg
                 </SubmitButton>

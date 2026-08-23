@@ -346,9 +346,7 @@
 }
 
 .select,
-.textInput,
-.dateInput,
-.timeInput {
+.textInput {
   font: inherit;
   padding: 10px 12px;
   border-radius: 10px;
