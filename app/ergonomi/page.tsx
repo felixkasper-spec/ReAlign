@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
@@ -23,6 +24,8 @@ type Situation = {
   videoUrl?: string;
   bad: string[];
   good: string[];
+  badImage?: string;
+  goodImage?: string;
   tips: string[];
 };
 
@@ -120,6 +123,10 @@ const situations: Situation[] = [
       "Rygg- eller sidoläge med neutral nacke",
       "Kudde mellan knäna i sidoläge avlastar höft och bäcken",
     ],
+    badImage:
+      "https://images.unsplash.com/photo-1531353826977-0941b4779a1c?auto=format&fit=crop&w=400&h=300&q=80&sat=-100&con=6&bri=5",
+    goodImage:
+      "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=400&h=300&q=80&sat=-100&con=6&bri=5",
     tips: [
       "Välj en madrass som stödjer ryggradens naturliga kurvatur, och variera gärna mellan att sova på sidan och på ryggen.",
       "Undvik för många kuddar under huvudet — det skapar en framskjuten huvudposition (\"gamnacke\").",
@@ -250,26 +257,46 @@ export default async function ErgonomiPage() {
                   lazy
                 />
               )}
-              <div className={styles.compare}>
-                <div className={`${styles.compareCard} ${styles.bad}`}>
-                  <span className={styles.lbl}>Vanligt fel</span>
-                  <div className={styles.bodyIllo} />
-                  <ul>
-                    {s.bad.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
+              {!s.videoUrl && (
+                <div className={styles.compare}>
+                  <div className={`${styles.compareCard} ${styles.bad}`}>
+                    <span className={styles.lbl}>Vanligt fel</span>
+                    {s.badImage && (
+                      <div className={`img-duo ${styles.bodyPhoto}`}>
+                        <Image
+                          src={s.badImage}
+                          alt=""
+                          fill
+                          sizes="(max-width: 880px) 100vw, 340px"
+                        />
+                      </div>
+                    )}
+                    <ul>
+                      {s.bad.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className={`${styles.compareCard} ${styles.good}`}>
+                    <span className={styles.lbl}>Bättre sätt</span>
+                    {s.goodImage && (
+                      <div className={`img-duo ${styles.bodyPhoto}`}>
+                        <Image
+                          src={s.goodImage}
+                          alt=""
+                          fill
+                          sizes="(max-width: 880px) 100vw, 340px"
+                        />
+                      </div>
+                    )}
+                    <ul>
+                      {s.good.map((g) => (
+                        <li key={g}>{g}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <div className={`${styles.compareCard} ${styles.good}`}>
-                  <span className={styles.lbl}>Bättre sätt</span>
-                  <div className={styles.bodyIllo} />
-                  <ul>
-                    {s.good.map((g) => (
-                      <li key={g}>{g}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              )}
               {s.tips.map((tip, i) => (
                 <div className={styles.tipRow} key={i}>
                   <span className={styles.tipNum}>{String(i + 1).padStart(2, "0")}</span>
