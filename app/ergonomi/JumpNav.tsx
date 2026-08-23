@@ -7,7 +7,6 @@ const jumps = [
   { id: "sitta", label: "Sitta" },
   { id: "sta", label: "Stå" },
   { id: "lyfta", label: "Lyfta" },
-  { id: "skarm", label: "Skärmarbete" },
   { id: "sova", label: "Sova" },
   { id: "fler-vanor", label: "Fler vanor" },
   { id: "lyssna", label: "Lyssna" },

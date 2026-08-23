@@ -53,6 +53,8 @@ const situations: Situation[] = [
       "Res dig upp minst en gång per 30 minuter — även en kort paus bryter den statiska belastningen.",
       "Skärmens överkant i höjd med ögonen, en armlängd bort.",
       "Häng inte i ländryggsstödet — aktivera bålen lätt istället för att kollapsa in i stolen.",
+      "Håll mobilen i ögonhöjd istället för att böja nacken nedåt mot den.",
+      "Jobbar du på laptop en längre stund, höj den och koppla in ett separat tangentbord.",
     ],
   },
   {
@@ -102,20 +104,8 @@ const situations: Situation[] = [
     ],
   },
   {
-    id: "skarm",
-    eyebrow: "04 — Mobil & laptop",
-    title: "Skärmarbete",
-    desc: "\"Tech-neck\" — den framåtböjda nackhållningen vid mobil och laptop — är en av de vanligaste orsakerna till nack- och axelspänning idag.",
-    bad: ["Mobilen hålls lågt, hakan pressas mot bröstet", "Laptop i knät med böjd nacke"],
-    good: [
-      "Lyft mobilen till ögonhöjd istället för att böja nacken",
-      "Höj laptopen och använd separat tangentbord vid längre arbete",
-    ],
-    tips: ["Korta, återkommande pauser slår långa sporadiska — sikta på rörelse varje halvtimme."],
-  },
-  {
     id: "sova",
-    eyebrow: "05 — Nattens 7–8 timmar",
+    eyebrow: "04 — Nattens 7–8 timmar",
     title: "Sova",
     desc: "En tredjedel av livet spenderas liggande — sovställning och kuddhöjd påverkar hållningen minst lika mycket som dagens rörelser.",
     bad: ["Sover på mage med vriden nacke", "För hög eller för platt kudde i sidoläge"],
@@ -178,6 +168,13 @@ const habits = [
     items: [
       "Byt sida regelbundet när du bär väska eller handväska, eller använd ryggsäck för jämnare viktfördelning.",
       "Undvik att bära plånboken i bakfickan — det kan skapa snedbelastning när du sitter.",
+    ],
+  },
+  {
+    title: "Skärmarbete",
+    items: [
+      "\"Tech-neck\" — den framåtböjda nackhållningen vid mobil och laptop — är en av de vanligaste orsakerna till nack- och axelspänning idag.",
+      "Korta, återkommande pauser slår långa sporadiska — sikta på rörelse varje halvtimme.",
     ],
   },
   {
@@ -309,7 +306,7 @@ export default async function ErgonomiPage() {
 
         <section className={styles.extraSection} id="fler-vanor">
           <div className={styles.extraHead}>
-            <span className="eyebrow">07 — Fler vardagsvanor</span>
+            <span className="eyebrow">05 — Fler vardagsvanor</span>
             <h2>Det som händer mellan träningspassen</h2>
             <p>
               Postural träning ger bäst resultat tillsammans med medvetna
@@ -332,7 +329,7 @@ export default async function ErgonomiPage() {
         </section>
 
         <section className={styles.podcastSection} id="lyssna">
-          <span className="eyebrow">08 — Lyssna vidare</span>
+          <span className="eyebrow">06 — Lyssna vidare</span>
           <h2>Fördjupning i podcastform</h2>
           <p>
             Vill du gräva djupare i tankarna bakom postural träning och
