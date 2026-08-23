@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import VimeoEmbed from "@/components/VimeoEmbed";
 import styles from "./page.module.css";
 
 const testimonials = [
@@ -164,20 +165,16 @@ export default function Home() {
           </a>
 
           <div className={styles.testimonialGrid}>
-            <div className={styles.videoBox}>
-              <iframe
-                src="https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className={styles.videoBox}>
-              <iframe
-                src="https://player.vimeo.com/video/1219364602?h=4005ecd03e&title=0&byline=0&portrait=0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <VimeoEmbed
+              src="https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0"
+              className={styles.videoBox}
+              lazy
+            />
+            <VimeoEmbed
+              src="https://player.vimeo.com/video/1219364602?h=4005ecd03e&title=0&byline=0&portrait=0"
+              className={styles.videoBox}
+              lazy
+            />
             {testimonials.slice(0, 2).map((t) => (
               <div key={t.quote} className={styles.quoteCard}>
                 <p>&quot;{t.quote}&quot;</p>

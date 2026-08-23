@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FavoriteButton from "@/components/FavoriteButton";
 import ShareButton from "@/components/ShareButton";
+import VimeoEmbed from "@/components/VimeoEmbed";
 import { createClient } from "@/lib/supabase/server";
 import { hasThumbnail } from "../thumbnails";
 import styles from "./page.module.css";
@@ -84,13 +85,7 @@ export default async function ExercisePage({
         <div className={styles.layout}>
           <div className={styles.videoWrap}>
             {exercise.video_url && (
-              <div className={styles.videoFrame}>
-                <iframe
-                  src={exercise.video_url}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
+              <VimeoEmbed src={exercise.video_url} className={styles.videoFrame} />
             )}
             <div className={styles.videoCaption}>
               <span>Video</span>

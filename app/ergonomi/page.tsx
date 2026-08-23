@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
+import VimeoEmbed from "@/components/VimeoEmbed";
 import { getSpotifyOembed } from "@/lib/spotify";
 import JumpNav from "./JumpNav";
 import styles from "./page.module.css";
@@ -224,13 +225,10 @@ export default async function ErgonomiPage() {
           </div>
 
           <div className={styles.introVideo}>
-            <div className={styles.videoFrame}>
-              <iframe
-                src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <VimeoEmbed
+              src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0"
+              className={styles.videoFrame}
+            />
             <div className={styles.caption}>Introduktion till postural medvetenhet</div>
           </div>
         </div>
@@ -246,14 +244,11 @@ export default async function ErgonomiPage() {
             </div>
             <div>
               {s.videoUrl && (
-                <div className={`${styles.videoFrame} ${styles.small}`}>
-                  <iframe
-                    src={s.videoUrl}
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                </div>
+                <VimeoEmbed
+                  src={s.videoUrl}
+                  className={`${styles.videoFrame} ${styles.small}`}
+                  lazy
+                />
               )}
               <div className={styles.compare}>
                 <div className={`${styles.compareCard} ${styles.bad}`}>
