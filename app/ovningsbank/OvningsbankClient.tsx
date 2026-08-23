@@ -126,7 +126,7 @@ export default function OvningsbankClient({
           <div className={styles.resultsBar}>
             <span>
               {filtered.length === exercises.length
-                ? `Visar alla ${exercises.length} övningar`
+                ? "Visar alla övningar"
                 : `${filtered.length} av ${exercises.length} övningar`}
             </span>
           </div>
