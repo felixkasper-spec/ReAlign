@@ -67,7 +67,7 @@ export default function OmOssPage() {
 
         <section className={styles.section}>
           <span className="eyebrow">Grundaren</span>
-          <h2>Vem som driver Cleer</h2>
+          <h2>Vem som driver ReAlign</h2>
           <div className={styles.founderGrid}>
             <div className={styles.founderPhoto} />
             <div>
