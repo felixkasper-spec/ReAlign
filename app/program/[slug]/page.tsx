@@ -58,6 +58,7 @@ export default async function ProgramPage({
 
   const meta = programMeta[program.slug];
   const exerciseCount = (variants.full ?? []).length;
+  const defaultVariant = langd ?? "full";
 
   return (
     <>
@@ -132,7 +133,7 @@ export default async function ProgramPage({
                 {warmup.map((ex, i) => (
                   <Link
                     key={ex.slug}
-                    href={`/ovningsbank/${ex.slug}`}
+                    href={`/ovningsbank/${ex.slug}?program=${program.slug}&variant=${defaultVariant}`}
                     className={styles.exRow}
                   >
                     <span className={styles.exNum}>{i + 1}</span>
@@ -149,7 +150,11 @@ export default async function ProgramPage({
               </div>
             )}
 
-            <VariantPicker variants={variants} defaultVariant={langd ?? "full"} />
+            <VariantPicker
+              variants={variants}
+              defaultVariant={defaultVariant}
+              programSlug={program.slug}
+            />
           </>
         )}
 

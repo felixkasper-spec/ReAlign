@@ -19,9 +19,11 @@ const variantLabels: Record<string, { title: string; sub: string }> = {
 export default function VariantPicker({
   variants,
   defaultVariant,
+  programSlug,
 }: {
   variants: Record<string, VariantExercise[]>;
   defaultVariant: string;
+  programSlug: string;
 }) {
   const keys = ["full", "mellan", "kort"].filter((k) => variants[k]);
   const [active, setActive] = useState(
@@ -58,7 +60,11 @@ export default function VariantPicker({
       </div>
       <div>
         {exercises.map((ex, i) => (
-          <Link key={ex.slug} href={`/ovningsbank/${ex.slug}`} className={styles.exRow}>
+          <Link
+            key={ex.slug}
+            href={`/ovningsbank/${ex.slug}?program=${programSlug}&variant=${active}`}
+            className={styles.exRow}
+          >
             <span className={styles.exNum}>{i + 1}</span>
             <span className={styles.exInfo}>
               <h3>{ex.title}</h3>

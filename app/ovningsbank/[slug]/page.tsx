@@ -7,6 +7,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import ShareButton from "@/components/ShareButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { createClient } from "@/lib/supabase/server";
+import { getProgramExerciseSequence } from "@/lib/program-exercise-sequence";
 import { hasThumbnail } from "../thumbnails";
 import styles from "./page.module.css";
 
@@ -33,10 +34,13 @@ function renderInstructions(text: string) {
 
 export default async function ExercisePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ program?: string; variant?: string }>;
 }) {
   const { slug } = await params;
+  const { program: programSlug, variant } = await searchParams;
   const supabase = await createClient();
 
   const [{ data: exercise }, userResult] = await Promise.all([
@@ -68,6 +72,26 @@ export default async function ExercisePage({
     .neq("id", exercise.id)
     .limit(4);
 
+  let programNav: {
+    programTitle: string;
+    prev: { slug: string; title: string } | null;
+    next: { slug: string; title: string } | null;
+  } | null = null;
+
+  if (programSlug && variant) {
+    const result = await getProgramExerciseSequence(programSlug, variant);
+    if (result) {
+      const i = result.sequence.findIndex((e) => e.slug === slug);
+      if (i !== -1) {
+        programNav = {
+          programTitle: result.programTitle,
+          prev: i > 0 ? result.sequence[i - 1] : null,
+          next: i < result.sequence.length - 1 ? result.sequence[i + 1] : null,
+        };
+      }
+    }
+  }
+
   const metaItems = (exercise.sets_reps ?? "")
     .split(" · ")
     .filter(Boolean);
@@ -77,10 +101,46 @@ export default async function ExercisePage({
       <Header />
       <div className={`wrap ${styles.wrap}`}>
         <div className={styles.breadcrumb}>
-          <Link href="/ovningsbank">Övningsbank</Link>
-          <span className={styles.sep}>/</span>
+          {programNav ? (
+            <>
+              <Link href={`/program/${programSlug}`}>{programNav.programTitle}</Link>
+              <span className={styles.sep}>/</span>
+            </>
+          ) : (
+            <>
+              <Link href="/ovningsbank">Övningsbank</Link>
+              <span className={styles.sep}>/</span>
+            </>
+          )}
           <span className={styles.current}>{exercise.title}</span>
         </div>
+
+        {programNav && (programNav.prev || programNav.next) && (
+          <div className={styles.programNav}>
+            {programNav.prev ? (
+              <Link
+                href={`/ovningsbank/${programNav.prev.slug}?program=${programSlug}&variant=${variant}`}
+                className={styles.programNavLink}
+              >
+                <span className={styles.programNavDir}>← Föregående</span>
+                <span className={styles.programNavTitle}>{programNav.prev.title}</span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {programNav.next ? (
+              <Link
+                href={`/ovningsbank/${programNav.next.slug}?program=${programSlug}&variant=${variant}`}
+                className={`${styles.programNavLink} ${styles.programNavRight}`}
+              >
+                <span className={styles.programNavDir}>Nästa →</span>
+                <span className={styles.programNavTitle}>{programNav.next.title}</span>
+              </Link>
+            ) : (
+              <span />
+            )}
+          </div>
+        )}
 
         <div className={styles.layout}>
           <div className={styles.videoWrap}>
