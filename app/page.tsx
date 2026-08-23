@@ -78,7 +78,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section style={{ paddingTop: 0, paddingBottom: 44 }}>
+        <section className={styles.twoWaysSection} style={{ paddingBottom: 44 }}>
           <div className="section-head" style={{ marginBottom: 22 }}>
             <span className="eyebrow">Nyfiken? Två sätt att börja</span>
           </div>

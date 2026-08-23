@@ -69,6 +69,10 @@
 }
 
 /* TWO WAYS TO START */
+.twoWaysSection {
+  padding-top: 0;
+}
+
 .twoWays {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -421,6 +425,9 @@
   .testimonialGrid,
   .twoWays {
     grid-template-columns: 1fr;
+  }
+  .twoWaysSection {
+    padding-top: 20px;
   }
   .minsida {
     grid-template-columns: 1fr;
