@@ -460,10 +460,7 @@
     color: #fff;
   }
   .trust {
-    color: rgba(255, 255, 255, 0.82);
-  }
-  .trust b {
-    color: #fff;
+    display: none;
   }
   .heroImage {
     grid-column: 1;
