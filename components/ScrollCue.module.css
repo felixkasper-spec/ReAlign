@@ -10,23 +10,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.15rem;
-  animation: cueBounce 2.2s ease-in-out infinite;
-}
-
-@keyframes cueBounce {
-  0%,
-  100% {
-    transform: translateX(-50%) translateY(0);
-  }
-  50% {
-    transform: translateX(-50%) translateY(5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cue {
-    animation: none;
-  }
+  transform: translateX(-50%);
 }
 
 @media (max-width: 880px) {

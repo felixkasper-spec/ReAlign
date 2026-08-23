@@ -88,14 +88,14 @@ export default function OvningsbankClient({
                   checked={bodyFilter.includes(value)}
                   onChange={() => toggle(bodyFilter, value, setBodyFilter)}
                 />
-                {value}
+                {value === "Bål" ? "Mage" : value}
                 <span className={styles.count}>{count}</span>
               </label>
             ))}
           </div>
           <div className={styles.filterGroup}>
             <div className={styles.filterTitle}>Utrustning</div>
-            {equipmentOptions.map(([value, count]) => (
+            {equipmentOptions.map(([value]) => (
               <label className={styles.filterOpt} key={value}>
                 <input
                   type="checkbox"
@@ -103,23 +103,9 @@ export default function OvningsbankClient({
                   onChange={() => toggle(equipFilter, value, setEquipFilter)}
                 />
                 {value}
-                <span className={styles.count}>{count}</span>
               </label>
             ))}
           </div>
-          {(bodyFilter.length > 0 || equipFilter.length > 0 || search) && (
-            <button
-              type="button"
-              className={styles.clearFilters}
-              onClick={() => {
-                setBodyFilter([]);
-                setEquipFilter([]);
-                setSearch("");
-              }}
-            >
-              Rensa filter
-            </button>
-          )}
         </aside>
 
         <main>
@@ -129,6 +115,19 @@ export default function OvningsbankClient({
                 ? "Visar alla övningar"
                 : `${filtered.length} av ${exercises.length} övningar`}
             </span>
+            {(bodyFilter.length > 0 || equipFilter.length > 0 || search) && (
+              <button
+                type="button"
+                className={styles.clearFilters}
+                onClick={() => {
+                  setBodyFilter([]);
+                  setEquipFilter([]);
+                  setSearch("");
+                }}
+              >
+                Rensa filter
+              </button>
+            )}
           </div>
 
           {filtered.length === 0 && (

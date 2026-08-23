@@ -453,7 +453,7 @@
     flex-direction: column;
     justify-content: flex-end;
     min-height: 560px;
-    padding: 78px 24px 44px;
+    padding: 78px 24px 84px;
   }
   .hero :global(.eyebrow) {
     display: none;

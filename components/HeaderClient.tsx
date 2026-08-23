@@ -23,7 +23,16 @@ export default function HeaderClient({
 
   return (
     <nav className={`${styles.nav} ${transparent ? styles.transparent : ""}`}>
-      <Link className={styles.logo} href="/">
+      <Link
+        className={styles.logo}
+        href="/"
+        onClick={() => {
+          if (window.location.pathname === "/") {
+            window.scrollTo({ top: 0, behavior: "instant" });
+            history.replaceState(null, "", "/");
+          }
+        }}
+      >
         <span className={styles.mark} />
         ReAlign
       </Link>

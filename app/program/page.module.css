@@ -13,10 +13,8 @@
   margin-bottom: 24px;
 }
 
-.scrollCue {
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--sage);
+.jumpBtn {
+  display: none;
 }
 
 .banner {
@@ -134,10 +132,9 @@
 }
 
 @media (max-width: 880px) {
-  .pageHead {
-    position: relative;
-    min-height: calc(100vh - 100px);
-    min-height: calc(100dvh - 100px);
+  .jumpBtn {
+    display: inline-block;
+    margin-bottom: 8px;
   }
   .grid {
     grid-template-columns: 1fr;

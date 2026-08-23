@@ -280,6 +280,11 @@
   color: var(--text);
 }
 
+.compareCard li::before {
+  content: "- ";
+  color: var(--text-soft);
+}
+
 .tipRow {
   display: flex;
   gap: 14px;
@@ -311,6 +316,12 @@
   }
   .introRow {
     grid-template-columns: 1fr;
+  }
+  .awareness {
+    order: 2;
+  }
+  .introVideo {
+    order: 1;
   }
   .situation {
     grid-template-columns: 1fr;

@@ -1,7 +1,7 @@
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TrainingTips from "@/components/TrainingTips";
-import ScrollCue from "@/components/ScrollCue";
 import { createClient } from "@/lib/supabase/server";
 import { getExerciseCategories } from "@/lib/exercise-categories";
 import OvningsbankClient from "./OvningsbankClient";
@@ -78,7 +78,13 @@ export default async function OvningsbankPage() {
             Spara favoriter direkt till Min sida.
           </p>
           <TrainingTips />
-          <ScrollCue href="#ovningslista" label="Till övningsbanken" className={styles.scrollCue} />
+          <Link
+            href="#ovningslista"
+            className={`btn btn-ghost ${styles.jumpBtn}`}
+            style={{ border: "1px solid var(--line)" }}
+          >
+            Till övningarna →
+          </Link>
         </div>
 
         {sortedExercises.length === 0 ? (
