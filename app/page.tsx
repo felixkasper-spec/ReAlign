@@ -27,7 +27,7 @@ const testimonials = [
 export default function Home() {
   return (
     <>
-      <Header />
+      <Header transparent />
       <div className="wrap">
         <section className={styles.hero}>
           <div>

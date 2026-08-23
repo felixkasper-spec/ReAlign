@@ -98,6 +98,29 @@
   }
 }
 
+@media (max-width: 880px) {
+  .nav.transparent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background: transparent;
+  }
+  .nav.transparent .logo {
+    color: #fff;
+  }
+  .nav.transparent .menuToggle {
+    color: #fff;
+  }
+  .nav.transparent .mark {
+    background: var(--warm);
+  }
+  .nav.transparent .mark::after {
+    background: var(--warm-soft);
+  }
+}
+
 @media (max-width: 900px) {
   .menuToggle {
     display: flex;

@@ -429,9 +429,67 @@
   .hero h1 {
     font-size: 2.4rem;
   }
+  .hero {
+    position: relative;
+    grid-template-rows: 1fr;
+    align-items: stretch;
+    padding: 0;
+  }
+  .hero > div:first-child {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 560px;
+    padding: 78px 24px 44px;
+  }
+  .hero :global(.eyebrow) {
+    display: none;
+  }
+  .hero h1,
+  .hero h1 em {
+    color: #fff;
+  }
+  .hero p {
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .heroNote {
+    color: #fff;
+  }
+  .trust {
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .trust b {
+    color: #fff;
+  }
   .heroImage {
+    grid-column: 1;
+    grid-row: 1;
     height: auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: auto;
+    border-radius: 0;
+    width: calc(100% + 64px);
+    margin: 0 -32px;
+    position: relative;
+    z-index: 1;
+  }
+  .heroImage img {
+    object-position: 85% center;
+  }
+  .heroImage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 22, 18, 0.42) 0%,
+      rgba(20, 22, 18, 0.52) 40%,
+      rgba(20, 22, 18, 0.84) 100%
+    );
   }
   .cardThumb {
     height: auto;

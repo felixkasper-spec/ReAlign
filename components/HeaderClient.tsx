@@ -12,11 +12,17 @@ const navLinks = [
   { href: "/analys", label: "Vägledning" },
 ];
 
-export default function HeaderClient({ loggedIn }: { loggedIn: boolean }) {
+export default function HeaderClient({
+  loggedIn,
+  transparent,
+}: {
+  loggedIn: boolean;
+  transparent?: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className={styles.nav}>
+    <nav className={`${styles.nav} ${transparent ? styles.transparent : ""}`}>
       <Link className={styles.logo} href="/">
         <span className={styles.mark} />
         ReAlign
