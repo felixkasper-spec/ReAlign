@@ -11,7 +11,7 @@ export type ExerciseListItem = {
   id: string;
   slug: string;
   title: string;
-  body_part: string;
+  categories: string[];
   equipment: string | null;
   sets_reps: string | null;
 };
@@ -33,7 +33,9 @@ export default function OvningsbankClient({
   const bodyParts = useMemo(() => {
     const counts = new Map<string, number>();
     for (const e of exercises) {
-      counts.set(e.body_part, (counts.get(e.body_part) ?? 0) + 1);
+      for (const category of e.categories) {
+        counts.set(category, (counts.get(category) ?? 0) + 1);
+      }
     }
     return [...counts.entries()];
   }, [exercises]);
@@ -53,7 +55,8 @@ export default function OvningsbankClient({
   }
 
   const filtered = exercises.filter((e) => {
-    if (bodyFilter.length > 0 && !bodyFilter.includes(e.body_part)) return false;
+    if (bodyFilter.length > 0 && !e.categories.some((c) => bodyFilter.includes(c)))
+      return false;
     if (equipFilter.length > 0 && (!e.equipment || !equipFilter.includes(e.equipment)))
       return false;
     if (search.trim() && !e.title.toLowerCase().includes(search.trim().toLowerCase()))

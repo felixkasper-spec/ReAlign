@@ -6,13 +6,27 @@ import { createClient } from "@/lib/supabase/server";
 import { programMeta } from "@/lib/program-meta";
 import styles from "./page.module.css";
 
+const CATEGORY_ORDER = [
+  "helkropp",
+  "hofter",
+  "axlar-nacke-skulderblad",
+  "kontorsvardag",
+  "bal",
+  "gym",
+];
+
 export default async function ProgramIndexPage() {
   const supabase = await createClient();
-  const { data: programs } = await supabase
+  const { data } = await supabase
     .from("programs")
-    .select("id, slug, title, tier, hero_image")
-    .order("category")
-    .order("level");
+    .select("id, slug, title, tier, hero_image, category, level");
+
+  const programs = [...(data ?? [])].sort((a, b) => {
+    const catA = CATEGORY_ORDER.indexOf(a.category);
+    const catB = CATEGORY_ORDER.indexOf(b.category);
+    if (catA !== catB) return catA - catB;
+    return (a.level ?? 0) - (b.level ?? 0);
+  });
 
   return (
     <>
