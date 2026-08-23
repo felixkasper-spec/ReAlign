@@ -77,6 +77,9 @@ export default async function OvningsbankPage() {
             Spara favoriter direkt till Min sida.
           </p>
           <TrainingTips />
+          <a href="#ovningslista" className={styles.scrollCue} aria-label="Till övningsbanken">
+            ↓
+          </a>
         </div>
 
         {sortedExercises.length === 0 ? (

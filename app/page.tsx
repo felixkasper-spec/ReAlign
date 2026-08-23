@@ -65,6 +65,9 @@ export default function Home() {
                 <b>Träning som passar dig</b>oavsett nivå
               </div>
             </div>
+            <a href="#nyfiken" className={styles.heroScrollCue} aria-label="Läs mer">
+              ↓
+            </a>
           </div>
 
           <div className={`img-duo ${styles.heroImage}`}>
@@ -78,7 +81,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.twoWaysSection} style={{ paddingBottom: 44 }}>
+        <section className={styles.twoWaysSection} style={{ paddingBottom: 44 }} id="nyfiken">
           <div className="section-head" style={{ marginBottom: 22 }}>
             <span className="eyebrow">Nyfiken? Två sätt att börja</span>
           </div>

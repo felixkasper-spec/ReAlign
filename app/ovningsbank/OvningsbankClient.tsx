@@ -135,7 +135,7 @@ export default function OvningsbankClient({
             <p className={styles.empty}>Inga övningar matchar filtret.</p>
           )}
 
-          <div className={styles.grid}>
+          <div className={styles.grid} id="ovningslista">
             {filtered.map((exercise) => (
               <div key={exercise.id} className={styles.card}>
                 <Link href={`/ovningsbank/${exercise.slug}`} className={styles.cardTop}>

@@ -39,6 +39,9 @@ export default async function ProgramIndexPage() {
             Strukturerade program för olika syften och nivåer — från
             nackspänning till hållningskorrigering.
           </p>
+          <a href="#programlista" className={styles.scrollCue} aria-label="Till programmen">
+            ↓
+          </a>
         </div>
 
         <div className={styles.banner}>
@@ -59,7 +62,7 @@ export default async function ProgramIndexPage() {
           </Link>
         </div>
 
-        <div className={styles.grid}>
+        <div className={styles.grid} id="programlista">
           {(programs ?? []).map((p) => {
             const meta = programMeta[p.slug];
             return (
