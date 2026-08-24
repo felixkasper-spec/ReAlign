@@ -10,7 +10,11 @@ import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats } from "@/lib/progression";
 import { getBaseUrl } from "@/lib/base-url";
-import { createCheckoutSession, openBillingPortal } from "./actions";
+import {
+  createCheckoutSession,
+  openBillingPortal,
+  sendCoachingMessage,
+} from "./actions";
 import {
   scheduleSession,
   logSessionNow,
@@ -161,6 +165,15 @@ export default async function MinSidaPage({
 
   const progression = await getProgressionStats(supabase, user.id);
 
+  const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
+  const { data: coachingMessages } = hasCoaching
+    ? await supabase
+        .from("coaching_messages")
+        .select("id, sender, body, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: true })
+    : { data: null };
+
   const doneDays = new Set(
     (weekSessions ?? []).map((s) => (s.completed_at as string).slice(0, 10)),
   );
@@ -200,6 +213,11 @@ export default async function MinSidaPage({
         <a className={styles.sideLink} href="#progression">
           <span className={styles.sideIc}>↗</span>Progression
         </a>
+        {hasCoaching && (
+          <a className={styles.sideLink} href="#coaching">
+            <span className={styles.sideIc}>✉</span>Chatt med coach
+          </a>
+        )}
         <div className={styles.sideBottom}>
           <div className={styles.userChip}>
             <span className={styles.avatar}>
@@ -502,7 +520,35 @@ export default async function MinSidaPage({
                   : { border: "1px solid var(--warm)", background: "var(--warm-soft)" }
               }
             >
-              {subscription.active ? (
+              {subscription.active && subscription.plan === "premium_coaching" ? (
+                <>
+                  <span className="eyebrow" style={{ color: "var(--warm)" }}>
+                    Premium Coaching
+                  </span>
+                  <h3 className={styles.premiumTitle}>
+                    Din prenumeration är aktiv
+                  </h3>
+                  <p className={styles.premiumText}>
+                    Nästa förnyelse:{" "}
+                    {subscription.currentPeriodEnd
+                      ? new Date(
+                          subscription.currentPeriodEnd,
+                        ).toLocaleDateString("sv-SE")
+                      : "okänt datum"}
+                  </p>
+                  <a href="#coaching" className="btn btn-ghost" style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--line)", marginBottom: 8 }}>
+                    Till chatten →
+                  </a>
+                  <form action={openBillingPortal}>
+                    <button
+                      className="btn btn-ghost"
+                      style={{ width: "100%", border: "1px solid var(--line)" }}
+                    >
+                      Hantera prenumeration →
+                    </button>
+                  </form>
+                </>
+              ) : subscription.active ? (
                 <>
                   <span className="eyebrow" style={{ color: "var(--warm)" }}>
                     Premium
@@ -526,6 +572,19 @@ export default async function MinSidaPage({
                       Hantera prenumeration →
                     </button>
                   </form>
+                  <div style={{ borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 16 }}>
+                    <p className={styles.premiumText} style={{ marginBottom: 8 }}>
+                      Vill du ha direktkontakt med en coach?
+                    </p>
+                    <form action={createCheckoutSession.bind(null, "premium_coaching")}>
+                      <button
+                        className="btn btn-ghost"
+                        style={{ width: "100%", border: "1px solid var(--warm)", color: "var(--warm)" }}
+                      >
+                        Uppgradera till Premium Coaching – 449 kr/mån →
+                      </button>
+                    </form>
+                  </div>
                 </>
               ) : (
                 <>
@@ -538,7 +597,7 @@ export default async function MinSidaPage({
                     och veckobrev.
                   </p>
                   <p className={styles.premiumPrice}>149 kr/mån</p>
-                  <form action={createCheckoutSession}>
+                  <form action={createCheckoutSession.bind(null, "premium")}>
                     <button
                       className="btn btn-primary"
                       style={{ width: "100%" }}
@@ -546,12 +605,69 @@ export default async function MinSidaPage({
                       Bli Premium →
                     </button>
                   </form>
-                  <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
+                  <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10, marginBottom: 16 }}>
                     ✓ Går att betala med friskvårdsbidrag
                   </p>
+                  <div style={{ borderTop: "1px solid var(--line)", paddingTop: 16 }}>
+                    <p className={styles.premiumText} style={{ marginBottom: 8 }}>
+                      Vill du ha direktkontakt med en coach via chatt? Se{" "}
+                      <Link href="/#priser" style={{ color: "var(--warm)" }}>
+                        Premium Coaching
+                      </Link>{" "}
+                      – 449 kr/mån.
+                    </p>
+                  </div>
                 </>
               )}
             </section>
+
+            {hasCoaching && (
+              <section className={styles.panel} id="coaching">
+                <div className={styles.panelHead}>
+                  <h2>Chatt med coach</h2>
+                </div>
+                <p className={styles.premiumText} style={{ marginBottom: 14 }}>
+                  Fråga om övningar, upplägg eller hur du känner dig — vi
+                  svarar inom 1–2 vardagar.
+                </p>
+                <div className={styles.coachThread}>
+                  {(!coachingMessages || coachingMessages.length === 0) && (
+                    <p className={styles.empty}>
+                      Inga meddelanden än — skriv din första fråga nedan.
+                    </p>
+                  )}
+                  {coachingMessages?.map((m) => (
+                    <div
+                      key={m.id}
+                      className={`${styles.coachMsg} ${
+                        m.sender === "coach" ? styles.coachMsgCoach : styles.coachMsgUser
+                      }`}
+                    >
+                      <span className={styles.coachMsgMeta}>
+                        {m.sender === "coach" ? "Coach" : "Du"} ·{" "}
+                        {new Date(m.created_at as string).toLocaleDateString(
+                          "sv-SE",
+                          { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" },
+                        )}
+                      </span>
+                      <p>{m.body}</p>
+                    </div>
+                  ))}
+                </div>
+                <form action={sendCoachingMessage} className={styles.scheduleForm}>
+                  <textarea
+                    name="body"
+                    placeholder="Skriv ditt meddelande..."
+                    required
+                    rows={3}
+                    className={styles.textInput}
+                  />
+                  <SubmitButton className="btn btn-primary" pendingText="Skickar...">
+                    Skicka →
+                  </SubmitButton>
+                </form>
+              </section>
+            )}
 
             <section className={styles.panel} id="progression">
               <span className="eyebrow">Progression</span>

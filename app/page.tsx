@@ -373,6 +373,22 @@ export default function Home() {
               </Link>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
+            <div className={styles.tierCard}>
+              <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
+                Premium Coaching
+              </span>
+              <p className={styles.tierPrice}>449 kr/mån</p>
+              <ul className={styles.tierList}>
+                <li>Allt i &quot;Premium&quot;</li>
+                <li>Direktkontakt med en coach via chatt</li>
+                <li>Svar på frågor om övningar och upplägg</li>
+                <li>Svar inom 1–2 vardagar</li>
+              </ul>
+              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/signup">
+                Bli Premium Coaching
+              </Link>
+              <p className={styles.friskvard}>Begränsat antal platser</p>
+            </div>
           </div>
         </section>
 

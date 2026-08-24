@@ -456,6 +456,47 @@
   font-size: 0.85rem;
 }
 
+.coachThread {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 340px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+  padding-right: 2px;
+}
+
+.coachMsg {
+  border-radius: 12px;
+  padding: 10px 12px;
+  max-width: 85%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.coachMsg p {
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.coachMsgUser {
+  align-self: flex-end;
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+
+.coachMsgCoach {
+  align-self: flex-start;
+}
+
+.coachMsgMeta {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
 @media (max-width: 980px) {
   .shell {
     grid-template-columns: 1fr;

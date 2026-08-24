@@ -22,6 +22,13 @@ export async function POST(request: Request) {
 
   const supabase = createAdminClient();
 
+  function planFromPriceId(priceId: string | undefined): string {
+    if (priceId && priceId === process.env.STRIPE_COACHING_PRICE_ID) {
+      return "premium_coaching";
+    }
+    return "premium";
+  }
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {
@@ -37,7 +44,7 @@ export async function POST(request: Request) {
             {
               user_id: userId,
               status: subscription.status,
-              plan: "premium",
+              plan: planFromPriceId(subscription.items.data[0].price.id),
               stripe_customer_id: session.customer as string,
               stripe_subscription_id: subscription.id,
               current_period_end: new Date(
@@ -59,6 +66,7 @@ export async function POST(request: Request) {
           .from("subscriptions")
           .update({
             status: subscription.status,
+            plan: planFromPriceId(subscription.items.data[0].price.id),
             current_period_end: new Date(
               subscription.items.data[0].current_period_end * 1000,
             ).toISOString(),
