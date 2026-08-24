@@ -475,7 +475,7 @@ export default async function MinSidaPage({
               <a
                 className="btn btn-primary"
                 style={{ width: "100%", textAlign: "center", display: "block" }}
-                href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+                href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
                 target="_blank"
                 rel="noopener noreferrer"
               >

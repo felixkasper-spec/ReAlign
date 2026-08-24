@@ -134,7 +134,7 @@ export default function OmOssPage() {
           <p>Vi går igenom din kropp tillsammans och bygger ett program skräddarsytt för dig.</p>
           <a
             className="btn btn-primary"
-            href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+            href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
             target="_blank"
             rel="noopener noreferrer"
           >

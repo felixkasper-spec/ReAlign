@@ -39,7 +39,7 @@ export default function KontaktPage() {
             <p>Personlig analys och skräddarsytt program.</p>
             <a
               className={styles.link}
-              href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+              href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
               target="_blank"
               rel="noopener noreferrer"
             >
