@@ -45,17 +45,59 @@ export default async function PremiumCoachingPage() {
             <span className="eyebrow">Vad ingår</span>
             <h2>Samma som Premium — plus en coach i fickan.</h2>
           </div>
+
+          <div className={styles.spotlight}>
+            <div className={styles.spotlightHead}>
+              <span className="eyebrow" style={{ color: "var(--sage)" }}>
+                Direktkontakt via chatt
+              </span>
+              <h3>Det här är kärnan i Premium Coaching.</h3>
+              <p className={styles.spotlightIntro}>
+                En direktlinje till mig, för allt du annars skulle behöva
+                gissa dig till eller boka tid för. Så här använder de flesta
+                sin chatt:
+              </p>
+            </div>
+            <div className={styles.checklist}>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Skicka video eller bild på din teknik och få konkret feedback
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Gör en övning ont eller känns fel — få en anpassad variant
+                direkt
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Skräddarsytt program utifrån bilder, utvalda funktionstester
+                och din besvärshistorik
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Kört fast eller tappat farten — få konkreta nästa steg
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Fråga om återkommande stelhet, spänningar eller andra besvär
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Ergonomiråd för just din vardag — bilen, skrivbordet, din
+                situation
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Hjälp att lägga upp veckan om du kombinerar flera program
+              </div>
+            </div>
+          </div>
+
           <div className={styles.reasonGrid}>
             <div className={styles.reason}>
               <b>Allt i Premium</b>Alla programnivåer, Gymträning, alla
               övningsvideor, PDF-nedladdning, progressionsspårning och
               veckobrev.
-            </div>
-            <div className={styles.reason}>
-              <b>Direktkontakt via chatt</b>Fråga om en övning känns fel,
-              be om ett anpassat upplägg, fråga om dina besvär, skicka video
-              på din teknik och få feedback, checka in när du kört fast,
-              eller få tips om egenbehandling — och allt annat du kommer på.
             </div>
             <div className={styles.reason}>
               <b>Svar inom 1–2 vardagar</b>En riktig person på kliniken
