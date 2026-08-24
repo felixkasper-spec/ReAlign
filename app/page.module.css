@@ -508,8 +508,8 @@
     height: auto;
     aspect-ratio: auto;
     border-radius: 0;
-    width: calc(100% + 64px);
-    margin: 0 -32px;
+    width: 100%;
+    margin: 0;
     position: relative;
     z-index: 1;
   }
