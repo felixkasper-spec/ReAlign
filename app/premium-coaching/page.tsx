@@ -70,8 +70,8 @@ export default async function PremiumCoachingPage() {
               </div>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
-                Skräddarsytt program utifrån bilder, utvalda funktionstester
-                och din besvärshistorik
+                Hjälp att justera ditt program eller välja rätt nivå utifrån
+                hur du mår
               </div>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
@@ -91,6 +91,19 @@ export default async function PremiumCoachingPage() {
                 Hjälp att lägga upp veckan om du kombinerar flera program
               </div>
             </div>
+            <p className={styles.spotlightNote}>
+              Behöver du en fullständig utredning — en terapeut som ser dig
+              röra dig live och bygger ett program helt från grunden — då
+              rekommenderar jag istället en{" "}
+              <a
+                href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                videosamtals-analys
+              </a>
+              . Chatten är till för det löpande — analysen för djupdykningen.
+            </p>
           </div>
 
           <div className={styles.reasonGrid}>
