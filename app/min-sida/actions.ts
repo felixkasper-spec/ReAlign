@@ -6,6 +6,11 @@ import { createClient } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe";
 import { getBaseUrl } from "@/lib/base-url";
 import { getSubscription } from "@/lib/subscription";
+import {
+  COACHING_ATTACHMENT_BUCKET,
+  MAX_ATTACHMENT_BYTES,
+  attachmentTypeFromMime,
+} from "@/lib/coaching-attachments";
 
 export async function createCheckoutSession(
   plan: "premium" | "premium_coaching" = "premium",
@@ -144,7 +149,7 @@ export async function openBillingPortal() {
   redirect(session.url);
 }
 
-export async function sendCoachingMessage(formData: FormData) {
+async function requireCoachingUser() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -159,8 +164,17 @@ export async function sendCoachingMessage(formData: FormData) {
     redirect("/min-sida");
   }
 
+  return { supabase, user };
+}
+
+export async function sendCoachingMessage(formData: FormData) {
+  const { supabase, user } = await requireCoachingUser();
+
   const body = String(formData.get("body") ?? "").trim();
-  if (!body) {
+  const attachmentPath = formData.get("attachment_path");
+  const attachmentType = formData.get("attachment_type");
+
+  if (!body && !attachmentPath) {
     return;
   }
 
@@ -168,7 +182,35 @@ export async function sendCoachingMessage(formData: FormData) {
     user_id: user.id,
     sender: "user",
     body,
+    attachment_path: attachmentPath ? String(attachmentPath) : null,
+    attachment_type: attachmentType ? String(attachmentType) : null,
   });
 
   revalidatePath("/min-sida/coaching");
+}
+
+export async function createAttachmentUploadUrl(fileName: string, fileSize: number, mime: string) {
+  const { supabase, user } = await requireCoachingUser();
+
+  if (fileSize > MAX_ATTACHMENT_BYTES) {
+    throw new Error("Filen är för stor (max 25 MB).");
+  }
+
+  const type = attachmentTypeFromMime(mime);
+  if (!type) {
+    throw new Error("Bara bilder och videor kan bifogas.");
+  }
+
+  const ext = fileName.split(".").pop()?.toLowerCase() || "bin";
+  const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
+
+  const { data, error } = await supabase.storage
+    .from(COACHING_ATTACHMENT_BUCKET)
+    .createSignedUploadUrl(path);
+
+  if (error || !data) {
+    throw new Error("Kunde inte förbereda uppladdningen.");
+  }
+
+  return { path, token: data.token, type };
 }

@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
-import SubmitButton from "@/components/SubmitButton";
 import Sidebar from "../Sidebar";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
-import { sendCoachingMessage } from "../actions";
+import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
 import ChatThread from "./ChatThread";
+import Composer from "./Composer";
 import shellStyles from "../page.module.css";
 import styles from "./page.module.css";
 
@@ -32,9 +32,21 @@ export default async function CoachingPage() {
 
   const { data: coachingMessages } = await supabase
     .from("coaching_messages")
-    .select("id, sender, body, created_at")
+    .select("id, sender, body, created_at, attachment_path, attachment_type")
     .eq("user_id", user.id)
     .order("created_at", { ascending: true });
+
+  const messagesWithUrls = await Promise.all(
+    (coachingMessages ?? []).map(async (m) => {
+      if (!m.attachment_path) {
+        return { ...m, attachment_url: null };
+      }
+      const { data } = await supabase.storage
+        .from(COACHING_ATTACHMENT_BUCKET)
+        .createSignedUrl(m.attachment_path, 3600);
+      return { ...m, attachment_url: data?.signedUrl ?? null };
+    }),
+  );
 
   const firstName = profile?.display_name?.trim();
 
@@ -73,21 +85,10 @@ export default async function CoachingPage() {
             </div>
 
             <div className={styles.scroll}>
-              <ChatThread messages={coachingMessages ?? []} />
+              <ChatThread messages={messagesWithUrls} />
             </div>
 
-            <form action={sendCoachingMessage} className={styles.composer}>
-              <textarea
-                name="body"
-                placeholder="Skriv ditt meddelande..."
-                required
-                rows={1}
-                className={styles.composerField}
-              />
-              <SubmitButton className={styles.sendBtn} pendingText="…">
-                →
-              </SubmitButton>
-            </form>
+            <Composer />
           </div>
         </main>
       </div>

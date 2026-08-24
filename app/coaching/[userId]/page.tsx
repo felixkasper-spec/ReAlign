@@ -6,6 +6,7 @@ import SubmitButton from "@/components/SubmitButton";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { linkify } from "@/lib/linkify";
+import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
 import { replyToCoachingThread } from "../actions";
 import styles from "../page.module.css";
 
@@ -30,9 +31,21 @@ export default async function CoachingThreadPage({
 
   const { data: messages } = await admin
     .from("coaching_messages")
-    .select("id, sender, body, created_at")
+    .select("id, sender, body, created_at, attachment_path, attachment_type")
     .eq("user_id", userId)
     .order("created_at", { ascending: true });
+
+  const messagesWithUrls = await Promise.all(
+    (messages ?? []).map(async (m) => {
+      if (!m.attachment_path) {
+        return { ...m, attachment_url: null as string | null };
+      }
+      const { data } = await admin.storage
+        .from(COACHING_ATTACHMENT_BUCKET)
+        .createSignedUrl(m.attachment_path, 3600);
+      return { ...m, attachment_url: data?.signedUrl ?? null };
+    }),
+  );
 
   await admin
     .from("coaching_messages")
@@ -55,10 +68,10 @@ export default async function CoachingThreadPage({
         <h1>{displayName}</h1>
 
         <div className={styles.thread}>
-          {(!messages || messages.length === 0) && (
+          {messagesWithUrls.length === 0 && (
             <p className={styles.empty}>Inga meddelanden än.</p>
           )}
-          {messages?.map((m) => (
+          {messagesWithUrls.map((m) => (
             <div
               key={m.id}
               className={`${styles.msg} ${
@@ -69,7 +82,20 @@ export default async function CoachingThreadPage({
                 {m.sender === "coach" ? "Coach" : displayName} ·{" "}
                 {new Date(m.created_at as string).toLocaleString("sv-SE")}
               </span>
-              <p>{linkify(m.body)}</p>
+              {m.attachment_url && m.attachment_type === "image" && (
+                // eslint-disable-next-line @next/next/no-img-element -- signerad, tillfällig Storage-URL
+                <img
+                  src={m.attachment_url}
+                  alt="Bifogad bild"
+                  className={styles.attachmentImg}
+                />
+              )}
+              {m.attachment_url && m.attachment_type === "video" && (
+                <video controls className={styles.attachmentVideo}>
+                  <source src={m.attachment_url} />
+                </video>
+              )}
+              {m.body && <p>{linkify(m.body)}</p>}
             </div>
           ))}
         </div>

@@ -162,6 +162,91 @@
   text-decoration: underline;
 }
 
+.bubbleMedia {
+  padding: 4px;
+}
+
+.attachmentImg,
+.attachmentVideo {
+  display: block;
+  max-width: 260px;
+  width: 100%;
+  border-radius: 14px;
+}
+
+.bubbleMedia .bubbleText {
+  padding: 8px 6px 2px;
+}
+
+.composerWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.composerError {
+  margin: 0 16px 8px;
+  font-size: 0.78rem;
+  color: var(--warm);
+}
+
+.attachChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 16px 8px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 12px;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.attachChipLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--sage);
+  margin-right: 8px;
+}
+
+.attachChip button {
+  background: none;
+  border: none;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+}
+
+.attachChip button:hover {
+  color: var(--text);
+}
+
+.fileInput {
+  display: none;
+}
+
+.attachBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--sage);
+  font-size: 1.3rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.attachBtn:hover {
+  background: var(--surface);
+}
+
 .composer {
   display: flex;
   align-items: flex-end;

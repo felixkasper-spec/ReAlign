@@ -10,6 +10,8 @@ type Message = {
   sender: string;
   body: string;
   created_at: string;
+  attachment_url?: string | null;
+  attachment_type?: string | null;
 };
 
 type Group = {
@@ -86,9 +88,22 @@ export default function ChatThread({ messages }: { messages: Message[] }) {
                     key={m.id}
                     className={`${styles.bubble} ${
                       isCoach ? styles.bubbleCoach : styles.bubbleUser
-                    }`}
+                    } ${m.attachment_url ? styles.bubbleMedia : ""}`}
                   >
-                    {linkify(m.body)}
+                    {m.attachment_url && m.attachment_type === "image" && (
+                      // eslint-disable-next-line @next/next/no-img-element -- signerad, tillfällig Storage-URL: next/image cachar/optimerar inte det bra
+                      <img
+                        src={m.attachment_url}
+                        alt="Bifogad bild"
+                        className={styles.attachmentImg}
+                      />
+                    )}
+                    {m.attachment_url && m.attachment_type === "video" && (
+                      <video controls className={styles.attachmentVideo}>
+                        <source src={m.attachment_url} />
+                      </video>
+                    )}
+                    {m.body && <div className={styles.bubbleText}>{linkify(m.body)}</div>}
                   </div>
                 ))}
               </div>
