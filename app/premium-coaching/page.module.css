@@ -1,0 +1,90 @@
+.wrap {
+  max-width: 820px;
+}
+
+.pageHead {
+  max-width: 620px;
+  padding: 50px 0 10px;
+}
+
+.pageHead h1 {
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin: 16px 0 18px;
+}
+
+.pageHead p {
+  color: var(--text-soft);
+  font-size: 1.02rem;
+}
+
+.section {
+  padding: 50px 0;
+  border-top: 1px solid var(--line);
+}
+
+.sectionHead {
+  max-width: 600px;
+  margin-bottom: 28px;
+}
+
+.sectionHead h2 {
+  font-size: 1.7rem;
+  margin-top: 10px;
+}
+
+.reasonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.reason {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.reason b {
+  display: block;
+  font-family: var(--font-newsreader), serif;
+  font-weight: 500;
+  font-size: 1.02rem;
+  margin-bottom: 4px;
+}
+
+.ctaBand {
+  background: var(--sage);
+  border-radius: 24px;
+  padding: 50px;
+  text-align: center;
+  margin: 20px 0 60px;
+}
+
+.ctaBand h2 {
+  font-family: var(--font-newsreader), serif;
+  color: #fff;
+  font-size: 2rem;
+  margin: 10px 0 14px;
+}
+
+.ctaBand p {
+  color: #dce4da;
+  max-width: 420px;
+  margin: 0 auto 24px;
+  font-size: 0.94rem;
+}
+
+@media (max-width: 800px) {
+  .pageHead h1 {
+    font-size: 1.9rem;
+  }
+  .reasonGrid {
+    grid-template-columns: 1fr;
+  }
+  .ctaBand {
+    padding: 34px 26px;
+  }
+}

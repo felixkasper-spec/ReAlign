@@ -576,14 +576,13 @@ export default async function MinSidaPage({
                     <p className={styles.premiumText} style={{ marginBottom: 8 }}>
                       Vill du ha direktkontakt med en coach?
                     </p>
-                    <form action={createCheckoutSession.bind(null, "premium_coaching")}>
-                      <button
-                        className="btn btn-ghost"
-                        style={{ width: "100%", border: "1px solid var(--warm)", color: "var(--warm)" }}
-                      >
-                        Uppgradera till Premium Coaching – 449 kr/mån →
-                      </button>
-                    </form>
+                    <Link
+                      href="/premium-coaching"
+                      className="btn btn-ghost"
+                      style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--warm)", color: "var(--warm)" }}
+                    >
+                      Läs mer om Premium Coaching →
+                    </Link>
                   </div>
                 </>
               ) : (
@@ -610,8 +609,8 @@ export default async function MinSidaPage({
                   </p>
                   <div style={{ borderTop: "1px solid var(--line)", paddingTop: 16 }}>
                     <p className={styles.premiumText} style={{ marginBottom: 8 }}>
-                      Vill du ha direktkontakt med en coach via chatt? Se{" "}
-                      <Link href="/#priser" style={{ color: "var(--warm)" }}>
+                      Vill du ha direktkontakt med en coach via chatt? Läs om{" "}
+                      <Link href="/premium-coaching" style={{ color: "var(--warm)" }}>
                         Premium Coaching
                       </Link>{" "}
                       – 449 kr/mån.

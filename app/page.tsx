@@ -384,8 +384,8 @@ export default function Home() {
                 <li>Svar på frågor om övningar och upplägg</li>
                 <li>Svar inom 1–2 vardagar</li>
               </ul>
-              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/signup">
-                Bli Premium Coaching
+              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
+                Läs mer →
               </Link>
               <p className={styles.friskvard}>Begränsat antal platser</p>
             </div>

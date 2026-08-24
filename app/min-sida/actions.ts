@@ -39,17 +39,11 @@ export async function createCheckoutSession(
     existing?.stripe_subscription_id &&
     (existing.status === "active" || existing.status === "trialing");
 
-  // Redan prenumerant som byter nivå: uppdatera prenumerationen på plats
-  // med proration istället för att skapa en konkurrerande Checkout Session.
+  // Redan prenumerant som byter nivå: en direkt Checkout Session skulle
+  // skapa en konkurrerande prenumeration. Skicka till bekräftelsesidan
+  // istället, som visar prisskillnaden innan bytet faktiskt görs.
   if (hasActiveSubscription) {
-    const subscription = await stripe.subscriptions.retrieve(
-      existing.stripe_subscription_id as string,
-    );
-    await stripe.subscriptions.update(existing.stripe_subscription_id as string, {
-      items: [{ id: subscription.items.data[0].id, price: priceId }],
-      proration_behavior: "create_prorations",
-    });
-    redirect("/min-sida?checkout=success");
+    redirect(`/min-sida/byt-plan?to=${plan}`);
   }
 
   const session = await stripe.checkout.sessions.create({
@@ -70,6 +64,54 @@ export async function createCheckoutSession(
   }
 
   redirect(session.url);
+}
+
+export async function confirmPlanChange(plan: "premium" | "premium_coaching") {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: existing } = await supabase
+    .from("subscriptions")
+    .select("stripe_subscription_id, status")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  const hasActiveSubscription =
+    existing?.stripe_subscription_id &&
+    (existing.status === "active" || existing.status === "trialing");
+
+  if (!hasActiveSubscription) {
+    redirect("/min-sida");
+  }
+
+  const priceId =
+    plan === "premium_coaching"
+      ? process.env.STRIPE_COACHING_PRICE_ID
+      : process.env.STRIPE_PRICE_ID;
+
+  if (!priceId) {
+    redirect("/min-sida?checkout=not_configured");
+  }
+
+  const subscription = await stripe.subscriptions.retrieve(
+    existing.stripe_subscription_id as string,
+  );
+
+  // always_invoice fakturerar och drar mellanskillnaden direkt istället för
+  // att bara lägga den som en kredit på nästa förnyelsefaktura — annars ser
+  // det ut som att bytet var gratis fram till förnyelsedatumet.
+  await stripe.subscriptions.update(existing.stripe_subscription_id as string, {
+    items: [{ id: subscription.items.data[0].id, price: priceId }],
+    proration_behavior: "always_invoice",
+  });
+
+  redirect("/min-sida?checkout=success");
 }
 
 export async function openBillingPortal() {
