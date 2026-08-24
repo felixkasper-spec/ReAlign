@@ -364,6 +364,7 @@ export default function Home() {
                 <li>Allt i &quot;Gratis konto&quot;</li>
                 <li>Alla programnivåer, inklusive Gymträning</li>
                 <li>Alla övningsvideor i övningsbanken</li>
+                <li>Ladda ner program som PDF</li>
                 <li>Detaljerad progressionsspårning</li>
                 <li>Veckobrev med tips och uppföljning</li>
               </ul>
