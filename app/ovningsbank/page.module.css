@@ -155,6 +155,11 @@
   gap: 6px;
 }
 
+.premiumTag {
+  background: var(--warm-soft);
+  color: var(--warm);
+}
+
 @media (max-width: 880px) {
   .jumpBtn {
     display: inline-block;

@@ -8,6 +8,8 @@ import ShareButton from "@/components/ShareButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { createClient } from "@/lib/supabase/server";
 import { getProgramExerciseSequence } from "@/lib/program-exercise-sequence";
+import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
+import { getSubscription } from "@/lib/subscription";
 import { hasThumbnail } from "../thumbnails";
 import styles from "./page.module.css";
 
@@ -53,6 +55,11 @@ export default async function ExercisePage({
   }
 
   const user = userResult.data.user;
+
+  const premiumSlugs = await getPremiumExerciseSlugs();
+  const isPremiumExercise = premiumSlugs.has(slug);
+  const subscription = isPremiumExercise ? await getSubscription() : null;
+  const locked = isPremiumExercise && !subscription?.active;
 
   let isFavorited = false;
   if (user) {
@@ -140,8 +147,26 @@ export default async function ExercisePage({
 
         <div className={styles.layout}>
           <div className={styles.videoWrap}>
-            {exercise.video_url && (
-              <VimeoEmbed src={exercise.video_url} className={styles.videoFrame} />
+            {locked ? (
+              <div className={styles.lockedBox}>
+                <span className="eyebrow" style={{ color: "var(--warm)" }}>
+                  Premium
+                </span>
+                <h3 style={{ fontSize: "1.1rem", margin: "10px 0 8px", fontWeight: 500 }}>
+                  Den här övningen ingår i Premium
+                </h3>
+                <p style={{ color: "var(--text)", fontSize: "0.9rem", marginBottom: 18 }}>
+                  Lås upp video, instruktioner och resten av övningsbanken för
+                  149 kr/mån.
+                </p>
+                <Link className="btn btn-primary" href="/min-sida">
+                  Bli Premium →
+                </Link>
+              </div>
+            ) : (
+              exercise.video_url && (
+                <VimeoEmbed src={exercise.video_url} className={styles.videoFrame} />
+              )
             )}
             <div className={styles.videoCaption}>
               <span>Video</span>
@@ -178,14 +203,14 @@ export default async function ExercisePage({
               </div>
             )}
 
-            {exercise.instructions && (
+            {!locked && exercise.instructions && (
               <div className={styles.exSection}>
                 <h2>Utförande</h2>
                 {renderInstructions(exercise.instructions)}
               </div>
             )}
 
-            {exercise.tips && (
+            {!locked && exercise.tips && (
               <div className={styles.exSection}>
                 <div className={styles.tipsBox}>
                   <span className="eyebrow" style={{ marginBottom: 10, display: "block" }}>

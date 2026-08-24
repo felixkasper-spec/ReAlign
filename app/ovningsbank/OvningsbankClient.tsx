@@ -14,6 +14,7 @@ export type ExerciseListItem = {
   categories: string[];
   equipment: string | null;
   sets_reps: string | null;
+  premium: boolean;
 };
 
 export default function OvningsbankClient({
@@ -150,6 +151,9 @@ export default function OvningsbankClient({
                   )}
                   <h3>{exercise.title}</h3>
                   <div className={styles.tags}>
+                    {exercise.premium && (
+                      <span className={`tag ${styles.premiumTag}`}>Premium</span>
+                    )}
                     {exercise.equipment && (
                       <span className="tag">{exercise.equipment}</span>
                     )}

@@ -4,13 +4,14 @@ import Footer from "@/components/Footer";
 import TrainingTips from "@/components/TrainingTips";
 import { createClient } from "@/lib/supabase/server";
 import { getExerciseCategories } from "@/lib/exercise-categories";
+import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
 import OvningsbankClient from "./OvningsbankClient";
 import styles from "./page.module.css";
 
 export default async function OvningsbankPage() {
   const supabase = await createClient();
 
-  const [{ data: exercises }, userResult, { data: helkroppPrograms }] =
+  const [{ data: exercises }, userResult, { data: helkroppPrograms }, premiumSlugs] =
     await Promise.all([
       supabase
         .from("exercises")
@@ -24,6 +25,7 @@ export default async function OvningsbankPage() {
           "id, program_exercises ( order_index, exercises ( slug ) )",
         )
         .in("slug", ["helkropp-niva-1", "helkropp-niva-2", "helkropp-niva-3"]),
+      getPremiumExerciseSlugs(),
     ]);
 
   const user = userResult.data.user;
@@ -55,6 +57,7 @@ export default async function OvningsbankPage() {
     .map((e) => ({
       ...e,
       categories: getExerciseCategories(e.slug, e.body_part),
+      premium: premiumSlugs.has(e.slug),
     }));
 
   let favoriteIds: string[] = [];

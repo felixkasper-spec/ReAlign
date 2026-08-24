@@ -338,7 +338,7 @@ export default function Home() {
               <p className={styles.tierPrice}>0 kr</p>
               <ul className={styles.tierList}>
                 <li>Bläddra bland alla program &amp; övningar</li>
-                <li>Se instruktionsvideor för varje övning</li>
+                <li>Se instruktionsvideor för övningar i våra gratisprogram</li>
                 <li>Läs ergonomiguider för sitta, stå och lyfta</li>
               </ul>
             </div>
@@ -363,6 +363,7 @@ export default function Home() {
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>
                 <li>Alla programnivåer, inklusive Gymträning</li>
+                <li>Alla övningsvideor i övningsbanken</li>
                 <li>Detaljerad progressionsspårning</li>
                 <li>Veckobrev med tips och uppföljning</li>
               </ul>

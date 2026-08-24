@@ -53,8 +53,8 @@ export default async function ProgramPage({
     variants[key].push(ex);
   }
 
-  const subscription = program.tier === "premium" ? await getSubscription() : null;
-  const locked = program.tier === "premium" && !subscription?.active;
+  const subscription = await getSubscription();
+  const locked = program.tier === "premium" && !subscription.active;
 
   const meta = programMeta[program.slug];
   const exerciseCount = (variants.full ?? []).length;
@@ -165,6 +165,16 @@ export default async function ProgramPage({
           {!locked && (
             <Link className="btn btn-primary" href="/min-sida">
               Starta programmet
+            </Link>
+          )}
+          {!locked && subscription.active && (
+            <Link
+              className="btn btn-ghost"
+              style={{ border: "1px solid var(--line)" }}
+              href={`/program/${program.slug}/print?variant=${defaultVariant}`}
+              target="_blank"
+            >
+              Ladda ner PDF →
             </Link>
           )}
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">

@@ -49,7 +49,7 @@ const groups: FaqGroup[] = [
     items: [
       {
         q: "Kostar det något?",
-        a: "Övningsbanken, Helkropp Nivå 1–2, Nivå 1 i övriga kategorier samt Bålträning och Kontorsvardag är helt gratis — inget konto krävs för att bläddra. Ett gratis konto låser upp favoriter och schemaläggning. Premium (149 kr/mån) lägger till resten av programbiblioteket, Gymträning, progressionsspårning och veckobrev.",
+        a: "Helkropp Nivå 1–2, Nivå 1 i övriga kategorier samt Bålträning och Kontorsvardag är helt gratis — inget konto krävs för att bläddra. Du kan alltid bläddra i hela övningsbanken, men video och instruktioner för övningar som bara ingår i premiumprogram kräver Premium. Ett gratis konto låser upp favoriter och schemaläggning. Premium (149 kr/mån) lägger till resten av programbiblioteket, Gymträning, alla övningsvideor, progressionsspårning och veckobrev.",
       },
       {
         q: "Vad ingår i videosamtals-analysen?",
