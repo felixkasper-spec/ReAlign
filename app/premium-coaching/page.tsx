@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -52,17 +53,40 @@ export default async function PremiumCoachingPage() {
             </div>
             <div className={styles.reason}>
               <b>Direktkontakt via chatt</b>Fråga om en övning känns fel,
-              be om ett anpassat upplägg, eller checka in när du kört fast.
+              be om ett anpassat upplägg, fråga om dina besvär, skicka video
+              på din teknik och få feedback, checka in när du kört fast,
+              eller få tips om egenbehandling — och allt annat du kommer på.
             </div>
             <div className={styles.reason}>
-              <b>Svar inom 1–2 vardagar</b>Asynkron chatt — ingen
-              livechatt, men en riktig person som läser och svarar på dina
-              meddelanden.
+              <b>Svar inom 1–2 vardagar</b>En riktig person på kliniken
+              läser och svarar på dina meddelanden — inte en bot.
             </div>
             <div className={styles.reason}>
               <b>Begränsat antal platser</b>Vi tar in ett begränsat antal
               Premium Coaching-medlemmar åt gången för att kunna hålla
               svarstiderna.
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
+          <div className={styles.coachBox}>
+            <div className={styles.coachPhoto}>
+              <Image
+                src="/om-oss/felix.jpg"
+                alt="Felix Eliasson"
+                fill
+                sizes="120px"
+              />
+            </div>
+            <div>
+              <span className={styles.coachEyebrow}>Din coach</span>
+              <h3 className={styles.coachName}>Felix Eliasson</h3>
+              <p className={styles.coachText}>
+                Utbildad Postural Terapeut via Optimum-Metoden, med fem års
+                erfarenhet och över 1 500 hjälpta patienter. Det är jag som
+                läser och svarar på dina meddelanden.
+              </p>
             </div>
           </div>
         </div>
@@ -76,7 +100,7 @@ export default async function PremiumCoachingPage() {
           {alreadyCoaching ? (
             <>
               <p>Din prenumeration är aktiv — chatta med din coach på Min sida.</p>
-              <Link className="btn btn-primary btn-lg" href="/min-sida#coaching">
+              <Link className="btn btn-primary btn-lg" href="/min-sida/coaching">
                 Till chatten →
               </Link>
             </>

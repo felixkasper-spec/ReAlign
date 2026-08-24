@@ -64,6 +64,11 @@
   background: #fff;
 }
 
+.sideLinkActive {
+  color: var(--text);
+  background: #fff;
+}
+
 .sideBottom {
   margin-top: auto;
   padding-top: 20px;
@@ -456,11 +461,16 @@
   font-size: 0.85rem;
 }
 
+.chatWrap {
+  max-width: 680px;
+}
+
 .coachThread {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 340px;
+  min-height: 320px;
+  max-height: 60vh;
   overflow-y: auto;
   margin-bottom: 16px;
   padding-right: 2px;

@@ -170,5 +170,5 @@ export async function sendCoachingMessage(formData: FormData) {
     body,
   });
 
-  revalidatePath("/min-sida");
+  revalidatePath("/min-sida/coaching");
 }

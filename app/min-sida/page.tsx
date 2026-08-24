@@ -6,15 +6,12 @@ import SubmitButton from "@/components/SubmitButton";
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 import ShareButton from "./ShareButton";
+import Sidebar from "./Sidebar";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats } from "@/lib/progression";
 import { getBaseUrl } from "@/lib/base-url";
-import {
-  createCheckoutSession,
-  openBillingPortal,
-  sendCoachingMessage,
-} from "./actions";
+import { createCheckoutSession, openBillingPortal } from "./actions";
 import {
   scheduleSession,
   logSessionNow,
@@ -166,13 +163,6 @@ export default async function MinSidaPage({
   const progression = await getProgressionStats(supabase, user.id);
 
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
-  const { data: coachingMessages } = hasCoaching
-    ? await supabase
-        .from("coaching_messages")
-        .select("id, sender, body, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: true })
-    : { data: null };
 
   const doneDays = new Set(
     (weekSessions ?? []).map((s) => (s.completed_at as string).slice(0, 10)),
@@ -196,42 +186,11 @@ export default async function MinSidaPage({
     <>
       <Header />
       <div className={styles.shell}>
-      <aside className={styles.sidebar}>
-        <Link className={styles.logo} href="/">
-          <span className={styles.mark} />
-          ReAlign
-        </Link>
-        <a className={styles.sideLink} href="#oversikt">
-          <span className={styles.sideIc}>◐</span>Översikt
-        </a>
-        <a className={styles.sideLink} href="#favoriter">
-          <span className={styles.sideIc}>♡</span>Favoriter
-        </a>
-        <a className={styles.sideLink} href="#schema">
-          <span className={styles.sideIc}>▦</span>Schema
-        </a>
-        <a className={styles.sideLink} href="#progression">
-          <span className={styles.sideIc}>↗</span>Progression
-        </a>
-        {hasCoaching && (
-          <a className={styles.sideLink} href="#coaching">
-            <span className={styles.sideIc}>✉</span>Chatt med coach
-          </a>
-        )}
-        <div className={styles.sideBottom}>
-          <div className={styles.userChip}>
-            <span className={styles.avatar}>
-              {firstName ? firstName[0].toUpperCase() : "?"}
-            </span>
-            {firstName ?? user.email}
-          </div>
-          <form action="/auth/signout" method="post">
-            <button type="submit" className={styles.signout}>
-              Logga ut
-            </button>
-          </form>
-        </div>
-      </aside>
+      <Sidebar
+        firstName={firstName}
+        userEmail={user.email}
+        hasCoaching={hasCoaching}
+      />
 
       <main className={styles.main}>
         <div className={styles.topbar} id="oversikt">
@@ -536,9 +495,9 @@ export default async function MinSidaPage({
                         ).toLocaleDateString("sv-SE")
                       : "okänt datum"}
                   </p>
-                  <a href="#coaching" className="btn btn-ghost" style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--line)", marginBottom: 8 }}>
+                  <Link href="/min-sida/coaching" className="btn btn-ghost" style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--line)", marginBottom: 8 }}>
                     Till chatten →
-                  </a>
+                  </Link>
                   <form action={openBillingPortal}>
                     <button
                       className="btn btn-ghost"
@@ -619,54 +578,6 @@ export default async function MinSidaPage({
                 </>
               )}
             </section>
-
-            {hasCoaching && (
-              <section className={styles.panel} id="coaching">
-                <div className={styles.panelHead}>
-                  <h2>Chatt med coach</h2>
-                </div>
-                <p className={styles.premiumText} style={{ marginBottom: 14 }}>
-                  Fråga om övningar, upplägg eller hur du känner dig — vi
-                  svarar inom 1–2 vardagar.
-                </p>
-                <div className={styles.coachThread}>
-                  {(!coachingMessages || coachingMessages.length === 0) && (
-                    <p className={styles.empty}>
-                      Inga meddelanden än — skriv din första fråga nedan.
-                    </p>
-                  )}
-                  {coachingMessages?.map((m) => (
-                    <div
-                      key={m.id}
-                      className={`${styles.coachMsg} ${
-                        m.sender === "coach" ? styles.coachMsgCoach : styles.coachMsgUser
-                      }`}
-                    >
-                      <span className={styles.coachMsgMeta}>
-                        {m.sender === "coach" ? "Coach" : "Du"} ·{" "}
-                        {new Date(m.created_at as string).toLocaleDateString(
-                          "sv-SE",
-                          { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" },
-                        )}
-                      </span>
-                      <p>{m.body}</p>
-                    </div>
-                  ))}
-                </div>
-                <form action={sendCoachingMessage} className={styles.scheduleForm}>
-                  <textarea
-                    name="body"
-                    placeholder="Skriv ditt meddelande..."
-                    required
-                    rows={3}
-                    className={styles.textInput}
-                  />
-                  <SubmitButton className="btn btn-primary" pendingText="Skickar...">
-                    Skicka →
-                  </SubmitButton>
-                </form>
-              </section>
-            )}
 
             <section className={styles.panel} id="progression">
               <span className="eyebrow">Progression</span>
