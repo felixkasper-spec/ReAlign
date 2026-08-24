@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubmitButton from "@/components/SubmitButton";
+import AttachmentMedia from "@/components/AttachmentMedia";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { linkify } from "@/lib/linkify";
@@ -82,18 +83,8 @@ export default async function CoachingThreadPage({
                 {m.sender === "coach" ? "Coach" : displayName} ·{" "}
                 {new Date(m.created_at as string).toLocaleString("sv-SE")}
               </span>
-              {m.attachment_url && m.attachment_type === "image" && (
-                // eslint-disable-next-line @next/next/no-img-element -- signerad, tillfällig Storage-URL
-                <img
-                  src={m.attachment_url}
-                  alt="Bifogad bild"
-                  className={styles.attachmentImg}
-                />
-              )}
-              {m.attachment_url && m.attachment_type === "video" && (
-                <video controls className={styles.attachmentVideo}>
-                  <source src={m.attachment_url} />
-                </video>
+              {m.attachment_url && m.attachment_type && (
+                <AttachmentMedia url={m.attachment_url} type={m.attachment_type} />
               )}
               {m.body && <p>{linkify(m.body)}</p>}
             </div>

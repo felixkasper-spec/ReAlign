@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import AttachmentMedia from "@/components/AttachmentMedia";
 import { linkify } from "@/lib/linkify";
 import styles from "./page.module.css";
 
@@ -90,18 +91,8 @@ export default function ChatThread({ messages }: { messages: Message[] }) {
                       isCoach ? styles.bubbleCoach : styles.bubbleUser
                     } ${m.attachment_url ? styles.bubbleMedia : ""}`}
                   >
-                    {m.attachment_url && m.attachment_type === "image" && (
-                      // eslint-disable-next-line @next/next/no-img-element -- signerad, tillfällig Storage-URL: next/image cachar/optimerar inte det bra
-                      <img
-                        src={m.attachment_url}
-                        alt="Bifogad bild"
-                        className={styles.attachmentImg}
-                      />
-                    )}
-                    {m.attachment_url && m.attachment_type === "video" && (
-                      <video controls className={styles.attachmentVideo}>
-                        <source src={m.attachment_url} />
-                      </video>
+                    {m.attachment_url && m.attachment_type && (
+                      <AttachmentMedia url={m.attachment_url} type={m.attachment_type} />
                     )}
                     {m.body && <div className={styles.bubbleText}>{linkify(m.body)}</div>}
                   </div>

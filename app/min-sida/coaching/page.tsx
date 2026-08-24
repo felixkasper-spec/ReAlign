@@ -65,7 +65,7 @@ export default async function CoachingPage() {
 
         <main className={shellStyles.main}>
           <MobileTabs hasCoaching={hasCoaching} linkPrefix="/min-sida" activeCoaching />
-          <div className={shellStyles.topbar}>
+          <div className={`${shellStyles.topbar} ${styles.chatTopbar}`}>
             <div>
               <span className="eyebrow">Min sida</span>
               <h1>Chatt med coach</h1>
