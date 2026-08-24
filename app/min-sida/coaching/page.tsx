@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import SubmitButton from "@/components/SubmitButton";
@@ -5,7 +6,9 @@ import Sidebar from "../Sidebar";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { sendCoachingMessage } from "../actions";
-import styles from "../page.module.css";
+import ChatThread from "./ChatThread";
+import shellStyles from "../page.module.css";
+import styles from "./page.module.css";
 
 export default async function CoachingPage() {
   const supabase = await createClient();
@@ -38,7 +41,7 @@ export default async function CoachingPage() {
   return (
     <>
       <Header />
-      <div className={styles.shell}>
+      <div className={shellStyles.shell}>
         <Sidebar
           firstName={firstName}
           userEmail={user.email}
@@ -47,57 +50,44 @@ export default async function CoachingPage() {
           activeCoaching
         />
 
-        <main className={styles.main}>
-          <div className={styles.topbar}>
+        <main className={shellStyles.main}>
+          <div className={shellStyles.topbar}>
             <div>
               <span className="eyebrow">Min sida</span>
               <h1>Chatt med coach</h1>
-              <p>
-                Fråga om övningar, upplägg eller hur du känner dig — vi
-                svarar inom 1–2 vardagar.
-              </p>
             </div>
           </div>
 
-          <div className={styles.chatWrap}>
-            <section className={styles.panel}>
-              <div className={styles.coachThread}>
-                {(!coachingMessages || coachingMessages.length === 0) && (
-                  <p className={styles.empty}>
-                    Inga meddelanden än — skriv din första fråga nedan.
-                  </p>
-                )}
-                {coachingMessages?.map((m) => (
-                  <div
-                    key={m.id}
-                    className={`${styles.coachMsg} ${
-                      m.sender === "coach" ? styles.coachMsgCoach : styles.coachMsgUser
-                    }`}
-                  >
-                    <span className={styles.coachMsgMeta}>
-                      {m.sender === "coach" ? "Coach" : "Du"} ·{" "}
-                      {new Date(m.created_at as string).toLocaleDateString(
-                        "sv-SE",
-                        { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" },
-                      )}
-                    </span>
-                    <p>{m.body}</p>
-                  </div>
-                ))}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <div className={styles.headerAvatar}>
+                <Image src="/om-oss/felix.jpg" alt="Felix Eliasson" fill sizes="40px" />
               </div>
-              <form action={sendCoachingMessage} className={styles.scheduleForm}>
-                <textarea
-                  name="body"
-                  placeholder="Skriv ditt meddelande..."
-                  required
-                  rows={3}
-                  className={styles.textInput}
-                />
-                <SubmitButton className="btn btn-primary" pendingText="Skickar...">
-                  Skicka →
-                </SubmitButton>
-              </form>
-            </section>
+              <div>
+                <div className={styles.headerName}>Felix Eliasson</div>
+                <div className={styles.headerSub}>
+                  <span className={styles.headerDot} />
+                  Svarar inom 1–2 vardagar
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.scroll}>
+              <ChatThread messages={coachingMessages ?? []} />
+            </div>
+
+            <form action={sendCoachingMessage} className={styles.composer}>
+              <textarea
+                name="body"
+                placeholder="Skriv ditt meddelande..."
+                required
+                rows={1}
+                className={styles.composerField}
+              />
+              <SubmitButton className={styles.sendBtn} pendingText="…">
+                →
+              </SubmitButton>
+            </form>
           </div>
         </main>
       </div>
