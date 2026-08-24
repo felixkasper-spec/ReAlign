@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
 const BOKADIREKT_URL =
   "https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Videosamtals-analys — ReAlign Metoden",
   description:
     "Ett videosamtal med en av våra terapeuter, följt av ett program skräddarsytt exakt utifrån din kropp. 590 kr, engångsköp.",
-};
+});
 
 export default function VideosamtalPage() {
   return (

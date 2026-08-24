@@ -1,12 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Kommer snart — ReAlign Metoden",
-};
+  description:
+    "Community-forum, veckobrev, gruppträning via video, hållnings- och funktionsanalys med mera — se vad vi bygger härnäst.",
+});
 
 const items = [
   {

@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Om oss — Cleer Klinik",
   description:
     "Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.",
-};
+});
 
 export default function OmOssPage() {
   return (

@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactForm from "./ContactForm";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Kontakt — ReAlign Metoden",
   description:
     "Kontakta ReAlign Metoden — frågor om träning, bokning av videosamtal, eller teknisk support.",
-};
+});
 
 export default function KontaktPage() {
   return (

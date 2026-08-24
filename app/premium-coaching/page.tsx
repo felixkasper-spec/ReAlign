@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
@@ -7,13 +6,14 @@ import SubmitButton from "@/components/SubmitButton";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { createCheckoutSession } from "@/app/min-sida/actions";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Premium Coaching — ReAlign Metoden",
   description:
     "Allt i Premium, plus direktkontakt med en coach via chatt. 449 kr/mån, begränsat antal platser.",
-};
+});
 
 export default async function PremiumCoachingPage() {
   const supabase = await createClient();

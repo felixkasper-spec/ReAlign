@@ -5,8 +5,15 @@ import TrainingTips from "@/components/TrainingTips";
 import { createClient } from "@/lib/supabase/server";
 import { getExerciseCategories } from "@/lib/exercise-categories";
 import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
+import { pageMetadata } from "@/lib/page-metadata";
 import OvningsbankClient from "./OvningsbankClient";
 import styles from "./page.module.css";
+
+export const metadata = pageMetadata({
+  title: "Övningsbank — ReAlign Metoden",
+  description:
+    "Bläddra bland alla övningar med instruktionsvideo — sök på kroppsdel, utrustning eller programnivå.",
+});
 
 export default async function OvningsbankPage() {
   const supabase = await createClient();

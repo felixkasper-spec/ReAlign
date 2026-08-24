@@ -27,6 +27,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.realignmetoden.se"),
   title: "Hållning — Postural träning",
   description:
     "Postural träning som återställer kroppens naturliga balans. Program, övningsbank och ergonomiguider, helt gratis.",

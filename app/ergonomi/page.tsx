@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { getSpotifyOembed } from "@/lib/spotify";
+import { pageMetadata } from "@/lib/page-metadata";
 import JumpNav from "./JumpNav";
 import styles from "./page.module.css";
 
 const EPISODE_ID = "6T3rxc52NXbu0zL4yoE2Cq";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Ergonomi — Hållning",
   description:
     "Så sitter, står och lyfter du rätt. Praktiska guider för skrivbordsarbete, sömn och vardagsrörelser.",
-};
+});
 
 type Situation = {
   id: string;

@@ -4,7 +4,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
 import { programMeta } from "@/lib/program-meta";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
+
+export const metadata = pageMetadata({
+  title: "Program — ReAlign Metoden",
+  description:
+    "Träningsprogram för hela kroppen, höfter, axlar/nacke, bål, gym och kontorsvardag — flera nivåer, byggda för postural träning.",
+});
 
 const CATEGORY_ORDER = [
   "helkropp",

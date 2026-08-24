@@ -1,7 +1,14 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuizClient from "./QuizClient";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
+
+export const metadata = pageMetadata({
+  title: "Hitta rätt program — ReAlign Metoden",
+  description:
+    "Svara på fem korta frågor om var det gör ont och din vardag — få en programrekommendation direkt, helt automatiskt.",
+});
 
 export default function AnalysPage() {
   return (

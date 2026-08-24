@@ -1,17 +1,17 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import { getSpotifyOembed } from "@/lib/spotify";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Om postural träning — ReAlign Metoden",
   description:
     "Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.",
-};
+});
 
 const EPISODE_ID = "7kRVHZhGfmsZCOqJjtyPFF";
 

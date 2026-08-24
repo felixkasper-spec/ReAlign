@@ -10,8 +10,42 @@ import { createClient } from "@/lib/supabase/server";
 import { getProgramExerciseSequence } from "@/lib/program-exercise-sequence";
 import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
 import { getSubscription } from "@/lib/subscription";
+import { pageMetadata } from "@/lib/page-metadata";
 import { hasThumbnail } from "../thumbnails";
 import styles from "./page.module.css";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const supabase = await createClient();
+  const { data: exercise } = await supabase
+    .from("exercises")
+    .select("title, body_part, equipment, instructions")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (!exercise) {
+    return pageMetadata({
+      title: "Övning — ReAlign Metoden",
+      description: "En övning ur ReAlign Metodens övningsbank.",
+    });
+  }
+
+  const instructionsExcerpt = exercise.instructions
+    ?.split("\n")
+    .find((line: string) => line.trim().length > 0)
+    ?.slice(0, 160);
+
+  return pageMetadata({
+    title: `${exercise.title} — ReAlign Metoden`,
+    description:
+      instructionsExcerpt ??
+      `Övning för ${exercise.body_part}${exercise.equipment ? ` · ${exercise.equipment}` : ""} — instruktionsvideo och steg-för-steg-guide.`,
+  });
+}
 
 function renderInstructions(text: string) {
   const blocks = text.split("\n\n");

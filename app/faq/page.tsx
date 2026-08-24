@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FaqAccordion, { type FaqGroup } from "@/components/FaqAccordion";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Vanliga frågor — ReAlign Metoden",
   description:
     "Svar på de vanligaste frågorna om postural träning, säkerhet, utrustning och vad du kan förvänta dig av ReAlign Metoden.",
-};
+});
 
 const groups: FaqGroup[] = [
   {

@@ -8,8 +8,38 @@ import TrainingTips from "@/components/TrainingTips";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
+import { pageMetadata } from "@/lib/page-metadata";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
 import styles from "./page.module.css";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const supabase = await createClient();
+  const { data: program } = await supabase
+    .from("programs")
+    .select("title, description, category")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (!program) {
+    return pageMetadata({
+      title: "Program — ReAlign Metoden",
+      description: "Träningsprogram byggt för postural träning.",
+    });
+  }
+
+  const meta = programMeta[slug];
+  return pageMetadata({
+    title: `${program.title} — ReAlign Metoden`,
+    description:
+      program.description ??
+      `${meta?.purpose ?? program.category}-program${meta?.level ? ` · ${meta.level}` : ""} från ReAlign Metoden.`,
+  });
+}
 
 export default async function ProgramPage({
   params,
