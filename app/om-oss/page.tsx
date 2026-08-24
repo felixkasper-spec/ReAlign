@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import styles from "./page.module.css";
@@ -133,9 +132,14 @@ export default function OmOssPage() {
           </span>
           <h2>Boka en personlig videosamtals-analys</h2>
           <p>Vi går igenom din kropp tillsammans och bygger ett program skräddarsytt för dig.</p>
-          <Link className="btn btn-primary" href="/analys">
-            Boka videosamtal →
-          </Link>
+          <a
+            className="btn btn-primary"
+            href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Boka videosamtal – 590 kr →
+          </a>
         </div>
 
         <Footer />

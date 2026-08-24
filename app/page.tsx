@@ -126,13 +126,15 @@ export default function Home() {
               </p>
               <p className={styles.advisoryNote}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
-            <Link
+            <a
               className="btn btn-primary"
-              href="/analys"
+              href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{ whiteSpace: "nowrap" }}
             >
-              Boka videosamtals-analys →
-            </Link>
+              Boka videosamtals-analys – 590 kr →
+            </a>
           </div>
         </section>
 

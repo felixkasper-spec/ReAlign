@@ -53,7 +53,7 @@ const groups: FaqGroup[] = [
       },
       {
         q: "Vad ingår i videosamtals-analysen?",
-        a: "Ett videosamtal med en av våra terapeuter på kliniken där vi går igenom din kropp och hållning tillsammans, följt av ett program skräddarsytt exakt utifrån vad vi ser hos dig. Detta är alltid ett separat köp, oavsett om du har Premium eller inte.",
+        a: "Ett videosamtal med en av våra terapeuter på kliniken där vi går igenom din kropp och hållning tillsammans, följt av ett program skräddarsytt exakt utifrån vad vi ser hos dig. Kostar 590 kr och är alltid ett separat köp, oavsett om du har Premium eller inte.",
       },
     ],
   },

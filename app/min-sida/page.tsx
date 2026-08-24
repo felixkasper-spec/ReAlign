@@ -472,13 +472,15 @@ export default async function MinSidaPage({
                 Få ett program skräddarsytt exakt för din kropp, byggt av en
                 av våra terapeuter på kliniken efter ett videosamtal med dig.
               </p>
-              <Link
+              <a
                 className="btn btn-primary"
                 style={{ width: "100%", textAlign: "center", display: "block" }}
-                href="/analys"
+                href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Boka videosamtal →
-              </Link>
+                Boka videosamtal – 590 kr →
+              </a>
               <p
                 style={{
                   color: "rgba(255, 255, 255, 0.75)",

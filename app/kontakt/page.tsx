@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactForm from "./ContactForm";
@@ -38,9 +37,14 @@ export default function KontaktPage() {
             <span className={styles.ic}>📅</span>
             <h3>Boka videosamtal</h3>
             <p>Personlig analys och skräddarsytt program.</p>
-            <Link className={styles.link} href="/analys">
-              Boka tid →
-            </Link>
+            <a
+              className={styles.link}
+              href="https://www.bokadirekt.se/boka-tjanst/cleer-klinik-47230/postural-traning-videoanalys-och-program-3504723"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Boka tid – 590 kr →
+            </a>
           </div>
           <div className={styles.contactCard}>
             <span className={styles.ic}>🛠</span>
