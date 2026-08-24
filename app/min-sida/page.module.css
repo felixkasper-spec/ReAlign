@@ -462,6 +462,10 @@
 }
 
 
+.mobileTabs {
+  display: none;
+}
+
 @media (max-width: 980px) {
   .shell {
     grid-template-columns: 1fr;
@@ -469,6 +473,31 @@
 
   .sidebar {
     display: none;
+  }
+
+  .mobileTabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 2px 2px 16px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobileTabs a {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  .mobileTabActive {
+    background: var(--sage) !important;
+    color: #fff !important;
   }
 
   .cols {
@@ -480,7 +509,7 @@
   }
 
   .main {
-    padding: 28px 22px 60px;
+    padding: 20px 22px 60px;
   }
 }
 

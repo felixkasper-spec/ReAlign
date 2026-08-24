@@ -7,6 +7,7 @@ import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 import ShareButton from "./ShareButton";
 import Sidebar from "./Sidebar";
+import MobileTabs from "./MobileTabs";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats } from "@/lib/progression";
@@ -193,6 +194,7 @@ export default async function MinSidaPage({
       />
 
       <main className={styles.main}>
+        <MobileTabs hasCoaching={hasCoaching} />
         <div className={styles.topbar} id="oversikt">
           <div>
             <span className="eyebrow">Min sida</span>

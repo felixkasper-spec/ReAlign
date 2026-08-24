@@ -67,7 +67,7 @@
 }
 
 .back {
-  display: inline-block;
+  display: block;
   color: var(--text-soft);
   font-size: 0.85rem;
   margin-bottom: 16px;

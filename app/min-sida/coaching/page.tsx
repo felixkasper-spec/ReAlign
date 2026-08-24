@@ -2,6 +2,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Sidebar from "../Sidebar";
+import MobileTabs from "../MobileTabs";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
@@ -63,6 +64,7 @@ export default async function CoachingPage() {
         />
 
         <main className={shellStyles.main}>
+          <MobileTabs hasCoaching={hasCoaching} linkPrefix="/min-sida" activeCoaching />
           <div className={shellStyles.topbar}>
             <div>
               <span className="eyebrow">Min sida</span>
