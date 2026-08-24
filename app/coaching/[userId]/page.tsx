@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import SubmitButton from "@/components/SubmitButton";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { linkify } from "@/lib/linkify";
 import { replyToCoachingThread } from "../actions";
 import styles from "../page.module.css";
 
@@ -68,7 +69,7 @@ export default async function CoachingThreadPage({
                 {m.sender === "coach" ? "Coach" : displayName} ·{" "}
                 {new Date(m.created_at as string).toLocaleString("sv-SE")}
               </span>
-              <p>{m.body}</p>
+              <p>{linkify(m.body)}</p>
             </div>
           ))}
         </div>

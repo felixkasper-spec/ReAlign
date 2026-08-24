@@ -145,11 +145,21 @@
   border-bottom-left-radius: 4px;
 }
 
+.bubbleCoach a {
+  color: var(--sage);
+  text-decoration: underline;
+}
+
 .bubbleUser {
   background: var(--sage);
   color: #fff;
   border-bottom-right-radius: 4px;
   margin-left: auto;
+}
+
+.bubbleUser a {
+  color: #fff;
+  text-decoration: underline;
 }
 
 .composer {

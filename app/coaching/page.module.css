@@ -97,11 +97,21 @@
   align-self: flex-start;
 }
 
+.msgUser a {
+  color: var(--sage);
+  text-decoration: underline;
+}
+
 .msgCoach {
   align-self: flex-end;
   background: var(--sage);
   border-color: var(--sage);
   color: #fff;
+}
+
+.msgCoach a {
+  color: #fff;
+  text-decoration: underline;
 }
 
 .msgMeta {

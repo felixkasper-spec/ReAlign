@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { linkify } from "@/lib/linkify";
 import styles from "./page.module.css";
 
 type Message = {
@@ -87,7 +88,7 @@ export default function ChatThread({ messages }: { messages: Message[] }) {
                       isCoach ? styles.bubbleCoach : styles.bubbleUser
                     }`}
                   >
-                    {m.body}
+                    {linkify(m.body)}
                   </div>
                 ))}
               </div>
