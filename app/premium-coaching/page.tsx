@@ -95,13 +95,7 @@ export default async function PremiumCoachingPage() {
               Behöver du en fullständig utredning — en terapeut som ser dig
               röra dig live och bygger ett program helt från grunden — då
               rekommenderar jag istället en{" "}
-              <a
-                href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                videosamtals-analys
-              </a>
+              <Link href="/videosamtal">videosamtals-analys</Link>
               . Chatten är till för det löpande — analysen för djupdykningen.
             </p>
           </div>

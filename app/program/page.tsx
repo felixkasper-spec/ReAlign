@@ -118,15 +118,13 @@ export default async function ProgramIndexPage() {
             </p>
             <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
           </div>
-          <a
+          <Link
             className="btn btn-primary"
-            href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/videosamtal"
             style={{ whiteSpace: "nowrap" }}
           >
             Boka videosamtals-analys – 590 kr →
-          </a>
+          </Link>
         </div>
 
         <Footer />

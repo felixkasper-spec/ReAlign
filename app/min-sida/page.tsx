@@ -449,15 +449,13 @@ export default async function MinSidaPage({
                 Få ett program skräddarsytt exakt för din kropp, byggt av en
                 av våra terapeuter på kliniken efter ett videosamtal med dig.
               </p>
-              <a
+              <Link
                 className="btn btn-primary"
                 style={{ width: "100%", textAlign: "center", display: "block" }}
-                href="https://www.bokadirekt.se/boka-tjanst/realign-metoden-136305/postural-traning-analys-och-skraddarsytt-program-3504740"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/videosamtal"
               >
                 Boka videosamtal – 590 kr →
-              </a>
+              </Link>
               <p
                 style={{
                   color: "rgba(255, 255, 255, 0.75)",
