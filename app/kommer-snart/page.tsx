@@ -8,6 +8,7 @@ export const metadata = pageMetadata({
   title: "Kommer snart — ReAlign Metoden",
   description:
     "Community-forum, veckobrev, gruppträning via video, hållnings- och funktionsanalys med mera — se vad vi bygger härnäst.",
+  image: "/og/kommer-snart.png",
 });
 
 const items = [

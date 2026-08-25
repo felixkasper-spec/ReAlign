@@ -14,6 +14,7 @@ export const metadata = pageMetadata({
   title: "Ergonomi — Hållning",
   description:
     "Så sitter, står och lyfter du rätt. Praktiska guider för skrivbordsarbete, sömn och vardagsrörelser.",
+  image: "/og/ergonomi.png",
 });
 
 type Situation = {

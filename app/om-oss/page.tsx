@@ -9,6 +9,7 @@ export const metadata = pageMetadata({
   title: "Om oss — Cleer Klinik",
   description:
     "Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.",
+  image: "/og/om-oss.png",
 });
 
 export default function OmOssPage() {

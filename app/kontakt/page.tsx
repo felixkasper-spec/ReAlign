@@ -9,6 +9,7 @@ export const metadata = pageMetadata({
   title: "Kontakt — ReAlign Metoden",
   description:
     "Kontakta ReAlign Metoden — frågor om träning, bokning av videosamtal, eller teknisk support.",
+  image: "/og/kontakt.png",
 });
 
 export default function KontaktPage() {

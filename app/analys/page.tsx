@@ -8,6 +8,7 @@ export const metadata = pageMetadata({
   title: "Hitta rätt program — ReAlign Metoden",
   description:
     "Svara på fem korta frågor om var det gör ont och din vardag — få en programrekommendation direkt, helt automatiskt.",
+  image: "/og/analys.png",
 });
 
 export default function AnalysPage() {

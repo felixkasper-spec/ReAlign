@@ -13,6 +13,7 @@ export const metadata = pageMetadata({
   title: "Övningsbank — ReAlign Metoden",
   description:
     "Bläddra bland alla övningar med instruktionsvideo — sök på kroppsdel, utrustning eller programnivå.",
+  image: "/og/ovningsbank.png",
 });
 
 export default async function OvningsbankPage() {

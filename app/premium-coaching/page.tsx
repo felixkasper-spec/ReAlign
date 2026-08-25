@@ -13,6 +13,7 @@ export const metadata = pageMetadata({
   title: "Premium Coaching — ReAlign Metoden",
   description:
     "Allt i Premium, plus direktkontakt med en coach via chatt. 449 kr/mån, begränsat antal platser.",
+  image: "/og/premium-coaching.png",
 });
 
 export default async function PremiumCoachingPage() {

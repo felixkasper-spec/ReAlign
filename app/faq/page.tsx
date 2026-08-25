@@ -7,6 +7,7 @@ export const metadata = pageMetadata({
   title: "Vanliga frågor — ReAlign Metoden",
   description:
     "Svar på de vanligaste frågorna om postural träning, säkerhet, utrustning och vad du kan förvänta dig av ReAlign Metoden.",
+  image: "/og/faq.png",
 });
 
 const groups: FaqGroup[] = [

@@ -11,6 +11,7 @@ export const metadata = pageMetadata({
   title: "Program — ReAlign Metoden",
   description:
     "Träningsprogram för hela kroppen, höfter, axlar/nacke, bål, gym och kontorsvardag — flera nivåer, byggda för postural träning.",
+  image: "/og/program.png",
 });
 
 const CATEGORY_ORDER = [
