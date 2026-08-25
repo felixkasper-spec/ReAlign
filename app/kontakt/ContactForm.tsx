@@ -12,7 +12,7 @@ export default function ContactForm() {
     e.preventDefault();
     const subject = encodeURIComponent(`Meddelande från ${name || "sajten"}`);
     const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:hej@cleerklinik.se?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:kontakt@realignmetoden.se?subject=${subject}&body=${body}`;
   }
 
   return (

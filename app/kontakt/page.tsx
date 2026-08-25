@@ -31,8 +31,8 @@ export default function KontaktPage() {
             <span className={styles.ic}>💬</span>
             <h3>Allmänna frågor</h3>
             <p>Om träningen, programmen eller metoden.</p>
-            <a className={styles.link} href="mailto:hej@cleerklinik.se">
-              hej@cleerklinik.se
+            <a className={styles.link} href="mailto:kontakt@realignmetoden.se">
+              kontakt@realignmetoden.se
             </a>
           </div>
           <div className={styles.contactCard}>
@@ -47,8 +47,8 @@ export default function KontaktPage() {
             <span className={styles.ic}>🛠</span>
             <h3>Teknisk support</h3>
             <p>Problem med inloggning, appen eller ditt konto.</p>
-            <a className={styles.link} href="mailto:support@cleerklinik.se">
-              support@cleerklinik.se
+            <a className={styles.link} href="mailto:kontakt@realignmetoden.se">
+              kontakt@realignmetoden.se
             </a>
           </div>
         </div>
