@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Sidebar from "../Sidebar";
 import MobileTabs from "../MobileTabs";
@@ -7,7 +6,6 @@ import BuilderClient from "./BuilderClient";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import shellStyles from "../page.module.css";
-import styles from "./page.module.css";
 
 export default async function BuildProgramPage() {
   const supabase = await createClient();
@@ -19,23 +17,23 @@ export default async function BuildProgramPage() {
     redirect("/login");
   }
 
-  const [{ data: profile }, subscription, { data: favorites }] = await Promise.all([
-    supabase.from("profiles").select("display_name").eq("id", user.id).single(),
-    getSubscription(),
-    supabase
-      .from("favorites")
-      .select("exercise_id, exercises ( id, slug, title, body_part )")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false }),
-  ]);
+  const [{ data: profile }, subscription, { data: exercises }, { data: favorites }] =
+    await Promise.all([
+      supabase.from("profiles").select("display_name").eq("id", user.id).single(),
+      getSubscription(),
+      supabase
+        .from("exercises")
+        .select("id, slug, title, body_part")
+        .order("body_part")
+        .order("title"),
+      supabase.from("favorites").select("exercise_id").eq("user_id", user.id),
+    ]);
 
   if (!subscription.active) {
     redirect("/premium");
   }
 
-  const favExercises = (favorites ?? [])
-    .map((f) => f.exercises as unknown as { id: string; slug: string; title: string; body_part: string } | null)
-    .filter((e): e is { id: string; slug: string; title: string; body_part: string } => !!e);
+  const favoriteIds = (favorites ?? []).map((f) => f.exercise_id);
 
   const firstName = profile?.display_name?.trim();
 
@@ -61,23 +59,11 @@ export default async function BuildProgramPage() {
             <div>
               <span className="eyebrow">Min sida</span>
               <h1>Bygg ditt eget program</h1>
-              <p>Kombinera dina favoritövningar till ett eget, ordnat program.</p>
+              <p>Sök bland alla övningar och kombinera dem till ett eget, ordnat program.</p>
             </div>
           </div>
 
-          {favExercises.length === 0 ? (
-            <div className={styles.empty}>
-              <p>
-                Du har inga sparade favoritövningar än. Bläddra i övningsbanken
-                och spara några för att kunna bygga ett eget program av dem.
-              </p>
-              <Link className="btn btn-primary" href="/ovningsbank">
-                Till övningsbanken →
-              </Link>
-            </div>
-          ) : (
-            <BuilderClient favorites={favExercises} />
-          )}
+          <BuilderClient exercises={exercises ?? []} favoriteIds={favoriteIds} />
         </main>
       </div>
     </>

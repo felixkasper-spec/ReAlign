@@ -1,19 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SubmitButton from "@/components/SubmitButton";
 import { createCustomProgram } from "../custom-program-actions";
 import styles from "./page.module.css";
 
-type FavExercise = { id: string; slug: string; title: string; body_part: string };
+type Exercise = { id: string; slug: string; title: string; body_part: string };
 
-export default function BuilderClient({ favorites }: { favorites: FavExercise[] }) {
+export default function BuilderClient({
+  exercises,
+  favoriteIds,
+}: {
+  exercises: Exercise[];
+  favoriteIds: string[];
+}) {
   const [title, setTitle] = useState("");
-  const [selected, setSelected] = useState<FavExercise[]>([]);
+  const [selected, setSelected] = useState<Exercise[]>([]);
+  const [search, setSearch] = useState("");
+  const [bodyFilter, setBodyFilter] = useState<string>("");
 
-  const available = favorites.filter((f) => !selected.some((s) => s.id === f.id));
+  const favoriteSet = useMemo(() => new Set(favoriteIds), [favoriteIds]);
+  const selectedSet = useMemo(() => new Set(selected.map((e) => e.id)), [selected]);
 
-  function add(ex: FavExercise) {
+  const bodyParts = useMemo(() => {
+    const seen = new Set<string>();
+    const list: string[] = [];
+    for (const e of exercises) {
+      if (!seen.has(e.body_part)) {
+        seen.add(e.body_part);
+        list.push(e.body_part);
+      }
+    }
+    return list;
+  }, [exercises]);
+
+  const available = exercises
+    .filter((e) => !selectedSet.has(e.id))
+    .filter((e) => !bodyFilter || e.body_part === bodyFilter)
+    .filter((e) => !search.trim() || e.title.toLowerCase().includes(search.trim().toLowerCase()))
+    .sort((a, b) => {
+      const favA = favoriteSet.has(a.id) ? 0 : 1;
+      const favB = favoriteSet.has(b.id) ? 0 : 1;
+      return favA - favB || a.title.localeCompare(b.title);
+    });
+
+  function add(ex: Exercise) {
     setSelected((prev) => [...prev, ex]);
   }
 
@@ -35,15 +66,47 @@ export default function BuilderClient({ favorites }: { favorites: FavExercise[] 
     <form action={createCustomProgram} className={styles.builder}>
       <div className={styles.cols}>
         <div className={styles.panel}>
-          <h2>Dina favoritövningar</h2>
+          <h2>Alla övningar</h2>
+
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Sök övning..."
+            className={styles.searchInput}
+          />
+
+          <div className={styles.filterRow}>
+            <button
+              type="button"
+              className={`${styles.filterChip} ${bodyFilter === "" ? styles.filterChipActive : ""}`}
+              onClick={() => setBodyFilter("")}
+            >
+              Alla
+            </button>
+            {bodyParts.map((bp) => (
+              <button
+                key={bp}
+                type="button"
+                className={`${styles.filterChip} ${bodyFilter === bp ? styles.filterChipActive : ""}`}
+                onClick={() => setBodyFilter(bp)}
+              >
+                {bp}
+              </button>
+            ))}
+          </div>
+
           {available.length === 0 ? (
-            <p className={styles.hint}>Alla dina favoriter är tillagda.</p>
+            <p className={styles.hint}>Inga övningar matchade.</p>
           ) : (
             <ul className={styles.list}>
               {available.map((ex) => (
                 <li key={ex.id} className={styles.row}>
                   <div>
-                    <div className={styles.rowTitle}>{ex.title}</div>
+                    <div className={styles.rowTitle}>
+                      {favoriteSet.has(ex.id) && <span className={styles.favMark}>♥</span>}
+                      {ex.title}
+                    </div>
                     <div className={styles.rowMeta}>{ex.body_part}</div>
                   </div>
                   <button type="button" className={styles.addBtn} onClick={() => add(ex)}>
