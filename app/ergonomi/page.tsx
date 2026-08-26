@@ -11,7 +11,7 @@ import styles from "./page.module.css";
 const EPISODE_ID = "6T3rxc52NXbu0zL4yoE2Cq";
 
 export const metadata = pageMetadata({
-  title: "Ergonomi — Hållning",
+  title: "Ergonomi — ReAlign Metoden",
   description:
     "Så sitter, står och lyfter du rätt. Praktiska guider för skrivbordsarbete, sömn och vardagsrörelser.",
   image: "/og/ergonomi.png",

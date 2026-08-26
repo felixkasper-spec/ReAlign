@@ -327,8 +327,8 @@ export default function Home() {
               <p className={styles.tierPrice}>0 kr</p>
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Utan konto&quot;</li>
-                <li>Spara favoritövningar</li>
-                <li>Schemalägg och logga dina träningspass</li>
+                <li>Bygg din egen samling av favoritövningar</li>
+                <li>Håll koll på din träning — streak, historik och vecka för vecka</li>
               </ul>
               <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/signup">
                 Skapa gratis konto

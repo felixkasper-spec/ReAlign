@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
-  title: "Om oss — Cleer Klinik",
+  title: "Om oss — ReAlign Metoden",
   description:
     "Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.",
   image: "/og/om-oss.png",

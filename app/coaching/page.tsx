@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { markContactMessageRead } from "./actions";
 import styles from "./page.module.css";
 
 type ThreadRow = {
@@ -26,6 +27,11 @@ export default async function CoachingInboxPage() {
   const { data: messages } = await admin
     .from("coaching_messages")
     .select("user_id, sender, body, created_at, read_at")
+    .order("created_at", { ascending: false });
+
+  const { data: contactMessages } = await admin
+    .from("contact_messages")
+    .select("id, name, email, message, created_at, read_at")
     .order("created_at", { ascending: false });
 
   const threads: ThreadRow[] = (subs ?? []).map((s) => {
@@ -78,6 +84,41 @@ export default async function CoachingInboxPage() {
               {t.unread > 0 && <span className={styles.badge}>{t.unread}</span>}
             </Link>
           ))}
+        </div>
+
+        <div className={styles.contactSection}>
+          <span className="eyebrow">Kontaktmeddelanden</span>
+          <h2>Från kontaktformuläret</h2>
+
+          {(!contactMessages || contactMessages.length === 0) && (
+            <p className={styles.empty}>Inga kontaktmeddelanden än.</p>
+          )}
+
+          <div className={styles.list}>
+            {(contactMessages ?? []).map((m) => (
+              <div key={m.id} className={styles.contactRow}>
+                <div className={styles.rowInfo}>
+                  <div className={styles.name}>
+                    {m.name} <span className={styles.contactEmail}>· {m.email}</span>
+                  </div>
+                  <div className={styles.contactMessage}>{m.message}</div>
+                  <div className={styles.contactDate}>
+                    {new Date(m.created_at as string).toLocaleString("sv-SE", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })}
+                  </div>
+                </div>
+                {!m.read_at && (
+                  <form action={markContactMessageRead.bind(null, m.id)}>
+                    <button type="submit" className={styles.markReadBtn}>
+                      Markera som läst
+                    </button>
+                  </form>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         <Footer />

@@ -95,7 +95,7 @@ export default async function ProgramPage({
   const user = userResult.data.user;
 
   let completions = 0;
-  if (user) {
+  if (user && subscription.active) {
     const { count } = await supabase
       .from("logged_sessions")
       .select("id", { count: "exact", head: true })

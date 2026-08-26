@@ -66,6 +66,64 @@
   padding: 0 6px;
 }
 
+.contactSection {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+
+.contactSection h2 {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.4rem;
+  margin: 8px 0 20px;
+}
+
+.contactRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.contactEmail {
+  font-weight: 400;
+  color: var(--text-soft);
+}
+
+.contactMessage {
+  color: var(--text);
+  font-size: 0.88rem;
+  margin-top: 4px;
+  white-space: pre-wrap;
+}
+
+.contactDate {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  margin-top: 8px;
+}
+
+.markReadBtn {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text-soft);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.markReadBtn:hover {
+  border-color: var(--sage);
+  color: var(--sage);
+}
+
 .back {
   display: block;
   color: var(--text-soft);
