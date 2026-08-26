@@ -17,7 +17,7 @@ export default function Footer() {
           <span className={styles.mark} />
           ReAlign
         </div>
-        <div>© {year} Felix Kasper AB · ReAlign Metoden, skapat av Cleer Klinik</div>
+        <div>© {year} Felix Kasper AB · ReAlign Metoden</div>
       </div>
     </footer>
   );
