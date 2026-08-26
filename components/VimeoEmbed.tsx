@@ -71,12 +71,6 @@ export default function VimeoEmbed({
     };
   }, [visible]);
 
-  function handlePlayClick() {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-    new Player(iframe).play().catch(() => {});
-  }
-
   function handleFullscreenClick() {
     const iframe = iframeRef.current;
     if (!iframe) return;
@@ -104,10 +98,15 @@ export default function VimeoEmbed({
         />
       )}
       {scale !== null && visible && !started && (
-        <button
-          type="button"
-          onClick={handlePlayClick}
-          aria-label="Spela video"
+        // pointer-events: none — tappet ska nå fram till Vimeo-iframen under
+        // och triggra dess inbyggda klicka-för-att-spela. Om vi istället
+        // fångar klicket här och anropar player.play() via SDK:n går
+        // kommandot via en asynkron postMessage-resa till iframen, vilket
+        // gör att mobila webbläsare (särskilt iOS Safari) inte längre
+        // räknar det som en direkt användarinteraktion och blockerar
+        // uppspelningen tyst.
+        <div
+          aria-hidden
           style={{
             position: "absolute",
             inset: 0,
@@ -115,8 +114,7 @@ export default function VimeoEmbed({
             alignItems: "center",
             justifyContent: "center",
             background: "rgba(0, 0, 0, 0.15)",
-            border: "none",
-            cursor: "pointer",
+            pointerEvents: "none",
           }}
         >
           <span
@@ -135,7 +133,7 @@ export default function VimeoEmbed({
               <path d="M8 5v14l11-7z" fill="#2b2e2a" />
             </svg>
           </span>
-        </button>
+        </div>
       )}
       {scale !== null && visible && started && (
         <button
