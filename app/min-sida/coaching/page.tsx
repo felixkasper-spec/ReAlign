@@ -31,6 +31,8 @@ export default async function CoachingPage() {
     redirect("/min-sida");
   }
 
+  const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
+
   const { data: coachingMessages } = await supabase
     .from("coaching_messages")
     .select("id, sender, body, created_at, attachment_path, attachment_type")
@@ -61,10 +63,16 @@ export default async function CoachingPage() {
           hasCoaching={hasCoaching}
           linkPrefix="/min-sida"
           activeCoaching
+          isCoach={isCoach}
         />
 
         <main className={shellStyles.main}>
-          <MobileTabs hasCoaching={hasCoaching} linkPrefix="/min-sida" activeCoaching />
+          <MobileTabs
+            hasCoaching={hasCoaching}
+            linkPrefix="/min-sida"
+            activeCoaching
+            isCoach={isCoach}
+          />
           <div className={`${shellStyles.topbar} ${styles.chatTopbar}`}>
             <div>
               <span className="eyebrow">Min sida</span>

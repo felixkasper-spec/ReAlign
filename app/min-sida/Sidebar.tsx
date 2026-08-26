@@ -7,12 +7,14 @@ export default function Sidebar({
   hasCoaching,
   linkPrefix = "",
   activeCoaching = false,
+  isCoach = false,
 }: {
   firstName?: string | null;
   userEmail?: string | null;
   hasCoaching: boolean;
   linkPrefix?: string;
   activeCoaching?: boolean;
+  isCoach?: boolean;
 }) {
   return (
     <aside className={styles.sidebar}>
@@ -38,6 +40,11 @@ export default function Sidebar({
           href="/min-sida/coaching"
         >
           <span className={styles.sideIc}>✉</span>Chatt med coach
+        </Link>
+      )}
+      {isCoach && (
+        <Link className={styles.sideLink} href="/coaching">
+          <span className={styles.sideIc}>◈</span>Coach-inkorg
         </Link>
       )}
       <div className={styles.sideBottom}>

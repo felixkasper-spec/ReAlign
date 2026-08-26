@@ -5,10 +5,12 @@ export default function MobileTabs({
   hasCoaching,
   linkPrefix = "",
   activeCoaching = false,
+  isCoach = false,
 }: {
   hasCoaching: boolean;
   linkPrefix?: string;
   activeCoaching?: boolean;
+  isCoach?: boolean;
 }) {
   return (
     <div className={styles.mobileTabs}>
@@ -24,6 +26,7 @@ export default function MobileTabs({
       <a href={`${linkPrefix}#favoriter`}>Favoriter</a>
       <a href={`${linkPrefix}#schema`}>Schema</a>
       <a href={`${linkPrefix}#progression`}>Progression</a>
+      {isCoach && <Link href="/coaching">Coach-inkorg</Link>}
     </div>
   );
 }

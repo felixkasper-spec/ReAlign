@@ -81,7 +81,7 @@ export default function HeaderClient({
               Logga in
             </Link>
             <Link className="btn btn-primary" href="/signup">
-              Kom igång
+              Skapa gratis konto
             </Link>
           </>
         )}

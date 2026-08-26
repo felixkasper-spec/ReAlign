@@ -164,6 +164,7 @@ export default async function MinSidaPage({
   const progression = await getProgressionStats(supabase, user.id);
 
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
+  const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
 
   const doneDays = new Set(
     (weekSessions ?? []).map((s) => (s.completed_at as string).slice(0, 10)),
@@ -191,10 +192,11 @@ export default async function MinSidaPage({
         firstName={firstName}
         userEmail={user.email}
         hasCoaching={hasCoaching}
+        isCoach={isCoach}
       />
 
       <main className={styles.main}>
-        <MobileTabs hasCoaching={hasCoaching} />
+        <MobileTabs hasCoaching={hasCoaching} isCoach={isCoach} />
         <div className={styles.topbar} id="oversikt">
           <div>
             <span className="eyebrow">Min sida</span>
