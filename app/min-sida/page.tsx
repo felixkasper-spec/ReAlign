@@ -200,10 +200,15 @@ export default async function MinSidaPage({
         userEmail={user.email}
         hasCoaching={hasCoaching}
         isCoach={isCoach}
+        canBuildProgram={subscription.active}
       />
 
       <main className={styles.main}>
-        <MobileTabs hasCoaching={hasCoaching} isCoach={isCoach} />
+        <MobileTabs
+          hasCoaching={hasCoaching}
+          isCoach={isCoach}
+          canBuildProgram={subscription.active}
+        />
         <div className={styles.topbar} id="oversikt">
           <div>
             <span className="eyebrow">Min sida</span>

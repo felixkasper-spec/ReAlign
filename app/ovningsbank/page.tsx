@@ -5,6 +5,7 @@ import TrainingTips from "@/components/TrainingTips";
 import { createClient } from "@/lib/supabase/server";
 import { getExerciseCategories } from "@/lib/exercise-categories";
 import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
+import { getSubscription } from "@/lib/subscription";
 import { pageMetadata } from "@/lib/page-metadata";
 import OvningsbankClient from "./OvningsbankClient";
 import styles from "./page.module.css";
@@ -19,7 +20,7 @@ export const metadata = pageMetadata({
 export default async function OvningsbankPage() {
   const supabase = await createClient();
 
-  const [{ data: exercises }, userResult, { data: helkroppPrograms }, premiumSlugs] =
+  const [{ data: exercises }, userResult, { data: helkroppPrograms }, premiumSlugs, subscription] =
     await Promise.all([
       supabase
         .from("exercises")
@@ -34,6 +35,7 @@ export default async function OvningsbankPage() {
         )
         .in("slug", ["helkropp-niva-1", "helkropp-niva-2", "helkropp-niva-3"]),
       getPremiumExerciseSlugs(),
+      getSubscription(),
     ]);
 
   const user = userResult.data.user;
@@ -95,6 +97,20 @@ export default async function OvningsbankPage() {
             style={{ border: "1px solid var(--line)" }}
           >
             Till övningarna →
+          </Link>
+        </div>
+
+        <div className={styles.banner}>
+          <p>
+            Spara övningar som favoriter och kombinera dem till ett eget,
+            ordnat program — ingår i Premium.
+          </p>
+          <Link
+            className="btn btn-primary"
+            href={subscription.active ? "/min-sida/bygg-program" : "/premium"}
+            style={{ whiteSpace: "nowrap" }}
+          >
+            {subscription.active ? "Bygg eget program →" : "Läs mer om Premium →"}
           </Link>
         </div>
 

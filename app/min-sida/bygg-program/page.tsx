@@ -48,12 +48,14 @@ export default async function BuildProgramPage() {
           userEmail={user.email}
           hasCoaching={subscription.plan === "premium_coaching" && subscription.active}
           linkPrefix="/min-sida"
+          canBuildProgram={subscription.active}
         />
 
         <main className={shellStyles.main}>
           <MobileTabs
             hasCoaching={subscription.plan === "premium_coaching" && subscription.active}
             linkPrefix="/min-sida"
+            canBuildProgram={subscription.active}
           />
           <div className={shellStyles.topbar}>
             <div>

@@ -17,6 +17,24 @@
   margin-top: 18px;
 }
 
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 18px 24px;
+  margin: 20px 0 30px;
+}
+
+.banner p {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin: 0;
+}
+
 .empty {
   color: var(--text-soft);
   padding: 40px 0;

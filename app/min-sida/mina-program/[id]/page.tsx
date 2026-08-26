@@ -80,10 +80,15 @@ export default async function CustomProgramPage({
           userEmail={user.email}
           hasCoaching={hasCoaching}
           linkPrefix="/min-sida"
+          canBuildProgram={subscription.active}
         />
 
         <main className={shellStyles.main}>
-          <MobileTabs hasCoaching={hasCoaching} linkPrefix="/min-sida" />
+          <MobileTabs
+            hasCoaching={hasCoaching}
+            linkPrefix="/min-sida"
+            canBuildProgram={subscription.active}
+          />
           <div className={shellStyles.topbar}>
             <div>
               <span className="eyebrow">Eget program</span>

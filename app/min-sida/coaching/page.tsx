@@ -64,6 +64,7 @@ export default async function CoachingPage() {
           linkPrefix="/min-sida"
           activeCoaching
           isCoach={isCoach}
+          canBuildProgram={subscription.active}
         />
 
         <main className={shellStyles.main}>
@@ -72,6 +73,7 @@ export default async function CoachingPage() {
             linkPrefix="/min-sida"
             activeCoaching
             isCoach={isCoach}
+            canBuildProgram={subscription.active}
           />
           <div className={`${shellStyles.topbar} ${styles.chatTopbar}`}>
             <div>

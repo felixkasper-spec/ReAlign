@@ -8,6 +8,7 @@ export default function Sidebar({
   linkPrefix = "",
   activeCoaching = false,
   isCoach = false,
+  canBuildProgram = false,
 }: {
   firstName?: string | null;
   userEmail?: string | null;
@@ -15,6 +16,7 @@ export default function Sidebar({
   linkPrefix?: string;
   activeCoaching?: boolean;
   isCoach?: boolean;
+  canBuildProgram?: boolean;
 }) {
   return (
     <aside className={styles.sidebar}>
@@ -34,6 +36,11 @@ export default function Sidebar({
       <a className={styles.sideLink} href={`${linkPrefix}#progression`}>
         <span className={styles.sideIc}>↗</span>Progression
       </a>
+      {canBuildProgram && (
+        <a className={styles.sideLink} href={`${linkPrefix}#mina-program`}>
+          <span className={styles.sideIc}>✎</span>Mina program
+        </a>
+      )}
       {hasCoaching && (
         <Link
           className={`${styles.sideLink} ${activeCoaching ? styles.sideLinkActive : ""}`}
