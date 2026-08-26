@@ -20,7 +20,14 @@ import {
   markSessionDone,
   deleteSession,
 } from "./schedule-actions";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
+
+export const metadata = pageMetadata({
+  title: "Min sida — ReAlign Metoden",
+  description: "Dina program, favoriter, schema och din progression, samlat på ett ställe.",
+  image: "/og/default.png",
+});
 
 const categoryLabels: Record<string, string> = {
   helkropp: "Helkropp",

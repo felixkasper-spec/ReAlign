@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SiteSearch from "./SiteSearch";
 import styles from "./Header.module.css";
 
 const navLinks = [
@@ -20,6 +21,18 @@ export default function HeaderClient({
   transparent?: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   return (
     <nav className={`${styles.nav} ${transparent ? styles.transparent : ""}`}>
@@ -50,6 +63,16 @@ export default function HeaderClient({
             {link.label}
           </Link>
         ))}
+        <button
+          type="button"
+          className={styles.navSearchBtn}
+          onClick={() => {
+            setOpen(false);
+            setSearchOpen(true);
+          }}
+        >
+          ⌕ Sök
+        </button>
         {!loggedIn && (
           <Link href="/login" className={styles.mobileLogin}>
             Logga in
@@ -86,6 +109,7 @@ export default function HeaderClient({
           </>
         )}
       </div>
+      <SiteSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
     </nav>
   );
 }

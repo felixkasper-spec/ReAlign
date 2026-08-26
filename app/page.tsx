@@ -5,7 +5,15 @@ import Footer from "@/components/Footer";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import ScrollCue from "@/components/ScrollCue";
 import { testimonials } from "@/lib/testimonials";
+import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
+
+export const metadata = pageMetadata({
+  title: "Startsida — ReAlign Metoden",
+  description:
+    "Postural träning som återställer kroppens naturliga balans. Program, övningsbank och ergonomiguider, helt gratis.",
+  image: "/og/default.png",
+});
 
 export default function Home() {
   return (

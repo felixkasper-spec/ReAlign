@@ -46,6 +46,20 @@
   color: var(--text);
 }
 
+.navSearchBtn {
+  font: inherit;
+  font-size: 0.94rem;
+  color: var(--text-soft);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navSearchBtn:hover {
+  color: var(--text);
+}
+
 .navcta {
   display: flex;
   gap: 14px;
@@ -145,13 +159,19 @@
   .navlinks.open {
     display: flex;
   }
-  .navlinks a {
+  .navlinks a,
+  .navSearchBtn {
     padding: 13px 0;
     border-top: 1px solid var(--line);
     font-size: 1rem;
   }
   .navlinks a:first-child {
     border-top: none;
+  }
+  .navSearchBtn {
+    display: block;
+    width: 100%;
+    text-align: left;
   }
   .mobileLogin {
     display: block;

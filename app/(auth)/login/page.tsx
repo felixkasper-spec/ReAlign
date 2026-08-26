@@ -1,6 +1,13 @@
 import Link from "next/link";
 import styles from "../auth.module.css";
 import { login } from "./actions";
+import { pageMetadata } from "@/lib/page-metadata";
+
+export const metadata = pageMetadata({
+  title: "Logga in — ReAlign Metoden",
+  description: "Logga in för att komma åt dina favoriter, ditt schema och din träningslogg.",
+  image: "/og/default.png",
+});
 
 export default async function LoginPage({
   searchParams,

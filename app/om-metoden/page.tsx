@@ -8,7 +8,7 @@ import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
-  title: "Om postural träning — ReAlign Metoden",
+  title: "Om metoden — ReAlign Metoden",
   description:
     "Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.",
   image: "/og/om-metoden.png",

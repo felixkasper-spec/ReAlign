@@ -1,6 +1,13 @@
 import Link from "next/link";
 import styles from "../auth.module.css";
 import { signup } from "./actions";
+import { pageMetadata } from "@/lib/page-metadata";
+
+export const metadata = pageMetadata({
+  title: "Skapa konto — ReAlign Metoden",
+  description: "Skapa ett gratis konto för att spara favoriter och schemalägga din träning.",
+  image: "/og/default.png",
+});
 
 export default async function SignupPage({
   searchParams,
