@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import TrainingTips from "@/components/TrainingTips";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
+import LockedContentNudge from "@/components/LockedContentNudge";
 import SubmitButton from "@/components/SubmitButton";
 import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
 import { createClient } from "@/lib/supabase/server";
@@ -93,6 +94,17 @@ export default async function ProgramPage({
   const locked = program.tier === "premium" && !subscription.active;
   const user = userResult.data.user;
 
+  let completions = 0;
+  if (user) {
+    const { count } = await supabase
+      .from("logged_sessions")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("program_id", program.id)
+      .not("completed_at", "is", null);
+    completions = count ?? 0;
+  }
+
   const meta = programMeta[program.slug];
   const exerciseCount = (variants.full ?? []).length;
   const defaultVariant = langd ?? "full";
@@ -139,12 +151,20 @@ export default async function ProgramPage({
           <div className={styles.metaItem}>
             <b>{meta?.purpose ?? program.category}</b>Fokus
           </div>
+          {completions > 0 && (
+            <div className={styles.metaItem}>
+              <b>{completions}</b>
+              {completions === 1 ? "Gång klarad" : "Gånger klarat"}
+            </div>
+          )}
         </div>
 
         <TrainingTips />
 
         {locked ? (
-          <div className={styles.lockedBox}>
+          <>
+            <LockedContentNudge />
+            <div className={styles.lockedBox}>
             <span className="eyebrow" style={{ color: "var(--warm)" }}>
               Premium
             </span>
@@ -161,7 +181,8 @@ export default async function ProgramPage({
             <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
               ✓ Går att betala med friskvårdsbidrag
             </p>
-          </div>
+            </div>
+          </>
         ) : (
           <>
             {warmup.length > 0 && (

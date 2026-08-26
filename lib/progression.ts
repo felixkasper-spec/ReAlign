@@ -106,3 +106,16 @@ export async function getProgressionStats(
 
   return { weekCount, monthCount, streak, byCategory, weeklyTrend };
 }
+
+const STREAK_MILESTONES = [3, 7, 14, 30, 60, 100] as const;
+
+// Högsta milstolpen som redan är nådd — visas som en liten belöning tills
+// nästa milstolpe nås, inte bara den exakta dagen man passerar den (annars
+// missar man den om man inte råkar logga in precis den dagen).
+export function streakMilestone(streak: number): number | null {
+  let reached: number | null = null;
+  for (const m of STREAK_MILESTONES) {
+    if (streak >= m) reached = m;
+  }
+  return reached;
+}

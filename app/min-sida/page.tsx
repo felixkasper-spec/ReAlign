@@ -11,7 +11,7 @@ import MobileTabs from "./MobileTabs";
 import WeeklyTrendChart from "@/components/WeeklyTrendChart";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
-import { getProgressionStats } from "@/lib/progression";
+import { getProgressionStats, streakMilestone } from "@/lib/progression";
 import { getBaseUrl } from "@/lib/base-url";
 import { createCheckoutSession, openBillingPortal } from "./actions";
 import {
@@ -228,6 +228,11 @@ export default async function MinSidaPage({
               {progression.streak}{" "}
               <span>{progression.streak === 1 ? "dag" : "dagar"}</span>
             </div>
+            {streakMilestone(progression.streak) && (
+              <div className={styles.streakBadge}>
+                🔥 {streakMilestone(progression.streak)} dagar i rad
+              </div>
+            )}
           </div>
           <div className={styles.stat}>
             <span className="eyebrow">Denna vecka</span>

@@ -189,6 +189,13 @@
   font-family: var(--font-sans, "Public Sans", sans-serif);
 }
 
+.streakBadge {
+  margin-top: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--warm);
+}
+
 .cols {
   display: grid;
   grid-template-columns: 1.4fr 1fr;

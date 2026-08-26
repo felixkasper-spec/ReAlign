@@ -58,6 +58,49 @@
   border-top: 1px solid var(--line);
 }
 
+.googleRating {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border-radius: 100px;
+  padding: 10px 18px;
+  margin-bottom: 20px;
+  font-size: 0.86rem;
+  color: var(--text);
+}
+
+.stars {
+  color: var(--warm);
+  font-weight: 600;
+}
+
+.quoteGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.quoteCard {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.quoteCard p:first-child {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.quoteCard p:last-child {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-top: 12px;
+}
+
 .sectionHead {
   max-width: 600px;
   margin-bottom: 28px;
@@ -143,7 +186,8 @@
     font-size: 1.9rem;
   }
   .reasonGrid,
-  .trustBox {
+  .trustBox,
+  .quoteGrid {
     grid-template-columns: 1fr;
   }
   .offerBand {

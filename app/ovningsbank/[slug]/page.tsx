@@ -7,6 +7,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import ShareButton from "@/components/ShareButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
+import LockedContentNudge from "@/components/LockedContentNudge";
 import { createClient } from "@/lib/supabase/server";
 import { getProgramExerciseSequence } from "@/lib/program-exercise-sequence";
 import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
@@ -182,6 +183,7 @@ export default async function ExercisePage({
 
         <div className={styles.layout}>
           <div className={styles.videoWrap}>
+            {locked && <LockedContentNudge />}
             {locked ? (
               <div className={styles.lockedBox}>
                 <span className="eyebrow" style={{ color: "var(--warm)" }}>

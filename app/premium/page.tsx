@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubmitButton from "@/components/SubmitButton";
 import FaqAccordion, { type FaqGroup } from "@/components/FaqAccordion";
+import { testimonials } from "@/lib/testimonials";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { createCheckoutSession } from "@/app/min-sida/actions";
@@ -127,6 +128,23 @@ export default async function PremiumPage() {
               <b>Veckobrev</b>Tips och uppföljning direkt i mejlen, så du
               håller farten uppe.
             </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <div className={styles.googleRating}>
+            <span className={styles.stars}>★★★★★</span>
+            <span>
+              <b>5.0</b> på Google
+            </span>
+          </div>
+          <div className={styles.quoteGrid}>
+            {testimonials.slice(0, 2).map((t) => (
+              <div key={t.quote} className={styles.quoteCard}>
+                <p>&quot;{t.quote}&quot;</p>
+                <p>— Patientrecension</p>
+              </div>
+            ))}
           </div>
         </div>
 

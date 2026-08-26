@@ -1,0 +1,47 @@
+.nudge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--warm-soft);
+  border-radius: 14px;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.text {
+  font-size: 0.86rem;
+  color: #6b4a2c;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.link {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.dismiss {
+  background: none;
+  border: none;
+  color: #8a5a2c;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 4px;
+}
+
+@media (max-width: 600px) {
+  .nudge {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
