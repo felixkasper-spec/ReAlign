@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import TrainingTips from "@/components/TrainingTips";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
+import SubmitButton from "@/components/SubmitButton";
+import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
@@ -201,7 +203,14 @@ export default async function ProgramPage({
         )}
 
         <div className={styles.ctaRow}>
-          {!locked && (
+          {!locked && user && (
+            <form action={logProgramCompletion.bind(null, program.id, program.title)}>
+              <SubmitButton className="btn btn-primary" pendingText="Loggar...">
+                ✓ Markera som klar
+              </SubmitButton>
+            </form>
+          )}
+          {!locked && !user && (
             <Link className="btn btn-primary" href="/min-sida">
               Starta programmet
             </Link>

@@ -4,16 +4,28 @@ import type { createClient } from "@/lib/supabase/server";
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
 export type CategoryCount = { category: string; count: number };
+export type WeekCount = { weekStart: string; count: number };
 
 export type ProgressionStats = {
   weekCount: number;
   monthCount: number;
   streak: number;
   byCategory: CategoryCount[];
+  weeklyTrend: WeekCount[];
 };
 
 function toDateKey(iso: string) {
   return iso.slice(0, 10); // YYYY-MM-DD (UTC)
+}
+
+// Måndag i samma vecka som `date`, som en UTC-datumnyckel.
+function mondayOf(date: Date) {
+  const d = new Date(date);
+  d.setUTCHours(0, 0, 0, 0);
+  const day = d.getUTCDay(); // 0 = söndag
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setUTCDate(d.getUTCDate() + diff);
+  return d;
 }
 
 /**
@@ -73,5 +85,24 @@ export async function getProgressionStats(
     .map(([category, count]) => ({ category, count }))
     .sort((a, b) => b.count - a.count);
 
-  return { weekCount, monthCount, streak, byCategory };
+  // Senaste 8 veckorna (måndag–söndag), äldst till senast, för trendgrafen.
+  const weekBuckets = new Map<string, number>();
+  const thisMonday = mondayOf(new Date());
+  for (let i = 7; i >= 0; i--) {
+    const weekStart = new Date(thisMonday);
+    weekStart.setUTCDate(weekStart.getUTCDate() - i * 7);
+    weekBuckets.set(toDateKey(weekStart.toISOString()), 0);
+  }
+  for (const row of rows) {
+    const key = toDateKey(mondayOf(new Date(row.completed_at as string)).toISOString());
+    if (weekBuckets.has(key)) {
+      weekBuckets.set(key, (weekBuckets.get(key) ?? 0) + 1);
+    }
+  }
+  const weeklyTrend = [...weekBuckets.entries()].map(([weekStart, count]) => ({
+    weekStart,
+    count,
+  }));
+
+  return { weekCount, monthCount, streak, byCategory, weeklyTrend };
 }

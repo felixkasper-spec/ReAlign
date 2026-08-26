@@ -79,6 +79,42 @@ export async function logSessionNow(formData: FormData) {
   revalidatePath("/min-sida");
 }
 
+export async function logProgramCompletion(
+  programId: string,
+  title: string,
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  // Skydd mot dubbelklick — hoppa över om samma program precis loggades
+  // klart för några sekunder sedan.
+  const { data: recentDuplicate } = await supabase
+    .from("logged_sessions")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("program_id", programId)
+    .gte("created_at", new Date(Date.now() - 10_000).toISOString())
+    .maybeSingle();
+
+  if (!recentDuplicate) {
+    await supabase.from("logged_sessions").insert({
+      user_id: user.id,
+      program_id: programId,
+      title,
+      completed_at: new Date().toISOString(),
+    });
+  }
+
+  revalidatePath("/min-sida");
+  revalidatePath("/program/[slug]", "page");
+}
+
 export async function markSessionDone(sessionId: string) {
   const supabase = await createClient();
   const {

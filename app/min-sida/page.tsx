@@ -8,6 +8,7 @@ import TimePicker from "@/components/TimePicker";
 import ShareButton from "./ShareButton";
 import Sidebar from "./Sidebar";
 import MobileTabs from "./MobileTabs";
+import WeeklyTrendChart from "@/components/WeeklyTrendChart";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats } from "@/lib/progression";
@@ -585,27 +586,30 @@ export default async function MinSidaPage({
               <span className="eyebrow">Progression</span>
               <h3 className={styles.premiumTitle}>Din träning över tid</h3>
               {subscription.active ? (
-                progression.byCategory.length > 0 ? (
-                  <div className={styles.categoryList}>
-                    <div className={styles.categoryRow}>
-                      <span>Senaste 30 dagarna</span>
-                      <span className={styles.status}>
-                        {progression.monthCount} pass
-                      </span>
-                    </div>
-                    {progression.byCategory.map((c) => (
-                      <div key={c.category} className={styles.categoryRow}>
-                        <span>{categoryLabels[c.category] ?? c.category}</span>
-                        <span className={styles.status}>{c.count} pass</span>
+                <>
+                  <WeeklyTrendChart weeks={progression.weeklyTrend} />
+                  {progression.byCategory.length > 0 ? (
+                    <div className={styles.categoryList}>
+                      <div className={styles.categoryRow}>
+                        <span>Senaste 30 dagarna</span>
+                        <span className={styles.status}>
+                          {progression.monthCount} pass
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className={styles.premiumText}>
-                    Inga pass kopplade till program loggade än — kör ett
-                    program för att se fördelningen här.
-                  </p>
-                )
+                      {progression.byCategory.map((c) => (
+                        <div key={c.category} className={styles.categoryRow}>
+                          <span>{categoryLabels[c.category] ?? c.category}</span>
+                          <span className={styles.status}>{c.count} pass</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.premiumText}>
+                      Inga pass kopplade till program loggade än — kör ett
+                      program för att se fördelningen här.
+                    </p>
+                  )}
+                </>
               ) : (
                 <p className={styles.premiumText}>
                   Detaljerad progression per kategori ingår i Premium — se
