@@ -366,9 +366,10 @@ export default function Home() {
                 <li>Detaljerad progressionsspårning</li>
                 <li>Veckobrev med tips och uppföljning</li>
               </ul>
-              <Link className="btn btn-primary" href="/signup">
-                Bli Premium
+              <Link className="btn btn-primary" href="/premium">
+                Se vad som ingår →
               </Link>
+              <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
             <div className={styles.tierCard}>
@@ -385,6 +386,7 @@ export default function Home() {
               <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
                 Läs mer →
               </Link>
+              <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <p className={styles.friskvard}>Begränsat antal platser</p>
             </div>

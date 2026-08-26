@@ -54,6 +54,11 @@ export async function createCheckoutSession(
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
+    // 50% rabatt första månaden, bara för nya Premium-prenumeranter — den
+    // här kodvägen nås aldrig av någon som redan har ett aktivt
+    // abonnemang (de skickas till byt-plan istället, se ovan), så
+    // rabatten kan aldrig råka appliceras på ett planbyte.
+    discounts: plan === "premium" ? [{ coupon: "premium50first" }] : undefined,
     customer: existing?.stripe_customer_id ?? undefined,
     customer_email: existing?.stripe_customer_id ? undefined : user.email,
     client_reference_id: user.id,
