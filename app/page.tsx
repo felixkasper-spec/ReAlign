@@ -318,7 +318,7 @@ export default function Home() {
               <p className={styles.tierPrice}>0 kr</p>
               <ul className={styles.tierList}>
                 <li>Bläddra bland alla program &amp; övningar</li>
-                <li>Se instruktionsvideor för övningar i våra gratisprogram</li>
+                <li>Helkropp Nivå 1–2, Nivå 1 i övriga kategorier — helt gratis</li>
                 <li>Läs ergonomiguider för sitta, stå och lyfta</li>
               </ul>
             </div>
@@ -329,7 +329,6 @@ export default function Home() {
                 <li>Allt i &quot;Utan konto&quot;</li>
                 <li>Spara favoritövningar</li>
                 <li>Schemalägg och logga dina träningspass</li>
-                <li>Helkropp Nivå 1–2, Nivå 1 i övriga kategorier</li>
               </ul>
               <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/signup">
                 Skapa gratis konto
@@ -343,7 +342,7 @@ export default function Home() {
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>
                 <li>Alla programnivåer, inklusive Gymträning</li>
-                <li>Bygg eget program av dina favoritövningar</li>
+                <li>Bygg egna program av dina favoritövningar</li>
                 <li>Alla övningsvideor i övningsbanken</li>
                 <li>Ladda ner program som PDF</li>
                 <li>Detaljerad progressionsspårning</li>
