@@ -10,6 +10,7 @@ export default function Footer() {
         <Link href="/om-oss">Om oss</Link>
         <Link href="/faq">Vanliga frågor</Link>
         <Link href="/kontakt">Kontakt</Link>
+        <Link href="/integritetspolicy">Integritetspolicy</Link>
       </div>
       <div className={styles.footRow}>
         <div className={styles.logo}>

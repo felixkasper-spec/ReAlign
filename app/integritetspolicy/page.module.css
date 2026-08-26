@@ -1,0 +1,54 @@
+.wrap {
+  max-width: 760px;
+}
+
+.updated {
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+.section {
+  padding: 26px 0;
+  border-top: 1px solid var(--line);
+}
+
+.section:first-of-type {
+  border-top: none;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.section p {
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.section ul {
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.section li {
+  margin-bottom: 6px;
+}
+
+.section a {
+  color: var(--sage);
+  text-decoration: underline;
+}
+
+.note {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px 24px;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  margin: 10px 0 30px;
+}
