@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
+import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import PrintTrigger from "./PrintTrigger";
 import styles from "./page.module.css";
 
@@ -10,7 +12,42 @@ type PrintExercise = {
   body_part: string;
   equipment: string | null;
   sets_reps: string | null;
+  instructions: string | null;
 };
+
+function renderInstructions(text: string) {
+  return text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line, i) => (
+      <li key={i} className={styles.instructionLine}>
+        {line.replace(/^- /, "")}
+      </li>
+    ));
+}
+
+function ExerciseRow({ ex, i }: { ex: PrintExercise; i: number }) {
+  return (
+    <div className={styles.row} key={ex.slug}>
+      <span className={styles.num}>{i + 1}</span>
+      {hasThumbnail(ex.slug) && (
+        <div className={styles.thumb}>
+          <Image src={`/exercises/${ex.slug}.jpg`} alt={ex.title} width={64} height={64} />
+        </div>
+      )}
+      <div className={styles.rowBody}>
+        <div className={styles.rowTitle}>{ex.title}</div>
+        <div className={styles.rowMeta}>
+          {[ex.equipment, ex.sets_reps].filter(Boolean).join(" · ")}
+        </div>
+        {ex.instructions && (
+          <ul className={styles.instructions}>{renderInstructions(ex.instructions)}</ul>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default async function ProgramPrintPage({
   params,
@@ -41,7 +78,7 @@ export default async function ProgramPrintPage({
   const { data: rows } = await supabase
     .from("program_exercises")
     .select(
-      "variant, is_warmup, order_index, exercises ( slug, title, body_part, equipment, sets_reps )",
+      "variant, is_warmup, order_index, exercises ( slug, title, body_part, equipment, sets_reps, instructions )",
     )
     .eq("program_id", program.id)
     .order("order_index");
@@ -77,15 +114,7 @@ export default async function ProgramPrintPage({
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Uppvärmning</h2>
           {warmup.map((ex, i) => (
-            <div className={styles.row} key={ex.slug}>
-              <span className={styles.num}>{i + 1}</span>
-              <div className={styles.rowBody}>
-                <div className={styles.rowTitle}>{ex.title}</div>
-                <div className={styles.rowMeta}>
-                  {[ex.equipment, ex.sets_reps].filter(Boolean).join(" · ")}
-                </div>
-              </div>
-            </div>
+            <ExerciseRow ex={ex} i={i} key={ex.slug} />
           ))}
         </div>
       )}
@@ -93,21 +122,13 @@ export default async function ProgramPrintPage({
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Övningar</h2>
         {main.map((ex, i) => (
-          <div className={styles.row} key={ex.slug}>
-            <span className={styles.num}>{i + 1}</span>
-            <div className={styles.rowBody}>
-              <div className={styles.rowTitle}>{ex.title}</div>
-              <div className={styles.rowMeta}>
-                {[ex.equipment, ex.sets_reps].filter(Boolean).join(" · ")}
-              </div>
-            </div>
-          </div>
+          <ExerciseRow ex={ex} i={i} key={ex.slug} />
         ))}
       </div>
 
       <p className={styles.footer}>
         Fler detaljer, videor och instruktioner för varje övning hittar du på
-        realignmetod.vercel.app
+        realignmetoden.se
       </p>
     </div>
   );

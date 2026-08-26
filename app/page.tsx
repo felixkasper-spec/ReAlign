@@ -347,7 +347,7 @@ export default function Home() {
                 <li>Allt i &quot;Utan konto&quot;</li>
                 <li>Spara favoritövningar</li>
                 <li>Schemalägg och logga dina träningspass</li>
-                <li>Program på Nivå 1–2 i varje kategori</li>
+                <li>Helkropp Nivå 1–2, Nivå 1 i övriga kategorier</li>
               </ul>
               <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/signup">
                 Skapa gratis konto
@@ -372,7 +372,7 @@ export default function Home() {
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
             <div className={styles.tierCard}>
-              <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
+              <span className="eyebrow" style={{ color: "var(--warm)" }}>
                 Premium Coaching
               </span>
               <p className={styles.tierPrice}>449 kr/mån</p>
@@ -385,6 +385,7 @@ export default function Home() {
               <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
                 Läs mer →
               </Link>
+              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <p className={styles.friskvard}>Begränsat antal platser</p>
             </div>
           </div>

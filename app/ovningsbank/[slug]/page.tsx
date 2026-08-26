@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import FavoriteButton from "@/components/FavoriteButton";
 import ShareButton from "@/components/ShareButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import { createClient } from "@/lib/supabase/server";
 import { getProgramExerciseSequence } from "@/lib/program-exercise-sequence";
 import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
@@ -256,6 +257,10 @@ export default async function ExercisePage({
                   </div>
                 </div>
               </div>
+            )}
+
+            {!user && (
+              <GuestAccountPrompt text="Spara den här övningen som favorit och håll koll på dina pass." />
             )}
 
             <div className={styles.ctaRow}>

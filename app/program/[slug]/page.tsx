@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import TrainingTips from "@/components/TrainingTips";
+import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
@@ -83,8 +84,12 @@ export default async function ProgramPage({
     variants[key].push(ex);
   }
 
-  const subscription = await getSubscription();
+  const [subscription, userResult] = await Promise.all([
+    getSubscription(),
+    supabase.auth.getUser(),
+  ]);
   const locked = program.tier === "premium" && !subscription.active;
+  const user = userResult.data.user;
 
   const meta = programMeta[program.slug];
   const exerciseCount = (variants.full ?? []).length;
@@ -189,6 +194,10 @@ export default async function ProgramPage({
               programSlug={program.slug}
             />
           </>
+        )}
+
+        {!locked && !user && (
+          <GuestAccountPrompt text="Spara det här programmet, schemalägg pass och håll koll på din progression." />
         )}
 
         <div className={styles.ctaRow}>
