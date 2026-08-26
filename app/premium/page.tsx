@@ -131,6 +131,21 @@ export default async function PremiumPage() {
           </div>
         </div>
 
+        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
+          <div className={styles.spotlight}>
+            <span className="eyebrow" style={{ color: "var(--sage)" }}>
+              Skräddarsy själv
+            </span>
+            <h3 className={styles.spotlightTitle}>Bygg ditt eget program.</h3>
+            <p className={styles.spotlightText}>
+              Spara dina favoritövningar i övningsbanken, kombinera dem sen
+              till ett eget, namngivet program i den ordning du vill — inte
+              begränsad till våra färdiga upplägg. Loggas och räknas mot din
+              progression precis som våra vanliga program.
+            </p>
+          </div>
+        </div>
+
         <div className={styles.section}>
           <div className={styles.googleRating}>
             <span className={styles.stars}>★★★★★</span>

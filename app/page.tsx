@@ -343,6 +343,7 @@ export default function Home() {
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>
                 <li>Alla programnivåer, inklusive Gymträning</li>
+                <li>Bygg eget program av dina favoritövningar</li>
                 <li>Alla övningsvideor i övningsbanken</li>
                 <li>Ladda ner program som PDF</li>
                 <li>Detaljerad progressionsspårning</li>

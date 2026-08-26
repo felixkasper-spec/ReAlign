@@ -127,6 +127,7 @@ export default async function MinSidaPage({
     { data: favorites },
     subscription,
     { data: programs },
+    { data: customPrograms },
     { data: upcoming },
     { data: recent },
     { data: weekSessions },
@@ -139,6 +140,11 @@ export default async function MinSidaPage({
       .order("created_at", { ascending: false }),
     getSubscription(),
     supabase.from("programs").select("id, title").order("title"),
+    supabase
+      .from("custom_programs")
+      .select("id, title")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
     supabase
       .from("logged_sessions")
       .select("id, title, scheduled_for")
@@ -435,6 +441,47 @@ export default async function MinSidaPage({
                     </div>
                   ))}
                 </div>
+              )}
+            </section>
+
+            <section className={styles.panel} id="mina-program">
+              <div className={styles.panelHead}>
+                <h2>Mina program</h2>
+              </div>
+              {subscription.active ? (
+                <>
+                  {(!customPrograms || customPrograms.length === 0) && (
+                    <p className={styles.empty}>
+                      Inga egna program byggda än — kombinera dina
+                      favoritövningar till ett eget program.
+                    </p>
+                  )}
+                  {customPrograms && customPrograms.length > 0 && (
+                    <div className={styles.categoryList}>
+                      {customPrograms.map((p) => (
+                        <Link
+                          key={p.id}
+                          href={`/min-sida/mina-program/${p.id}`}
+                          className={styles.categoryRow}
+                        >
+                          <span>{p.title}</span>
+                          <span className={styles.link}>Öppna →</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                  <Link
+                    href="/min-sida/bygg-program"
+                    className="btn btn-ghost"
+                    style={{ border: "1px solid var(--line)", marginTop: 14, display: "block", textAlign: "center" }}
+                  >
+                    + Bygg nytt program
+                  </Link>
+                </>
+              ) : (
+                <p className={styles.premiumText}>
+                  Bygg egna program av dina favoritövningar — ingår i Premium.
+                </p>
               )}
             </section>
 

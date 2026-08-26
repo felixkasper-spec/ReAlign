@@ -111,6 +111,25 @@
   margin-top: 10px;
 }
 
+.spotlight {
+  background: var(--surface);
+  border: 1px solid var(--sage-light);
+  border-radius: 22px;
+  padding: 32px 36px;
+}
+
+.spotlightTitle {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.5rem;
+  margin: 10px 0 12px;
+}
+
+.spotlightText {
+  color: var(--text);
+  font-size: 0.94rem;
+  max-width: 540px;
+}
+
 .reasonGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
