@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Player from "@vimeo/player";
 
 // Vimeos spelare döljer knappar (bl.a. fullskärm) bakom en pil när iframen
@@ -24,7 +24,8 @@ export default function VimeoEmbed({
   lazy?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const playerRef = useRef<Player | null>(null);
   const [scale, setScale] = useState<number | null>(null);
   const [visible, setVisible] = useState(!lazy);
   const [started, setStarted] = useState(false);
@@ -59,29 +60,35 @@ export default function VimeoEmbed({
     return () => io.disconnect();
   }, [lazy]);
 
-  useEffect(() => {
-    const iframe = iframeRef.current;
-    if (!visible || !iframe) return;
-
-    const player = new Player(iframe);
-    player.on("play", () => setStarted(true));
-
-    return () => {
-      player.off("play");
-    };
-  }, [visible]);
+  // Callback ref istället för useEffect + iframeRef: iframen monteras
+  // först när både `visible` OCH `scale` är satta (skala beräknas
+  // asynkront av ett ResizeObserver-anrop efter första render), så en
+  // effect med [visible] i sitt beroende-array kan hinna köra medan
+  // iframen fortfarande är null och sen aldrig köras igen — spelaren
+  // hann då aldrig registrera sin "play"-lyssnare. En callback ref körs
+  // exakt när elementet faktiskt finns i DOM:en, så det problemet
+  // försvinner helt.
+  const setIframeNode = useCallback((node: HTMLIFrameElement | null) => {
+    iframeRef.current = node;
+    if (node) {
+      const player = new Player(node);
+      playerRef.current = player;
+      player.on("play", () => setStarted(true));
+    } else {
+      playerRef.current?.off("play");
+      playerRef.current = null;
+    }
+  }, []);
 
   function handleFullscreenClick() {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-    new Player(iframe).requestFullscreen().catch(() => {});
+    playerRef.current?.requestFullscreen().catch(() => {});
   }
 
   return (
     <div ref={containerRef} className={className} style={{ position: "relative" }}>
       {scale !== null && visible && (
         <iframe
-          ref={iframeRef}
+          ref={setIframeNode}
           src={src}
           style={{
             position: "absolute",
