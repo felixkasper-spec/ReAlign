@@ -24,7 +24,7 @@ export default function IntegritetspolicyPage() {
         <div className={styles.section}>
           <h2>Vem ansvarar för dina uppgifter</h2>
           <p>
-            Cleer Klinik[, org.nr XXXXXX-XXXX, adress], är personuppgiftsansvarig
+            Felix Kasper AB, org.nr 559555-6951, är personuppgiftsansvarig
             för de personuppgifter som behandlas när du använder ReAlign
             Metoden (realignmetoden.se). Har du frågor om hur vi hanterar
             dina uppgifter, kontakta oss på{" "}
