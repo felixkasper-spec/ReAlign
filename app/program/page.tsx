@@ -106,7 +106,6 @@ export default async function ProgramIndexPage() {
                 <p className={styles.purpose}>{meta?.purpose}</p>
                 <div className={styles.stats}>
                   <span>{meta?.weeks}</span>
-                  <span>{meta?.freq}</span>
                 </div>
               </Link>
             );

@@ -48,8 +48,7 @@ function levelFor(experience: Experience, maxLevel: number) {
   if (experience === "bekvam") level = 2;
   if (experience === "erfaren") {
     level = 2;
-    note =
-      "Kör Nivå 2 i minst 2 veckor, 4–5 gånger i veckan, innan du går vidare till nästa nivå.";
+    note = "Kör Nivå 2 minst 10 tillfällen innan du går vidare till nästa nivå.";
   }
   return { level: Math.min(level, maxLevel), note };
 }
@@ -87,7 +86,7 @@ export function buildRecommendation(answers: QuizAnswers): Recommendation {
         "I början mår kroppen mycket bra av att jobba mer fokuserat på hållningsmusklerna, därför föreslår vi att du kombinerar gymträningen med mer specifika övningar.",
       progressionNote,
       steps: [
-        { programSlug: gymSlug, note: `${gymTitle} — 2 gånger i veckan.` },
+        { programSlug: gymSlug, note: `${gymTitle} — rekommenderas 2 gånger i veckan.` },
         {
           programSlug: catSlug,
           note: `${catTitle} — 2–3 gånger i veckan, som grundträning parallellt.`,

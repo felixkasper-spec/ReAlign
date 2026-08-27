@@ -33,7 +33,7 @@ const groups: FaqGroup[] = [
     items: [
       {
         q: "Hur ofta bör jag träna?",
-        a: "Det varierar per program, men de flesta rekommenderar 3–5 pass i veckan. Varje övningssida och programsida visar rekommenderad frekvens. Även korta pass ett par gånger i veckan gör skillnad — det viktigaste är regelbundenhet.",
+        a: "Det varierar per program, men de flesta rekommenderar 2–5 pass i veckan. Även korta pass ett par gånger i veckan, eller vid behov, gör skillnad — det viktigaste är regelbundenhet.",
       },
       {
         q: "Kan jag kombinera det här med annan träning?",
