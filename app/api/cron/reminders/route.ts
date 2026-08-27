@@ -48,6 +48,7 @@ export async function GET(request: Request) {
   }
 
   let sent = 0;
+  const errors: { userId: string; message: string }[] = [];
   for (const profile of profiles ?? []) {
     const accountAgeDays = (now - new Date(profile.created_at).getTime()) / DAY_MS;
     if (accountAgeDays < MIN_ACCOUNT_AGE_DAYS) continue;
@@ -82,8 +83,9 @@ export async function GET(request: Request) {
       sent++;
     } catch (e) {
       console.error("Failed to send reminder email", profile.id, e);
+      errors.push({ userId: profile.id, message: (e as Error).message });
     }
   }
 
-  return Response.json({ sent });
+  return Response.json({ sent, errors });
 }
