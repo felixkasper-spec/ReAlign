@@ -131,6 +131,32 @@ export default function QuizClient() {
           <div className={styles.noteBox}>{result.progressionNote}</div>
         )}
 
+        {!result.viewerIsPremium && result.freePrograms.length > 0 && (
+          <div className={styles.upgradeNudge}>
+            <span className="eyebrow">Rekommendationen innehåller Premium</span>
+            <h3>Bygg upp dig i din takt — helt gratis också.</h3>
+            <p>
+              Du behöver inte börja med Premium. Testa något av våra
+              gratisprogram redan idag, och uppgradera när du känner för det.
+            </p>
+            <div className={styles.freeProgramList}>
+              {result.freePrograms.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/program/${p.slug}`}
+                  className={styles.freeProgramCard}
+                >
+                  <span>{p.title}</span>
+                  {p.purpose && <span className={styles.freeProgramPurpose}>{p.purpose}</span>}
+                </Link>
+              ))}
+            </div>
+            <Link href="/premium" className="btn btn-primary" style={{ marginTop: 16 }}>
+              Eller se allt som ingår i Premium →
+            </Link>
+          </div>
+        )}
+
         <div className={styles.linkRow}>
           {result.steps
             .filter((s, i, arr) => arr.findIndex((x) => x.slug === s.slug) === i)

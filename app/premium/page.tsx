@@ -104,9 +104,8 @@ export default async function PremiumPage() {
           </div>
           <div className={styles.reasonGrid}>
             <div className={styles.reason}>
-              <b>Alla programnivåer</b>Helkropp hela vägen till Avancerad,
-              plus alla nivåer i Höfter och Axlar/nacke/skulderblad — inte
-              bara Nivå 1.
+              <b>Alla programnivåer</b>Tillgång till alla nivåer i alla
+              kategorier.
             </div>
             <div className={styles.reason}>
               <b>Gymträning</b>Tre gymbaserade program för dig som vill ta
@@ -115,6 +114,10 @@ export default async function PremiumPage() {
             <div className={styles.reason}>
               <b>Hela övningsbanken</b>Video och fulla instruktioner för varje
               övning, inte bara de gratisprogrammen använder.
+            </div>
+            <div className={styles.reason}>
+              <b>Bygg eget program</b>Spara favoritövningar och kombinera dem
+              till ett eget, namngivet program i din egen ordning.
             </div>
             <div className={styles.reason}>
               <b>Ladda ner program som PDF</b>Ta med programmet till gymmet
@@ -128,21 +131,6 @@ export default async function PremiumPage() {
               <b>Veckobrev</b>Tips och uppföljning direkt i mejlen, så du
               håller farten uppe.
             </div>
-          </div>
-        </div>
-
-        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
-          <div className={styles.spotlight}>
-            <span className="eyebrow" style={{ color: "var(--sage)" }}>
-              Skräddarsy själv
-            </span>
-            <h3 className={styles.spotlightTitle}>Bygg ditt eget program.</h3>
-            <p className={styles.spotlightText}>
-              Spara dina favoritövningar i övningsbanken, kombinera dem sen
-              till ett eget, namngivet program i den ordning du vill — inte
-              begränsad till våra färdiga upplägg. Loggas och räknas mot din
-              progression precis som våra vanliga program.
-            </p>
           </div>
         </div>
 
