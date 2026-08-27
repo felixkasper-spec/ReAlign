@@ -173,6 +173,10 @@ export default function BlogPost() {
             <Link className="btn btn-primary" href="/program/axlar-nacke-skulderblad-niva-1">
               Testa Axlar/nacke/skulderblad — Nivå 1, gratis →
             </Link>
+            <p style={{ fontSize: "0.85rem", marginTop: 14, marginBottom: 0 }}>
+              Jobbar du på kontor? Testa vårt{" "}
+              <Link href="/program/kontorsvardag">kontorsprogram</Link>.
+            </p>
           </div>
 
           <p>
