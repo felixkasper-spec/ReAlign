@@ -94,8 +94,8 @@ export default function Home() {
               <span className="eyebrow">Mer precist</span>
               <h3>Hitta rätt program</h3>
               <p>
-                Svara på fem korta frågor om var det gör ont och din vardag —
-                få en programrekommendation direkt, helt automatiskt.
+                Svara på fem korta frågor — få en programrekommendation
+                direkt, helt automatiskt.
               </p>
               <span className="btn btn-ghost" style={{ border: "1px solid var(--line)" }}>
                 Hitta mitt program →
