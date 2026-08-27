@@ -46,7 +46,8 @@ export default async function ProgramIndexPage() {
           <h1 className={styles.title}>Hitta ditt program.</h1>
           <p className={styles.intro}>
             Strukturerade program för olika syften och nivåer — från
-            nackspänning till hållningskorrigering.
+            helkroppsprogram till mer specifika program, bläddra fritt i
+            programmen nedan.
           </p>
           <Link
             href="#programlista"

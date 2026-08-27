@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BlogExerciseCard from "@/components/BlogExerciseCard";
+import BlogPostCard from "@/components/BlogPostCard";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "../blog-post.module.css";
 
@@ -36,10 +38,33 @@ export default function BlogPost() {
             framåt och uppåt, timme efter timme. Bröstmusklerna
             förkortas gradvis, medan musklerna mellan skulderbladen —
             de som ska dra axlarna bakåt och hålla dem i rätt position —
-            försvagas av att aldrig aktiveras. Resultatet blir en obalans
-            där axlarna &quot;vilar&quot; i en framåtrullad position även när du
-            inte sitter vid skärmen.
+            försvagas av att aldrig aktiveras.
           </p>
+
+          <div className={styles.perspectiveBox}>
+            <span className="eyebrow">Postural träning-perspektivet</span>
+            <h2>Axlarna är ofta bara budbäraren</h2>
+            <p>
+              Ett perspektiv få tänker på: rundade axlar är i
+              Optimum-Metoden och postural träning oftast ett symptom på
+              en stel bröstrygg, inte grundorsaken i sig. Bröstryggen
+              (den mellersta delen av ryggraden) är designad för
+              rörlighet — när den blir stel tvingas axlarna och nacken ta
+              över rörelser de inte är gjorda för, vilket driver dem
+              framåt och uppåt.
+            </p>
+            <p>
+              Precis som i resten av kedjan går de djupa
+              hållningsmusklerna kring skulderbladen in i vilomodus vid
+              mycket stillasittande — de slutar hålla axlarna på plats.
+              Därför räcker det sällan att bara stretcha bröstet eller
+              dra ihop skulderbladen ett par gånger; bröstryggens
+              rörlighet och skulderbladens djupa stödmuskler behöver
+              tränas tillsammans för att axlarna ska stanna kvar i rätt
+              läge.
+            </p>
+          </div>
+
           <p>
             Att bara stretcha bröstet hjälper tillfälligt, men löser
             sällan problemet — det som saknas är styrka i motpartens
@@ -50,35 +75,34 @@ export default function BlogPost() {
           <ol>
             <li>
               <b>Axelrullningar.</b> Enkelt att göra flera gånger om dagen,
-              motverkar att axlarna gradvis kryper framåt. Se{" "}
-              <Link href="/ovningsbank/standing-shoulder-rolls">
-                Standing Shoulder Rolls
-              </Link>
-              .
+              motverkar att axlarna gradvis kryper framåt.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard slug="standing-shoulder-rolls" title="Standing Shoulder Rolls" />
+              </div>
             </li>
             <li>
               <b>Axellyft (shrugs).</b> Stärker den övre delen av
-              skulderbladens stödmuskulatur. Se{" "}
-              <Link href="/ovningsbank/standing-shoulder-shrugs">
-                Standing Shoulder Shrugs
-              </Link>
-              .
+              skulderbladens stödmuskulatur.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard slug="standing-shoulder-shrugs" title="Standing Shoulder Shrugs" />
+              </div>
             </li>
             <li>
               <b>Bröststretch, en arm i taget.</b> Löser upp det som
-              förkortats av framåtlutad sittställning. Se{" "}
-              <Link href="/ovningsbank/standing-one-arm-chest-stretch">
-                Standing One Arm Chest Stretch
-              </Link>
-              .
+              förkortats av framåtlutad sittställning.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="standing-one-arm-chest-stretch"
+                  title="Standing One Arm Chest Stretch"
+                />
+              </div>
             </li>
             <li>
               <b>Posturala armhävningar.</b> Bygger styrka genom hela
-              axelpartiet med fokus på hållning, inte bara bröstet. Se{" "}
-              <Link href="/ovningsbank/postural-pushups">
-                Postural Pushups
-              </Link>
-              .
+              axelpartiet med fokus på hållning, inte bara bröstet.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard slug="postural-pushups" title="Postural Pushups" />
+              </div>
             </li>
             <li>
               <b>Skärmhöjd i ögonhöjd.</b> Om skärmen sitter för lågt lutar
@@ -96,6 +120,27 @@ export default function BlogPost() {
             >
               Testa Axlar/nacke/skulderblad — Nivå 1, gratis →
             </Link>
+          </div>
+
+          <p className={styles.softLink}>
+            Vill du veta exakt var i din egen kedja obalansen sitter,
+            snarare än att gissa? Ett{" "}
+            <Link href="/videosamtal">videosamtal med en av våra terapeuter</Link>{" "}
+            ger en personlig bedömning.
+          </p>
+
+          <h3 className={styles.relatedHead}>Relaterat</h3>
+          <div className={styles.relatedGrid}>
+            <BlogPostCard
+              slug="ont-i-nacken-kontorsarbete"
+              title="Ont i nacken av kontorsarbete"
+              excerpt="Nacke och axlar hänger ihop via samma kedja — så tränar du bort spänningen."
+            />
+            <BlogPostCard
+              slug="spanningshuvudvark-och-hallning"
+              title="Spänningshuvudvärk och hållning"
+              excerpt="Finns sambandet mellan nack-/axelspänning och huvudvärk som förvärras mot eftermiddagen?"
+            />
           </div>
         </div>
 

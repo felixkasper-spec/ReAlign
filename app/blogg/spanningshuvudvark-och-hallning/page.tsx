@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BlogExerciseCard from "@/components/BlogExerciseCard";
+import BlogPostCard from "@/components/BlogPostCard";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "../blog-post.module.css";
 
@@ -38,6 +40,29 @@ export default function BlogPost() {
             hela dagen, ökar spänningen i de omkringliggande musklerna —
             och den spänningen kan stråla upp mot huvudet.
           </p>
+
+          <div className={styles.perspectiveBox}>
+            <span className="eyebrow">Postural träning-perspektivet</span>
+            <h2>Varför massage och smärtstillande bara lindrar tillfälligt</h2>
+            <p>
+              En vinkel som sällan lyfts: inom Optimum-Metoden och
+              postural träning ses den här typen av huvudvärk sällan som
+              ett problem i huvudet överhuvudtaget — ursprunget sitter
+              längre ner i kedjan, oftast i nacke och bröstrygg. Massage
+              och smärtstillande kan lindra symptomet för stunden, men
+              adresserar inte varför spänningen byggs upp om och om igen.
+            </p>
+            <p>
+              Grundorsaken är samma mönster som vid vanlig nackspänning:
+              vid mycket stillasittande går de djupa hållningsmusklerna in
+              i vilomodus, vilket tvingar ytligare muskler i nacke och
+              käkparti att kompensera. Ska huvudvärken faktiskt bli mer
+              sällsynt, inte bara mindre intensiv för stunden, behöver de
+              djupa musklerna tränas upp — inte bara den spända ytan
+              lösas upp.
+            </p>
+          </div>
+
           <p>
             Det betyder inte att all huvudvärk kommer från hållningen —
             men för den som märker ett tydligt mönster kopplat till långa
@@ -49,20 +74,24 @@ export default function BlogPost() {
           <ol>
             <li>
               <b>Hakindragningar.</b> Avlastar den muskulatur som ofta är
-              mest spänd vid den här typen av huvudvärk. Se{" "}
-              <Link href="/ovningsbank/static-dog-neck-retractions">
-                Static Dog Neck Retractions
-              </Link>
-              .
+              mest spänd vid den här typen av huvudvärk.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="static-dog-neck-retractions"
+                  title="Static Dog Neck Retractions"
+                />
+              </div>
             </li>
             <li>
               <b>Riktad nackträning.</b> Bygger upp uthålligheten i
               nackens stödmuskler, så de klarar hela arbetsdagen utan att
-              bli lika spända. Se{" "}
-              <Link href="/ovningsbank/hooklying-neck-training">
-                Hooklying Neck Training
-              </Link>
-              .
+              bli lika spända.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="hooklying-neck-training"
+                  title="Hooklying Neck Training"
+                />
+              </div>
             </li>
             <li>
               <b>Regelbundna skärmpauser.</b> Både för ögonen och nacken —
@@ -88,6 +117,27 @@ export default function BlogPost() {
             >
               Testa Axlar/nacke/skulderblad — Nivå 1, gratis →
             </Link>
+          </div>
+
+          <p className={styles.softLink}>
+            Om huvudvärken är återkommande och du vill förstå grundorsaken
+            bättre, kan ett{" "}
+            <Link href="/videosamtal">videosamtal med en av våra terapeuter</Link>{" "}
+            ge en tydligare bild.
+          </p>
+
+          <h3 className={styles.relatedHead}>Relaterat</h3>
+          <div className={styles.relatedGrid}>
+            <BlogPostCard
+              slug="ont-i-nacken-kontorsarbete"
+              title="Ont i nacken av kontorsarbete"
+              excerpt="Samma grundorsak som ofta ligger bakom spänningshuvudvärk — så tränar du bort den."
+            />
+            <BlogPostCard
+              slug="ont-i-axlarna-skrivbordsarbete"
+              title="Ont i axlarna vid skrivbordsarbete"
+              excerpt="Rundade, framåtdragna axlar — därför uppstår det och vad som bygger upp motståndet."
+            />
           </div>
         </div>
 

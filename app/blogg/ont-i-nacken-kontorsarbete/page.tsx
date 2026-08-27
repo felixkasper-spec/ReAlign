@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BlogExerciseCard from "@/components/BlogExerciseCard";
+import BlogPostCard from "@/components/BlogPostCard";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "../blog-post.module.css";
 
@@ -35,11 +37,32 @@ export default function BlogPost() {
             Det handlar sällan om att nacken i sig är svag. Oftast har
             hållningsmusklerna i övre rygg och skulderblad tappat förmågan
             att bära huvudets vikt över tid, vilket gör att ytligare
-            muskler i nacke och axlar tvingas ta över jobbet. De musklerna
-            är inte byggda för att hålla den belastningen hela dagar i
-            sträck — resultatet blir spänning, stelhet och ibland
-            spänningshuvudvärk mot slutet av dagen.
+            muskler i nacke och axlar tvingas ta över jobbet.
           </p>
+
+          <div className={styles.perspectiveBox}>
+            <span className="eyebrow">Postural träning-perspektivet</span>
+            <h2>Det handlar sällan om bara nacken</h2>
+            <p>
+              Inom Optimum-Metoden och postural träning ses nackspänning
+              sällan som ett isolerat nackproblem — något man sällan hör i
+              vanliga råd om stretching och sittställning. En stel eller
+              rundad bröstrygg tvingar nacken att överkompensera. Det gör
+              att grundorsaken ofta sitter längre ner i kedjan än man
+              tror, även om det är nacken som faktiskt gör ont.
+            </p>
+            <p>
+              Vid mycket stillasittande går de djupa posturala musklerna
+              gradvis in i ett slags vilomodus — de slutar aktiveras som
+              de ska. Då tvingas de ytligare musklerna i nacke och axlar
+              ta över jobbet, muskler som inte är byggda för att bära den
+              belastningen dag efter dag. Det är därför stretching eller
+              en bättre stol sällan löser problemet på riktigt — de djupa
+              musklerna behöver väckas och tränas upp specifikt, inte bara
+              det som gör mest ont.
+            </p>
+          </div>
+
           <p>
             Ett framåtskjutet huvud — vanligt vid skärmarbete — förvärrar
             det ytterligare: varje centimeter huvudet flyttas framför
@@ -54,29 +77,34 @@ export default function BlogPost() {
               <b>Hakindragningar (chin tucks).</b> Dra hakan rakt bakåt, som
               om du gör en dubbelhaka, utan att böja huvudet nedåt. Stärker
               precis de djupa nackmusklerna som håller huvudet i rätt läge.
-              Testa{" "}
-              <Link href="/ovningsbank/static-dog-neck-retractions">
-                Static Dog Neck Retractions
-              </Link>{" "}
-              i övningsbanken för en guidad variant.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="static-dog-neck-retractions"
+                  title="Static Dog Neck Retractions"
+                />
+              </div>
             </li>
             <li>
               <b>Axelrullningar.</b> Långsamma cirklar bakåt med axlarna,
               några gånger i timmen om du sitter mycket. Motverkar att
-              axlarna gradvis kryper framåt och uppåt under dagen. Se{" "}
-              <Link href="/ovningsbank/standing-shoulder-rolls">
-                Standing Shoulder Rolls
-              </Link>
-              .
+              axlarna gradvis kryper framåt och uppåt under dagen.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="standing-shoulder-rolls"
+                  title="Standing Shoulder Rolls"
+                />
+              </div>
             </li>
             <li>
               <b>Riktad nackträning.</b> Kontrollerad styrketräning för
               nackens djupa muskler, inte bara stretching — det är styrkan
-              som saknas, inte rörligheten. Se{" "}
-              <Link href="/ovningsbank/hooklying-neck-training">
-                Hooklying Neck Training
-              </Link>
-              .
+              som saknas, inte rörligheten.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="hooklying-neck-training"
+                  title="Hooklying Neck Training"
+                />
+              </div>
             </li>
             <li>
               <b>Bröstryggsrörlighet.</b> Stel bröstrygg tvingar nacke och
@@ -108,6 +136,26 @@ export default function BlogPost() {
             övningsvideor och progressionsspårning, finns det i{" "}
             <Link href="/premium">Premium</Link>.
           </p>
+          <p className={styles.softLink}>
+            Om spänningarna sitter i och du vill ha en personlig bedömning
+            av var i kedjan grundorsaken sitter, kan ett{" "}
+            <Link href="/videosamtal">videosamtal med en av våra terapeuter</Link>{" "}
+            vara nästa steg.
+          </p>
+
+          <h3 className={styles.relatedHead}>Relaterat</h3>
+          <div className={styles.relatedGrid}>
+            <BlogPostCard
+              slug="ont-i-axlarna-skrivbordsarbete"
+              title="Ont i axlarna vid skrivbordsarbete"
+              excerpt="Rundade, framåtdragna axlar — därför uppstår det och vad som bygger upp motståndet."
+            />
+            <BlogPostCard
+              slug="spanningshuvudvark-och-hallning"
+              title="Spänningshuvudvärk och hållning"
+              excerpt="Finns sambandet mellan nackspänning och huvudvärk som förvärras mot eftermiddagen?"
+            />
+          </div>
         </div>
 
         <Footer />

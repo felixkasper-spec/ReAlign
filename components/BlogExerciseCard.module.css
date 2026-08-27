@@ -1,0 +1,38 @@
+a.card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 6px 16px 6px 6px;
+  margin: 4px 6px 4px 0;
+  text-decoration: none !important;
+  color: var(--text) !important;
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: border-color 0.15s;
+  vertical-align: middle;
+}
+
+.card:hover {
+  border-color: var(--sage);
+}
+
+.thumb {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  font-size: 0.7rem;
+}
+
+.thumb img {
+  object-fit: cover;
+}

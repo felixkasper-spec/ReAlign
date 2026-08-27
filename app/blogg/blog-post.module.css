@@ -65,3 +65,55 @@
   margin-bottom: 14px;
   color: var(--text-soft);
 }
+
+.perspectiveBox {
+  background: var(--warm-soft);
+  border-radius: 18px;
+  padding: 26px 28px;
+  margin: 28px 0;
+}
+
+.perspectiveBox .eyebrow {
+  color: #8a5a2c;
+}
+
+.perspectiveBox h2 {
+  margin: 8px 0 12px !important;
+}
+
+.perspectiveBox p {
+  color: var(--text);
+}
+
+.perspectiveBox p:last-child {
+  margin-bottom: 0;
+}
+
+.exerciseRow {
+  margin: 6px 0 20px;
+  line-height: 2.4;
+}
+
+.softLink {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+}
+
+.relatedHead {
+  margin: 44px 0 16px;
+  font-size: 1.1rem;
+  font-family: var(--font-newsreader), serif;
+  font-weight: 500;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .relatedGrid {
+    grid-template-columns: 1fr;
+  }
+}
