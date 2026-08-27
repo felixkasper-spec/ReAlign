@@ -2,7 +2,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { pageMetadata } from "@/lib/page-metadata";
-import styles from "./page.module.css";
+import styles from "../blog-post.module.css";
 
 export const metadata = pageMetadata({
   title: "Ont i nacken av kontorsarbete — så tränar du bort det — ReAlign Metoden",
