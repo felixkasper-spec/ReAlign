@@ -10,24 +10,31 @@ export type BlogPost = {
 // den här listan är bara metadata för /blogg-index och sitemap.ts.
 export const blogPosts: BlogPost[] = [
   {
-    slug: "ont-i-nacken-kontorsarbete",
-    title: "Ont i nacken av kontorsarbete — så tränar du bort det",
+    slug: "ont-i-nacken",
+    title: "Ont i nacken — så tränar du bort det",
     excerpt:
-      "Varför stillasittande skapar nackspänningar i första hand, och fem konkreta övningar som faktiskt gör skillnad.",
+      "Varför nacken gör ont i första hand — vanligast kopplat till stillasittande, men inte bara det — och fem konkreta övningar som faktiskt gör skillnad.",
     publishedAt: "2026-08-27",
   },
   {
-    slug: "ont-i-ryggen-stillasittande",
-    title: "Ont i ryggen av stillasittande — vanligaste orsakerna och vad som hjälper",
+    slug: "ont-i-ryggen",
+    title: "Ont i ryggen — vanligaste orsakerna och vad som hjälper",
     excerpt:
-      "Varför långvarigt sittande ger ont i ländryggen, och vilka övningar som faktiskt bygger upp stödet du saknar.",
+      "Ryggsmärta sitter sällan bara i ryggen. Så hänger bröstrygg, bäcken och resten av kroppen ihop med ryggvärk, och vilka övningar som faktiskt hjälper.",
     publishedAt: "2026-08-27",
   },
   {
-    slug: "ont-i-axlarna-skrivbordsarbete",
-    title: "Ont i axlarna vid skrivbordsarbete — därför uppstår det",
+    slug: "ont-i-landryggen",
+    title: "Ont i ländryggen — vanligaste orsakerna och vad som hjälper",
     excerpt:
-      "Rundade, framåtdragna axlar är en av de vanligaste följderna av skärmarbete. Så uppstår det, och så tränar du upp motståndet.",
+      "Varför ländryggen gör ont — vid stillasittande men även av andra orsaker — och vilka övningar som faktiskt bygger upp stödet du saknar.",
+    publishedAt: "2026-08-27",
+  },
+  {
+    slug: "ont-i-axeln",
+    title: "Ont i axeln — därför uppstår det och vad som hjälper",
+    excerpt:
+      "Axelsmärta och stela, framåtdragna axlar hänger ofta ihop med samma grundorsak. Så uppstår det, och så tränar du upp motståndet.",
     publishedAt: "2026-08-27",
   },
   {

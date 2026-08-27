@@ -7,11 +7,11 @@ import { pageMetadata } from "@/lib/page-metadata";
 import styles from "../blog-post.module.css";
 
 export const metadata = pageMetadata({
-  title: "Ont i ryggen av stillasittande — vanligaste orsakerna — ReAlign Metoden",
+  title: "Ont i ländryggen — vanligaste orsakerna och vad som hjälper — ReAlign Metoden",
   description:
-    "Varför långvarigt sittande ger ont i ländryggen, och vilka övningar som faktiskt bygger upp stödet du saknar.",
+    "Varför ländryggen gör ont — vid stillasittande men även av andra orsaker — och vilka övningar som faktiskt bygger upp stödet du saknar.",
   image: "/og/default.png",
-  path: "/blogg/ont-i-ryggen-stillasittande",
+  path: "/blogg/ont-i-landryggen",
 });
 
 export default function BlogPost() {
@@ -20,37 +20,45 @@ export default function BlogPost() {
       <Header />
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
-          <span className="eyebrow">Rygg & stillasittande</span>
-          <h1>Ont i ryggen av stillasittande — vanligaste orsakerna och vad som hjälper</h1>
+          <span className="eyebrow">Ländrygg & hållning</span>
+          <h1>Ont i ländryggen — vanligaste orsakerna och vad som hjälper</h1>
           <span className={styles.date}>27 augusti 2026</span>
           <p className={styles.lead}>
-            En dov värk i nedre ryggen efter en dag vid skrivbordet är
-            extremt vanligt — men &quot;sitta mer rakt&quot; är sällan hela lösningen.
-            Här är vad som faktiskt ligger bakom det, och vad som hjälper.
+            En dov värk i nedre ryggen är en av de vanligaste orsakerna
+            till att människor söker hjälp — vanligast vid stillasittande,
+            men långt ifrån bara då. &quot;Sitta mer rakt&quot; är sällan hela
+            lösningen. Här är vad som faktiskt ligger bakom det, och vad
+            som hjälper.
           </p>
         </header>
 
         <div className={styles.article}>
-          <h2>Varför gör ländryggen ont av att sitta?</h2>
+          <h2>Varför gör ländryggen ont?</h2>
           <p>
             När vi sitter länge slappnar sätesmusklerna och de djupa
             bålmusklerna av, medan bäckenet ofta glider ner i en bakåtlutad
             position. Ländryggen tappar då sitt naturliga stöd underifrån,
             och de ytliga ryggmusklerna får jobba övertid för att hålla
             uppe överkroppen — ett jobb de inte är byggda för på lång sikt.
+            Samma mönster kan uppstå av andra orsaker också: ensidig
+            belastning, stress eller helt enkelt ett bålstöd som aldrig
+            tränats upp.
           </p>
 
           <div className={styles.perspectiveBox}>
             <span className="eyebrow">Postural träning-perspektivet</span>
             <h2>Ländryggen är sällan grundorsaken — bara där det märks</h2>
             <p>
-              Inom Optimum-Metoden och postural träning behandlas
-              ländryggssmärta sällan som ett isolerat ländryggsproblem —
-              en vinkel de flesta aldrig hör om. Hela kedjan hänger ihop,
-              från fötter och knän via höft och bäcken upp genom
-              ryggraden. En obalans i bäckenets position kan göra att
-              ländryggen tvingas kompensera, långt innan man känner något
-              i just ländryggen.
+              Inom postural träning behandlas ländryggssmärta sällan som
+              ett isolerat ländryggsproblem — en vinkel de flesta aldrig
+              hör om. Hela kedjan hänger ihop, från fötter och knän via
+              höft och bäcken upp genom ryggraden. En obalans i bäckenets
+              position kan göra att ländryggen tvingas kompensera, långt
+              innan man känner något i just ländryggen. Även en krum eller
+              stel bröstrygg högre upp i ryggraden kan tvinga ländryggen
+              att svanka mer än den borde för att balansera resten av
+              kroppen — läs mer om den kopplingen i{" "}
+              <Link href="/blogg/ont-i-ryggen">vår artikel om ont i ryggen</Link>.
             </p>
             <p>
               Vid mycket stillasittande går sätesmusklerna och de djupa
@@ -126,14 +134,14 @@ export default function BlogPost() {
           <h3 className={styles.relatedHead}>Relaterat</h3>
           <div className={styles.relatedGrid}>
             <BlogPostCard
-              slug="ont-i-nacken-kontorsarbete"
-              title="Ont i nacken av kontorsarbete"
-              excerpt="Nackspänning och ländryggssmärta hänger ofta ihop via samma kedja."
+              slug="ont-i-ryggen"
+              title="Ont i ryggen"
+              excerpt="Ländryggen är ofta bara där det märks — så hänger bröstrygg och resten av kedjan ihop med ryggvärk."
             />
             <BlogPostCard
-              slug="ont-i-axlarna-skrivbordsarbete"
-              title="Ont i axlarna vid skrivbordsarbete"
-              excerpt="Rundade, framåtdragna axlar — därför uppstår det och vad som bygger upp motståndet."
+              slug="ont-i-nacken"
+              title="Ont i nacken"
+              excerpt="Nackspänning och ländryggssmärta hänger ofta ihop via samma kedja."
             />
           </div>
         </div>

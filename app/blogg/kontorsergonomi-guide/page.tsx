@@ -50,7 +50,7 @@ export default function BlogPost() {
             Skärmens överkant bör ligga ungefär i ögonhöjd, på armlängds
             avstånd. En skärm som står för lågt är en av de vanligaste
             orsakerna till framåtskjutet huvud och nackspänning — se{" "}
-            <Link href="/blogg/ont-i-nacken-kontorsarbete">
+            <Link href="/blogg/ont-i-nacken">
               vår artikel om ont i nacken
             </Link>{" "}
             för mer om varför det spelar roll.

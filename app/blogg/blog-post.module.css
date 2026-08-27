@@ -27,6 +27,24 @@
   max-width: 600px;
 }
 
+.heroImage {
+  position: relative;
+  height: 260px;
+  border-radius: 18px;
+  margin-top: 22px;
+}
+
+.heroImage img {
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+@media (max-width: 600px) {
+  .heroImage {
+    height: 200px;
+  }
+}
+
 .article {
   padding: 20px 0 10px;
 }

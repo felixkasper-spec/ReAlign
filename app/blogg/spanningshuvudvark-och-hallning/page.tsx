@@ -45,8 +45,8 @@ export default function BlogPost() {
             <span className="eyebrow">Postural träning-perspektivet</span>
             <h2>Varför massage och smärtstillande bara lindrar tillfälligt</h2>
             <p>
-              En vinkel som sällan lyfts: inom Optimum-Metoden och
-              postural träning ses den här typen av huvudvärk sällan som
+              En vinkel som sällan lyfts: inom postural träning ses den
+              här typen av huvudvärk sällan som
               ett problem i huvudet överhuvudtaget — ursprunget sitter
               längre ner i kedjan, oftast i nacke och bröstrygg. Massage
               och smärtstillande kan lindra symptomet för stunden, men
@@ -129,13 +129,13 @@ export default function BlogPost() {
           <h3 className={styles.relatedHead}>Relaterat</h3>
           <div className={styles.relatedGrid}>
             <BlogPostCard
-              slug="ont-i-nacken-kontorsarbete"
-              title="Ont i nacken av kontorsarbete"
+              slug="ont-i-nacken"
+              title="Ont i nacken"
               excerpt="Samma grundorsak som ofta ligger bakom spänningshuvudvärk — så tränar du bort den."
             />
             <BlogPostCard
-              slug="ont-i-axlarna-skrivbordsarbete"
-              title="Ont i axlarna vid skrivbordsarbete"
+              slug="ont-i-axeln"
+              title="Ont i axeln"
               excerpt="Rundade, framåtdragna axlar — därför uppstår det och vad som bygger upp motståndet."
             />
           </div>
