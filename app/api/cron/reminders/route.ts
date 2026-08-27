@@ -70,7 +70,7 @@ export async function GET(request: Request) {
 
     try {
       await sendEmail({
-        to: [{ email: profile.email, name }],
+        to: [{ email: profile.email, ...(name ? { name } : {}) }],
         subject: "Vi saknar dig på ReAlign Metoden",
         replyTo: { email: "kontakt@realignmetoden.se", name: "ReAlign Metoden" },
         html: `<p>Hej${name ? ` ${name}` : ""},</p><p>Vi har inte sett dig träna på ett tag. Inget krav — bara en påminnelse om att du är välkommen tillbaka när du känner för det.</p><p><a href="${baseUrl}/min-sida">Fortsätt träna →</a></p><p>Vänliga hälsningar,<br>ReAlign Metoden</p><p style="font-size:12px;color:#888;margin-top:24px;">Vill du inte få fler mejl som det här? <a href="${unsubscribe}">Avsluta här</a>.</p>`,
