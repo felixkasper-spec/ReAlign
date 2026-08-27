@@ -1,4 +1,4 @@
-export type PainArea = "nacke" | "rygg" | "hoft" | "helkropp";
+export type PainArea = "nacke" | "rygg" | "hoft" | "helkropp" | "annat";
 export type Lifestyle = "stillasittande" | "aktiv" | "blandat";
 export type Experience = "ny" | "bekvam" | "erfaren";
 export type Equipment = "ingen" | "hemma" | "gym";
@@ -37,8 +37,8 @@ function categoryFor(pain: PainArea): Category {
   if (pain === "hoft") {
     return { name: "Höft & bäcken", prefix: "hofter", maxLevel: 3 };
   }
-  // "rygg" och "helkropp" (vet inte) hanteras båda som Helkropp — det finns
-  // ingen egen Rygg-kategori (se briefing).
+  // "rygg", "helkropp" (helheten) och "annat" hanteras alla som Helkropp —
+  // det finns ingen egen Rygg-kategori (se briefing).
   return { name: "Helkropp", prefix: "helkropp", maxLevel: 5 };
 }
 

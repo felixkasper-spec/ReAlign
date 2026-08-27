@@ -15,12 +15,13 @@ type Question = {
 const questions: Question[] = [
   {
     name: "pain",
-    question: "Var känns det mest just nu?",
+    question: "Vill du fokusera extra på något område?",
     options: [
       { value: "nacke", label: "Nacke, axlar & skulderblad" },
       { value: "rygg", label: "Rygg" },
       { value: "hoft", label: "Höft & bäcken" },
-      { value: "helkropp", label: "Hela kroppen / vet inte riktigt" },
+      { value: "helkropp", label: "Nej, vill fokusera på helheten" },
+      { value: "annat", label: "Annat" },
     ],
   },
   {
