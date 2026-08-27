@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { blogPosts } from "@/lib/blog-posts";
 
 const BASE_URL = "https://www.realignmetoden.se";
 
@@ -21,6 +22,7 @@ const STATIC_PATHS = [
   "/videosamtal",
   "/kommer-snart",
   "/integritetspolicy",
+  "/blogg",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -49,5 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...programEntries, ...exerciseEntries];
+  const blogEntries: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${BASE_URL}/blogg/${post.slug}`,
+    lastModified: post.publishedAt,
+    changeFrequency: "yearly",
+    priority: 0.6,
+  }));
+
+  return [...staticEntries, ...programEntries, ...exerciseEntries, ...blogEntries];
 }

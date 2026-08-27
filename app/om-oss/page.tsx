@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 export const metadata = pageMetadata({
   title: "Om oss — ReAlign Metoden",
   description:
-    "Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.",
+    "Cleer Klinik erbjuder postural träning grundad i Optimum-Metoden, som återställer kroppens naturliga balans. Möt kliniken bakom metoden.",
   image: "/og/om-oss.png",
   path: "/om-oss",
 });

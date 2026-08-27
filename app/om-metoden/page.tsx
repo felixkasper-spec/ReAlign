@@ -10,7 +10,7 @@ import styles from "./page.module.css";
 export const metadata = pageMetadata({
   title: "Om metoden — ReAlign Metoden",
   description:
-    "Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.",
+    "Vad är postural träning och varför fungerar det? Läs om Optimum-Metoden — grunden bakom ReAlign Metoden.",
   image: "/og/om-metoden.png",
   path: "/om-metoden",
 });
@@ -49,6 +49,26 @@ export default async function OmMetodenPage() {
         </div>
 
         <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
+          <div className={styles.sectionHead}>
+            <span className="eyebrow">Ursprunget</span>
+            <h2>Grundad i Optimum-Metoden — ovanligt tillgänglig.</h2>
+          </div>
+          <p>
+            ReAlign Metoden bygger på Optimum-Metoden, en etablerad
+            utbildning inom postural träning. Felix, grundaren bakom
+            ReAlign Metoden, är utbildad Postural Terapeut via
+            Optimum-Metoden efter fem års heltidsarbete med metoden på
+            Cleer Klinik.
+          </p>
+          <p>
+            Tillgång till Optimum-Metoden kräver normalt antingen ett besök
+            hos en fysisk utövare eller en bokad onlinesession. Här får du
+            samma grund öppet och till stor del helt gratis — inget vi
+            känner till att någon annan erbjuder i samma omfattning.
+          </p>
+        </div>
+
+        <div className={styles.section}>
           <div className={styles.sectionHead}>
             <span className="eyebrow">Grundorsaken</span>
             <h2>Varför gör det ont — egentligen?</h2>

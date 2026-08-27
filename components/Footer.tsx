@@ -8,6 +8,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.linkRow}>
         <Link href="/om-oss">Om oss</Link>
+        <Link href="/blogg">Blogg</Link>
         <Link href="/faq">Vanliga frågor</Link>
         <Link href="/kontakt">Kontakt</Link>
         <Link href="/integritetspolicy">Integritetspolicy</Link>

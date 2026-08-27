@@ -1,0 +1,67 @@
+.wrap {
+  max-width: 720px;
+}
+
+.pageHead {
+  padding: 34px 0 6px;
+}
+
+.date {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage);
+  display: block;
+  margin-top: 14px;
+}
+
+.pageHead h1 {
+  font-size: 2.1rem;
+  margin: 8px 0 14px;
+}
+
+.lead {
+  color: var(--text-soft);
+  font-size: 1.02rem;
+  max-width: 600px;
+}
+
+.article {
+  padding: 20px 0 10px;
+}
+
+.article h2 {
+  font-size: 1.35rem;
+  margin: 34px 0 12px;
+}
+
+.article p {
+  margin-bottom: 14px;
+}
+
+.article ol {
+  margin: 0 0 18px;
+  padding-left: 22px;
+}
+
+.article li {
+  margin-bottom: 14px;
+}
+
+.article a {
+  color: var(--sage);
+  text-decoration: underline;
+}
+
+.ctaBand {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 28px 30px;
+  margin: 34px 0;
+}
+
+.ctaBand p {
+  margin-bottom: 14px;
+  color: var(--text-soft);
+}
