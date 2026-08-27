@@ -33,6 +33,7 @@ export async function generateMetadata({
     return pageMetadata({
       title: "Program — ReAlign Metoden",
       description: "Träningsprogram byggt för postural träning.",
+      path: `/program/${slug}`,
     });
   }
 
@@ -42,6 +43,7 @@ export async function generateMetadata({
     description:
       program.description ??
       `${meta?.purpose ?? program.category}-program${meta?.level ? ` · ${meta.level}` : ""} från ReAlign Metoden.`,
+    path: `/program/${slug}`,
   });
 }
 

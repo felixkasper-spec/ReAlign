@@ -9,6 +9,7 @@ export const metadata = pageMetadata({
   description:
     "Svara på fem korta frågor om var det gör ont och din vardag — få en programrekommendation direkt, helt automatiskt.",
   image: "/og/analys.png",
+  path: "/analys",
 });
 
 export default function AnalysPage() {

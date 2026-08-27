@@ -14,6 +14,7 @@ export const metadata = pageMetadata({
   description:
     "Allt i Premium, plus direktkontakt med en coach via chatt. 449 kr/mån, begränsat antal platser.",
   image: "/og/premium-coaching.png",
+  path: "/premium-coaching",
 });
 
 export default async function PremiumCoachingPage() {

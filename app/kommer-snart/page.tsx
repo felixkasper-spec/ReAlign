@@ -9,6 +9,7 @@ export const metadata = pageMetadata({
   description:
     "Community-forum, veckobrev, gruppträning via video, hållnings- och funktionsanalys med mera — se vad vi bygger härnäst.",
   image: "/og/kommer-snart.png",
+  path: "/kommer-snart",
 });
 
 const items = [

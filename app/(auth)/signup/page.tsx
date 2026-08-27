@@ -7,6 +7,7 @@ export const metadata = pageMetadata({
   title: "Skapa konto — ReAlign Metoden",
   description: "Skapa ett gratis konto för att spara favoriter och schemalägga din träning.",
   image: "/og/default.png",
+  path: "/signup",
 });
 
 export default async function SignupPage({

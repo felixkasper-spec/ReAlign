@@ -44,6 +44,21 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ReAlign Metoden",
+  url: "https://www.realignmetoden.se",
+  logo: "https://www.realignmetoden.se/logo.png",
+  description:
+    "Postural träning som återställer kroppens naturliga balans — program, övningsbank och ergonomiguider.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "kontakt@realignmetoden.se",
+    contactType: "customer service",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -53,6 +68,10 @@ export default function RootLayout({
         className={`${newsreader.variable} ${publicSans.variable} ${plexMono.variable}`}
         style={{ fontFamily: "var(--font-public-sans), sans-serif" }}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         {children}
       </body>
     </html>

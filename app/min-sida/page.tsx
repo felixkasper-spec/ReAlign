@@ -27,6 +27,7 @@ export const metadata = pageMetadata({
   title: "Min sida — ReAlign Metoden",
   description: "Dina program, favoriter, schema och din progression, samlat på ett ställe.",
   image: "/og/default.png",
+  path: "/min-sida",
 });
 
 const categoryLabels: Record<string, string> = {

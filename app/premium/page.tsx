@@ -15,6 +15,7 @@ export const metadata = pageMetadata({
   description:
     "Alla nivåer, alla program, hela vägen — 149 kr/mån, första månaden till halva priset. Ingen bindningstid.",
   image: "/og/premium.png",
+  path: "/premium",
 });
 
 const faqGroups: FaqGroup[] = [

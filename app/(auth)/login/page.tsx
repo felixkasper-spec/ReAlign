@@ -7,6 +7,7 @@ export const metadata = pageMetadata({
   title: "Logga in — ReAlign Metoden",
   description: "Logga in för att komma åt dina favoriter, ditt schema och din träningslogg.",
   image: "/og/default.png",
+  path: "/login",
 });
 
 export default async function LoginPage({

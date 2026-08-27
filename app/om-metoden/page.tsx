@@ -12,6 +12,7 @@ export const metadata = pageMetadata({
   description:
     "Vad är postural träning och varför fungerar det? Läs om filosofin bakom ReAlign Metoden.",
   image: "/og/om-metoden.png",
+  path: "/om-metoden",
 });
 
 const EPISODE_ID = "7kRVHZhGfmsZCOqJjtyPFF";

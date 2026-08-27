@@ -6,6 +6,7 @@ export const metadata = pageMetadata({
   title: "Avprenumererad — ReAlign Metoden",
   description: "Du har avslutat mejlutskick från ReAlign Metoden.",
   image: "/og/default.png",
+  path: "/avprenumererad",
 });
 
 export default async function AvprenumereradPage({

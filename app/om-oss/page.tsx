@@ -10,6 +10,7 @@ export const metadata = pageMetadata({
   description:
     "Cleer Klinik erbjuder postural träning som återställer kroppens naturliga balans. Möt kliniken bakom metoden.",
   image: "/og/om-oss.png",
+  path: "/om-oss",
 });
 
 export default function OmOssPage() {

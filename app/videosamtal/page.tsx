@@ -13,6 +13,7 @@ export const metadata = pageMetadata({
   description:
     "Ett videosamtal med en av våra terapeuter, följt av ett program skräddarsytt exakt utifrån din kropp. 590 kr, engångsköp.",
   image: "/og/videosamtal.png",
+  path: "/videosamtal",
 });
 
 export default function VideosamtalPage() {

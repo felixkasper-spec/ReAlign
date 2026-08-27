@@ -8,6 +8,7 @@ export const metadata = pageMetadata({
   description:
     "Svar på de vanligaste frågorna om postural träning, säkerhet, utrustning och vad du kan förvänta dig av ReAlign Metoden.",
   image: "/og/faq.png",
+  path: "/faq",
 });
 
 const groups: FaqGroup[] = [
@@ -60,10 +61,26 @@ const groups: FaqGroup[] = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: groups.flatMap((group) =>
+    group.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  ),
+};
+
 export default function FaqPage() {
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <div className="wrap">
         <header style={{ padding: "40px 0 20px" }}>
           <span className="eyebrow">Vanliga frågor</span>

@@ -33,6 +33,7 @@ export async function generateMetadata({
     return pageMetadata({
       title: "Övning — ReAlign Metoden",
       description: "En övning ur ReAlign Metodens övningsbank.",
+      path: `/ovningsbank/${slug}`,
     });
   }
 
@@ -46,6 +47,7 @@ export async function generateMetadata({
     description:
       instructionsExcerpt ??
       `Övning för ${exercise.body_part}${exercise.equipment ? ` · ${exercise.equipment}` : ""} — instruktionsvideo och steg-för-steg-guide.`,
+    path: `/ovningsbank/${slug}`,
   });
 }
 

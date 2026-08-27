@@ -15,6 +15,7 @@ export const metadata = pageMetadata({
   description:
     "Bläddra bland alla övningar med instruktionsvideo — sök på kroppsdel, utrustning eller programnivå.",
   image: "/og/ovningsbank.png",
+  path: "/ovningsbank",
 });
 
 export default async function OvningsbankPage() {

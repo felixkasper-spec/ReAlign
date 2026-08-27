@@ -13,6 +13,7 @@ export const metadata = pageMetadata({
   description:
     "Postural träning som återställer kroppens naturliga balans. Program, övningsbank och ergonomiguider, helt gratis.",
   image: "/og/default.png",
+  path: "/",
 });
 
 export default function Home() {

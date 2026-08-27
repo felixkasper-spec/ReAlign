@@ -12,6 +12,7 @@ export const metadata = pageMetadata({
   description:
     "Träningsprogram för hela kroppen, höfter, axlar/nacke, bål, gym och kontorsvardag — flera nivåer, byggda för postural träning.",
   image: "/og/program.png",
+  path: "/program",
 });
 
 const CATEGORY_ORDER = [

@@ -8,6 +8,7 @@ export const metadata = pageMetadata({
   description:
     "Så behandlar ReAlign Metoden dina personuppgifter — vilka uppgifter vi samlar in, varför, och vilka rättigheter du har.",
   image: "/og/default.png",
+  path: "/integritetspolicy",
 });
 
 export default function IntegritetspolicyPage() {
