@@ -35,7 +35,7 @@ function categoryFor(pain: PainArea): Category {
     return { name: "Axlar/nacke/skulderblad", prefix: "axlar-nacke-skulderblad", maxLevel: 3 };
   }
   if (pain === "hoft") {
-    return { name: "Höft & bäcken", prefix: "hofter", maxLevel: 3 };
+    return { name: "Höft & ländrygg", prefix: "hofter", maxLevel: 3 };
   }
   // "rygg", "helkropp" (helheten) och "annat" hanteras alla som Helkropp —
   // det finns ingen egen Rygg-kategori (se briefing).

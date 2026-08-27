@@ -118,9 +118,9 @@ export default function BlogPost() {
           </ol>
 
           <div className={styles.ctaBand}>
-            <p>Ett ordnat program för höft och bäcken, helt gratis:</p>
+            <p>Ett ordnat program för höft och ländrygg, helt gratis:</p>
             <Link className="btn btn-primary" href="/program/hofter-niva-1">
-              Testa Höft & bäcken — Nivå 1, gratis →
+              Testa Höft & ländrygg — Nivå 1, gratis →
             </Link>
           </div>
 

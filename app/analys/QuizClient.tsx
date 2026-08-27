@@ -19,7 +19,7 @@ const questions: Question[] = [
     options: [
       { value: "nacke", label: "Nacke, axlar & skulderblad" },
       { value: "rygg", label: "Rygg" },
-      { value: "hoft", label: "Höft & bäcken" },
+      { value: "hoft", label: "Höft & ländrygg" },
       { value: "helkropp", label: "Nej, vill fokusera på helheten" },
       { value: "annat", label: "Annat" },
     ],

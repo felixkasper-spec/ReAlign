@@ -32,7 +32,7 @@ export const metadata = pageMetadata({
 
 const categoryLabels: Record<string, string> = {
   helkropp: "Helkropp",
-  hofter: "Höft & bäcken",
+  hofter: "Höft & ländrygg",
   "axlar-nacke-skulderblad": "Axlar/nacke/skulderblad",
   gym: "Gymträning",
   bal: "Bålträning",
