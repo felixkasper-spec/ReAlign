@@ -89,7 +89,7 @@ export function buildRecommendation(answers: QuizAnswers): Recommendation {
         { programSlug: gymSlug, note: `${gymTitle} — rekommenderas 2 gånger i veckan.` },
         {
           programSlug: catSlug,
-          note: `${catTitle} — 2–3 gånger i veckan, som grundträning parallellt.`,
+          note: `${catTitle} — rekommenderas 2–3 gånger i veckan, som grundträning parallellt.`,
         },
         {
           programSlug: catSlug,
@@ -114,7 +114,7 @@ export function buildRecommendation(answers: QuizAnswers): Recommendation {
   if (answers.lifestyle === "stillasittande") {
     steps.push({
       programSlug: "kontorsvardag",
-      note: "Kontorsvardag — några gånger i veckan som ett kort tillägg, perfekt vid skrivbordet.",
+      note: "Kontorsvardag — rekommenderas några gånger i veckan som ett kort tillägg, perfekt vid skrivbordet.",
     });
   }
 

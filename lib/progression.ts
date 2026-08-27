@@ -30,8 +30,11 @@ function mondayOf(date: Date) {
 
 /**
  * Räknar ut enkel progressionsstatistik: pass senaste veckan/månaden,
- * en sammanhängande "streak" av dagar med minst ett loggat pass, samt
- * fördelning per programkategori. Premium-funktion enligt briefingen.
+ * en "streak" av dagar med loggade pass, samt fördelning per
+ * programkategori. Premium-funktion enligt briefingen. Streaken tål ett
+ * missat dygn i följd utan att nollställas — den bryts först vid två
+ * dygn i rad utan loggat pass, så ett enstaka missat pass inte känns
+ * som ett misslyckande.
  */
 export async function getProgressionStats(
   supabase: SupabaseServerClient,
@@ -76,8 +79,14 @@ export async function getProgressionStats(
   if (!dateSet.has(cursor.toISOString().slice(0, 10))) {
     cursor.setUTCDate(cursor.getUTCDate() - 1);
   }
-  while (dateSet.has(cursor.toISOString().slice(0, 10))) {
-    streak++;
+  let missedInRow = 0;
+  while (missedInRow < 2) {
+    if (dateSet.has(cursor.toISOString().slice(0, 10))) {
+      streak++;
+      missedInRow = 0;
+    } else {
+      missedInRow++;
+    }
     cursor.setUTCDate(cursor.getUTCDate() - 1);
   }
 

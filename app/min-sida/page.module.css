@@ -196,6 +196,13 @@
   color: var(--warm);
 }
 
+.statHint {
+  margin-top: 8px;
+  font-size: 0.74rem;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
 .cols {
   display: grid;
   grid-template-columns: 1.4fr 1fr;

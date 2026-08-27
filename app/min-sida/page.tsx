@@ -251,6 +251,10 @@ export default async function MinSidaPage({
                 🔥 {streakMilestone(progression.streak)} dagar i rad
               </div>
             )}
+            <div className={styles.statHint}>
+              Det är okej att pausa — det som räknas är att du kommer
+              tillbaka.
+            </div>
           </div>
           <div className={styles.stat}>
             <span className="eyebrow">Denna vecka</span>
