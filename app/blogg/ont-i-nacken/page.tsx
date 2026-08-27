@@ -104,13 +104,14 @@ export default function BlogPost() {
               </div>
             </li>
             <li>
-              <b>Sittande knätryck.</b> Aktiverar hållningsmusklerna i
-              ljumskområdet, så att dessa kan skapa en naturlig svank och
-              därmed skapa rätt förutsättningar uppåt i nacken.
+              <b>Liggande armpress (goal post press).</b> Aktiverar den
+              bakre kedjan i övre rygg och skuldror, samma muskler som
+              annars slocknar av framåtlutad sittställning och tvingar
+              nacken att kompensera.
               <div className={styles.exerciseRow}>
                 <BlogExerciseCard
-                  slug="sitting-knee-squeezes"
-                  title="Sitting Knee Squeezes"
+                  slug="static-back-goal-post-presses"
+                  title="Static Back Goal Post Presses"
                 />
               </div>
             </li>
@@ -142,7 +143,19 @@ export default function BlogPost() {
             <li>
               <b>Bröstryggsrörlighet.</b> Stel bröstrygg tvingar nacke och
               axlar att kompensera för rörelser de inte är byggda för. Några
-              minuters mobilitetsarbete här avlastar nacken indirekt.
+              minuters mobilitetsarbete här avlastar nacken indirekt, till
+              exempel:
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard slug="wide-cobra" title="Wide Cobra" />
+                <BlogExerciseCard
+                  slug="standing-shoulder-rolls"
+                  title="Standing Shoulder Rolls"
+                />
+                <BlogExerciseCard
+                  slug="kneeling-table-top-stretch"
+                  title="Kneeling Table Top Stretch"
+                />
+              </div>
             </li>
             <li>
               <b>Regelbundna pauser — inte bara rätt stol.</b> Ingen
