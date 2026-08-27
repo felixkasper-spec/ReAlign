@@ -68,6 +68,11 @@ export default async function SignupPage({
           </button>
         </form>
 
+        <p style={{ fontSize: "0.78rem", color: "var(--text-soft)", marginTop: 14 }}>
+          Vi skickar dig då och då träningstips, påminnelser och information
+          om våra tjänster — du kan avsluta när du vill.
+        </p>
+
         <div className={styles.switch}>
           Har du redan ett konto? <Link href="/login">Logga in</Link>
         </div>

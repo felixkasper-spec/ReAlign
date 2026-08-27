@@ -13,7 +13,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats, streakMilestone } from "@/lib/progression";
 import { getBaseUrl } from "@/lib/base-url";
-import { createCheckoutSession, openBillingPortal } from "./actions";
+import { createCheckoutSession, openBillingPortal, updateMarketingEmails } from "./actions";
 import {
   scheduleSession,
   logSessionNow,
@@ -139,7 +139,11 @@ export default async function MinSidaPage({
     { data: recent },
     { data: weekSessions },
   ] = await Promise.all([
-    supabase.from("profiles").select("display_name").eq("id", user.id).single(),
+    supabase
+      .from("profiles")
+      .select("display_name, marketing_emails")
+      .eq("id", user.id)
+      .single(),
     supabase
       .from("favorites")
       .select("exercise_id, exercises ( id, slug, title, body_part )")
@@ -707,6 +711,26 @@ export default async function MinSidaPage({
                 Dela länken så kan de börja träna gratis, precis som du.
               </p>
               <ShareButton url={baseUrl} />
+            </section>
+
+            <section className={styles.panel}>
+              <span className="eyebrow">Mejlinställningar</span>
+              <h3 className={styles.premiumTitle}>Träningstips & erbjudanden</h3>
+              <p className={styles.premiumText}>
+                Vi skickar då och då träningstips, påminnelser och information
+                om våra tjänster (inklusive Premium) — du kan avsluta när du
+                vill.
+              </p>
+              <form action={updateMarketingEmails.bind(null, !profile?.marketing_emails)}>
+                <button
+                  className="btn btn-ghost"
+                  style={{ width: "100%", border: "1px solid var(--line)" }}
+                >
+                  {profile?.marketing_emails
+                    ? "Sluta ta emot mejl"
+                    : "Börja ta emot mejl"}
+                </button>
+              </form>
             </section>
           </div>
         </div>

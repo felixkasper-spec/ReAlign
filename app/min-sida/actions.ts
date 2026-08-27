@@ -154,6 +154,20 @@ export async function openBillingPortal() {
   redirect(session.url);
 }
 
+export async function updateMarketingEmails(optIn: boolean) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  await supabase.from("profiles").update({ marketing_emails: optIn }).eq("id", user.id);
+  revalidatePath("/min-sida");
+}
+
 async function requireCoachingUser() {
   const supabase = await createClient();
   const {
