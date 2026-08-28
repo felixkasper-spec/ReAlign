@@ -243,12 +243,17 @@ export default async function OmMetodenPage() {
                   sitt jobb, och vad tvingas som en konsekvens ta över ett
                   för stort — men också onaturligt — arbete?
                 </p>
-                <h4>Så vilka muskler består då den posturala kedjan av?</h4>
+              </div>
+            </details>
+
+            <details className={styles.accordionItem}>
+              <summary>Vilka muskler består den posturala kedjan av?</summary>
+              <div className={styles.accordionBody}>
                 <div className={styles.muscleGrid}>
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Posterior_compartment_of_leg_-_tibialis_posterior.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/49/Tibialis_posterior.png"
                         alt="Tibialis posterior"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -264,7 +269,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/2/27/Posterior_compartment_of_leg_-_popliteus_muscle.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Gray439-Musculus_popliteus.png"
                         alt="Popliteus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -279,7 +284,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/7/73/TheAdductorsOfThigh.jpg"
+                        src="/muscles/adductor-magnus.png"
                         alt="Adduktorer"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -296,21 +301,38 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Gray430_Psoas_Major.png"
-                        alt="Iliopsoas"
+                        src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Psoas_major_muscle11.png"
+                        alt="Psoas major"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
                       />
                     </div>
-                    <b>Iliopsoas</b>
+                    <b>Psoas major</b>
                     <p>
-                      Består av iliacus, som sitter inne i bäckenet, och
-                      psoasmuskeln, som går från ryggraden ner till
-                      insidan av lårbenet. ”Tippar fram” bäckenet och
-                      skapar en naturlig svank. Eftersom bäckenets position
-                      är så avgörande för funktionen både nedåt och uppåt i
-                      kroppen lägger vi extra fokus på att få igång just
-                      den här muskeln ordentligt.
+                      Går från ländryggraden ner till insidan av lårbenet.
+                      ”Tippar fram” bäckenet och skapar en naturlig svank.
+                      Eftersom bäckenets position är så avgörande för
+                      funktionen både nedåt och uppåt i kroppen lägger vi
+                      extra fokus på att få igång just den här muskeln
+                      ordentligt.
+                    </p>
+                  </div>
+                  <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image
+                        src="https://upload.wikimedia.org/wikipedia/commons/8/85/Iliacus_muscle06.png"
+                        alt="Iliacus"
+                        fill
+                        sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
+                      />
+                    </div>
+                    <b>Iliacus</b>
+                    <p>
+                      Sitter inne i bäckenet och går ihop med psoas major
+                      i en gemensam sena — tillsammans kallas de
+                      iliopsoas. Hjälper till att tippa fram bäckenet och
+                      böja höften, och delar samma viktiga roll i den
+                      posturala kedjan.
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
@@ -347,7 +369,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Gray391.png"
+                        src="/muscles/diafragma.png"
                         alt="Diafragma"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -366,7 +388,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Rhomboid_major_muscle_back.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/42/Rhomboideus_major.png"
                         alt="Rhomboideus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -382,7 +404,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/3/34/Supraspinatus_muscle_back4.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Supraspinatus.PNG"
                         alt="Supra-/infraspinatus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -414,7 +436,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/5/56/Scalenus_anterior01.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Scalenus.png"
                         alt="Scalenerna"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -430,7 +452,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Sternomastoid_muscle_back.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Sternocleidomastoideus.png"
                         alt="Sternocleidomastoideus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
