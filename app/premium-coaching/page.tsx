@@ -168,7 +168,7 @@ export default async function PremiumCoachingPage() {
           ) : user ? (
             <>
               <p>Kom igång direkt — betalning sker säkert via Stripe.</p>
-              <form action={createCheckoutSession.bind(null, "premium_coaching")}>
+              <form action={createCheckoutSession.bind(null, "premium_coaching", "month")}>
                 <SubmitButton className="btn btn-primary btn-lg" pendingText="Öppnar Stripe...">
                   Bli Premium Coaching →
                 </SubmitButton>

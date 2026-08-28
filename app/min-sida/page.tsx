@@ -631,12 +631,23 @@ export default async function MinSidaPage({
                     och veckobrev.
                   </p>
                   <p className={styles.premiumPrice}>149 kr/mån</p>
-                  <form action={createCheckoutSession.bind(null, "premium")}>
+                  <form action={createCheckoutSession.bind(null, "premium", "month")}>
                     <button
                       className="btn btn-primary"
                       style={{ width: "100%" }}
                     >
                       Bli Premium →
+                    </button>
+                  </form>
+                  <form
+                    action={createCheckoutSession.bind(null, "premium", "year")}
+                    style={{ marginTop: 8 }}
+                  >
+                    <button
+                      className="btn btn-ghost"
+                      style={{ width: "100%", border: "1px solid var(--line)", fontSize: "0.82rem" }}
+                    >
+                      Betala årsvis — 1 341 kr/år, spara 25% →
                     </button>
                   </form>
                   <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10, marginBottom: 16 }}>

@@ -14,6 +14,7 @@ import {
 
 export async function createCheckoutSession(
   plan: "premium" | "premium_coaching" = "premium",
+  interval: "month" | "year" = "month",
 ) {
   const supabase = await createClient();
   const {
@@ -28,7 +29,9 @@ export async function createCheckoutSession(
   const priceId =
     plan === "premium_coaching"
       ? process.env.STRIPE_COACHING_PRICE_ID
-      : process.env.STRIPE_PRICE_ID;
+      : interval === "year"
+        ? process.env.STRIPE_PRICE_ID_YEARLY
+        : process.env.STRIPE_PRICE_ID;
 
   if (!priceId) {
     redirect("/min-sida?checkout=not_configured");
@@ -54,11 +57,16 @@ export async function createCheckoutSession(
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
-    // 50% rabatt första månaden, bara för nya Premium-prenumeranter — den
-    // här kodvägen nås aldrig av någon som redan har ett aktivt
-    // abonnemang (de skickas till byt-plan istället, se ovan), så
-    // rabatten kan aldrig råka appliceras på ett planbyte.
-    discounts: plan === "premium" ? [{ coupon: "premium50first" }] : undefined,
+    // 50% rabatt första månaden, bara för nya Premium-prenumeranter som
+    // betalar månadsvis — den här kodvägen nås aldrig av någon som redan
+    // har ett aktivt abonnemang (de skickas till byt-plan istället, se
+    // ovan), så rabatten kan aldrig råka appliceras på ett planbyte.
+    // Årsvis har redan 25% rabatt inbakat i priset och kombineras inte
+    // med introrabatten.
+    discounts:
+      plan === "premium" && interval === "month"
+        ? [{ coupon: "premium50first" }]
+        : undefined,
     customer: existing?.stripe_customer_id ?? undefined,
     customer_email: existing?.stripe_customer_id ? undefined : user.email,
     client_reference_id: user.id,

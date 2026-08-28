@@ -385,6 +385,16 @@
   margin: 12px 0 18px;
 }
 
+.tierPrice:has(+ .tierPriceAlt) {
+  margin-bottom: 4px;
+}
+
+.tierPriceAlt {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  margin: 0 0 18px;
+}
+
 .tierList {
   list-style: none;
   flex-grow: 1;

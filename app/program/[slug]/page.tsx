@@ -175,7 +175,7 @@ export default async function ProgramPage({
             </h3>
             <p style={{ color: "var(--text)", fontSize: "0.92rem", marginBottom: 18 }}>
               Lås upp {program.title} och resten av programbiblioteket för
-              149 kr/mån.
+              149 kr/mån, eller 1 341 kr/år (spara 25%).
             </p>
             <Link className="btn btn-primary" href="/min-sida">
               Bli Premium →
