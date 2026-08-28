@@ -25,19 +25,19 @@ export default function BlogPost() {
           <span className={styles.date}>27 augusti 2026</span>
           <p className={styles.lead}>
             Ont i axeln eller axlarna är extremt vanligt. Vanligast
-            kopplat till hållning — vid skärmarbete, men lika ofta av
-            sport, ensidig belastning i vardagen eller hur man sover.
-            Det är sällan något du behöver leva med, men det kräver rätt
-            sorts träning, inte bara stretching.
+            kopplat till hållning — vid exempelvis skärmarbete, men även
+            ofta av sport, ensidig belastning i vardagen eller hur man
+            sover. Det är sällan något du behöver leva med, men det
+            kräver rätt sorts träning, inte bara stretching.
           </p>
         </header>
 
         <div className={styles.article}>
           <h2>Varför blir axeln spänd, stel eller öm?</h2>
           <p>
-            Axeln är sällan svag i sig — oftast handlar det om att den
-            fått en framåtdragen, rundad position som den inte är byggd
-            för att stå still i över tid. Bröstmusklerna förkortas
+            Grundproblemet är sällan axeln i sig — oftast handlar det om
+            att den fått en framåtdragen, rundad position som den inte är
+            byggd för att stå still i över tid. Bröstmusklerna förkortas
             gradvis, medan musklerna mellan skulderbladen — de som ska
             dra axlarna bakåt och hålla dem i rätt position — försvagas
             av att aldrig aktiveras. Skärmarbete är en vanlig orsak, men
@@ -51,13 +51,15 @@ export default function BlogPost() {
             <h2>Axeln är ofta bara budbäraren</h2>
             <p>
               Ett perspektiv få tänker på: rundade, spända axlar är inom
-              postural träning oftast ett symptom på en stel bröstrygg,
-              inte grundorsaken i sig. Bröstryggen (den mellersta delen av
-              ryggraden) är designad för rörlighet — när den blir stel
-              tvingas axlarna och nacken ta över rörelser de inte är
-              gjorda för, vilket driver dem framåt och uppåt och kan bidra
-              till allt från spänningsvärk till mer specifika besvär som
-              impingement.
+              postural träning oftast ett symptom på en obalanserad
+              bröstrygg, inte grundorsaken i sig. Bröstryggen (den övre
+              delen av ryggen) är designad för att hålla skulderbladen i
+              en tight och sänkt position — när den blir stel eller svag
+              flyttar sig skulderbladen utåt och/eller uppåt. Detta
+              tvingar axlarna och nacken in i framskjutna positioner och
+              därmed rörelser de inte är gjorda för, och kan bidra till
+              allt från spänningsvärk till mer specifika besvär som
+              impingement eller frozen shoulder.
             </p>
             <p>
               Precis som i resten av kedjan går de djupa
@@ -67,7 +69,7 @@ export default function BlogPost() {
               belastning över tid. De slutar hålla axlarna på plats.
               Därför räcker det sällan att bara stretcha bröstet eller
               dra ihop skulderbladen ett par gånger; bröstryggens
-              rörlighet och skulderbladens djupa stödmuskler behöver
+              rörlighet och skulderbladens djupa hållningsmuskler behöver
               tränas tillsammans för att axeln ska stanna kvar i rätt
               läge.
             </p>
@@ -76,31 +78,50 @@ export default function BlogPost() {
           <p>
             Att bara stretcha bröstet hjälper tillfälligt, men löser
             sällan problemet — det som saknas är styrka i motpartens
-            muskler, de som ska hålla axeln på plats. Är smärtan skarp,
-            plötslig eller begränsar rörligheten kraftigt, bör du alltid
-            få den bedömd av en läkare eller fysioterapeut innan du
-            tränar vidare på egen hand.
+            muskler, de som ska hålla skulderbladen, och därmed axeln, på
+            plats. Är smärtan skarp, plötslig eller begränsar rörligheten
+            kraftigt, bör du alltid få den bedömd av en läkare eller
+            fysioterapeut innan du tränar vidare på egen hand.
+          </p>
+
+          <p>
+            <b>Viktigt att komma ihåg:</b> bäckenets och ländryggens
+            position är totalt avgörande för om vi kan ha en fin hållning
+            i skulderblad, axlar och nacke. Har vi för lite eller för
+            mycket svank, eller annan obalans i bäckenet, får övre ryggen
+            inga förutsättningar att fungera som den ska då den får fel
+            momentum nerifrån. Testa till exempel att ”plana ut”
+            ländryggen så att den blir helt platt, och notera att övre
+            ryggen börjar runda av direkt. Därför är det viktigt att
+            träna tillbaka kroppens balans med helhetstänk, så att alla
+            delar ens ska ha förutsättning att fungera som de är tänkta
+            att göra.
           </p>
 
           <h2>Vad som faktiskt bygger upp motståndet</h2>
           <ol>
             <li>
-              <b>Axelrullningar.</b> Enkelt att göra flera gånger om dagen,
-              motverkar att axlarna gradvis kryper framåt.
+              <b>Static back goal post presses.</b> Bra kombination av
+              att aktivera hållningsmusklerna runt skulderbladen samtidigt
+              som axeln får jobba på att roteras tillbaka.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="standing-shoulder-rolls" title="Standing Shoulder Rolls" />
+                <BlogExerciseCard
+                  slug="static-back-goal-post-presses"
+                  title="Static Back Goal Post Presses"
+                />
               </div>
             </li>
             <li>
-              <b>Axellyft (shrugs).</b> Stärker den övre delen av
-              skulderbladens stödmuskulatur.
+              <b>Standing shoulder shrugs.</b> Stärker hållningsmusklerna
+              runt skulderbladen samt öppnar upp bröstryggen.
               <div className={styles.exerciseRow}>
                 <BlogExerciseCard slug="standing-shoulder-shrugs" title="Standing Shoulder Shrugs" />
               </div>
             </li>
             <li>
-              <b>Bröststretch, en arm i taget.</b> Löser upp bröstmusklerna
-              som förkortats av en rundad, framåtdragen axelposition.
+              <b>Standing one arm chest stretch.</b> Löser upp
+              bröstmusklerna som förkortats av en rundad, framåtdragen
+              axelposition.
               <div className={styles.exerciseRow}>
                 <BlogExerciseCard
                   slug="standing-one-arm-chest-stretch"
@@ -109,20 +130,21 @@ export default function BlogPost() {
               </div>
             </li>
             <li>
-              <b>Posturala armhävningar.</b> Bygger styrka genom hela
-              axelpartiet med fokus på hållning, inte bara bröstet.
+              <b>Standing arm circles.</b> Bygger styrka i både musklerna
+              som håller bak axlarna, och hållningsmusklerna kring
+              skulderbladen.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="postural-pushups" title="Postural Pushups" />
+                <BlogExerciseCard slug="standing-arm-circles" title="Standing Arm Circles" />
               </div>
             </li>
           </ol>
 
           <p>
-            <b>Tänk också på:</b> hur du belastar axlarna även utanför
-            skärmarbetet — att bära väska på samma axel dag efter dag,
-            sova mycket på samma sida, eller ensidiga rörelser i sport och
-            vardag. Skärmhöjden spelar också roll: sitter den för lågt
-            lutar du dig framåt hela dagen utan att märka det.
+            <b>Tänk också på:</b> hur du belastar axlarna även i vardagen
+            — ergonomi vid kontorsarbete, att bära väska på samma axel dag
+            efter dag, sova mycket på samma sida, eller ensidiga rörelser
+            i sport och vardag. Skärmhöjden spelar också roll: sitter den
+            för lågt lutar du dig framåt hela dagen utan att märka det.
           </p>
 
           <p>
@@ -140,6 +162,12 @@ export default function BlogPost() {
             >
               Testa Axlar/nacke/skulderblad — Nivå 1, gratis →
             </Link>
+            <p style={{ fontSize: "0.85rem", marginTop: 14, marginBottom: 0 }}>
+              Misstänker du att obalanserna är bredare än bara axlar,
+              nacke och skulderblad? Då är{" "}
+              <Link href="/program/helkropp-niva-2">Helkropp — Nivå 2</Link>{" "}
+              programmet för dig.
+            </p>
           </div>
 
           <p className={styles.softLink}>
