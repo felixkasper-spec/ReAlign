@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,7 +10,7 @@ import styles from "../blog-post.module.css";
 export const metadata = pageMetadata({
   title: "Ont i ländryggen — vanligaste orsakerna och vad som hjälper — ReAlign Metoden",
   description:
-    "Varför ländryggen gör ont — vid stillasittande men även av andra orsaker — och vilka övningar som faktiskt bygger upp stödet du saknar.",
+    "Ländryggens ytliga muskler har ofta fått en hållningsroll de inte är byggda för. Varför det händer, och vilka övningar som faktiskt bygger upp rätt stöd.",
   image: "/og/default.png",
   path: "/blogg/ont-i-landryggen",
 });
@@ -24,96 +25,126 @@ export default function BlogPost() {
           <h1>Ont i ländryggen — vanligaste orsakerna och vad som hjälper</h1>
           <span className={styles.date}>27 augusti 2026</span>
           <p className={styles.lead}>
-            En dov värk i nedre ryggen är en av de vanligaste orsakerna
-            till att människor söker hjälp — vanligast vid stillasittande,
-            men långt ifrån bara då. &quot;Sitta mer rakt&quot; är sällan hela
-            lösningen. Här är vad som faktiskt ligger bakom det, och vad
-            som hjälper.
+            En dov värk i nedre ryggen är en av de vanligaste anledningarna
+            till att människor söker hjälp. Det handlar sällan om att
+            ländryggen i sig är svag — snarare att den fått en roll den
+            inte är byggd för. Här är vad som faktiskt ligger bakom det,
+            och vad som hjälper.
           </p>
         </header>
+
+        <div className={`img-duo warm ${styles.heroImage}`}>
+          <Image
+            src="https://images.unsplash.com/photo-1769029271190-36b22f5e6771?auto=format&fit=crop&w=1200&h=700&q=80&sat=-100&con=6&bri=5"
+            alt="Person som håller sig i nedre ryggen av smärta"
+            fill
+            sizes="(max-width: 800px) 100vw, 720px"
+          />
+        </div>
 
         <div className={styles.article}>
           <h2>Varför gör ländryggen ont?</h2>
           <p>
-            När vi sitter länge slappnar sätesmusklerna och de djupa
-            bålmusklerna av, medan bäckenet ofta glider ner i en bakåtlutad
-            position. Ländryggen tappar då sitt naturliga stöd underifrån,
-            och de ytliga ryggmusklerna får jobba övertid för att hålla
-            uppe överkroppen — ett jobb de inte är byggda för på lång sikt.
-            Samma mönster kan uppstå av andra orsaker också: ensidig
-            belastning, stress eller helt enkelt ett bålstöd som aldrig
-            tränats upp.
+            Ländryggens ytliga muskler är inte hållningsmuskler — men det
+            är precis den rollen de ofta tvingas in i. Det händer när
+            andra delar av kroppen inte gör sitt jobb som de ska, vilket
+            gör att ländryggen får kompensera dag efter dag, till den
+            grad att den blir kroniskt överbelastad.
           </p>
 
           <div className={styles.perspectiveBox}>
             <span className="eyebrow">Postural träning-perspektivet</span>
             <h2>Ländryggen är sällan grundorsaken — bara där det märks</h2>
             <p>
-              Inom postural träning behandlas ländryggssmärta sällan som
-              ett isolerat ländryggsproblem — en vinkel de flesta aldrig
-              hör om. Hela kedjan hänger ihop, från fötter och knän via
-              höft och bäcken upp genom ryggraden. En obalans i bäckenets
-              position kan göra att ländryggen tvingas kompensera, långt
-              innan man känner något i just ländryggen. Även en krum eller
-              stel bröstrygg högre upp i ryggraden kan tvinga ländryggen
-              att svanka mer än den borde för att balansera resten av
-              kroppen — läs mer om den kopplingen i{" "}
-              <Link href="/blogg/ont-i-ryggen">vår artikel om ont i ryggen</Link>.
+              Den vanligaste anledningen är att de djupa hållningsmusklerna
+              i höft och ljumske inte gör sitt jobb som de ska. De håller
+              då inte bäcken och ländrygg i rätt position, vilket tvingar
+              ländryggens ytliga muskler att kompensera för att hålla uppe
+              överkroppen. Det är därför det sällan blir en hållbar
+              förbättring av att bara träna upp ländryggen i sig — den är
+              redan överbelastad. Lösningen är inte att stärka den
+              ytterligare för att klara belastningen, utan att ta bort
+              själva anledningen till att den är överbelastad: få de djupa
+              hållningsmusklerna i höft och ljumske att ta över igen.
             </p>
             <p>
-              Vid mycket stillasittande går sätesmusklerna och de djupa
-              bålmusklerna successivt in i ett slags vilomodus — de
-              slutar aktiveras som de ska under dagen. Ländryggens ytliga
-              muskler tvingas då bära belastning de inte är byggda för,
-              dag efter dag. Det är därför en bättre stol sällan räcker —
-              det är stödet underifrån, inte ryggen själv, som behöver
-              väckas och tränas upp.
+              Ett annat vanligt problem är en krum, stel bröstrygg
+              tillsammans med ett framåtskjutet huvud. Det är lätt att
+              glömma att ryggraden är en sammanhängande enhet, även om vi
+              delar in den i ländrygg, mellanrygg och bröstrygg som
+              separata delar — obalanser i en del påverkar självklart
+              hela ryggraden. En stel bröstrygg och ett framskjutet huvud
+              sätter ländryggen i ett onaturligt läge, vilket förstärker
+              samma överbelastning underifrån. Läs mer om den kopplingen i{" "}
+              <Link href="/blogg/ont-i-ryggen">vår artikel om ont i ryggen</Link>.
             </p>
           </div>
 
           <p>
-            Resultatet blir stelhet och värk, ofta som förvärras mot
-            eftermiddagen. Lösningen är sällan bara en bättre stol — det
-            handlar om att bygga upp styrkan i höft, bäcken och bål som
-            faktiskt ska bära belastningen.
+            Två saker brukar hjälpa mest: aktivera de djupa
+            hållningsmusklerna i höft och ljumske så att de kan ta
+            tillbaka sin roll, och frigöra rörligheten i övre delen av
+            ryggen så att den slutar belasta ländryggen underifrån.
           </p>
 
           <h2>Övningar som bygger upp stödet</h2>
           <ol>
             <li>
-              <b>Bäckenrullningar.</b> Mjuka rörelser som lär bäckenet att
-              hitta en neutral position igen, istället för att fastna
-              bakåtlutat.
+              <b>Hooklying knee squeezes.</b> Aktiverar de djupa
+              hållningsmusklerna i höft och ljumske, som ska hålla bäckenet
+              i rätt position.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="pelvic-rolls" title="Pelvic Rolls" />
+                <BlogExerciseCard
+                  slug="hooklying-knee-squeezes"
+                  title="Hooklying Knee Squeezes"
+                />
               </div>
             </li>
             <li>
-              <b>Katt-och-hund.</b> Rör hela ryggraden genom sitt
-              rörelseomfång, motverkar stelhet efter timmar i samma
-              position.
+              <b>Hooklying single hip lifts.</b> Bygger vidare på samma
+              aktivering, med fokus på att styra bäckenet stabilt genom
+              rörelsen.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="cats-and-dogs" title="Cats and Dogs" />
+                <BlogExerciseCard
+                  slug="hooklying-single-hip-lifts"
+                  title="Hooklying Single Hip Lifts"
+                />
               </div>
             </li>
             <li>
-              <b>Enbens-brygga.</b> Bygger styrka i säte och nedre bål,
-              precis de muskler som ska avlasta ländryggen.
+              <b>Supine foot circles.</b> Kopplar in fot och höft
+              tillsammans, så att aktiveringen sprider sig genom hela
+              kedjan underifrån.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="bridge-single-leg" title="Bridge Single Leg" />
+                <BlogExerciseCard
+                  slug="supine-foot-circles"
+                  title="Supine Foot Circles"
+                />
               </div>
             </li>
             <li>
-              <b>QL-stretch mot vägg.</b> Löser upp spänning i
-              ländryggsmuskeln som ofta blir överarbetad vid stillasittande.
+              <b>Wide cobra.</b> Rör upp rörligheten i bröstryggen, som
+              annars tvingar ländryggen att kompensera för dess stelhet.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="wall-ql-stretch" title="Wall QL Stretch" />
+                <BlogExerciseCard slug="wide-cobra" title="Wide Cobra" />
               </div>
             </li>
             <li>
-              <b>Res dig regelbundet.</b> Ingen övning ersätter att faktiskt
-              bryta stillasittandet. Sikta på att stå upp och röra dig
-              någon minut varje halvtimme.
+              <b>Standing shoulder shrugs.</b> Motverkar den framåtskjutna
+              huvud- och axelposition som sätter hela ryggraden, ländryggen
+              inkluderad, i ett onaturligt läge.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="standing-shoulder-shrugs"
+                  title="Standing Shoulder Shrugs"
+                />
+              </div>
+            </li>
+            <li>
+              <b>Regelbunden rörelse.</b> Oavsett vad som ligger bakom
+              överbelastningen hjälper det att röra på sig och variera
+              position genom dagen — kroppen är inte gjord för att stå
+              still i en enda position, oavsett vilken.
             </li>
           </ol>
 
@@ -122,6 +153,14 @@ export default function BlogPost() {
             <Link className="btn btn-primary" href="/program/hofter-niva-1">
               Testa Höft & ländrygg — Nivå 1, gratis →
             </Link>
+            <p style={{ fontSize: "0.85rem", marginTop: 14, marginBottom: 4 }}>
+              Redo för nästa steg?{" "}
+              <Link href="/program/hofter-niva-2">Höft & ländrygg — Nivå 2</Link>.
+            </p>
+            <p style={{ fontSize: "0.85rem", marginTop: 0, marginBottom: 0 }}>
+              Jobbar du på kontor? Testa vårt{" "}
+              <Link href="/program/kontorsvardag">kontorsprogram</Link>.
+            </p>
           </div>
 
           <p className={styles.softLink}>

@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [
     slug: "ont-i-landryggen",
     title: "Ont i ländryggen — vanligaste orsakerna och vad som hjälper",
     excerpt:
-      "Varför ländryggen gör ont — vid stillasittande men även av andra orsaker — och vilka övningar som faktiskt bygger upp stödet du saknar.",
+      "Ländryggens ytliga muskler har ofta fått en hållningsroll de inte är byggda för. Varför det händer, och vilka övningar som faktiskt bygger upp rätt stöd.",
     publishedAt: "2026-08-27",
   },
   {
