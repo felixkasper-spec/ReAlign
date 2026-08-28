@@ -243,7 +243,12 @@ export default async function OmMetodenPage() {
                   sitt jobb, och vad tvingas som en konsekvens ta över ett
                   för stort — men också onaturligt — arbete?
                 </p>
-                <h4>Så vilka muskler består då den posturala kedjan av?</h4>
+              </div>
+            </details>
+
+            <details className={styles.accordionItem}>
+              <summary>Vilka muskler består den posturala kedjan av?</summary>
+              <div className={styles.accordionBody}>
                 <div className={styles.muscleGrid}>
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
