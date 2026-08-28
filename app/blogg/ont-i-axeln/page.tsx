@@ -24,24 +24,26 @@ export default function BlogPost() {
           <h1>Ont i axeln — därför uppstår det och vad som hjälper</h1>
           <span className={styles.date}>27 augusti 2026</span>
           <p className={styles.lead}>
-            Ont i axeln eller axlarna är extremt vanligt — vanligast hos
-            den som sitter mycket vid tangentbord och mus, men även vid
-            annan ensidig belastning eller träning. Det är sällan något du
-            behöver leva med, men det kräver rätt sorts träning, inte bara
-            stretching.
+            Ont i axeln eller axlarna är extremt vanligt. Vanligast
+            kopplat till hållning — vid skärmarbete, men lika ofta av
+            sport, ensidig belastning i vardagen eller hur man sover.
+            Det är sällan något du behöver leva med, men det kräver rätt
+            sorts träning, inte bara stretching.
           </p>
         </header>
 
         <div className={styles.article}>
           <h2>Varför blir axeln spänd, stel eller öm?</h2>
           <p>
-            När du sitter framåtlutad mot en skärm dras axlarna med
-            framåt och uppåt, timme efter timme. Bröstmusklerna
-            förkortas gradvis, medan musklerna mellan skulderbladen —
-            de som ska dra axlarna bakåt och hålla dem i rätt position —
-            försvagas av att aldrig aktiveras. Samma mönster kan uppstå av
-            ensidiga rörelser i vardagen eller träningen, eller av att sova
-            mycket på samma sida.
+            Axeln är sällan svag i sig — oftast handlar det om att den
+            fått en framåtdragen, rundad position som den inte är byggd
+            för att stå still i över tid. Bröstmusklerna förkortas
+            gradvis, medan musklerna mellan skulderbladen — de som ska
+            dra axlarna bakåt och hålla dem i rätt position — försvagas
+            av att aldrig aktiveras. Skärmarbete är en vanlig orsak, men
+            samma mönster uppstår lika lätt av ensidiga rörelser i sport
+            eller vardagen, av att bära väska på samma axel, eller av att
+            sova mycket på samma sida.
           </p>
 
           <div className={styles.perspectiveBox}>
@@ -59,8 +61,10 @@ export default function BlogPost() {
             </p>
             <p>
               Precis som i resten av kedjan går de djupa
-              hållningsmusklerna kring skulderbladen in i vilomodus vid
-              mycket stillasittande — de slutar hålla axlarna på plats.
+              hållningsmusklerna kring skulderbladen lätt in i ett slags
+              vilomodus när de inte används som de ska — vanligast vid
+              mycket stillasittande, men samma sak händer vid ensidig
+              belastning över tid. De slutar hålla axlarna på plats.
               Därför räcker det sällan att bara stretcha bröstet eller
               dra ihop skulderbladen ett par gånger; bröstryggens
               rörlighet och skulderbladens djupa stödmuskler behöver
@@ -95,8 +99,8 @@ export default function BlogPost() {
               </div>
             </li>
             <li>
-              <b>Bröststretch, en arm i taget.</b> Löser upp det som
-              förkortats av framåtlutad sittställning.
+              <b>Bröststretch, en arm i taget.</b> Löser upp bröstmusklerna
+              som förkortats av en rundad, framåtdragen axelposition.
               <div className={styles.exerciseRow}>
                 <BlogExerciseCard
                   slug="standing-one-arm-chest-stretch"
@@ -111,13 +115,22 @@ export default function BlogPost() {
                 <BlogExerciseCard slug="postural-pushups" title="Postural Pushups" />
               </div>
             </li>
-            <li>
-              <b>Skärmhöjd i ögonhöjd.</b> Om skärmen sitter för lågt lutar
-              du dig framåt hela dagen utan att märka det — se vår{" "}
-              <Link href="/ergonomi">ergonomiguide</Link> för hur du ställer
-              in arbetsplatsen rätt.
-            </li>
           </ol>
+
+          <p>
+            <b>Tänk också på:</b> hur du belastar axlarna även utanför
+            skärmarbetet — att bära väska på samma axel dag efter dag,
+            sova mycket på samma sida, eller ensidiga rörelser i sport och
+            vardag. Skärmhöjden spelar också roll: sitter den för lågt
+            lutar du dig framåt hela dagen utan att märka det.
+          </p>
+
+          <p>
+            Balans i kroppen är inte allt — läs vår{" "}
+            <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
+            om hur du kan använda kroppen i vanliga vardagliga situationer,
+            som att sitta, stå, lyfta och sova.
+          </p>
 
           <div className={styles.ctaBand}>
             <p>Ett komplett, gratis program för just axlar och skulderblad:</p>
