@@ -148,6 +148,13 @@ export default function BlogPost() {
             </li>
           </ol>
 
+          <p>
+            Balans i kroppen är inte allt — läs vår{" "}
+            <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
+            om hur du kan använda kroppen i vanliga vardagliga situationer,
+            som att sitta, stå, lyfta och sova.
+          </p>
+
           <div className={styles.ctaBand}>
             <p>Ett ordnat program för höft och ländrygg, helt gratis:</p>
             <Link className="btn btn-primary" href="/program/hofter-niva-1">
