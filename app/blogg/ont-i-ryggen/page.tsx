@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -31,6 +32,15 @@ export default function BlogPost() {
           </p>
         </header>
 
+        <div className={`img-duo warm ${styles.heroImage}`}>
+          <Image
+            src="https://images.unsplash.com/photo-1701826478825-8d975e7883f4?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
+            alt="Person som tränar rörlighet och stabilitet i ryggen"
+            fill
+            sizes="(max-width: 800px) 100vw, 720px"
+          />
+        </div>
+
         <div className={styles.article}>
           <h2>Varför gör ryggen ont?</h2>
           <p>
@@ -55,20 +65,22 @@ export default function BlogPost() {
               till slut märks som smärta.
             </p>
             <p>
-              Vid mycket stillasittande går de djupa hållningsmusklerna
-              längs ryggraden gradvis in i ett slags vilomodus — de slutar
-              aktiveras som de ska. Ytligare muskler tvingas då bära
-              belastning de inte är byggda för, dag efter dag. Det är
-              därför stretching eller en bättre stol sällan löser
-              problemet på riktigt — de djupa musklerna behöver väckas och
-              tränas upp specifikt.
+              De djupa hållningsmusklerna längs ryggraden går lätt in i
+              ett slags vilomodus när de inte används som de ska —
+              vanligast vid mycket stillasittande, men samma sak händer
+              vid ensidig belastning i sport eller vardag över tid.
+              Ytligare muskler tvingas då bära belastning de inte är
+              byggda för, dag efter dag. Det är därför stretching eller en
+              bättre stol sällan löser problemet på riktigt — de djupa
+              musklerna behöver väckas och tränas upp specifikt.
             </p>
             <p>
               En del som ofta glöms bort: bröstryggen (mellersta delen av
-              ryggraden) är byggd för rörlighet, men blir hos den som
-              sitter mycket ofta den styvaste delen av hela ryggraden. När
-              den låser sig tvingas både ländrygg och nacke ta över
-              rörelser de inte är gjorda för. Läs mer om det specifikt i
+              ryggraden) är byggd för rörlighet, men blir hos många ofta
+              den styvaste delen av hela ryggraden, särskilt vid mycket
+              stillasittande. När den låser sig tvingas både ländrygg och
+              nacke ta över rörelser de inte är gjorda för. Läs mer om det
+              specifikt i
               vår artikel om{" "}
               <Link href="/blogg/ont-i-landryggen">ont i ländryggen</Link>{" "}
               eller <Link href="/blogg/ont-i-nacken">ont i nacken</Link>, om
@@ -80,8 +92,8 @@ export default function BlogPost() {
           <ol>
             <li>
               <b>Bröstryggsrotation med extension.</b> Rör upp rörligheten
-              i just den delen av ryggraden som blir stelast av
-              stillasittande.
+              i just den delen av ryggraden som blir stelast, oavsett om
+              det beror på stillasittande eller ensidig belastning.
               <div className={styles.exerciseRow}>
                 <BlogExerciseCard slug="back-extension-rotation" title="Back Extension with Rotation" />
               </div>
@@ -109,12 +121,20 @@ export default function BlogPost() {
                 <BlogExerciseCard slug="postural-plank" title="Postural Plank" />
               </div>
             </li>
-            <li>
-              <b>Regelbundna pauser.</b> Ingen arbetsställning är rätt om du
-              sitter i den i sex timmar rakt av. Byt position, variera
-              mellan stående och sittande, gå några steg var 30:e minut.
-            </li>
           </ol>
+
+          <p>
+            <b>Tänk också på:</b> ingen arbetsställning är rätt om du
+            sitter i den i sex timmar rakt av. Byt position, variera
+            mellan stående och sittande, och gå några steg var 30:e minut.
+          </p>
+
+          <p>
+            Balans i kroppen är inte allt — läs vår{" "}
+            <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
+            om hur du kan använda kroppen i vanliga vardagliga situationer,
+            som att sitta, stå, lyfta och sova.
+          </p>
 
           <div className={styles.ctaBand}>
             <p>Ett komplett, gratis program för hela bålen och ryggen:</p>
