@@ -70,7 +70,7 @@ export default async function ProgramIndexPage() {
             <p>
               <b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt
               Bålträning och Kontorsvardag, är helt gratis. Resten ingår i
-              Premium.
+              Premium — 149 kr/mån, eller 1 341 kr/år (spara 25%).
             </p>
             <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
           </div>

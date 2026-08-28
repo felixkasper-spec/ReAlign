@@ -8,9 +8,10 @@ import { stripe } from "@/lib/stripe";
 import { confirmPlanChange } from "../actions";
 import styles from "./page.module.css";
 
-const planLabels: Record<string, { name: string; price: number }> = {
-  premium: { name: "Premium", price: 149 },
-  premium_coaching: { name: "Premium Coaching", price: 449 },
+const planLabels: Record<string, { name: string; price: number; unit: string }> = {
+  premium: { name: "Premium (månadsvis)", price: 149, unit: "kr/mån" },
+  premium_yearly: { name: "Premium (årsvis)", price: 1341, unit: "kr/år" },
+  premium_coaching: { name: "Premium Coaching", price: 449, unit: "kr/mån" },
 };
 
 export default async function BytPlanPage({
@@ -19,7 +20,8 @@ export default async function BytPlanPage({
   searchParams: Promise<{ to?: string }>;
 }) {
   const { to } = await searchParams;
-  const targetPlan = to === "premium" || to === "premium_coaching" ? to : null;
+  const targetPlan =
+    to === "premium" || to === "premium_yearly" || to === "premium_coaching" ? to : null;
 
   if (!targetPlan) {
     redirect("/min-sida");
@@ -44,18 +46,35 @@ export default async function BytPlanPage({
     sub?.stripe_subscription_id &&
     (sub.status === "active" || sub.status === "trialing");
 
-  if (!hasActive || sub.plan === targetPlan) {
+  if (!hasActive) {
+    redirect("/min-sida");
+  }
+
+  const stripeSub = await stripe.subscriptions.retrieve(
+    sub.stripe_subscription_id as string,
+  );
+
+  // "plan" i databasen skiljer bara på premium/premium_coaching, inte
+  // betalningsintervall — det läser vi istället direkt från Stripe, som
+  // är den faktiska källan till sanning för vilket pris kunden har nu.
+  const currentInterval = stripeSub.items.data[0].price.recurring?.interval;
+  const currentPlan =
+    sub.plan === "premium_coaching"
+      ? "premium_coaching"
+      : currentInterval === "year"
+        ? "premium_yearly"
+        : "premium";
+
+  if (currentPlan === targetPlan) {
     redirect("/min-sida");
   }
 
   const priceId =
     targetPlan === "premium_coaching"
       ? process.env.STRIPE_COACHING_PRICE_ID
-      : process.env.STRIPE_PRICE_ID;
-
-  const stripeSub = await stripe.subscriptions.retrieve(
-    sub.stripe_subscription_id as string,
-  );
+      : targetPlan === "premium_yearly"
+        ? process.env.STRIPE_PRICE_ID_YEARLY
+        : process.env.STRIPE_PRICE_ID;
 
   let previewAmount: number | null = null;
   if (priceId) {
@@ -74,7 +93,7 @@ export default async function BytPlanPage({
   }
 
   const target = planLabels[targetPlan];
-  const current = planLabels[sub.plan ?? "premium"] ?? planLabels.premium;
+  const current = planLabels[currentPlan];
   const confirmAction = confirmPlanChange.bind(null, targetPlan);
 
   return (
@@ -84,8 +103,8 @@ export default async function BytPlanPage({
         <span className="eyebrow">Bekräfta bytet</span>
         <h1>Byt till {target.name}</h1>
         <p className={styles.text}>
-          Du byter från {current.name} ({current.price} kr/mån) till{" "}
-          {target.name} ({target.price} kr/mån). Bytet gäller direkt.
+          Du byter från {current.name} ({current.price} {current.unit}) till{" "}
+          {target.name} ({target.price} {target.unit}). Bytet gäller direkt.
         </p>
 
         {previewAmount !== null && (
@@ -93,8 +112,8 @@ export default async function BytPlanPage({
             {previewAmount >= 0
               ? `Du debiteras ${(previewAmount / 100).toFixed(0)} kr nu`
               : `Du krediteras ${(Math.abs(previewAmount) / 100).toFixed(0)} kr`}{" "}
-            för mellanskillnaden i den här perioden, sedan {target.price} kr/mån
-            framöver.
+            för mellanskillnaden i den här perioden, sedan {target.price}{" "}
+            {target.unit} framöver.
           </p>
         )}
 

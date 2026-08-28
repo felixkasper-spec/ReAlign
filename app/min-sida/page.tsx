@@ -10,6 +10,7 @@ import Sidebar from "./Sidebar";
 import MobileTabs from "./MobileTabs";
 import WeeklyTrendChart from "@/components/WeeklyTrendChart";
 import { createClient } from "@/lib/supabase/server";
+import { stripe } from "@/lib/stripe";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats, streakMilestone } from "@/lib/progression";
 import { getBaseUrl } from "@/lib/base-url";
@@ -184,6 +185,27 @@ export default async function MinSidaPage({
 
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
   const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
+
+  // Databasens "plan" skiljer inte på betalningsintervall — bara relevant
+  // att slå upp mot Stripe för den här sidans "byt intervall"-länk, och
+  // bara för aktiva rena Premium-prenumeranter (inte Coaching, inte
+  // inaktiva), så det inte lägger latens på sidan för alla andra.
+  let premiumInterval: "month" | "year" | null = null;
+  if (subscription.active && subscription.plan === "premium") {
+    const { data: subRow } = await supabase
+      .from("subscriptions")
+      .select("stripe_subscription_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (subRow?.stripe_subscription_id) {
+      try {
+        const stripeSub = await stripe.subscriptions.retrieve(subRow.stripe_subscription_id);
+        premiumInterval = stripeSub.items.data[0].price.recurring?.interval === "year" ? "year" : "month";
+      } catch {
+        premiumInterval = null;
+      }
+    }
+  }
 
   const doneDays = new Set(
     (weekSessions ?? []).map((s) => (s.completed_at as string).slice(0, 10)),
@@ -583,7 +605,7 @@ export default async function MinSidaPage({
                     </button>
                   </form>
                 </>
-              ) : subscription.active ? (
+              ) : subscription.active && subscription.plan === "premium" ? (
                 <>
                   <span className="eyebrow" style={{ color: "var(--warm)" }}>
                     Premium
@@ -607,6 +629,24 @@ export default async function MinSidaPage({
                       Hantera prenumeration →
                     </button>
                   </form>
+                  {premiumInterval === "month" && (
+                    <Link
+                      href="/min-sida/byt-plan?to=premium_yearly"
+                      className="btn btn-ghost"
+                      style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--line)", marginTop: 8, fontSize: "0.82rem" }}
+                    >
+                      Byt till årsvis — spara 25% →
+                    </Link>
+                  )}
+                  {premiumInterval === "year" && (
+                    <Link
+                      href="/min-sida/byt-plan?to=premium"
+                      className="btn btn-ghost"
+                      style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--line)", marginTop: 8, fontSize: "0.82rem" }}
+                    >
+                      Byt till månadsvis →
+                    </Link>
+                  )}
                   <div style={{ borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 16 }}>
                     <p className={styles.premiumText} style={{ marginBottom: 8 }}>
                       Vill du ha direktkontakt med en coach?
@@ -631,12 +671,23 @@ export default async function MinSidaPage({
                     och veckobrev.
                   </p>
                   <p className={styles.premiumPrice}>149 kr/mån</p>
-                  <form action={createCheckoutSession.bind(null, "premium")}>
+                  <form action={createCheckoutSession.bind(null, "premium", "month")}>
                     <button
                       className="btn btn-primary"
                       style={{ width: "100%" }}
                     >
                       Bli Premium →
+                    </button>
+                  </form>
+                  <form
+                    action={createCheckoutSession.bind(null, "premium", "year")}
+                    style={{ marginTop: 8 }}
+                  >
+                    <button
+                      className="btn btn-ghost"
+                      style={{ width: "100%", border: "1px solid var(--line)", fontSize: "0.82rem" }}
+                    >
+                      Betala årsvis — 1 341 kr/år, spara 25% →
                     </button>
                   </form>
                   <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10, marginBottom: 16 }}>

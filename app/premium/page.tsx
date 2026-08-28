@@ -24,7 +24,11 @@ const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "Hur fungerar 50%-rabatten?",
-        a: "Din första månad kostar automatiskt halva priset, 74,50 kr — ingen kod behövs, det dras direkt vid kassan. Från månad två gäller ordinarie pris, 149 kr/mån.",
+        a: "Din första månad kostar automatiskt halva priset, 74,50 kr — ingen kod behövs, det dras direkt vid kassan. Från månad två gäller ordinarie pris, 149 kr/mån. Gäller vid månadsvis betalning.",
+      },
+      {
+        q: "Kan jag betala årsvis istället?",
+        a: "Ja — 1 341 kr/år, vilket motsvarar 25% rabatt jämfört med att betala månadsvis (149 kr/mån × 12 = 1 788 kr). Priset är detsamma varje år, ingen ny rabatt att hålla koll på. Årsvis kombineras inte med 50%-rabatten på första månaden, eftersom rabatten redan är inbakad i årspriset.",
       },
       {
         q: "Är jag bunden till något?",
@@ -78,13 +82,15 @@ export default async function PremiumPage() {
             <p className={styles.offerTitle}>50% första månaden</p>
             <p className={styles.offerText}>
               74,50 kr första månaden, sen 149 kr/mån. Ingen kod, ingen
-              bindningstid — dras automatiskt vid kassan.
+              bindningstid — dras automatiskt vid kassan. Vill du hellre
+              betala årsvis och spara 25% direkt? Se prisalternativen
+              nedan.
             </p>
           </div>
           {!alreadyPremium && (
             <>
               {user ? (
-                <form action={createCheckoutSession.bind(null, "premium")}>
+                <form action={createCheckoutSession.bind(null, "premium", "month")}>
                   <SubmitButton className="btn btn-primary btn-lg" pendingText="Öppnar Stripe...">
                     Bli Premium →
                   </SubmitButton>
@@ -185,7 +191,7 @@ export default async function PremiumPage() {
           <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
             {alreadyPremium ? "Du är redan medlem" : "Premium"}
           </span>
-          <h2>149 kr/mån</h2>
+          {!user || alreadyPremium ? <h2>149 kr/mån</h2> : <h2>Välj hur du vill betala</h2>}
 
           {alreadyPremium ? (
             <>
@@ -195,14 +201,34 @@ export default async function PremiumPage() {
               </Link>
             </>
           ) : user ? (
-            <>
-              <p>Första månaden till halva priset — ingen bindningstid.</p>
-              <form action={createCheckoutSession.bind(null, "premium")}>
-                <SubmitButton className="btn btn-primary btn-lg" pendingText="Öppnar Stripe...">
-                  Bli Premium →
-                </SubmitButton>
-              </form>
-            </>
+            <div className={styles.planToggle}>
+              <div className={styles.planOption}>
+                <span className={styles.planLabel}>Månadsvis</span>
+                <p className={styles.planPrice}>149 kr/mån</p>
+                <p className={styles.planSub}>
+                  Första månaden 74,50 kr — ingen bindningstid.
+                </p>
+                <form action={createCheckoutSession.bind(null, "premium", "month")}>
+                  <SubmitButton className="btn btn-primary" pendingText="Öppnar Stripe...">
+                    Bli Premium →
+                  </SubmitButton>
+                </form>
+              </div>
+              <div className={styles.planOption}>
+                <span className={styles.planLabel}>
+                  Årsvis <span className={styles.planBadge}>Spara 25%</span>
+                </span>
+                <p className={styles.planPrice}>1 341 kr/år</p>
+                <p className={styles.planSub}>
+                  Motsvarar 111,75 kr/mån, betalas en gång per år.
+                </p>
+                <form action={createCheckoutSession.bind(null, "premium", "year")}>
+                  <SubmitButton className="btn btn-primary" pendingText="Öppnar Stripe...">
+                    Betala årsvis →
+                  </SubmitButton>
+                </form>
+              </div>
+            </div>
           ) : (
             <>
               <p>Skapa ett konto för att komma igång.</p>
