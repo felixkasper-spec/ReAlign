@@ -248,7 +248,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Posterior_compartment_of_leg_-_tibialis_posterior.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/49/Tibialis_posterior.png"
                         alt="Tibialis posterior"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -264,7 +264,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/2/27/Posterior_compartment_of_leg_-_popliteus_muscle.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Gray439-Musculus_popliteus.png"
                         alt="Popliteus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -366,7 +366,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Rhomboid_major_muscle_back.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/42/Rhomboideus_major.png"
                         alt="Rhomboideus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -382,7 +382,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/3/34/Supraspinatus_muscle_back4.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Supraspinatus.PNG"
                         alt="Supra-/infraspinatus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -414,7 +414,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/5/56/Scalenus_anterior01.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Scalenus.png"
                         alt="Scalenerna"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -430,7 +430,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Sternomastoid_muscle_back.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Sternocleidomastoideus.png"
                         alt="Sternocleidomastoideus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
