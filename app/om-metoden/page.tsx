@@ -248,7 +248,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/49/Tibialis_posterior.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Posterior_compartment_of_leg_-_tibialis_posterior.png"
                         alt="Tibialis posterior"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -264,7 +264,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Gray439-Musculus_popliteus.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/2/27/Posterior_compartment_of_leg_-_popliteus_muscle.png"
                         alt="Popliteus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -279,7 +279,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Gray430-en.svg/330px-Gray430-en.svg.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Anterior_Hip_Muscles_2.PNG"
                         alt="Adduktorer"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -296,7 +296,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Gray430-en.svg/330px-Gray430-en.svg.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Anterior_Hip_Muscles_2.PNG"
                         alt="Iliopsoas"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -366,7 +366,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/42/Rhomboideus_major.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Rhomboid_major_muscle_back.png"
                         alt="Rhomboideus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -414,7 +414,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Scalenus.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/5/56/Scalenus_anterior01.png"
                         alt="Scalenerna"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -430,7 +430,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Sternocleidomastoideus.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Sternomastoid_muscle_back.png"
                         alt="Sternocleidomastoideus"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"

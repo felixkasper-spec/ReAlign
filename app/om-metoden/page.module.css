@@ -119,6 +119,16 @@
   font-size: 0.95rem;
   max-width: none;
   margin-bottom: 14px;
+  position: relative;
+}
+
+.accordionBody p:not(:last-child)::after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  color: var(--sage-light);
+  font-size: 0.85rem;
+  margin: 10px 0 4px;
 }
 
 .accordionBody p:last-child {
