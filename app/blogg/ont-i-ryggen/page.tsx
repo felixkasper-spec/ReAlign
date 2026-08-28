@@ -34,8 +34,8 @@ export default function BlogPost() {
 
         <div className={`img-duo warm ${styles.heroImage}`}>
           <Image
-            src="https://images.unsplash.com/photo-1701826478825-8d975e7883f4?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
-            alt="Person som tränar rörlighet och stabilitet i ryggen"
+            src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
+            alt="Person som stretchar ryggen, ryggraden tydligt synlig"
             fill
             sizes="(max-width: 800px) 100vw, 720px"
           />
@@ -44,96 +44,139 @@ export default function BlogPost() {
         <div className={styles.article}>
           <h2>Varför gör ryggen ont?</h2>
           <p>
-            Det handlar sällan om att ryggen är svag i sig. Oftast har
-            hållningsmusklerna längs ryggraden tappat förmågan att bära
-            överkroppen genom dagen, vilket gör att ytligare muskler
-            tvingas ta över — och det är ofta de som gör ont, inte
-            grundorsaken. Värken kan sitta högt (mellan skulderbladen),
-            lågt (ländryggen) eller vandra mellan de två.
+            Precis som nästan alla delar av kroppen handlar det om två
+            saker: positionering och belastningsfördelning. Det allra
+            vanligaste vi har sett på kliniken är att ryggen har för lite
+            svank, för mycket svank, eller att man är för krum i
+            bröstryggen.
+          </p>
+          <p>
+            Det leder, utan undantag, till felbelastning — någon del kan
+            inte göra sitt jobb, en annan del får ta över arbetet. Det är
+            mest relevant om du inte bara har ont i ryggen, utan också
+            känner dig konstant trött i ryggen. Då vet vi att din rygg
+            aldrig får vila. I sittande, stående och gående ska ryggen
+            kännas lättsam och mjuk, men om muskler som inte är till för
+            att hålla uppe ryggen har fått den uppgiften känns det tungt
+            och stelt — och gör det, om det får pågå länge nog, till slut
+            ont.
           </p>
 
           <div className={styles.perspectiveBox}>
             <span className="eyebrow">Postural träning-perspektivet</span>
-            <h2>Ryggen kompenserar sällan bara för sig själv</h2>
+            <h2>Ryggen är expert på att ta för mycket ansvar</h2>
             <p>
-              Ett exempel som ofta lyfts inom postural träning: en fot som
-              vrids lätt utåt kan få knät att tippa inåt, vilket i sin tur
-              påverkar bäckenets position — och därifrån fortplantar sig
-              obalansen uppåt genom bröstryggen, ner i axeln och vidare upp
-              i nacken. Ryggen sitter mitt i den kedjan, vilket är precis
-              varför den så ofta är där obalanser längre bort i kroppen
-              till slut märks som smärta.
+              <b>Ländrygg:</b> en av de allra vanligaste obalanserna vi ser
+              är att ytliga ländryggsmuskler har fått en hållningsroll.
+              Dessa är inte hållningsmuskler, utan är gjorda för mer
+              kortvarig belastning. När de konstant behöver hålla uppe
+              kroppen blir det, som nämnt, tungt, stelt och ofta även
+              smärtsamt. Vad ska hålla ländryggen i position då? Framför
+              allt är det hållningsmusklerna djupt inne i höften som ska
+              hålla uppe ländryggen, genom att sätta bäckenet i ett
+              neutralt läge som gör att ländryggen inte behöver arbeta så
+              mycket. Värt att nämna är att den viktigaste
+              hållningsmuskeln av dem alla — psoasmuskeln — räknas som en
+              höftböjare men går upp i ländryggen, och hjälper de andra
+              höftmusklerna att hålla ryggraden rak. Den vill vi gärna
+              använda, men när vi känner oss konstant trötta och stela i
+              ländryggen är det generellt de mer ytliga
+              ländryggsmusklerna vi använder istället.
             </p>
             <p>
-              De djupa hållningsmusklerna längs ryggraden går lätt in i
-              ett slags vilomodus när de inte används som de ska —
-              vanligast vid mycket stillasittande, men samma sak händer
-              vid ensidig belastning i sport eller vardag över tid.
-              Ytligare muskler tvingas då bära belastning de inte är
-              byggda för, dag efter dag. Det är därför stretching eller en
-              bättre stol sällan löser problemet på riktigt — de djupa
-              musklerna behöver väckas och tränas upp specifikt.
+              <b>Bröstryggen/skulderbladen:</b> vanligast i bröstryggen är
+              tydligt — skulderblad som ”fallit ut” uppåt och åt sidorna,
+              axlar som roterats framåt, och en huvudposition som är
+              framskjuten. Det gör dig ”framtung”, vilket innebär att
+              bröstryggens muskulatur konstant måste hålla emot det
+              mönstret. De hamnar i ett konstant ”dragläge” då de måste
+              hålla tillbaka mot de delar som tappat position.
             </p>
             <p>
-              En del som ofta glöms bort: bröstryggen (mellersta delen av
-              ryggraden) är byggd för rörlighet, men blir hos många ofta
-              den styvaste delen av hela ryggraden, särskilt vid mycket
-              stillasittande. När den låser sig tvingas både ländrygg och
-              nacke ta över rörelser de inte är gjorda för. Läs mer om det
-              specifikt i
-              vår artikel om{" "}
-              <Link href="/blogg/ont-i-landryggen">ont i ländryggen</Link>{" "}
-              eller <Link href="/blogg/ont-i-nacken">ont i nacken</Link>, om
-              det är där din värk sitter.
+              Det är inte konstigt att tro att en upprätt hållning skulle
+              vara jobbigare för musklerna i området — då måste de ju
+              jobba ännu mer för att dra bak skulderblad och axlar — men
+              det är inte fallet. När vi hamnar i rätt positioner behöver
+              ingen del överarbeta, eftersom kroppens alla delar staplas
+              på varandra och hjälper varandra. Har vi tappat position i
+              skulderblad, nacke eller axlar behöver vi kompensera för
+              det; är vi i balans behöver bröstrygg- och
+              skulderbladsmuskulaturen bara göra exakt det arbete den är
+              tänkt för. Därför behöver vi stärka just hållningsmusklerna
+              i övre ryggen, så att området kan komma tillbaka i rätt
+              position och de ytliga musklerna kan slappna av.
             </p>
           </div>
 
           <h2>Övningar som faktiskt hjälper</h2>
+
+          <h3>Bröstrygg</h3>
           <ol>
             <li>
-              <b>Bröstryggsrotation med extension.</b> Rör upp rörligheten
-              i just den delen av ryggraden som blir stelast, oavsett om
-              det beror på stillasittande eller ensidig belastning.
+              <b>Static back goal post presses.</b> Bra kombination av att
+              aktivera hållningsmusklerna runt skulderbladen samtidigt som
+              axeln får jobba på att roteras tillbaka.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="back-extension-rotation" title="Back Extension with Rotation" />
+                <BlogExerciseCard
+                  slug="static-back-goal-post-presses"
+                  title="Static Back Goal Post Presses"
+                />
               </div>
             </li>
             <li>
-              <b>Sittande överhuvudextension.</b> Går att göra direkt vid
-              skrivbordet, motverkar den framåtböjda position ryggen
-              annars fastnar i.
+              <b>Standing arm circles.</b> Aktiverar och stärker musklerna
+              som håller bak och ner skulderbladen.
               <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="sitting-overhead-extension" title="Sitting Overhead Extension" />
+                <BlogExerciseCard slug="standing-arm-circles" title="Standing Arm Circles" />
               </div>
             </li>
             <li>
-              <b>Sittande katt-och-hund.</b> Rör ryggraden genom sitt
-              rörelseomfång utan att behöva resa sig upp.
+              <b>Static dog neck retractions.</b> Aktiverar
+              hållningsmusklerna i halsen så att huvudet får en bättre
+              position och avlastar bröstryggen.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard
+                  slug="static-dog-neck-retractions"
+                  title="Static Dog Neck Retractions"
+                />
+              </div>
+            </li>
+          </ol>
+
+          <h3>Ländrygg</h3>
+          <ol>
+            <li>
+              <b>Sitting knee squeezes.</b> Aktiverar och stärker de djupa
+              höftmusklerna samt lär rygg och bäcken att jobba i harmoni
+              igen.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard slug="sitting-knee-squeezes" title="Sitting Knee Squeezes" />
+              </div>
+            </li>
+            <li>
+              <b>Sitting single hip lifts.</b> Liknande sitting knee
+              squeezes, fast mer specifikt inriktad mot psoasmuskeln, som
+              är muskeln med störst ansvar för att hålla bäcken och
+              ländrygg i sin naturliga position.
+              <div className={styles.exerciseRow}>
+                <BlogExerciseCard slug="sitting-single-hip-lifts" title="Sitting Single Hip Lifts" />
+              </div>
+            </li>
+            <li>
+              <b>Sittande katt-och-hund.</b> Öppnar upp stelheter kring
+              ryggraden, samt lär rygg och bäcken att börja jobba i
+              harmoni igen.
               <div className={styles.exerciseRow}>
                 <BlogExerciseCard slug="sitting-cats-and-dogs" title="Sitting Cats And Dogs" />
-              </div>
-            </li>
-            <li>
-              <b>Postural planka.</b> Bygger upp bålens stöd runt hela
-              ryggraden, istället för att bara lindra symptomet där det gör
-              ont.
-              <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="postural-plank" title="Postural Plank" />
               </div>
             </li>
           </ol>
 
           <p>
-            <b>Tänk också på:</b> ingen arbetsställning är rätt om du
-            sitter i den i sex timmar rakt av. Byt position, variera
-            mellan stående och sittande, och gå några steg var 30:e minut.
-          </p>
-
-          <p>
-            Balans i kroppen är inte allt — läs vår{" "}
+            <b>Tänk också på:</b> om du har kontorsjobb, eller lyfter
+            mycket i ditt yrke, är även ergonomi A och O. Se vår{" "}
             <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
-            om hur du kan använda kroppen i vanliga vardagliga situationer,
-            som att sitta, stå, lyfta och sova.
+            och videoinstruktioner.
           </p>
 
           <div className={styles.ctaBand}>
@@ -141,6 +184,11 @@ export default function BlogPost() {
             <Link className="btn btn-primary" href="/program/baltraning">
               Testa Bålträning, gratis →
             </Link>
+            <p style={{ fontSize: "0.85rem", marginTop: 14, marginBottom: 0 }}>
+              Misstänker du att obalanserna är bredare än bara ryggen? Då
+              är <Link href="/program/helkropp-niva-2">Helkropp — Nivå 2</Link>{" "}
+              programmet för dig.
+            </p>
           </div>
 
           <p className={styles.softLink}>
