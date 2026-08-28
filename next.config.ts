@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/blogg/spanningshuvudvark-och-hallning",
+        destination: "/blogg/ont-i-nacken",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
