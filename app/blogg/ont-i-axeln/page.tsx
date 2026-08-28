@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -31,6 +32,15 @@ export default function BlogPost() {
             kräver rätt sorts träning, inte bara stretching.
           </p>
         </header>
+
+        <div className={`img-duo warm ${styles.heroImage}`}>
+          <Image
+            src="https://images.unsplash.com/photo-1615997380705-504484cd99c4?auto=format&fit=crop&w=1200&h=700&q=80&sat=-100&con=6&bri=5"
+            alt="Person som håller sig i axeln och nacken av smärta"
+            fill
+            sizes="(max-width: 800px) 100vw, 720px"
+          />
+        </div>
 
         <div className={styles.article}>
           <h2>Varför blir axeln spänd, stel eller öm?</h2>
