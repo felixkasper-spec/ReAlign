@@ -216,9 +216,9 @@ export default function BlogPost() {
               excerpt="Rundade, framåtdragna axlar — därför uppstår det och vad som bygger upp motståndet."
             />
             <BlogPostCard
-              slug="spanningshuvudvark-och-hallning"
-              title="Spänningshuvudvärk och hållning"
-              excerpt="Finns sambandet mellan nackspänning och huvudvärk som förvärras mot eftermiddagen?"
+              slug="ont-i-ryggen"
+              title="Ont i ryggen"
+              excerpt="Samma bröstrygg som styr nacken spelar ofta en stor roll för ryggvärk också."
             />
           </div>
         </div>

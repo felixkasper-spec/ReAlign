@@ -84,13 +84,15 @@ export default function BlogPost() {
               allt är det hållningsmusklerna djupt inne i höften som ska
               hålla uppe ländryggen, genom att sätta bäckenet i ett
               neutralt läge som gör att ländryggen inte behöver arbeta så
-              mycket. Värt att nämna är att den viktigaste
-              hållningsmuskeln av dem alla — psoasmuskeln — räknas som en
-              höftböjare men går upp i ländryggen, och hjälper de andra
-              höftmusklerna att hålla ryggraden rak. Den vill vi gärna
-              använda, men när vi känner oss konstant trötta och stela i
-              ländryggen är det generellt de mer ytliga
-              ländryggsmusklerna vi använder istället.
+              mycket.
+            </p>
+            <p>
+              Värt att nämna är att den viktigaste hållningsmuskeln av dem
+              alla — psoasmuskeln — räknas som en höftböjare men går upp i
+              ländryggen, och hjälper de andra höftmusklerna att hålla
+              ryggraden rak. Den vill vi gärna använda, men när vi känner
+              oss konstant trötta och stela i ländryggen är det generellt
+              de mer ytliga ländryggsmusklerna vi använder istället.
             </p>
             <p>
               <b>Bröstryggen/skulderbladen:</b> vanligast i bröstryggen är

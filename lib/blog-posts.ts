@@ -37,11 +37,4 @@ export const blogPosts: BlogPost[] = [
       "Axelsmärta och stela, framåtdragna axlar hänger ofta ihop med samma grundorsak. Så uppstår det, och så tränar du upp motståndet.",
     publishedAt: "2026-08-27",
   },
-  {
-    slug: "spanningshuvudvark-och-hallning",
-    title: "Spänningshuvudvärk och hållning — finns sambandet?",
-    excerpt:
-      "Många upplever att huvudvärken förvärras mot eftermiddagen efter en dag vid skärmen. Så hänger nacke, hållning och spänningshuvudvärk ihop.",
-    publishedAt: "2026-08-27",
-  },
 ];
