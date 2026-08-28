@@ -47,11 +47,13 @@ export async function createCheckoutSession(
     existing?.stripe_subscription_id &&
     (existing.status === "active" || existing.status === "trialing");
 
-  // Redan prenumerant som byter nivå: en direkt Checkout Session skulle
-  // skapa en konkurrerande prenumeration. Skicka till bekräftelsesidan
-  // istället, som visar prisskillnaden innan bytet faktiskt görs.
+  // Redan prenumerant som byter nivå (eller betalningsintervall): en
+  // direkt Checkout Session skulle skapa en konkurrerande prenumeration.
+  // Skicka till bekräftelsesidan istället, som visar prisskillnaden
+  // innan bytet faktiskt görs.
   if (hasActiveSubscription) {
-    redirect(`/min-sida/byt-plan?to=${plan}`);
+    const target = plan === "premium" && interval === "year" ? "premium_yearly" : plan;
+    redirect(`/min-sida/byt-plan?to=${target}`);
   }
 
   const session = await stripe.checkout.sessions.create({
@@ -84,7 +86,9 @@ export async function createCheckoutSession(
   redirect(session.url);
 }
 
-export async function confirmPlanChange(plan: "premium" | "premium_coaching") {
+export async function confirmPlanChange(
+  plan: "premium" | "premium_yearly" | "premium_coaching",
+) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -111,7 +115,9 @@ export async function confirmPlanChange(plan: "premium" | "premium_coaching") {
   const priceId =
     plan === "premium_coaching"
       ? process.env.STRIPE_COACHING_PRICE_ID
-      : process.env.STRIPE_PRICE_ID;
+      : plan === "premium_yearly"
+        ? process.env.STRIPE_PRICE_ID_YEARLY
+        : process.env.STRIPE_PRICE_ID;
 
   if (!priceId) {
     redirect("/min-sida?checkout=not_configured");
