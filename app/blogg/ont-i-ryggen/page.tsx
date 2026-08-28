@@ -34,8 +34,8 @@ export default function BlogPost() {
 
         <div className={`img-duo warm ${styles.heroImage}`}>
           <Image
-            src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
-            alt="Person som stretchar ryggen, ryggraden tydligt synlig"
+            src="https://images.unsplash.com/photo-1620052079778-7d5b7509645c?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
+            alt="Behandling av ryggen"
             fill
             sizes="(max-width: 800px) 100vw, 720px"
           />
