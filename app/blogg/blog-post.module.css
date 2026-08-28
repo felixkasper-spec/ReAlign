@@ -116,6 +116,10 @@
   text-decoration: underline;
 }
 
+.ctaBand a:global(.btn) {
+  text-decoration: none;
+}
+
 .ctaBand {
   background: var(--surface);
   border-radius: 18px;

@@ -513,6 +513,13 @@ export default async function OmMetodenPage() {
                   på de fysiska aktiviteter du egentligen vill göra —
                   eller helt enkelt lägga mindre tid på träning i ditt liv.
                 </p>
+                <Link
+                  className="btn btn-primary"
+                  href="/program"
+                  style={{ marginTop: 18, display: "inline-block" }}
+                >
+                  Se våra program →
+                </Link>
               </div>
             </details>
           </div>

@@ -191,15 +191,15 @@ export default function BlogPost() {
           </p>
 
           <div className={styles.ctaBand}>
-            <p>Ett komplett, gratis program för hela bålen och ryggen:</p>
-            <Link className="btn btn-primary" href="/program/baltraning">
-              Testa Bålträning, gratis →
-            </Link>
-            <p style={{ fontSize: "0.85rem", marginTop: 14, marginBottom: 0 }}>
-              Misstänker du att obalanserna är bredare än bara ryggen? Då
-              är <Link href="/program/helkropp-niva-2">Helkropp — Nivå 2</Link>{" "}
-              programmet för dig.
+            <p>
+              Ryggen jobbar sällan isolerat — den behöver en fungerande
+              helhet i resten av kroppen för att själv kunna fungera som
+              den ska. Därför rekommenderar vi ett program för hela
+              kroppen, helt gratis:
             </p>
+            <Link className="btn btn-primary" href="/program/helkropp-niva-2">
+              Testa Helkropp — Nivå 2, gratis →
+            </Link>
           </div>
 
           <p className={styles.softLink}>
