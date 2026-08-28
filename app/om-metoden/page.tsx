@@ -301,21 +301,38 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Gray430_Psoas_Major.png"
-                        alt="Iliopsoas"
+                        src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Psoas_major_muscle11.png"
+                        alt="Psoas major"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
                       />
                     </div>
-                    <b>Iliopsoas</b>
+                    <b>Psoas major</b>
                     <p>
-                      Består av iliacus, som sitter inne i bäckenet, och
-                      psoasmuskeln, som går från ryggraden ner till
-                      insidan av lårbenet. ”Tippar fram” bäckenet och
-                      skapar en naturlig svank. Eftersom bäckenets position
-                      är så avgörande för funktionen både nedåt och uppåt i
-                      kroppen lägger vi extra fokus på att få igång just
-                      den här muskeln ordentligt.
+                      Går från ländryggraden ner till insidan av lårbenet.
+                      ”Tippar fram” bäckenet och skapar en naturlig svank.
+                      Eftersom bäckenets position är så avgörande för
+                      funktionen både nedåt och uppåt i kroppen lägger vi
+                      extra fokus på att få igång just den här muskeln
+                      ordentligt.
+                    </p>
+                  </div>
+                  <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image
+                        src="https://upload.wikimedia.org/wikipedia/commons/8/85/Iliacus_muscle06.png"
+                        alt="Iliacus"
+                        fill
+                        sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
+                      />
+                    </div>
+                    <b>Iliacus</b>
+                    <p>
+                      Sitter inne i bäckenet och går ihop med psoas major
+                      i en gemensam sena — tillsammans kallas de
+                      iliopsoas. Hjälper till att tippa fram bäckenet och
+                      böja höften, och delar samma viktiga roll i den
+                      posturala kedjan.
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
