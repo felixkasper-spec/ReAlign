@@ -75,13 +75,12 @@ export default function BlogPost() {
               separata delar — obalanser i en del påverkar självklart
               hela ryggraden. En stel bröstrygg och ett framskjutet huvud
               sätter ländryggen i ett onaturligt läge, vilket förstärker
-              samma överbelastning underifrån. Läs mer om den kopplingen i{" "}
-              <Link href="/blogg/ont-i-ryggen">vår artikel om ont i ryggen</Link>.
+              samma överbelastning underifrån.
             </p>
           </div>
 
           <p>
-            Två saker brukar hjälpa mest: aktivera de djupa
+            Två saker brukar hjälpa mest: aktivera och stärka de djupa
             hållningsmusklerna i höft och ljumske så att de kan ta
             tillbaka sin roll, och frigöra rörligheten i övre delen av
             ryggen så att den slutar belasta ländryggen underifrån.
