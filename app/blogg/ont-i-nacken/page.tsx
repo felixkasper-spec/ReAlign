@@ -165,6 +165,13 @@ export default function BlogPost() {
             mellan stående och sittande, och gå några steg var 30:e minut.
           </p>
 
+          <p>
+            Balans i kroppen är inte allt — läs vår{" "}
+            <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
+            om hur du kan använda kroppen i vanliga vardagliga situationer,
+            som att sitta, stå, lyfta och sova.
+          </p>
+
           <div className={styles.ctaBand}>
             <p>
               Vill du ha ett färdigt, ordnat program för just det här —
