@@ -17,6 +17,21 @@ export default async function SignupPage({
 }) {
   const { error, success } = await searchParams;
 
+  if (success) {
+    return (
+      <div className={styles.wrap}>
+        <div className={styles.card}>
+          <span className="eyebrow">Kom igång</span>
+          <h1>Kolla din inkorg</h1>
+          <div className={styles.success}>
+            Nästan klart! Kolla din inkorg och klicka på bekräftelselänken vi
+            skickat till dig.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles.card}>
@@ -25,12 +40,6 @@ export default async function SignupPage({
         <p>Spara favoriter och schemalägg din träning — helt gratis.</p>
 
         {error && <div className={styles.error}>{error}</div>}
-        {success && (
-          <div className={styles.success}>
-            Nästan klart! Kolla din inkorg och klicka på bekräftelselänken vi
-            skickat till dig.
-          </div>
-        )}
 
         <form action={signup}>
           <div className={styles.field}>
