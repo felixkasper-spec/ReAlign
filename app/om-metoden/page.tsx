@@ -284,7 +284,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/7/73/TheAdductorsOfThigh.jpg"
+                        src="/muscles/adductor-magnus.png"
                         alt="Adduktorer"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
@@ -369,7 +369,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Gray391.png"
+                        src="/muscles/diafragma.png"
                         alt="Diafragma"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
