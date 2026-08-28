@@ -43,7 +43,16 @@ export default function BlogPost() {
         </div>
 
         <div className={styles.article}>
-          <h2>Varför blir axeln spänd, stel eller öm?</h2>
+          <nav className={styles.toc} aria-label="Innehåll i artikeln">
+            <span className={styles.tocLabel}>I den här artikeln</span>
+            <div className={styles.tocLinks}>
+              <a href="#varfor">Varför gör det ont?</a>
+              <a href="#ovningar">Övningar som hjälper</a>
+              <a href="#ergonomi">Ergonomi & vardagstips</a>
+            </div>
+          </nav>
+
+          <h2 id="varfor">Varför blir axeln spänd, stel eller öm?</h2>
           <p>
             Grundproblemet är sällan axeln i sig — oftast handlar det om
             att den fått en framåtdragen, rundad position som den inte är
@@ -108,7 +117,7 @@ export default function BlogPost() {
             att göra.
           </p>
 
-          <h2>Vad som faktiskt bygger upp motståndet</h2>
+          <h2 id="ovningar">Vad som faktiskt bygger upp motståndet</h2>
           <ol>
             <li>
               <b>Static back goal post presses.</b> Bra kombination av
@@ -149,7 +158,7 @@ export default function BlogPost() {
             </li>
           </ol>
 
-          <p>
+          <p id="ergonomi">
             <b>Tänk också på:</b> hur du belastar axlarna även i vardagen
             — ergonomi vid kontorsarbete, att bära väska på samma axel dag
             efter dag, sova mycket på samma sida, eller ensidiga rörelser

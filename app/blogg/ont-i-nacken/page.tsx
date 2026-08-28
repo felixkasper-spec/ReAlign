@@ -43,7 +43,16 @@ export default function BlogPost() {
         </div>
 
         <div className={styles.article}>
-          <h2>Varför gör nacken ont?</h2>
+          <nav className={styles.toc} aria-label="Innehåll i artikeln">
+            <span className={styles.tocLabel}>I den här artikeln</span>
+            <div className={styles.tocLinks}>
+              <a href="#varfor">Varför gör det ont?</a>
+              <a href="#ovningar">Övningar som hjälper</a>
+              <a href="#ergonomi">Ergonomi & vardagstips</a>
+            </div>
+          </nav>
+
+          <h2 id="varfor">Varför gör nacken ont?</h2>
           <p>
             Det handlar sällan om att nacken i sig är svag. Oftast handlar
             det om att nacken har hamnat i en ofrivillig hållningsroll. Vi
@@ -91,7 +100,7 @@ export default function BlogPost() {
             </p>
           </div>
 
-          <h2>Övningar som faktiskt hjälper</h2>
+          <h2 id="ovningar">Övningar som faktiskt hjälper</h2>
           <ol>
             <li>
               <b>Hakindragningar (chin tucks).</b> Stärker precis de djupa
@@ -159,7 +168,7 @@ export default function BlogPost() {
             </li>
           </ol>
 
-          <p>
+          <p id="ergonomi">
             <b>Tänk också på:</b> ingen arbetsställning är rätt om du
             sitter i den i sex timmar rakt av. Byt position, variera
             mellan stående och sittande, och gå några steg var 30:e minut.

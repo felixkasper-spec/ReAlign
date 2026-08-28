@@ -43,7 +43,16 @@ export default function BlogPost() {
         </div>
 
         <div className={styles.article}>
-          <h2>Varför gör ländryggen ont?</h2>
+          <nav className={styles.toc} aria-label="Innehåll i artikeln">
+            <span className={styles.tocLabel}>I den här artikeln</span>
+            <div className={styles.tocLinks}>
+              <a href="#varfor">Varför gör det ont?</a>
+              <a href="#ovningar">Övningar som hjälper</a>
+              <a href="#ergonomi">Ergonomi & vardagstips</a>
+            </div>
+          </nav>
+
+          <h2 id="varfor">Varför gör ländryggen ont?</h2>
           <p>
             Ländryggens ytliga muskler är inte hållningsmuskler — men det
             är precis den rollen de ofta tvingas in i. Det händer när
@@ -86,7 +95,7 @@ export default function BlogPost() {
             ryggen så att den slutar belasta ländryggen underifrån.
           </p>
 
-          <h2>Övningar som bygger upp stödet</h2>
+          <h2 id="ovningar">Övningar som bygger upp stödet</h2>
           <ol>
             <li>
               <b>Hooklying knee squeezes.</b> Aktiverar de djupa
@@ -141,7 +150,7 @@ export default function BlogPost() {
             </li>
           </ol>
 
-          <p>
+          <p id="ergonomi">
             <b>Tänk också på:</b> oavsett vad som ligger bakom
             överbelastningen hjälper det att röra på sig och variera
             position genom dagen — kroppen är inte gjord för att stå still

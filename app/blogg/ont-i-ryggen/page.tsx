@@ -34,15 +34,24 @@ export default function BlogPost() {
 
         <div className={`img-duo warm ${styles.heroImage}`}>
           <Image
-            src="https://images.unsplash.com/photo-1620052079778-7d5b7509645c?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
-            alt="Behandling av ryggen"
+            src="https://images.unsplash.com/photo-1769029271190-36b22f5e6771?auto=format&fit=crop&w=1200&h=440&q=80&sat=-100&con=6&bri=5"
+            alt="Person som håller sig om nedre ryggen av smärta"
             fill
             sizes="(max-width: 800px) 100vw, 720px"
           />
         </div>
 
         <div className={styles.article}>
-          <h2>Varför gör ryggen ont?</h2>
+          <nav className={styles.toc} aria-label="Innehåll i artikeln">
+            <span className={styles.tocLabel}>I den här artikeln</span>
+            <div className={styles.tocLinks}>
+              <a href="#varfor">Varför gör det ont?</a>
+              <a href="#ovningar">Övningar som hjälper</a>
+              <a href="#ergonomi">Ergonomi & vardagstips</a>
+            </div>
+          </nav>
+
+          <h2 id="varfor">Varför gör ryggen ont?</h2>
           <p>
             Precis som nästan alla delar av kroppen handlar det om två
             saker: positionering och belastningsfördelning. Det allra
@@ -108,7 +117,7 @@ export default function BlogPost() {
             </p>
           </div>
 
-          <h2>Övningar som faktiskt hjälper</h2>
+          <h2 id="ovningar">Övningar som faktiskt hjälper</h2>
 
           <h3>Bröstrygg</h3>
           <ol>
@@ -172,7 +181,7 @@ export default function BlogPost() {
             </li>
           </ol>
 
-          <p>
+          <p id="ergonomi">
             <b>Tänk också på:</b> om du har kontorsjobb, eller lyfter
             mycket i ditt yrke, är även ergonomi A och O. Se vår{" "}
             <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
