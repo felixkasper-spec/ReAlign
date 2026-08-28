@@ -79,9 +79,9 @@ export default function BlogPost() {
             Att bara stretcha bröstet hjälper tillfälligt, men löser
             sällan problemet — det som saknas är styrka i motpartens
             muskler, de som ska hålla skulderbladen, och därmed axeln, på
-            plats. Är smärtan skarp, plötslig eller begränsar rörligheten
-            kraftigt, bör du alltid få den bedömd av en läkare eller
-            fysioterapeut innan du tränar vidare på egen hand.
+            plats. Känns smärtan skarp eller plötslig, eller om rörligheten är
+            kraftigt begränsad, kan det vara bra att stämma av med en
+            läkare eller fysioterapeut innan du kör igång på egen hand.
           </p>
 
           <p>
