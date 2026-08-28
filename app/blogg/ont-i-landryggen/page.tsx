@@ -139,13 +139,14 @@ export default function BlogPost() {
                 />
               </div>
             </li>
-            <li>
-              <b>Regelbunden rörelse.</b> Oavsett vad som ligger bakom
-              överbelastningen hjälper det att röra på sig och variera
-              position genom dagen — kroppen är inte gjord för att stå
-              still i en enda position, oavsett vilken.
-            </li>
           </ol>
+
+          <p>
+            <b>Tänk också på:</b> oavsett vad som ligger bakom
+            överbelastningen hjälper det att röra på sig och variera
+            position genom dagen — kroppen är inte gjord för att stå still
+            i en enda position, oavsett vilken.
+          </p>
 
           <p>
             Balans i kroppen är inte allt — läs vår{" "}

@@ -157,13 +157,13 @@ export default function BlogPost() {
                 />
               </div>
             </li>
-            <li>
-              <b>Regelbundna pauser — inte bara rätt stol.</b> Ingen
-              arbetsställning är rätt om du sitter i den i sex timmar rakt
-              av. Byt position, variera mellan stående och sittande, och gå
-              några steg var 30:e minut.
-            </li>
           </ol>
+
+          <p>
+            <b>Tänk också på:</b> ingen arbetsställning är rätt om du
+            sitter i den i sex timmar rakt av. Byt position, variera
+            mellan stående och sittande, och gå några steg var 30:e minut.
+          </p>
 
           <div className={styles.ctaBand}>
             <p>
