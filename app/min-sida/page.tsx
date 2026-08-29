@@ -254,9 +254,8 @@ export default async function MinSidaPage({
                 } denna vecka. Bra jobbat.`
               ) : (
                 <>
-                  Inga pass loggade än denna vecka — helt okej, det som
-                  räknas är att du kommer igång när det passar dig. Behöver
-                  du inspiration? Kika på{" "}
+                  Inga pass loggade än denna vecka — Behöver du
+                  inspiration? Kika på{" "}
                   <Link href="/program" className={styles.softInlineLink}>
                     programmen
                   </Link>{" "}
