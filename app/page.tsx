@@ -197,7 +197,8 @@ export default function Home() {
               <h3>Färdiga program</h3>
               <p>
                 Strukturerade program för olika syften och nivåer — från
-                nackspänning till hållningskorrigering.
+                helkroppsprogram till program specifikt för dig med
+                kontorsarbete.
               </p>
               <div className={styles.taglist}>
                 <span className="tag">Nybörjare</span>
