@@ -108,8 +108,9 @@ export default async function ProgramPage({
   }
 
   const meta = programMeta[program.slug];
-  const exerciseCount = (variants.full ?? []).length;
   const defaultVariant = langd ?? "full";
+  const activeVariant = variants[defaultVariant] ? defaultVariant : "full";
+  const exerciseCount = (variants[activeVariant] ?? []).length;
 
   return (
     <>

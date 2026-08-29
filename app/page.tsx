@@ -30,10 +30,13 @@ export default function Home() {
               Träna den som en <em>helhet</em>.
             </h1>
             <p>
-              <strong>Hållningsträning — på riktigt.</strong> Ländrygg, mage,
-              säte, nacke — ingen av dessa är till för att hålla uppe
-              kroppen. Lär känna musklerna som faktiskt är designade för
-              att hålla kroppen i balans.
+              <strong>
+                När kroppen får tillbaka sin naturliga
+                belastningsfördelning försvinner smärtan och stelheten.
+              </strong>{" "}
+              Ländrygg, mage, säte, nacke — ingen av dessa är till för att
+              hålla kroppen i balans. Lär känna musklerna som faktiskt är
+              det.
             </p>
             <div className={styles.heroNote}>
               Gratis att komma igång — inget kort, inget konto krävs.
@@ -43,7 +46,7 @@ export default function Home() {
                 className="btn btn-primary btn-lg"
                 href="/program/helkropp-niva-2?langd=kort"
               >
-                Testa ett kort program — 5 minuter
+                Testa ett 5-minuters program
               </Link>
               <Link className="btn btn-primary btn-lg" href="/program">
                 Se alla program →
