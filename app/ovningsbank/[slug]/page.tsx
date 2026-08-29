@@ -198,8 +198,8 @@ export default async function ExercisePage({
                   Lås upp video, instruktioner och resten av övningsbanken för
                   149 kr/mån, eller 1 341 kr/år (spara 25%).
                 </p>
-                <Link className="btn btn-primary" href="/min-sida">
-                  Bli Premium →
+                <Link className="btn btn-primary" href="/premium">
+                  Läs mer om Premium →
                 </Link>
               </div>
             ) : (

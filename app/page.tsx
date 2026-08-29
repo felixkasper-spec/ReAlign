@@ -36,7 +36,7 @@ export default function Home() {
               att hålla kroppen i balans.
             </p>
             <div className={styles.heroNote}>
-              🎉 Gratis att komma igång — inget kort krävs.
+              Gratis att komma igång — inget kort, inget konto krävs.
             </div>
             <div className={styles.heroCtas}>
               <Link
