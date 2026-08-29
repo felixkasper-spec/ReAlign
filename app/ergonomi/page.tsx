@@ -4,11 +4,14 @@ import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { getSpotifyOembed } from "@/lib/spotify";
+import { getVimeoThumbnail } from "@/lib/vimeo-thumbnail";
 import { pageMetadata } from "@/lib/page-metadata";
 import JumpNav from "./JumpNav";
 import styles from "./page.module.css";
 
 const EPISODE_ID = "6T3rxc52NXbu0zL4yoE2Cq";
+const INTRO_VIDEO_URL =
+  "https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0";
 
 export const metadata = pageMetadata({
   title: "Ergonomi — ReAlign Metoden",
@@ -190,7 +193,13 @@ const habits = [
 ];
 
 export default async function ErgonomiPage() {
-  const podcastPreview = await getSpotifyOembed(EPISODE_ID);
+  const [podcastPreview, introPoster, situationPosters] = await Promise.all([
+    getSpotifyOembed(EPISODE_ID),
+    getVimeoThumbnail(INTRO_VIDEO_URL),
+    Promise.all(
+      situations.map((s) => (s.videoUrl ? getVimeoThumbnail(s.videoUrl) : Promise.resolve(null))),
+    ),
+  ]);
 
   return (
     <>
@@ -232,8 +241,9 @@ export default async function ErgonomiPage() {
 
           <div className={styles.introVideo}>
             <VimeoEmbed
-              src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0"
+              src={INTRO_VIDEO_URL}
               className={styles.videoFrame}
+              poster={introPoster}
             />
             <div className={styles.caption}>Introduktion till postural medvetenhet</div>
           </div>
@@ -241,7 +251,7 @@ export default async function ErgonomiPage() {
 
         <JumpNav />
 
-        {situations.map((s) => (
+        {situations.map((s, i) => (
           <section className={styles.situation} key={s.id} id={s.id}>
             <div className={styles.sitLabel}>
               <span className="eyebrow">{s.eyebrow}</span>
@@ -254,6 +264,7 @@ export default async function ErgonomiPage() {
                   src={s.videoUrl}
                   className={`${styles.videoFrame} ${styles.small}`}
                   lazy
+                  poster={situationPosters[i]}
                 />
               )}
               {!s.videoUrl && (

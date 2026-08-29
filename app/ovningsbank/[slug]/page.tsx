@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProgramExerciseSequence } from "@/lib/program-exercise-sequence";
 import { getPremiumExerciseSlugs } from "@/lib/exercise-tier";
 import { getSubscription } from "@/lib/subscription";
+import { getVimeoThumbnail } from "@/lib/vimeo-thumbnail";
 import { pageMetadata } from "@/lib/page-metadata";
 import { hasThumbnail } from "../thumbnails";
 import styles from "./page.module.css";
@@ -94,7 +95,10 @@ export default async function ExercisePage({
 
   const user = userResult.data.user;
 
-  const premiumSlugs = await getPremiumExerciseSlugs();
+  const [premiumSlugs, videoPoster] = await Promise.all([
+    getPremiumExerciseSlugs(),
+    exercise.video_url ? getVimeoThumbnail(exercise.video_url) : Promise.resolve(null),
+  ]);
   const isPremiumExercise = premiumSlugs.has(slug);
   const subscription = isPremiumExercise ? await getSubscription() : null;
   const locked = isPremiumExercise && !subscription?.active;
@@ -204,7 +208,11 @@ export default async function ExercisePage({
               </div>
             ) : (
               exercise.video_url && (
-                <VimeoEmbed src={exercise.video_url} className={styles.videoFrame} />
+                <VimeoEmbed
+                  src={exercise.video_url}
+                  className={styles.videoFrame}
+                  poster={videoPoster}
+                />
               )
             )}
             <div className={styles.videoCaption}>

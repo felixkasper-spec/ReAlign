@@ -6,7 +6,13 @@ import VimeoEmbed from "@/components/VimeoEmbed";
 import ScrollCue from "@/components/ScrollCue";
 import { testimonials } from "@/lib/testimonials";
 import { pageMetadata } from "@/lib/page-metadata";
+import { getVimeoThumbnail } from "@/lib/vimeo-thumbnail";
 import styles from "./page.module.css";
+
+const TESTIMONIAL_VIDEO_URLS = [
+  "https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0",
+  "https://player.vimeo.com/video/1219364602?h=4005ecd03e&title=0&byline=0&portrait=0",
+];
 
 export const metadata = pageMetadata({
   title: "Startsida — ReAlign Metoden",
@@ -16,7 +22,11 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-export default function Home() {
+export default async function Home() {
+  const [testimonialPoster1, testimonialPoster2] = await Promise.all(
+    TESTIMONIAL_VIDEO_URLS.map((url) => getVimeoThumbnail(url)),
+  );
+
   return (
     <>
       <Header transparent />
@@ -147,14 +157,16 @@ export default function Home() {
 
           <div className={styles.testimonialGrid}>
             <VimeoEmbed
-              src="https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0"
+              src={TESTIMONIAL_VIDEO_URLS[0]}
               className={styles.videoBox}
               lazy
+              poster={testimonialPoster1}
             />
             <VimeoEmbed
-              src="https://player.vimeo.com/video/1219364602?h=4005ecd03e&title=0&byline=0&portrait=0"
+              src={TESTIMONIAL_VIDEO_URLS[1]}
               className={styles.videoBox}
               lazy
+              poster={testimonialPoster2}
             />
             {testimonials.slice(0, 2).map((t) => (
               <div key={t.quote} className={styles.quoteCard}>
