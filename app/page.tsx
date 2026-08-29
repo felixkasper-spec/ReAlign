@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import ScrollCue from "@/components/ScrollCue";
 import { testimonials } from "@/lib/testimonials";
 import { pageMetadata } from "@/lib/page-metadata";
-import { getVimeoThumbnail } from "@/lib/vimeo-thumbnail";
 import styles from "./page.module.css";
 
 const TESTIMONIAL_VIDEO_URLS = [
@@ -22,11 +23,7 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-export default async function Home() {
-  const [testimonialPoster1, testimonialPoster2] = await Promise.all(
-    TESTIMONIAL_VIDEO_URLS.map((url) => getVimeoThumbnail(url)),
-  );
-
+export default function Home() {
   return (
     <>
       <Header transparent />
@@ -156,18 +153,20 @@ export default async function Home() {
           </div>
 
           <div className={styles.testimonialGrid}>
-            <VimeoEmbed
-              src={TESTIMONIAL_VIDEO_URLS[0]}
-              className={styles.videoBox}
-              lazy
-              poster={testimonialPoster1}
-            />
-            <VimeoEmbed
-              src={TESTIMONIAL_VIDEO_URLS[1]}
-              className={styles.videoBox}
-              lazy
-              poster={testimonialPoster2}
-            />
+            <Suspense
+              fallback={
+                <VimeoEmbed src={TESTIMONIAL_VIDEO_URLS[0]} className={styles.videoBox} lazy />
+              }
+            >
+              <VimeoPoster src={TESTIMONIAL_VIDEO_URLS[0]} className={styles.videoBox} lazy />
+            </Suspense>
+            <Suspense
+              fallback={
+                <VimeoEmbed src={TESTIMONIAL_VIDEO_URLS[1]} className={styles.videoBox} lazy />
+              }
+            >
+              <VimeoPoster src={TESTIMONIAL_VIDEO_URLS[1]} className={styles.videoBox} lazy />
+            </Suspense>
             {testimonials.slice(0, 2).map((t) => (
               <div key={t.quote} className={styles.quoteCard}>
                 <p>&quot;{t.quote}&quot;</p>

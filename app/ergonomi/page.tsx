@@ -1,10 +1,11 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import { getSpotifyOembed } from "@/lib/spotify";
-import { getVimeoThumbnail } from "@/lib/vimeo-thumbnail";
 import { pageMetadata } from "@/lib/page-metadata";
 import JumpNav from "./JumpNav";
 import styles from "./page.module.css";
@@ -193,13 +194,7 @@ const habits = [
 ];
 
 export default async function ErgonomiPage() {
-  const [podcastPreview, introPoster, situationPosters] = await Promise.all([
-    getSpotifyOembed(EPISODE_ID),
-    getVimeoThumbnail(INTRO_VIDEO_URL),
-    Promise.all(
-      situations.map((s) => (s.videoUrl ? getVimeoThumbnail(s.videoUrl) : Promise.resolve(null))),
-    ),
-  ]);
+  const podcastPreview = await getSpotifyOembed(EPISODE_ID);
 
   return (
     <>
@@ -240,18 +235,18 @@ export default async function ErgonomiPage() {
           </div>
 
           <div className={styles.introVideo}>
-            <VimeoEmbed
-              src={INTRO_VIDEO_URL}
-              className={styles.videoFrame}
-              poster={introPoster}
-            />
+            <Suspense
+              fallback={<VimeoEmbed src={INTRO_VIDEO_URL} className={styles.videoFrame} />}
+            >
+              <VimeoPoster src={INTRO_VIDEO_URL} className={styles.videoFrame} />
+            </Suspense>
             <div className={styles.caption}>Introduktion till postural medvetenhet</div>
           </div>
         </div>
 
         <JumpNav />
 
-        {situations.map((s, i) => (
+        {situations.map((s) => (
           <section className={styles.situation} key={s.id} id={s.id}>
             <div className={styles.sitLabel}>
               <span className="eyebrow">{s.eyebrow}</span>
@@ -260,12 +255,21 @@ export default async function ErgonomiPage() {
             </div>
             <div>
               {s.videoUrl && (
-                <VimeoEmbed
-                  src={s.videoUrl}
-                  className={`${styles.videoFrame} ${styles.small}`}
-                  lazy
-                  poster={situationPosters[i]}
-                />
+                <Suspense
+                  fallback={
+                    <VimeoEmbed
+                      src={s.videoUrl}
+                      className={`${styles.videoFrame} ${styles.small}`}
+                      lazy
+                    />
+                  }
+                >
+                  <VimeoPoster
+                    src={s.videoUrl}
+                    className={`${styles.videoFrame} ${styles.small}`}
+                    lazy
+                  />
+                </Suspense>
               )}
               {!s.videoUrl && (
                 <div className={styles.compare}>
