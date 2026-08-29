@@ -421,7 +421,7 @@ export default async function OmMetodenPage() {
                   <div className={styles.muscleCard}>
                     <div className={styles.muscleImg}>
                       <Image
-                        src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Serratus_anterior.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Serratus_anterior_muscles_frontal.png"
                         alt="Serratus anterior"
                         fill
                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 300px"
