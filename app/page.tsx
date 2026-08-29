@@ -359,11 +359,11 @@ export default function Home() {
                 <li>Detaljerad progressionsspårning</li>
                 <li>Veckobrev med tips och uppföljning</li>
               </ul>
+              <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
+              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <Link className="btn btn-primary" href="/premium">
                 Se vad som ingår →
               </Link>
-              <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
-              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
             <div className={styles.tierCard}>
               <span className="eyebrow" style={{ color: "var(--warm)" }}>
@@ -376,12 +376,12 @@ export default function Home() {
                 <li>Svar på frågor om övningar och upplägg</li>
                 <li>Svar inom 1–2 vardagar</li>
               </ul>
-              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
-                Läs mer →
-              </Link>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <p className={styles.friskvard}>Begränsat antal platser</p>
+              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
+                Läs mer →
+              </Link>
             </div>
           </div>
         </section>

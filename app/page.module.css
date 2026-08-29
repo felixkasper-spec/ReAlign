@@ -428,6 +428,10 @@
   text-align: center;
 }
 
+.friskvard:last-of-type {
+  margin-bottom: 14px;
+}
+
 .tierHighlight .friskvard {
   color: rgba(255, 255, 255, 0.75);
 }
