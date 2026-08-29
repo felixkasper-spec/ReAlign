@@ -37,39 +37,4 @@ export const blogPosts: BlogPost[] = [
       "Axelsmärta och stela, framåtdragna axlar hänger ofta ihop med samma grundorsak. Så uppstår det, och så tränar du upp motståndet.",
     publishedAt: "2026-08-27",
   },
-  {
-    slug: "tecken-pa-dalig-hallning",
-    title: "Vanliga tecken på dålig hållning",
-    excerpt:
-      "Hållningsobalanser byggs ofta upp gradvis, långt innan de gör ont. Så upptäcker du de vanligaste tecknen hos dig själv.",
-    publishedAt: "2026-08-27",
-  },
-  {
-    slug: "postural-traning-vs-styrketraning",
-    title: "Postural träning vs. vanlig styrketräning — vad är skillnaden?",
-    excerpt:
-      "Övningarna kan se förvillande lika ut på ytan — men fokuset, musklerna som prioriteras och målet skiljer sig markant.",
-    publishedAt: "2026-08-27",
-  },
-  {
-    slug: "kontorsergonomi-guide",
-    title: "Kontorsergonomi — komplett guide för hemmakontoret",
-    excerpt:
-      "Stol, skärm, skrivbord och pauser — en konkret checklista för en arbetsplats som inte sliter på kroppen.",
-    publishedAt: "2026-08-27",
-  },
-  {
-    slug: "hur-ofta-bor-man-trana-hallning",
-    title: "Hur ofta bör man träna hållning?",
-    excerpt:
-      "Ett enkelt svar på en fråga som ofta känns krångligare än den behöver vara — utan att kräva perfektion.",
-    publishedAt: "2026-08-27",
-  },
-  {
-    slug: "hjalper-staskrivbord-mot-dalig-hallning",
-    title: "Hjälper ett ståskrivbord verkligen mot dålig hållning?",
-    excerpt:
-      "Ståskrivbord säljs ofta som lösningen på kontorshållning. Delvis sant — men det räcker inte att bara byta stillasittande mot stillastående.",
-    publishedAt: "2026-08-27",
-  },
 ];
