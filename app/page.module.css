@@ -168,7 +168,7 @@
 .videoBox {
   border-radius: 20px;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   position: relative;
   background: var(--surface);
 }
