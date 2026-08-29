@@ -161,6 +161,36 @@
   object-fit: cover;
 }
 
+.thumbBlurred {
+  filter: blur(11px);
+  transform: scale(1.12);
+}
+
+.lockOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(43, 46, 42, 0.32);
+}
+
+.lockIcon {
+  font-size: 1.2rem;
+  filter: none;
+}
+
+.lockLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
 .cardTop h3 {
   font-size: 1.05rem;
   font-weight: 500;

@@ -125,6 +125,7 @@ export default async function OvningsbankPage() {
             exercises={sortedExercises}
             favoriteIds={favoriteIds}
             loggedIn={!!user}
+            hasPremiumAccess={subscription.active}
           />
         )}
 

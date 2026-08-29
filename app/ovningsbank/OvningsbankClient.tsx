@@ -21,10 +21,12 @@ export default function OvningsbankClient({
   exercises,
   favoriteIds,
   loggedIn,
+  hasPremiumAccess,
 }: {
   exercises: ExerciseListItem[];
   favoriteIds: string[];
   loggedIn: boolean;
+  hasPremiumAccess: boolean;
 }) {
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState<string[]>([]);
@@ -136,7 +138,9 @@ export default function OvningsbankClient({
           )}
 
           <div className={styles.grid} id="ovningslista">
-            {filtered.map((exercise) => (
+            {filtered.map((exercise) => {
+              const locked = exercise.premium && !hasPremiumAccess;
+              return (
               <div key={exercise.id} className={styles.card}>
                 <Link href={`/ovningsbank/${exercise.slug}`} className={styles.cardTop}>
                   {hasThumbnail(exercise.slug) && (
@@ -146,7 +150,14 @@ export default function OvningsbankClient({
                         alt={exercise.title}
                         fill
                         sizes="(max-width: 880px) 100vw, 320px"
+                        className={locked ? styles.thumbBlurred : undefined}
                       />
+                      {locked && (
+                        <div className={styles.lockOverlay}>
+                          <span className={styles.lockIcon}>🔒</span>
+                          <span className={styles.lockLabel}>Premium</span>
+                        </div>
+                      )}
                     </div>
                   )}
                   <h3>{exercise.title}</h3>
@@ -168,7 +179,8 @@ export default function OvningsbankClient({
                   loggedIn={loggedIn}
                 />
               </div>
-            ))}
+              );
+            })}
           </div>
         </main>
       </div>
