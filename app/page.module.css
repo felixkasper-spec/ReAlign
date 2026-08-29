@@ -385,8 +385,19 @@
   margin: 12px 0 18px;
 }
 
-.tierPrice:has(+ .tierPriceAlt) {
-  margin-bottom: 4px;
+.tierPrice:has(~ .tierPriceAlt) {
+  margin-bottom: 8px;
+}
+
+.discountBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--warm);
+  padding: 3px 11px;
+  border-radius: 100px;
+  margin-bottom: 10px;
 }
 
 .tierPriceAlt {
@@ -414,6 +425,10 @@
 .tierHighlight .tierList li {
   border-top-color: rgba(255, 255, 255, 0.25);
   color: #f3f5f1;
+}
+
+.tierHighlight .tierPriceAlt {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .tierHighlight :global(.btn-primary) {
