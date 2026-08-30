@@ -8,6 +8,8 @@ import VimeoPoster from "@/components/VimeoPoster";
 import ScrollCue from "@/components/ScrollCue";
 import { testimonials } from "@/lib/testimonials";
 import { pageMetadata } from "@/lib/page-metadata";
+import { createClient } from "@/lib/supabase/server";
+import { getSubscription } from "@/lib/subscription";
 import styles from "./page.module.css";
 
 const TESTIMONIAL_VIDEO_URLS = [
@@ -23,7 +25,15 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const subscription = user ? await getSubscription() : null;
+  const alreadyPremium = subscription?.active;
+  const alreadyCoaching = subscription?.active && subscription.plan === "premium_coaching";
+
   return (
     <>
       <Header transparent />
@@ -211,8 +221,8 @@ export default function Home() {
               <h3>Färdiga program</h3>
               <p>
                 Strukturerade program för olika syften och nivåer — från
-                helkroppsprogram till program specifikt för dig med
-                kontorsarbete.
+                helkroppsprogram till mer specifika program, som det
+                populära kontorsvardagsprogrammet.
               </p>
               <div className={styles.taglist}>
                 <span className="tag">Nybörjare</span>
@@ -220,7 +230,7 @@ export default function Home() {
                 <span className="tag">Rygg</span>
               </div>
             </Link>
-            <Link className={styles.card} href="/premium">
+            <Link className={styles.card} href="/om-metoden">
               <div className={`img-duo ${styles.cardThumb}`}>
                 <Image
                   src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
@@ -230,15 +240,12 @@ export default function Home() {
                 />
               </div>
               <span className={styles.num}>02</span>
-              <h3>Premium</h3>
-              <p>
-                Alla nivåer, alla program och progressionsspårning så du
-                ser hur du faktiskt utvecklas vecka för vecka.
-              </p>
+              <h3>Om Metoden</h3>
+              <p>Förstå principerna bakom metoden.</p>
               <div className={styles.taglist}>
-                <span className="tag">Progression</span>
-                <span className="tag">Alla nivåer</span>
-                <span className="tag">Gymträning</span>
+                <span className="tag">Postural kedja</span>
+                <span className="tag">Grundorsak</span>
+                <span className="tag">Optimum-Metoden</span>
               </div>
             </Link>
             <Link className={styles.card} href="/ergonomi">
@@ -376,9 +383,15 @@ export default function Home() {
               </ul>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
-              <Link className="btn btn-primary" href="/premium">
-                Se vad som ingår →
-              </Link>
+              {alreadyPremium ? (
+                <Link className="btn btn-primary" href="/min-sida">
+                  Du är redan medlem →
+                </Link>
+              ) : (
+                <Link className="btn btn-primary" href="/premium">
+                  Se vad som ingår →
+                </Link>
+              )}
             </div>
             <div className={styles.tierCard}>
               <span className="eyebrow" style={{ color: "var(--warm)" }}>
@@ -394,9 +407,15 @@ export default function Home() {
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <p className={styles.friskvard}>Begränsat antal platser</p>
-              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
-                Läs mer →
-              </Link>
+              {alreadyCoaching ? (
+                <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/min-sida/coaching">
+                  Till chatten →
+                </Link>
+              ) : (
+                <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
+                  Läs mer →
+                </Link>
+              )}
             </div>
           </div>
         </section>
