@@ -81,8 +81,8 @@ export default async function Home() {
 
           <div className={`img-duo ${styles.heroImage}`}>
             <Image
-              src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=700&h=900&q=80&sat=-100&con=6&bri=5"
-              alt="Person i medelåldern som är aktiv utomhus"
+              src="https://images.unsplash.com/photo-1531403939386-c08a16cd7eef?auto=format&fit=crop&w=700&h=900&q=80&sat=-100&con=6&bri=5"
+              alt="Person som gör en kontrollerad stretch utomhus"
               fill
               sizes="(max-width: 880px) 100vw, 550px"
               priority
@@ -211,8 +211,8 @@ export default async function Home() {
             <Link className={styles.card} href="/program">
               <div className={`img-duo ${styles.cardThumb}`}>
                 <Image
-                  src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
-                  alt="Person i medelåldern som är aktiv"
+                  src="https://images.unsplash.com/photo-1760084081757-6f918c08403b?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
+                  alt="Person som följer ett strukturerat träningsprogram hemma"
                   fill
                   sizes="(max-width: 880px) 100vw, 33vw"
                 />

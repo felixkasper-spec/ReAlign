@@ -171,6 +171,8 @@
   aspect-ratio: 16 / 9;
   position: relative;
   background: var(--surface);
+  max-width: 280px;
+  margin: 0 auto;
 }
 
 .videoBox iframe {
