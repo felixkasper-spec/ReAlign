@@ -141,6 +141,16 @@ export default async function ProgramPage({
 
         {program.description && <p className={styles.progIntro}>{program.description}</p>}
 
+        {program.slug === "kontorsvardag" && (
+          <p style={{ fontSize: "0.9rem", color: "var(--text-soft)", marginTop: -8, marginBottom: 20 }}>
+            Vill du ha fler tips för hur du sitter rätt vid skrivbordet? Se vår{" "}
+            <Link href="/ergonomi#sitta" style={{ color: "var(--sage)", textDecoration: "underline" }}>
+              ergonomiguide om att sitta
+            </Link>
+            .
+          </p>
+        )}
+
         <div className={styles.metaRow}>
           <div className={styles.metaItem}>
             <b>{exerciseCount || warmup.length}</b>Övningar
