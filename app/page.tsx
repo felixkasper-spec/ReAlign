@@ -1,12 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import ScrollCue from "@/components/ScrollCue";
 import { testimonials } from "@/lib/testimonials";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
+
+const TESTIMONIAL_VIDEO_URLS = [
+  "https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0",
+  "https://player.vimeo.com/video/1219364602?h=4005ecd03e&title=0&byline=0&portrait=0",
+];
 
 export const metadata = pageMetadata({
   title: "Startsida — ReAlign Metoden",
@@ -30,20 +37,23 @@ export default function Home() {
               Träna den som en <em>helhet</em>.
             </h1>
             <p>
-              <strong>Hållningsträning — på riktigt.</strong> Ländrygg, mage,
-              säte, nacke — ingen av dessa är till för att hålla uppe
-              kroppen. Lär känna musklerna som faktiskt är designade för
-              att hålla kroppen i balans.
+              <strong>
+                När kroppen får tillbaka sin naturliga
+                belastningsfördelning försvinner smärtan och stelheten.
+              </strong>{" "}
+              Ländrygg, mage, säte, nacke — ingen av dessa är till för att
+              hålla kroppen i balans. Lär känna musklerna som faktiskt är
+              det.
             </p>
             <div className={styles.heroNote}>
-              🎉 Gratis att komma igång — inget kort krävs.
+              Gratis att komma igång — inget kort, inget konto krävs.
             </div>
             <div className={styles.heroCtas}>
               <Link
                 className="btn btn-primary btn-lg"
                 href="/program/helkropp-niva-2?langd=kort"
               >
-                Testa ett kort program — 5 minuter
+                Testa ett 5-minuters program
               </Link>
               <Link className="btn btn-primary btn-lg" href="/program">
                 Se alla program →
@@ -143,16 +153,20 @@ export default function Home() {
           </div>
 
           <div className={styles.testimonialGrid}>
-            <VimeoEmbed
-              src="https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0"
-              className={styles.videoBox}
-              lazy
-            />
-            <VimeoEmbed
-              src="https://player.vimeo.com/video/1219364602?h=4005ecd03e&title=0&byline=0&portrait=0"
-              className={styles.videoBox}
-              lazy
-            />
+            <Suspense
+              fallback={
+                <VimeoEmbed src={TESTIMONIAL_VIDEO_URLS[0]} className={styles.videoBox} lazy />
+              }
+            >
+              <VimeoPoster src={TESTIMONIAL_VIDEO_URLS[0]} className={styles.videoBox} lazy />
+            </Suspense>
+            <Suspense
+              fallback={
+                <VimeoEmbed src={TESTIMONIAL_VIDEO_URLS[1]} className={styles.videoBox} lazy />
+              }
+            >
+              <VimeoPoster src={TESTIMONIAL_VIDEO_URLS[1]} className={styles.videoBox} lazy />
+            </Suspense>
             {testimonials.slice(0, 2).map((t) => (
               <div key={t.quote} className={styles.quoteCard}>
                 <p>&quot;{t.quote}&quot;</p>
@@ -197,7 +211,8 @@ export default function Home() {
               <h3>Färdiga program</h3>
               <p>
                 Strukturerade program för olika syften och nivåer — från
-                nackspänning till hållningskorrigering.
+                helkroppsprogram till program specifikt för dig med
+                kontorsarbete.
               </p>
               <div className={styles.taglist}>
                 <span className="tag">Nybörjare</span>
@@ -348,6 +363,7 @@ export default function Home() {
                 Premium
               </span>
               <p className={styles.tierPrice}>149 kr/mån</p>
+              <span className={styles.discountBadge}>-50% första månaden</span>
               <p className={styles.tierPriceAlt}>eller 1 341 kr/år — spara 25%</p>
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>
@@ -358,11 +374,11 @@ export default function Home() {
                 <li>Detaljerad progressionsspårning</li>
                 <li>Veckobrev med tips och uppföljning</li>
               </ul>
+              <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
+              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <Link className="btn btn-primary" href="/premium">
                 Se vad som ingår →
               </Link>
-              <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
-              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
             </div>
             <div className={styles.tierCard}>
               <span className="eyebrow" style={{ color: "var(--warm)" }}>
@@ -375,12 +391,12 @@ export default function Home() {
                 <li>Svar på frågor om övningar och upplägg</li>
                 <li>Svar inom 1–2 vardagar</li>
               </ul>
-              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
-                Läs mer →
-              </Link>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
               <p className={styles.friskvard}>Begränsat antal platser</p>
+              <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/premium-coaching">
+                Läs mer →
+              </Link>
             </div>
           </div>
         </section>

@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FavoriteButton from "@/components/FavoriteButton";
 import ShareButton from "@/components/ShareButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import LockedContentNudge from "@/components/LockedContentNudge";
 import { createClient } from "@/lib/supabase/server";
@@ -198,13 +200,19 @@ export default async function ExercisePage({
                   Lås upp video, instruktioner och resten av övningsbanken för
                   149 kr/mån, eller 1 341 kr/år (spara 25%).
                 </p>
-                <Link className="btn btn-primary" href="/min-sida">
-                  Bli Premium →
+                <Link className="btn btn-primary" href="/premium">
+                  Läs mer om Premium →
                 </Link>
               </div>
             ) : (
               exercise.video_url && (
-                <VimeoEmbed src={exercise.video_url} className={styles.videoFrame} />
+                <Suspense
+                  fallback={
+                    <VimeoEmbed src={exercise.video_url} className={styles.videoFrame} />
+                  }
+                >
+                  <VimeoPoster src={exercise.video_url} className={styles.videoFrame} />
+                </Suspense>
               )
             )}
             <div className={styles.videoCaption}>

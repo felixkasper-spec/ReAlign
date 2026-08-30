@@ -248,11 +248,24 @@ export default async function MinSidaPage({
             <span className="eyebrow">Min sida</span>
             <h1>Hej{firstName ? `, ${firstName}` : ""} 👋</h1>
             <p>
-              {progression.weekCount > 0
-                ? `Du har tränat ${progression.weekCount} ${
-                    progression.weekCount === 1 ? "gång" : "gånger"
-                  } denna vecka. Bra jobbat.`
-                : "Inga pass loggade denna vecka än — dags att komma igång."}
+              {progression.weekCount > 0 ? (
+                `Du har tränat ${progression.weekCount} ${
+                  progression.weekCount === 1 ? "gång" : "gånger"
+                } denna vecka. Bra jobbat.`
+              ) : (
+                <>
+                  Inga pass loggade än denna vecka — Behöver du
+                  inspiration? Kika på{" "}
+                  <Link href="/program" className={styles.softInlineLink}>
+                    programmen
+                  </Link>{" "}
+                  eller i{" "}
+                  <Link href="/ovningsbank" className={styles.softInlineLink}>
+                    övningsbanken
+                  </Link>
+                  .
+                </>
+              )}
             </p>
           </div>
           <a href="#schema" className="btn btn-primary">

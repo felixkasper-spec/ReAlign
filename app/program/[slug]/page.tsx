@@ -108,8 +108,9 @@ export default async function ProgramPage({
   }
 
   const meta = programMeta[program.slug];
-  const exerciseCount = (variants.full ?? []).length;
   const defaultVariant = langd ?? "full";
+  const activeVariant = variants[defaultVariant] ? defaultVariant : "full";
+  const exerciseCount = (variants[activeVariant] ?? []).length;
 
   return (
     <>
@@ -187,8 +188,8 @@ export default async function ProgramPage({
               Lås upp {program.title} och resten av programbiblioteket för
               149 kr/mån, eller 1 341 kr/år (spara 25%).
             </p>
-            <Link className="btn btn-primary" href="/min-sida">
-              Bli Premium →
+            <Link className="btn btn-primary" href="/premium">
+              Läs mer om Premium →
             </Link>
             <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
               ✓ Går att betala med friskvårdsbidrag

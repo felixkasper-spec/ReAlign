@@ -1,14 +1,18 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import { getSpotifyOembed } from "@/lib/spotify";
 import { pageMetadata } from "@/lib/page-metadata";
 import JumpNav from "./JumpNav";
 import styles from "./page.module.css";
 
 const EPISODE_ID = "6T3rxc52NXbu0zL4yoE2Cq";
+const INTRO_VIDEO_URL =
+  "https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0";
 
 export const metadata = pageMetadata({
   title: "Ergonomi — ReAlign Metoden",
@@ -231,10 +235,11 @@ export default async function ErgonomiPage() {
           </div>
 
           <div className={styles.introVideo}>
-            <VimeoEmbed
-              src="https://player.vimeo.com/video/1218399844?h=9a6c3bce96&title=0&byline=0&portrait=0"
-              className={styles.videoFrame}
-            />
+            <Suspense
+              fallback={<VimeoEmbed src={INTRO_VIDEO_URL} className={styles.videoFrame} />}
+            >
+              <VimeoPoster src={INTRO_VIDEO_URL} className={styles.videoFrame} />
+            </Suspense>
             <div className={styles.caption}>Introduktion till postural medvetenhet</div>
           </div>
         </div>
@@ -250,11 +255,21 @@ export default async function ErgonomiPage() {
             </div>
             <div>
               {s.videoUrl && (
-                <VimeoEmbed
-                  src={s.videoUrl}
-                  className={`${styles.videoFrame} ${styles.small}`}
-                  lazy
-                />
+                <Suspense
+                  fallback={
+                    <VimeoEmbed
+                      src={s.videoUrl}
+                      className={`${styles.videoFrame} ${styles.small}`}
+                      lazy
+                    />
+                  }
+                >
+                  <VimeoPoster
+                    src={s.videoUrl}
+                    className={`${styles.videoFrame} ${styles.small}`}
+                    lazy
+                  />
+                </Suspense>
               )}
               {!s.videoUrl && (
                 <div className={styles.compare}>

@@ -168,7 +168,7 @@
 .videoBox {
   border-radius: 20px;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   position: relative;
   background: var(--surface);
 }
@@ -385,8 +385,19 @@
   margin: 12px 0 18px;
 }
 
-.tierPrice:has(+ .tierPriceAlt) {
-  margin-bottom: 4px;
+.tierPrice:has(~ .tierPriceAlt) {
+  margin-bottom: 8px;
+}
+
+.discountBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--warm);
+  padding: 3px 11px;
+  border-radius: 100px;
+  margin-bottom: 10px;
 }
 
 .tierPriceAlt {
@@ -416,6 +427,10 @@
   color: #f3f5f1;
 }
 
+.tierHighlight .tierPriceAlt {
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .tierHighlight :global(.btn-primary) {
   background: #fff;
   color: var(--text);
@@ -426,6 +441,10 @@
   color: var(--text-soft);
   margin-top: 10px;
   text-align: center;
+}
+
+.friskvard:last-of-type {
+  margin-bottom: 14px;
 }
 
 .tierHighlight .friskvard {

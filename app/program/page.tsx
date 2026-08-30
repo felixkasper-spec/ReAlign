@@ -74,8 +74,8 @@ export default async function ProgramIndexPage() {
             </p>
             <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
           </div>
-          <Link className="btn btn-primary" href="/min-sida" style={{ whiteSpace: "nowrap" }}>
-            Bli Premium – 149 kr/mån →
+          <Link className="btn btn-primary" href="/premium" style={{ whiteSpace: "nowrap" }}>
+            Läs mer om Premium →
           </Link>
         </div>
 

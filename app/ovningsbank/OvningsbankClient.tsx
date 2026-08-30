@@ -21,15 +21,23 @@ export default function OvningsbankClient({
   exercises,
   favoriteIds,
   loggedIn,
+  hasPremiumAccess,
 }: {
   exercises: ExerciseListItem[];
   favoriteIds: string[];
   loggedIn: boolean;
+  hasPremiumAccess: boolean;
 }) {
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState<string[]>([]);
   const [equipFilter, setEquipFilter] = useState<string[]>([]);
+  const [freeOnly, setFreeOnly] = useState(false);
   const favoriteSet = useMemo(() => new Set(favoriteIds), [favoriteIds]);
+
+  const freeCount = useMemo(
+    () => exercises.filter((e) => !e.premium).length,
+    [exercises],
+  );
 
   const bodyParts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -56,6 +64,7 @@ export default function OvningsbankClient({
   }
 
   const filtered = exercises.filter((e) => {
+    if (freeOnly && e.premium) return false;
     if (bodyFilter.length > 0 && !e.categories.some((c) => bodyFilter.includes(c)))
       return false;
     if (equipFilter.length > 0 && (!e.equipment || !equipFilter.includes(e.equipment)))
@@ -80,6 +89,18 @@ export default function OvningsbankClient({
 
       <div className={styles.layout}>
         <aside className={styles.filters}>
+          <div className={styles.filterGroup}>
+            <div className={styles.filterTitle}>Pris</div>
+            <label className={styles.filterOpt}>
+              <input
+                type="checkbox"
+                checked={freeOnly}
+                onChange={() => setFreeOnly((v) => !v)}
+              />
+              Endast gratis
+              <span className={styles.count}>{freeCount}</span>
+            </label>
+          </div>
           <div className={styles.filterGroup}>
             <div className={styles.filterTitle}>Kroppsdel</div>
             {bodyParts.map(([value, count]) => (
@@ -116,13 +137,14 @@ export default function OvningsbankClient({
                 ? "Visar alla övningar"
                 : `${filtered.length} av ${exercises.length} övningar`}
             </span>
-            {(bodyFilter.length > 0 || equipFilter.length > 0 || search) && (
+            {(bodyFilter.length > 0 || equipFilter.length > 0 || freeOnly || search) && (
               <button
                 type="button"
                 className={styles.clearFilters}
                 onClick={() => {
                   setBodyFilter([]);
                   setEquipFilter([]);
+                  setFreeOnly(false);
                   setSearch("");
                 }}
               >
@@ -136,7 +158,9 @@ export default function OvningsbankClient({
           )}
 
           <div className={styles.grid} id="ovningslista">
-            {filtered.map((exercise) => (
+            {filtered.map((exercise) => {
+              const locked = exercise.premium && !hasPremiumAccess;
+              return (
               <div key={exercise.id} className={styles.card}>
                 <Link href={`/ovningsbank/${exercise.slug}`} className={styles.cardTop}>
                   {hasThumbnail(exercise.slug) && (
@@ -146,7 +170,14 @@ export default function OvningsbankClient({
                         alt={exercise.title}
                         fill
                         sizes="(max-width: 880px) 100vw, 320px"
+                        className={locked ? styles.thumbBlurred : undefined}
                       />
+                      {locked && (
+                        <div className={styles.lockOverlay}>
+                          <span className={styles.lockIcon}>🔒</span>
+                          <span className={styles.lockLabel}>Premium</span>
+                        </div>
+                      )}
                     </div>
                   )}
                   <h3>{exercise.title}</h3>
@@ -168,7 +199,8 @@ export default function OvningsbankClient({
                   loggedIn={loggedIn}
                 />
               </div>
-            ))}
+              );
+            })}
           </div>
         </main>
       </div>

@@ -138,6 +138,11 @@
   max-width: 420px;
 }
 
+.softInlineLink {
+  color: var(--sage);
+  text-decoration: underline;
+}
+
 .hero {
   max-width: 480px;
   padding-top: 40px;

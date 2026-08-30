@@ -18,10 +18,12 @@ export default function VimeoEmbed({
   src,
   className,
   lazy = false,
+  poster = null,
 }: {
   src: string;
   className?: string;
   lazy?: boolean;
+  poster?: string | null;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -86,6 +88,21 @@ export default function VimeoEmbed({
 
   return (
     <div ref={containerRef} className={className} style={{ position: "relative" }}>
+      {poster && !started && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={poster}
+          alt=""
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      )}
       {scale !== null && visible && (
         <iframe
           ref={setIframeNode}
