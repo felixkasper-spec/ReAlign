@@ -19,7 +19,7 @@ export const programMeta: Record<
   "rorlighet-axlar-skulderblad-nacke": { level: "Alla nivåer", weeks: "Engångspass", freq: "7 övningar", purpose: "Rörlighet axlar/nacke" },
   baltraning: { level: "Nybörjare", weeks: "Engångspass", freq: "6 övningar", purpose: "Bålträning" },
   kontorsvardag: { level: "Nybörjare", weeks: "Engångspass", freq: "5 övningar", purpose: "Kontorsvardag" },
-  "gym-underkropp": { level: "Medel", weeks: "Engångspass", freq: "6 övningar", purpose: "Gymträning" },
-  "gym-overkropp": { level: "Medel", weeks: "Engångspass", freq: "7 övningar", purpose: "Gymträning" },
-  "gym-helkropp": { level: "Medel", weeks: "Engångspass", freq: "7 övningar", purpose: "Gymträning" },
+  "gym-underkropp": { level: "Medel", weeks: "Engångspass", freq: "6 övningar", purpose: "Postural Gymträning" },
+  "gym-overkropp": { level: "Medel", weeks: "Engångspass", freq: "7 övningar", purpose: "Postural Gymträning" },
+  "gym-helkropp": { level: "Medel", weeks: "Engångspass", freq: "7 övningar", purpose: "Postural Gymträning" },
 };

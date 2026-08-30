@@ -104,8 +104,8 @@ export default async function PremiumCoachingPage() {
 
           <div className={styles.reasonGrid}>
             <div className={styles.reason}>
-              <b>Allt i Premium</b>Alla programnivåer, Gymträning, alla
-              övningsvideor, PDF-nedladdning, progressionsspårning och
+              <b>Allt i Premium</b>Alla programnivåer, Postural Gymträning,
+              alla övningsvideor, PDF-nedladdning, progressionsspårning och
               veckobrev.
             </div>
             <div className={styles.reason}>

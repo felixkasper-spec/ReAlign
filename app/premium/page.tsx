@@ -36,7 +36,7 @@ const faqGroups: FaqGroup[] = [
       },
       {
         q: "Behöver jag någon utrustning?",
-        a: "Nej, de flesta övningarna kräver ingen utrustning alls. Vissa använder en stol, en vägg eller en kudde. Ett fåtal mer avancerade övningar (Gymträning) är byggda för gymredskap, men det framgår tydligt på varje program.",
+        a: "Nej, de flesta övningarna kräver ingen utrustning alls. Vissa använder en stol, en vägg eller en kudde. Ett fåtal mer avancerade övningar (Postural Gymträning) är byggda för gymredskap, men det framgår tydligt på varje program.",
       },
       {
         q: "Jag tränar redan annat — passar det ändå?",
@@ -71,7 +71,7 @@ export default async function PremiumPage() {
           <h1>Alla nivåer. Alla program. Hela vägen.</h1>
           <p>
             Gratis kontot ger dig grunderna — Premium låser upp resten:
-            varenda nivå, i varenda kategori, plus Gymträning,
+            varenda nivå, i varenda kategori, plus Postural Gymträning,
             progressionsspårning och verktygen för att faktiskt hålla i
             det.
           </p>
@@ -120,8 +120,8 @@ export default async function PremiumPage() {
               vecka för vecka.
             </div>
             <div className={styles.reason}>
-              <b>Gymträning</b>Tre gymbaserade program för dig som vill ta
-              träningen vidare med redskap.
+              <b>Postural Gymträning</b>Tre gymbaserade program för dig som
+              vill ta träningen vidare med redskap.
             </div>
             <div className={styles.reason}>
               <b>Bygg eget program</b>Spara favoritövningar och kombinera dem

@@ -35,7 +35,7 @@ const categoryLabels: Record<string, string> = {
   helkropp: "Helkropp",
   hofter: "Höft & ländrygg",
   "axlar-nacke-skulderblad": "Axlar/nacke/skulderblad",
-  gym: "Gymträning",
+  gym: "Postural Gymträning",
   bal: "Bålträning",
   kontorsvardag: "Kontorsvardag",
 };
@@ -680,8 +680,8 @@ export default async function MinSidaPage({
                   </span>
                   <h3 className={styles.premiumTitle}>Bli Premium</h3>
                   <p className={styles.premiumText}>
-                    Lås upp alla programnivåer, Gymträning, progressionsspårning
-                    och veckobrev.
+                    Lås upp alla programnivåer, Postural Gymträning,
+                    progressionsspårning och veckobrev.
                   </p>
                   <p className={styles.premiumPrice}>149 kr/mån</p>
                   <form action={createCheckoutSession.bind(null, "premium", "month")}>

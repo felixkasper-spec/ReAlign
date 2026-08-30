@@ -374,7 +374,7 @@ export default async function Home() {
               <p className={styles.tierPriceAlt}>eller 1 341 kr/år — spara 25%</p>
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>
-                <li>Alla programnivåer, inklusive Gymträning</li>
+                <li>Alla programnivåer, inklusive Postural Gymträning</li>
                 <li>Detaljerad progressionsspårning</li>
                 <li>Bygg egna program av dina favoritövningar</li>
                 <li>Bläddra &amp; sök i hela övningsbanken</li>

@@ -75,10 +75,10 @@ export function buildRecommendation(answers: QuizAnswers): Recommendation {
           : "gym-helkropp";
     const gymTitle =
       gymSlug === "gym-overkropp"
-        ? "Gymträning - Överkropp"
+        ? "Postural Gymträning - Överkropp"
         : gymSlug === "gym-underkropp"
-          ? "Gymträning - Underkropp"
-          : "Gymträning - Helkropp";
+          ? "Postural Gymträning - Underkropp"
+          : "Postural Gymträning - Helkropp";
 
     return {
       headline: "Kombinera gym med postural grundträning",
