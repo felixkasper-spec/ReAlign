@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
+import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
@@ -18,7 +19,9 @@ export const metadata = pageMetadata({
 const CATEGORY_ORDER = [
   "helkropp",
   "hofter",
+  "rorlighet-hofter",
   "axlar-nacke-skulderblad",
+  "rorlighet-axlar",
   "kontorsvardag",
   "bal",
   "gym",
@@ -26,6 +29,12 @@ const CATEGORY_ORDER = [
 
 export default async function ProgramIndexPage() {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const subscription = user ? await getSubscription() : null;
+  const alreadyPremium = subscription?.active;
+
   const { data } = await supabase
     .from("programs")
     .select("id, slug, title, tier, hero_image, category, level");
@@ -65,19 +74,21 @@ export default async function ProgramIndexPage() {
           </Link>
         </div>
 
-        <div className={`${styles.banner} ${styles.bannerFree}`}>
-          <div>
-            <p>
-              <b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt
-              Bålträning och Kontorsvardag, är helt gratis. Resten ingår i
-              Premium — 149 kr/mån, eller 1 341 kr/år (spara 25%).
-            </p>
-            <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
+        {!alreadyPremium && (
+          <div className={`${styles.banner} ${styles.bannerFree}`}>
+            <div>
+              <p>
+                <b>Helkropp Nivå 1–2</b>, <b>Nivå 1</b> i övriga kategorier, samt
+                Bålträning och Kontorsvardag, är helt gratis. Resten ingår i
+                Premium — 149 kr/mån, eller 1 341 kr/år (spara 25%).
+              </p>
+              <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
+            </div>
+            <Link className="btn btn-primary" href="/premium" style={{ whiteSpace: "nowrap" }}>
+              Läs mer om Premium →
+            </Link>
           </div>
-          <Link className="btn btn-primary" href="/premium" style={{ whiteSpace: "nowrap" }}>
-            Läs mer om Premium →
-          </Link>
-        </div>
+        )}
 
         <div className={styles.grid} id="programlista">
           {(programs ?? []).map((p) => {

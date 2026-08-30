@@ -15,6 +15,8 @@ export const programMeta: Record<
   "axlar-nacke-skulderblad-niva-1": { level: "Nybörjare", weeks: "Engångspass", freq: "8 övningar", purpose: "Axlar/nacke/skulderblad" },
   "axlar-nacke-skulderblad-niva-2": { level: "Nybörjare", weeks: "Engångspass", freq: "7 övningar", purpose: "Axlar/nacke/skulderblad" },
   "axlar-nacke-skulderblad-niva-3": { level: "Medel", weeks: "Engångspass", freq: "6 övningar", purpose: "Axlar/nacke/skulderblad" },
+  "rorlighet-hofter-landrygg": { level: "Alla nivåer", weeks: "Engångspass", freq: "6 övningar", purpose: "Rörlighet höft & ländrygg" },
+  "rorlighet-axlar-skulderblad-nacke": { level: "Alla nivåer", weeks: "Engångspass", freq: "7 övningar", purpose: "Rörlighet axlar/nacke" },
   baltraning: { level: "Nybörjare", weeks: "Engångspass", freq: "6 övningar", purpose: "Bålträning" },
   kontorsvardag: { level: "Nybörjare", weeks: "Engångspass", freq: "5 övningar", purpose: "Kontorsvardag" },
   "gym-underkropp": { level: "Medel", weeks: "Engångspass", freq: "6 övningar", purpose: "Gymträning" },
