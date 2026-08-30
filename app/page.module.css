@@ -68,6 +68,10 @@
   object-fit: cover;
 }
 
+.heroImageMobile {
+  display: none;
+}
+
 /* TWO WAYS TO START */
 .twoWaysSection {
   padding-top: 0;
@@ -171,6 +175,7 @@
   aspect-ratio: 16 / 9;
   position: relative;
   background: var(--surface);
+  width: 100%;
   max-width: 280px;
   margin: 0 auto;
 }
@@ -546,6 +551,12 @@
   }
   .heroImage img {
     object-position: 85% center;
+  }
+  .heroImageDesktop {
+    display: none;
+  }
+  .heroImageMobile {
+    display: block;
   }
   .heroImage::before {
     content: "";

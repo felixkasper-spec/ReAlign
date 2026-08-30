@@ -79,12 +79,21 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className={`img-duo ${styles.heroImage}`}>
+          <div className={`img-duo ${styles.heroImage} ${styles.heroImageDesktop}`}>
             <Image
               src="https://images.unsplash.com/photo-1531403939386-c08a16cd7eef?auto=format&fit=crop&w=700&h=900&q=80&sat=-100&con=6&bri=5"
               alt="Person som gör en kontrollerad stretch utomhus"
               fill
-              sizes="(max-width: 880px) 100vw, 550px"
+              sizes="550px"
+              priority
+            />
+          </div>
+          <div className={`img-duo ${styles.heroImage} ${styles.heroImageMobile}`}>
+            <Image
+              src="https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?auto=format&fit=crop&w=700&h=900&q=80&sat=-100&con=6&bri=5"
+              alt="Person i medelåldern som är aktiv utomhus"
+              fill
+              sizes="100vw"
               priority
             />
           </div>
