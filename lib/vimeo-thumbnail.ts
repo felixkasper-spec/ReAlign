@@ -1,3 +1,14 @@
+export type VimeoThumbnail = {
+  url: string;
+  // Videons egna bredd/höjd (från oEmbed), inte bara thumbnailens — låter
+  // oss forma videoytan efter varje enskild video istället för att anta
+  // 16:9 för alla. Smala/stående videor (t.ex. telefoninspelade
+  // kundtestimonials) skulle annars tvingas in i en bred ruta, vilket får
+  // Vimeos spelare att fylla ut sidorna med en suddig utdragen kopia av
+  // bilden — precis det vi vill undvika.
+  aspectRatio: number;
+};
+
 // Vimeos spelare målar inget eget poster-läge förrän player.js har startat
 // inuti iframen, vilket är den där 2-3 sekunders "tomma ruta"-känslan på
 // varje videoyta i sajten. Genom att hämta en riktig thumbnail-bild via
@@ -5,7 +16,7 @@
 // innan iframen ens monteras slipper besökaren se en tom yta — bilden
 // finns där redan vid första paint. Next cachar fetch-anropet i 30 dagar
 // per video-id server-side, så kostnaden betalas bara en gång per video.
-export async function getVimeoThumbnail(embedSrc: string): Promise<string | null> {
+export async function getVimeoThumbnail(embedSrc: string): Promise<VimeoThumbnail | null> {
   // Övningsvideorna är hash-skyddade ("unlisted") — oEmbed svarar 404 på
   // en bar vimeo.com/<id>-URL utan ?h=-hashen, så hela embed-URL:en
   // (player.vimeo.com/video/<id>?h=<hash>) måste skickas med rakt av.
@@ -16,7 +27,11 @@ export async function getVimeoThumbnail(embedSrc: string): Promise<string | null
     );
     if (!res.ok) return null;
     const data = await res.json();
-    return typeof data.thumbnail_url === "string" ? data.thumbnail_url : null;
+    if (typeof data.thumbnail_url !== "string") return null;
+    const width = Number(data.width);
+    const height = Number(data.height);
+    const aspectRatio = width > 0 && height > 0 ? width / height : 16 / 9;
+    return { url: data.thumbnail_url, aspectRatio };
   } catch {
     return null;
   }

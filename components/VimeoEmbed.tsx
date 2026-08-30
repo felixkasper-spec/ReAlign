@@ -12,19 +12,26 @@ import Player from "@vimeo/player";
 // inte in i iframens egna dokument, så Vimeos fullskärmsläge fungerar som
 // vanligt.
 const VIRTUAL_WIDTH = 640;
-const VIRTUAL_HEIGHT = (VIRTUAL_WIDTH * 9) / 16;
 
 export default function VimeoEmbed({
   src,
   className,
   lazy = false,
   poster = null,
+  aspectRatio,
 }: {
   src: string;
   className?: string;
   lazy?: boolean;
   poster?: string | null;
+  // Videons egen bredd/höjd-kvot (från oEmbed via VimeoPoster). Utan den
+  // antar vi 16:9 — men en smal/stående video tvingad in i en 16:9-ruta
+  // gör att Vimeos spelare fyller ut sidorna med en suddig utdragen kopia
+  // av bilden. Med rätt kvot formar sig rutan efter videon istället.
+  aspectRatio?: number;
 }) {
+  const ratio = aspectRatio ?? 16 / 9;
+  const VIRTUAL_HEIGHT = VIRTUAL_WIDTH / ratio;
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const playerRef = useRef<Player | null>(null);
@@ -87,7 +94,11 @@ export default function VimeoEmbed({
   }
 
   return (
-    <div ref={containerRef} className={className} style={{ position: "relative" }}>
+    <div
+      ref={containerRef}
+      className={className}
+      style={{ position: "relative", ...(aspectRatio ? { aspectRatio } : {}) }}
+    >
       {poster && !started && (
         // eslint-disable-next-line @next/next/no-img-element
         <img

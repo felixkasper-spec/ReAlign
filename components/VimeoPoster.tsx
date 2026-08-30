@@ -14,6 +14,14 @@ export default async function VimeoPoster({
   className?: string;
   lazy?: boolean;
 }) {
-  const poster = await getVimeoThumbnail(src);
-  return <VimeoEmbed src={src} className={className} lazy={lazy} poster={poster} />;
+  const thumbnail = await getVimeoThumbnail(src);
+  return (
+    <VimeoEmbed
+      src={src}
+      className={className}
+      lazy={lazy}
+      poster={thumbnail?.url ?? null}
+      aspectRatio={thumbnail?.aspectRatio}
+    />
+  );
 }
