@@ -233,8 +233,8 @@ export default async function Home() {
             <Link className={styles.card} href="/om-metoden">
               <div className={`img-duo ${styles.cardThumb}`}>
                 <Image
-                  src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
-                  alt="Person i medelåldern som utför en övning"
+                  src="https://images.unsplash.com/photo-1734873477108-6837b02f2b9d?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
+                  alt="Person som står med naturlig, upprätt hållning"
                   fill
                   sizes="(max-width: 880px) 100vw, 33vw"
                 />
