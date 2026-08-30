@@ -18,7 +18,7 @@ const TESTIMONIAL_VIDEO_URLS = [
 export const metadata = pageMetadata({
   title: "Startsida — ReAlign Metoden",
   description:
-    "Postural träning som återställer kroppens naturliga balans. Program, övningsbank och ergonomiguider, helt gratis.",
+    "Postural träning som återställer kroppens naturliga balans. Program och ergonomiguider, helt gratis att komma igång med.",
   image: "/og/default.png",
   path: "/",
 });
@@ -220,7 +220,7 @@ export default function Home() {
                 <span className="tag">Rygg</span>
               </div>
             </Link>
-            <Link className={styles.card} href="/ovningsbank">
+            <Link className={styles.card} href="/premium">
               <div className={`img-duo ${styles.cardThumb}`}>
                 <Image
                   src="https://images.unsplash.com/photo-1701826510656-8dbcec14a4b5?auto=format&fit=crop&w=600&h=400&q=80&sat=-100&con=6&bri=5"
@@ -230,15 +230,15 @@ export default function Home() {
                 />
               </div>
               <span className={styles.num}>02</span>
-              <h3>Övningsbank</h3>
+              <h3>Premium</h3>
               <p>
-                Alla övningar var för sig, filtrerbara på kroppsdel,
-                utrustning och svårighetsgrad.
+                Alla nivåer, alla program och progressionsspårning så du
+                ser hur du faktiskt utvecklas vecka för vecka.
               </p>
               <div className={styles.taglist}>
-                <span className="tag">Video</span>
-                <span className="tag">Kategoriserat</span>
-                <span className="tag">Favoriter</span>
+                <span className="tag">Progression</span>
+                <span className="tag">Alla nivåer</span>
+                <span className="tag">Gymträning</span>
               </div>
             </Link>
             <Link className={styles.card} href="/ergonomi">
@@ -341,7 +341,7 @@ export default function Home() {
               <span className="eyebrow">Utan konto</span>
               <p className={styles.tierPrice}>0 kr</p>
               <ul className={styles.tierList}>
-                <li>Bläddra bland alla program &amp; övningar</li>
+                <li>Bläddra bland alla program</li>
                 <li>Helkropp Nivå 1–2, Nivå 1 i övriga kategorier — helt gratis</li>
                 <li>Läs ergonomiguider för sitta, stå och lyfta</li>
               </ul>
@@ -368,10 +368,10 @@ export default function Home() {
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>
                 <li>Alla programnivåer, inklusive Gymträning</li>
-                <li>Bygg egna program av dina favoritövningar</li>
-                <li>Alla övningsvideor i övningsbanken</li>
-                <li>Ladda ner program som PDF</li>
                 <li>Detaljerad progressionsspårning</li>
+                <li>Bygg egna program av dina favoritövningar</li>
+                <li>Bläddra &amp; sök i hela övningsbanken</li>
+                <li>Ladda ner program som PDF</li>
                 <li>Veckobrev med tips och uppföljning</li>
               </ul>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>

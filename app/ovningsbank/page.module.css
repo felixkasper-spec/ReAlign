@@ -35,6 +35,14 @@
   margin: 0;
 }
 
+.lockedBox {
+  background: var(--warm-soft);
+  border: 1px solid var(--warm);
+  border-radius: 20px;
+  padding: 32px 34px;
+  margin: 24px 0;
+}
+
 .empty {
   color: var(--text-soft);
   padding: 40px 0;

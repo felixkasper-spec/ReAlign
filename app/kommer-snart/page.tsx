@@ -75,7 +75,7 @@ export default function KommerSnartPage() {
         <div className={styles.ctaBand}>
           <span className="eyebrow">Under tiden</span>
           <h2>Allt du behöver för att komma igång finns redan här — helt gratis.</h2>
-          <p>Program, övningsbank, ergonomiguider och min sida är redo att användas idag.</p>
+          <p>Program, ergonomiguider och min sida är redo att användas idag.</p>
           <Link className="btn btn-primary" href="/">
             Till startsidan
           </Link>

@@ -20,8 +20,48 @@ export const metadata = pageMetadata({
 
 export default async function OvningsbankPage() {
   const supabase = await createClient();
+  const subscription = await getSubscription();
 
-  const [{ data: exercises }, userResult, { data: helkroppPrograms }, premiumSlugs, subscription] =
+  if (!subscription.active) {
+    return (
+      <>
+        <Header />
+        <div className="wrap">
+          <div className={styles.pageHead}>
+            <span className="eyebrow">Övningsbank</span>
+            <h1 className={styles.title}>Övningsbank</h1>
+            <p className={styles.intro}>
+              Bläddra bland alla övningar, sök på kroppsdel eller
+              utrustning, och kombinera dina favoriter till ett eget
+              program.
+            </p>
+          </div>
+          <div className={styles.lockedBox}>
+            <span className="eyebrow" style={{ color: "var(--warm)" }}>
+              Premium
+            </span>
+            <h3 style={{ fontSize: "1.2rem", margin: "10px 0 8px", fontWeight: 500 }}>
+              Övningsbanken ingår i Premium
+            </h3>
+            <p style={{ color: "var(--text)", fontSize: "0.92rem", marginBottom: 18 }}>
+              Tillsammans med alla programnivåer, progressionsspårning
+              och verktygen för att faktiskt hålla i det — 149 kr/mån,
+              eller 1 341 kr/år (spara 25%).
+            </p>
+            <Link className="btn btn-primary" href="/premium">
+              Läs mer om Premium →
+            </Link>
+            <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
+              ✓ Går att betala med friskvårdsbidrag
+            </p>
+          </div>
+          <Footer />
+        </div>
+      </>
+    );
+  }
+
+  const [{ data: exercises }, userResult, { data: helkroppPrograms }, premiumSlugs] =
     await Promise.all([
       supabase
         .from("exercises")
@@ -36,7 +76,6 @@ export default async function OvningsbankPage() {
         )
         .in("slug", ["helkropp-niva-1", "helkropp-niva-2", "helkropp-niva-3"]),
       getPremiumExerciseSlugs(),
-      getSubscription(),
     ]);
 
   const user = userResult.data.user;
@@ -102,16 +141,13 @@ export default async function OvningsbankPage() {
         </div>
 
         <div className={styles.banner}>
-          <p>
-            Spara övningar som favoriter och kombinera dem till ett eget,
-            ordnat program — ingår i Premium.
-          </p>
+          <p>Spara övningar som favoriter och kombinera dem till ett eget, ordnat program.</p>
           <Link
             className="btn btn-primary"
-            href={subscription.active ? "/min-sida/bygg-program" : "/premium"}
+            href="/min-sida/bygg-program"
             style={{ whiteSpace: "nowrap" }}
           >
-            {subscription.active ? "Bygg eget program →" : "Läs mer om Premium →"}
+            Bygg eget program →
           </Link>
         </div>
 

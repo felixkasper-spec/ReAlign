@@ -71,8 +71,9 @@ export default async function PremiumPage() {
           <h1>Alla nivåer. Alla program. Hela vägen.</h1>
           <p>
             Gratis kontot ger dig grunderna — Premium låser upp resten:
-            varenda nivå, i varenda kategori, plus Gymträning, hela
-            övningsbanken och verktygen för att faktiskt hålla i det.
+            varenda nivå, i varenda kategori, plus Gymträning,
+            progressionsspårning och verktygen för att faktiskt hålla i
+            det.
           </p>
         </header>
 
@@ -115,24 +116,24 @@ export default async function PremiumPage() {
               kategorier.
             </div>
             <div className={styles.reason}>
-              <b>Gymträning</b>Tre gymbaserade program för dig som vill ta
-              träningen vidare med redskap.
+              <b>Progressionsspårning</b>Se svart på vitt hur du utvecklas
+              vecka för vecka.
             </div>
             <div className={styles.reason}>
-              <b>Hela övningsbanken</b>Video och fulla instruktioner för varje
-              övning, inte bara de gratisprogrammen använder.
+              <b>Gymträning</b>Tre gymbaserade program för dig som vill ta
+              träningen vidare med redskap.
             </div>
             <div className={styles.reason}>
               <b>Bygg eget program</b>Spara favoritövningar och kombinera dem
               till ett eget, namngivet program i din egen ordning.
             </div>
             <div className={styles.reason}>
-              <b>Ladda ner program som PDF</b>Ta med programmet till gymmet
-              eller skriv ut det — bild och instruktion för varje övning.
+              <b>Övningsbanken</b>Bläddra och sök bland alla övningar, med
+              video och fulla instruktioner för varje.
             </div>
             <div className={styles.reason}>
-              <b>Progressionsspårning</b>Se svart på vitt hur du utvecklas
-              vecka för vecka.
+              <b>Ladda ner program som PDF</b>Ta med programmet till gymmet
+              eller skriv ut det — bild och instruktion för varje övning.
             </div>
             <div className={styles.reason}>
               <b>Veckobrev</b>Tips och uppföljning direkt i mejlen, så du

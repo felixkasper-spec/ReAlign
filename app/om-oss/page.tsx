@@ -124,7 +124,7 @@ export default function OmOssPage() {
             </div>
             <div className={styles.valueCard}>
               <b>Tillgängligt för alla</b>
-              <p>Program, övningsbank och ergonomiguider är fria att använda, oavsett var du bor.</p>
+              <p>Program och ergonomiguider är fria att använda, oavsett var du bor.</p>
             </div>
           </div>
         </section>

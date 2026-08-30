@@ -42,7 +42,7 @@ const groups: FaqGroup[] = [
       },
       {
         q: "Vad är skillnaden mellan programmen och övningsbanken?",
-        a: "Programmen är färdiga, ordnade sekvenser byggda kring ett specifikt syfte — följ dem steg för steg. Övningsbanken är alla enskilda övningar samlade, för dig som vill söka efter en specifik övning eller bygga ett eget program.",
+        a: "Programmen är färdiga, ordnade sekvenser byggda kring ett specifikt syfte — följ dem steg för steg. Övningsbanken är alla enskilda övningar samlade, för dig som vill söka efter en specifik övning eller bygga ett eget program — ingår i Premium.",
       },
     ],
   },
@@ -51,7 +51,7 @@ const groups: FaqGroup[] = [
     items: [
       {
         q: "Kostar det något?",
-        a: "Helkropp Nivå 1–2, Nivå 1 i övriga kategorier samt Bålträning och Kontorsvardag är helt gratis — inget konto krävs för att bläddra. Du kan alltid bläddra i hela övningsbanken, men video och instruktioner för övningar som bara ingår i premiumprogram kräver Premium. Ett gratis konto låser upp favoriter och schemaläggning. Premium (149 kr/mån, eller 1 341 kr/år — spara 25%) lägger till resten av programbiblioteket, Gymträning, alla övningsvideor, progressionsspårning och veckobrev.",
+        a: "Helkropp Nivå 1–2, Nivå 1 i övriga kategorier samt Bålträning och Kontorsvardag är helt gratis — inget konto krävs för att följa dem, med video och instruktioner för varje övning i just det programmet. Ett gratis konto låser upp favoriter och schemaläggning. Premium (149 kr/mån, eller 1 341 kr/år — spara 25%) lägger till resten av programbiblioteket, Gymträning, progressionsspårning, övningsbanken och veckobrev.",
       },
       {
         q: "Vad ingår i videosamtals-analysen?",

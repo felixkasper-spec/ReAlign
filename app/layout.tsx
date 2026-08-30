@@ -30,11 +30,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.realignmetoden.se"),
   title: "Hållning — ReAlign Metoden",
   description:
-    "Postural träning som återställer kroppens naturliga balans. Program, övningsbank och ergonomiguider, helt gratis.",
+    "Postural träning som återställer kroppens naturliga balans. Program och ergonomiguider, helt gratis att komma igång med.",
   openGraph: {
     title: "ReAlign Metoden — Hållningsträning som håller",
     description:
-      "Postural träning som återställer kroppens naturliga balans. Program, övningsbank och ergonomiguider, helt gratis.",
+      "Postural träning som återställer kroppens naturliga balans. Program och ergonomiguider, helt gratis att komma igång med.",
     type: "website",
     images: ["/og/default.png"],
   },
@@ -51,7 +51,7 @@ const organizationJsonLd = {
   url: "https://www.realignmetoden.se",
   logo: "https://www.realignmetoden.se/logo.png",
   description:
-    "Postural träning som återställer kroppens naturliga balans — program, övningsbank och ergonomiguider.",
+    "Postural träning som återställer kroppens naturliga balans — program, ergonomiguider och strukturerad progression.",
   contactPoint: {
     "@type": "ContactPoint",
     email: "kontakt@realignmetoden.se",
