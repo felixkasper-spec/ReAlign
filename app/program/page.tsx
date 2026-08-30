@@ -1,11 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
-import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
+import ProgramFilter from "./ProgramFilter";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
@@ -90,40 +89,7 @@ export default async function ProgramIndexPage() {
           </div>
         )}
 
-        <div className={styles.grid} id="programlista">
-          {(programs ?? []).map((p) => {
-            const meta = programMeta[p.slug];
-            return (
-              <Link key={p.id} href={`/program/${p.slug}`} className={styles.card}>
-                {p.hero_image && (
-                  <div className={`img-duo ${styles.cardThumb}`}>
-                    <Image
-                      src={p.hero_image}
-                      alt={p.title}
-                      fill
-                      sizes="(max-width: 880px) 100vw, 320px"
-                    />
-                  </div>
-                )}
-                <div className={styles.cardTop}>
-                  <span className={styles.badge}>{meta?.level ?? ""}</span>
-                  <span
-                    className={`${styles.badge} ${
-                      p.tier === "premium" ? styles.premium : styles.free
-                    }`}
-                  >
-                    {p.tier === "premium" ? "Premium" : "Gratis"}
-                  </span>
-                </div>
-                <h3>{p.title}</h3>
-                <p className={styles.purpose}>{meta?.purpose}</p>
-                <div className={styles.stats}>
-                  <span>{meta?.weeks}</span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+        <ProgramFilter programs={programs} />
 
         <div className={styles.ctaBanner}>
           <div style={{ maxWidth: 600 }}>

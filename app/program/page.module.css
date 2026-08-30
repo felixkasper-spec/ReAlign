@@ -51,6 +51,34 @@
   margin: 6px 0 0;
 }
 
+.tierFilter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tierFilterBtn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.tierFilterBtn:hover {
+  border-color: var(--sage-light);
+}
+
+.tierFilterActive {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
