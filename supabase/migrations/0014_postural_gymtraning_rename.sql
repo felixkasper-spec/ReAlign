@@ -16,3 +16,11 @@ where slug = 'gym-helkropp';
 update public.programs
 set description = 'Rörelser du kanske redan känner igen, fast med fokus på just de detaljer som gör dem posturalt stärkande.'
 where slug in ('gym-underkropp', 'gym-overkropp');
+
+update public.programs
+set hero_image = '/exercises/cablecross-shoulder-abduction.jpg'
+where slug = 'gym-overkropp';
+
+update public.programs
+set hero_image = '/exercises/cablecross-shoulder-rotation.jpg'
+where slug = 'gym-helkropp';
