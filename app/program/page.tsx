@@ -18,6 +18,8 @@ const CATEGORY_ORDER = [
   "helkropp",
   "hofter",
   "rorlighet-hofter",
+  "kna",
+  "sate",
   "axlar-nacke-skulderblad",
   "rorlighet-axlar",
   "kontorsvardag",

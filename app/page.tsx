@@ -401,7 +401,8 @@ export default async function Home() {
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Premium&quot;</li>
                 <li>Direktkontakt med en coach via chatt</li>
-                <li>Svar på frågor om övningar och upplägg</li>
+                <li>Feedback på teknik och skräddarsydda program</li>
+                <li>Skräddarsydd träningsplan utefter dina förutsättningar</li>
                 <li>Svar inom 1–2 vardagar</li>
               </ul>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
