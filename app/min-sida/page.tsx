@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import SubmitButton from "@/components/SubmitButton";
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
@@ -801,6 +802,7 @@ export default async function MinSidaPage({
         </div>
       </main>
       </div>
+      <BackToTop />
     </>
   );
 }

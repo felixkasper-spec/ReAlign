@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import { createClient } from "@/lib/supabase/server";
 import { pageMetadata } from "@/lib/page-metadata";
 import ProgramFilter from "./ProgramFilter";
@@ -91,6 +92,7 @@ export default async function ProgramIndexPage() {
 
         <Footer />
       </div>
+      <BackToTop />
     </>
   );
 }
