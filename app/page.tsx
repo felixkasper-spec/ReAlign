@@ -71,6 +71,9 @@ export default async function Home() {
             </div>
             <div className={styles.trust}>
               <div>
+                <b>1 500+</b>hjälpta patienter
+              </div>
+              <div>
                 <b>Hela kroppen</b>i fokus, inte delar
               </div>
               <div>
