@@ -161,7 +161,7 @@ export default async function PremiumPage() {
             {testimonials.slice(0, 2).map((t) => (
               <div key={t.quote} className={styles.quoteCard}>
                 <p>&quot;{t.quote}&quot;</p>
-                <p>— Patientrecension</p>
+                <p>— {t.name}, Google-recension</p>
               </div>
             ))}
           </div>
