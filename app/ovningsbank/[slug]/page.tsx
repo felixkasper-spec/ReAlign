@@ -197,8 +197,8 @@ export default async function ExercisePage({
                   Den här övningen ingår i Premium
                 </h3>
                 <p style={{ color: "var(--text)", fontSize: "0.9rem", marginBottom: 18 }}>
-                  Lås upp video, instruktioner och resten av övningsbanken för
-                  149 kr/mån, eller 1 341 kr/år (spara 25%).
+                  Lås upp video, instruktioner och resten av övningsbanken —
+                  första månaden till halva priset, 74,50 kr, sen 149 kr/mån.
                 </p>
                 <Link className="btn btn-primary" href="/premium">
                   Läs mer om Premium →
