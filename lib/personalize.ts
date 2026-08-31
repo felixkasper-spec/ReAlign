@@ -63,6 +63,7 @@ export function buildRecommendation(answers: QuizAnswers): Recommendation {
   const lvl = levelFor(answers.experience, cat.maxLevel);
   const catSlug = `${cat.prefix}-niva-${lvl.level}`;
   const catTitle = `${cat.name} - Nivå ${lvl.level}`;
+  const nextLevelTitle = `${cat.name} - Nivå ${lvl.level + 1}`;
 
   const progressionNote = lvl.note.trim() || null;
 
@@ -93,7 +94,7 @@ export function buildRecommendation(answers: QuizAnswers): Recommendation {
         },
         {
           programSlug: catSlug,
-          note: `Efter 2–3 veckor: byt ut föregående steg mot nästa nivå i samma kategori, fortsatt i kombination med ${gymTitle}.`,
+          note: `När du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ${nextLevelTitle}, fortsatt i kombination med ${gymTitle}.`,
         },
       ],
     };
