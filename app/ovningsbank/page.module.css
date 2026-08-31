@@ -216,6 +216,25 @@
   color: var(--warm);
 }
 
+.backToTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--sage);
+  color: #fff;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  z-index: 40;
+  cursor: pointer;
+}
+
 @media (max-width: 880px) {
   .jumpBtn {
     display: inline-block;

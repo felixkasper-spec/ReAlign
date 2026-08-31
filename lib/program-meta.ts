@@ -17,6 +17,8 @@ export const programMeta: Record<
   "axlar-nacke-skulderblad-niva-3": { level: "Medel", weeks: "Engångspass", freq: "6 övningar", purpose: "Axlar/nacke/skulderblad" },
   "rorlighet-hofter-landrygg": { level: "Alla nivåer", weeks: "Engångspass", freq: "6 övningar", purpose: "Rörlighet höft & ländrygg" },
   "rorlighet-axlar-skulderblad-nacke": { level: "Alla nivåer", weeks: "Engångspass", freq: "7 övningar", purpose: "Rörlighet axlar/nacke" },
+  "rorlighet-helkropp": { level: "Alla nivåer", weeks: "Engångspass", freq: "11 övningar", purpose: "Rörlighet helkropp" },
+  "rorlighet-under-belastning": { level: "Alla nivåer", weeks: "Engångspass", freq: "7 övningar", purpose: "Rörlighet under belastning" },
   "knafokus-mjukt": { level: "Nybörjare", weeks: "Engångspass", freq: "8 övningar", purpose: "Knäfokus" },
   "knafokus-avancerad": { level: "Avancerad", weeks: "Engångspass", freq: "7 övningar", purpose: "Knäfokus" },
   "vacka-satet-mjukt": { level: "Nybörjare", weeks: "Engångspass", freq: "7 övningar", purpose: "Väcka sätet" },

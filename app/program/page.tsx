@@ -16,12 +16,14 @@ export const metadata = pageMetadata({
 
 const CATEGORY_ORDER = [
   "helkropp",
+  "rorlighet-helkropp",
   "hofter",
   "rorlighet-hofter",
   "kna",
   "sate",
   "axlar-nacke-skulderblad",
   "rorlighet-axlar",
+  "rorlighet-belastning",
   "kontorsvardag",
   "bal",
   "gym",
