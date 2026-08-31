@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import VimeoPoster from "@/components/VimeoPoster";
 import ScrollCue from "@/components/ScrollCue";
@@ -437,6 +438,7 @@ export default async function Home() {
 
         <Footer />
       </div>
+      <BackToTop />
     </>
   );
 }

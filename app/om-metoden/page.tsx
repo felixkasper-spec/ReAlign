@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import { getSpotifyOembed } from "@/lib/spotify";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -611,6 +612,7 @@ export default async function OmMetodenPage() {
 
         <Footer />
       </div>
+      <BackToTop />
     </>
   );
 }

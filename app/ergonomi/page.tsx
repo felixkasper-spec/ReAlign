@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import SpotifyEmbed from "@/components/SpotifyEmbed";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import VimeoPoster from "@/components/VimeoPoster";
@@ -359,6 +360,7 @@ export default async function ErgonomiPage() {
 
         <Footer />
       </div>
+      <BackToTop />
     </>
   );
 }

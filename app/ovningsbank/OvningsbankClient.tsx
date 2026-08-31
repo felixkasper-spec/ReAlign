@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FavoriteButton from "@/components/FavoriteButton";
+import BackToTop from "@/components/BackToTop";
 import styles from "./page.module.css";
 import { hasThumbnail } from "./thumbnails";
 
@@ -33,15 +34,6 @@ export default function OvningsbankClient({
   const [equipFilter, setEquipFilter] = useState<string[]>([]);
   const [freeOnly, setFreeOnly] = useState(false);
   const favoriteSet = useMemo(() => new Set(favoriteIds), [favoriteIds]);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-
-  useEffect(() => {
-    function onScroll() {
-      setShowBackToTop(window.scrollY > 400);
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const freeCount = useMemo(
     () => exercises.filter((e) => !e.premium).length,
@@ -214,16 +206,7 @@ export default function OvningsbankClient({
         </main>
       </div>
 
-      {showBackToTop && (
-        <button
-          type="button"
-          className={styles.backToTop}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Till toppen"
-        >
-          ↑
-        </button>
-      )}
+      <BackToTop />
     </>
   );
 }
