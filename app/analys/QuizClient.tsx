@@ -113,18 +113,27 @@ export default function QuizClient() {
         {result.steps.map((step, i) => (
           <div className={styles.stepCard} key={`${step.slug}-${i}`}>
             <span className={styles.stepNum}>{i + 1}</span>
-            <p>
-              <b>{step.title}</b>{" "}
-              <span
-                className={`${styles.badge} ${
-                  step.tier === "premium" ? styles.premium : styles.free
-                }`}
+            <div style={{ flex: 1 }}>
+              <p>
+                <b>{step.title}</b>{" "}
+                <span
+                  className={`${styles.badge} ${
+                    step.tier === "premium" ? styles.premium : styles.free
+                  }`}
+                >
+                  {step.tier === "premium" ? "Premium" : "Gratis"}
+                </span>
+                <br />
+                {step.note}
+              </p>
+              <Link
+                className="btn btn-primary"
+                href={`/program/${step.slug}`}
+                style={{ marginTop: 12, display: "inline-block" }}
               >
-                {step.tier === "premium" ? "Premium" : "Gratis"}
-              </span>
-              <br />
-              {step.note}
-            </p>
+                Öppna programmet →
+              </Link>
+            </div>
           </div>
         ))}
 
@@ -155,20 +164,6 @@ export default function QuizClient() {
             </Link>
           </div>
         )}
-
-        <div className={styles.linkRow}>
-          {result.steps
-            .filter((s, i, arr) => arr.findIndex((x) => x.slug === s.slug) === i)
-            .map((step) => (
-              <Link
-                key={step.slug}
-                className="btn btn-primary"
-                href={`/program/${step.slug}`}
-              >
-                Öppna {step.title} →
-              </Link>
-            ))}
-        </div>
 
         <div className={styles.restart}>
           <button type="button" onClick={restart}>

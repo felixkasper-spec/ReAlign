@@ -67,7 +67,7 @@ function baseLevel(experience: Experience) {
 function progressionNoteFor(categoryName: string, level: number, realMaxLevel: number) {
   const nextLevel = level + 1;
   if (nextLevel > realMaxLevel) return null;
-  return `När du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ${categoryName} - Nivå ${nextLevel}.`;
+  return `Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ${categoryName} - Nivå ${nextLevel}.`;
 }
 
 function timeNoteFor(time: TimePreference) {

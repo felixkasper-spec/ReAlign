@@ -171,19 +171,6 @@
   color: var(--text);
 }
 
-.linkRow {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 22px;
-}
-
-.linkRow a {
-  flex: 1;
-  text-align: center;
-  min-width: 180px;
-}
-
 .restart {
   text-align: center;
   margin-top: 20px;
