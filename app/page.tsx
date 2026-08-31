@@ -155,12 +155,20 @@ export default async function Home() {
             </h2>
           </div>
 
-          <div className={styles.googleRating}>
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Cleer+Klinik+Hulda+Lindgrens+gata+8+G%C3%B6teborg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.googleRating}
+          >
             <span className={styles.stars}>★★★★★</span>
             <span>
               <b>5.0</b> på Google
             </span>
-          </div>
+          </a>
+          <p className={styles.googleRatingNote}>
+            Recensionerna kommer från Cleer Klinik, vår fysiska klinik i Göteborg.
+          </p>
 
           <div className={styles.testimonialGrid}>
             <Suspense

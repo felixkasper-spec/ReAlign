@@ -65,9 +65,21 @@
   background: var(--surface);
   border-radius: 100px;
   padding: 10px 18px;
-  margin-bottom: 20px;
   font-size: 0.86rem;
   color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.googleRating:hover {
+  border-color: var(--sage-light);
+}
+
+.googleRatingNote {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  margin: 8px 0 20px;
 }
 
 .stars {
