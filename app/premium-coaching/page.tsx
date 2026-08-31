@@ -138,6 +138,17 @@ export default async function PremiumCoachingPage() {
                 erfarenhet och över 1 500 hjälpta patienter. Det är jag som
                 läser och svarar på dina meddelanden.
               </p>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Cleer+Klinik+Hulda+Lindgrens+gata+8+G%C3%B6teborg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.googleRating}
+              >
+                <span className={styles.stars}>★★★★★</span>
+                <span>
+                  <b>5.0</b> på Google (53 recensioner)
+                </span>
+              </a>
             </div>
           </div>
         </div>
