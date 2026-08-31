@@ -56,6 +56,8 @@ export default function KontaktPage() {
 
         <ContactForm />
 
+        <p className={styles.orgInfo}>Felix Kasper AB · Org.nr 559555-6951</p>
+
         <Footer />
       </div>
     </>

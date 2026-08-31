@@ -76,6 +76,13 @@
   margin-bottom: 16px;
 }
 
+.orgInfo {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  text-align: center;
+  margin: -20px 0 30px;
+}
+
 @media (max-width: 700px) {
   .contactGrid {
     grid-template-columns: 1fr;
