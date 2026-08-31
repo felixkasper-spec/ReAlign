@@ -13,10 +13,6 @@
   margin-bottom: 24px;
 }
 
-.jumpBtn {
-  display: none;
-}
-
 .banner {
   display: flex;
   align-items: center;
@@ -168,10 +164,6 @@
 }
 
 @media (max-width: 880px) {
-  .jumpBtn {
-    display: inline-block;
-    margin-bottom: 8px;
-  }
   .grid {
     grid-template-columns: 1fr;
   }

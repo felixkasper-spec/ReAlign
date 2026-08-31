@@ -51,13 +51,6 @@ export default async function ProgramIndexPage() {
             helkroppsprogram till mer specifika program, bläddra fritt i
             programmen nedan.
           </p>
-          <Link
-            href="#programlista"
-            className={`btn btn-ghost ${styles.jumpBtn}`}
-            style={{ border: "1px solid var(--line)" }}
-          >
-            Till programmen →
-          </Link>
         </div>
 
         <div className={styles.banner}>
