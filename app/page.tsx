@@ -163,7 +163,7 @@ export default async function Home() {
           >
             <span className={styles.stars}>★★★★★</span>
             <span>
-              <b>5.0</b> på Google
+              <b>5.0</b> på Google (53 recensioner)
             </span>
           </a>
           <p className={styles.googleRatingNote}>

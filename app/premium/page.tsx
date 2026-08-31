@@ -151,11 +151,11 @@ export default async function PremiumPage() {
           >
             <span className={styles.stars}>★★★★★</span>
             <span>
-              <b>5.0</b> på Google
+              <b>5.0</b> på Google (53 recensioner)
             </span>
           </a>
           <p className={styles.googleRatingNote}>
-            Recensionerna kommer från Cleer Klinik, vår fysiska klinik i Göteborg.
+            Recensioner från vår fysiska klinik - Cleer Klinik.
           </p>
           <div className={styles.quoteGrid}>
             {testimonials.slice(0, 2).map((t) => (
