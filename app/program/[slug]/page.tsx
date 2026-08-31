@@ -106,9 +106,8 @@ export default async function ProgramPage({
       .maybeSingle();
     nextLevelProgram = data;
   }
-  const progressionNote = nextLevelProgram
-    ? `Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ${nextLevelProgram.title}.`
-    : null;
+  const progressionPrefix =
+    "Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ";
 
   let completions = 0;
   if (user && subscription.active) {
@@ -246,8 +245,17 @@ export default async function ProgramPage({
           </>
         )}
 
-        {!locked && progressionNote && (
-          <div className={styles.progressionBox}>{progressionNote}</div>
+        {!locked && nextLevelProgram && (
+          <div className={styles.progressionBox}>
+            {progressionPrefix}
+            <Link
+              href={`/program/${nextLevelProgram.slug}`}
+              style={{ color: "var(--sage)", textDecoration: "underline" }}
+            >
+              {nextLevelProgram.title}
+            </Link>
+            .
+          </div>
         )}
 
         {!locked && !user && (
