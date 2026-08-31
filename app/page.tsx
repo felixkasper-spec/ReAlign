@@ -167,7 +167,10 @@ export default async function Home() {
             </span>
           </a>
           <p className={styles.googleRatingNote}>
-            Recensionerna kommer från Cleer Klinik, vår fysiska klinik i Göteborg.
+            Recensioner från vår fysiska klinik - Cleer Klinik.{" "}
+            <Link href="/om-oss" style={{ color: "var(--sage)", textDecoration: "underline" }}>
+              Möt Felix, grundaren bakom ReAlign →
+            </Link>
           </p>
 
           <div className={styles.testimonialGrid}>
