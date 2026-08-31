@@ -19,4 +19,8 @@ export const testimonials = [
       "Efter bara en dryg vecka med övningarna märkte jag jätteskillnad på kroppen och smärtan som jag haft i höften försvann nästan helt.",
     name: "Liv Linder",
   },
+  {
+    quote: "Efter tre program känns det som om min kropp föryngrats 15 år!",
+    name: "Anna Hedenstrand",
+  },
 ];
