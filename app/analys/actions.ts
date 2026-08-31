@@ -2,7 +2,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
-import { programMeta } from "@/lib/program-meta";
 import { buildRecommendation, type QuizAnswers } from "@/lib/personalize";
 
 export type ResolvedStep = {
@@ -12,19 +11,19 @@ export type ResolvedStep = {
   note: string;
 };
 
-export type FreeProgram = {
+export type ClosestFreeProgram = {
   slug: string;
   title: string;
-  purpose: string;
 };
 
 export type ResolvedRecommendation = {
   headline: string;
   comboNote: string | null;
   progressionNote: string | null;
+  timeNote: string | null;
   steps: ResolvedStep[];
   viewerIsPremium: boolean;
-  freePrograms: FreeProgram[];
+  closestFree: ClosestFreeProgram | null;
 };
 
 export async function getRecommendation(
@@ -54,27 +53,34 @@ export async function getRecommendation(
   const viewerIsPremium = subscription.active;
   const hasPremiumStep = steps.some((s) => s.tier === "premium");
 
-  let freePrograms: FreeProgram[] = [];
+  let closestFree: ClosestFreeProgram | null = null;
   if (!viewerIsPremium && hasPremiumStep) {
-    const { data: freeData } = await supabase
-      .from("programs")
-      .select("slug, title")
-      .eq("tier", "free");
-    freePrograms = (freeData ?? [])
-      .map((p) => ({
-        slug: p.slug as string,
-        title: p.title as string,
-        purpose: programMeta[p.slug]?.purpose ?? "",
-      }))
-      .filter((p) => !steps.some((s) => s.slug === p.slug));
+    if (recommendation.closestFreeOverride) {
+      const { data } = await supabase
+        .from("programs")
+        .select("slug, title")
+        .eq("slug", recommendation.closestFreeOverride)
+        .maybeSingle();
+      if (data) closestFree = data;
+    } else if (recommendation.category) {
+      const { data } = await supabase
+        .from("programs")
+        .select("slug, title")
+        .eq("category", recommendation.category.prefix)
+        .eq("tier", "free")
+        .order("level", { ascending: false })
+        .limit(1);
+      if (data && data[0]) closestFree = data[0];
+    }
   }
 
   return {
     headline: recommendation.headline,
     comboNote: recommendation.comboNote,
     progressionNote: recommendation.progressionNote,
+    timeNote: recommendation.timeNote,
     steps,
     viewerIsPremium,
-    freePrograms,
+    closestFree,
   };
 }

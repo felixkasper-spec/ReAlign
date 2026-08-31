@@ -241,12 +241,6 @@
   border-color: var(--sage);
 }
 
-.freeProgramPurpose {
-  font-size: 0.76rem;
-  font-weight: 400;
-  color: var(--text-soft);
-}
-
 .teaser {
   margin-top: 60px;
   padding: 28px 30px;

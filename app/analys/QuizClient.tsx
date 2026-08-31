@@ -20,6 +20,7 @@ const questions: Question[] = [
       { value: "nacke", label: "Nacke, axlar & skulderblad" },
       { value: "rygg", label: "Rygg" },
       { value: "hoft", label: "Höft & ländrygg" },
+      { value: "kna", label: "Knän" },
       { value: "helkropp", label: "Nej, vill fokusera på helheten" },
       { value: "annat", label: "Annat" },
     ],
@@ -46,8 +47,7 @@ const questions: Question[] = [
     name: "equipment",
     question: "Vilken utrustning har du tillgång till?",
     options: [
-      { value: "ingen", label: "Inget alls, bara golvet" },
-      { value: "hemma", label: "Hemma med enkla saker (stol, vägg)" },
+      { value: "inte-gym", label: "Inget gym — hemma räcker (golv, stol, vägg)" },
       { value: "gym", label: "Gym" },
     ],
   },
@@ -132,25 +132,23 @@ export default function QuizClient() {
           <div className={styles.noteBox}>{result.progressionNote}</div>
         )}
 
-        {!result.viewerIsPremium && result.freePrograms.length > 0 && (
+        {result.timeNote && <div className={styles.noteBox}>{result.timeNote}</div>}
+
+        {!result.viewerIsPremium && result.closestFree && (
           <div className={styles.upgradeNudge}>
             <span className="eyebrow">Rekommendationen innehåller Premium</span>
-            <h3>Bygg upp dig i din takt — helt gratis också.</h3>
+            <h3>Gratis program som är närmast vår rekommendation</h3>
             <p>
-              Du behöver inte börja med Premium. Testa något av våra
-              gratisprogram redan idag, och uppgradera när du känner för det.
+              Du behöver inte börja med Premium. Testa det här gratisprogrammet
+              redan idag, och uppgradera när du känner för det.
             </p>
             <div className={styles.freeProgramList}>
-              {result.freePrograms.map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/program/${p.slug}`}
-                  className={styles.freeProgramCard}
-                >
-                  <span>{p.title}</span>
-                  {p.purpose && <span className={styles.freeProgramPurpose}>{p.purpose}</span>}
-                </Link>
-              ))}
+              <Link
+                href={`/program/${result.closestFree.slug}`}
+                className={styles.freeProgramCard}
+              >
+                <span>{result.closestFree.title}</span>
+              </Link>
             </div>
             <Link href="/premium" className="btn btn-primary" style={{ marginTop: 16 }}>
               Eller se allt som ingår i Premium →
