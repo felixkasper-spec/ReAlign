@@ -96,6 +96,20 @@ export default async function ProgramPage({
   const locked = program.tier === "premium" && !subscription.active;
   const user = userResult.data.user;
 
+  let nextLevelProgram: { slug: string; title: string } | null = null;
+  if (program.level != null) {
+    const { data } = await supabase
+      .from("programs")
+      .select("slug, title")
+      .eq("category", program.category)
+      .eq("level", program.level + 1)
+      .maybeSingle();
+    nextLevelProgram = data;
+  }
+  const progressionNote = nextLevelProgram
+    ? `Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ${nextLevelProgram.title}.`
+    : null;
+
   let completions = 0;
   if (user && subscription.active) {
     const { count } = await supabase
@@ -230,6 +244,10 @@ export default async function ProgramPage({
               programSlug={program.slug}
             />
           </>
+        )}
+
+        {!locked && progressionNote && (
+          <div className={styles.progressionBox}>{progressionNote}</div>
         )}
 
         {!locked && !user && (
