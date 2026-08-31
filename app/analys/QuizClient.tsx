@@ -104,6 +104,28 @@ export default function QuizClient() {
           <h2>{result.headline}</h2>
         </div>
 
+        {!result.viewerIsPremium && result.closestFree && (
+          <div className={styles.upgradeNudge}>
+            <span className="eyebrow">Rekommendationen innehåller Premium</span>
+            <h3>Gratis program som är närmast vår rekommendation</h3>
+            <p>
+              Du behöver inte börja med Premium. Testa det här gratisprogrammet
+              redan idag, och uppgradera när du känner för det.
+            </p>
+            <div className={styles.freeProgramList}>
+              <Link
+                href={`/program/${result.closestFree.slug}`}
+                className={styles.freeProgramCard}
+              >
+                <span>{result.closestFree.title}</span>
+              </Link>
+            </div>
+            <Link href="/premium" className="btn btn-primary" style={{ marginTop: 16 }}>
+              Eller se allt som ingår i Premium →
+            </Link>
+          </div>
+        )}
+
         {result.comboNote && (
           <div className={`${styles.noteBox} ${styles.comboNote}`}>
             {result.comboNote}
@@ -142,28 +164,6 @@ export default function QuizClient() {
         )}
 
         {result.timeNote && <div className={styles.noteBox}>{result.timeNote}</div>}
-
-        {!result.viewerIsPremium && result.closestFree && (
-          <div className={styles.upgradeNudge}>
-            <span className="eyebrow">Rekommendationen innehåller Premium</span>
-            <h3>Gratis program som är närmast vår rekommendation</h3>
-            <p>
-              Du behöver inte börja med Premium. Testa det här gratisprogrammet
-              redan idag, och uppgradera när du känner för det.
-            </p>
-            <div className={styles.freeProgramList}>
-              <Link
-                href={`/program/${result.closestFree.slug}`}
-                className={styles.freeProgramCard}
-              >
-                <span>{result.closestFree.title}</span>
-              </Link>
-            </div>
-            <Link href="/premium" className="btn btn-primary" style={{ marginTop: 16 }}>
-              Eller se allt som ingår i Premium →
-            </Link>
-          </div>
-        )}
 
         <div className={styles.restart}>
           <button type="button" onClick={restart}>
