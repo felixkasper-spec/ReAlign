@@ -17,11 +17,11 @@ const questions: Question[] = [
     name: "pain",
     question: "Vill du fokusera extra på något område?",
     options: [
+      { value: "helkropp", label: "Nej - vill fokusera på helheten (rekommenderas)" },
       { value: "nacke", label: "Nacke, axlar & skulderblad" },
       { value: "rygg", label: "Rygg" },
       { value: "hoft", label: "Höft & ländrygg" },
       { value: "kna", label: "Knän" },
-      { value: "helkropp", label: "Nej, vill fokusera på helheten" },
       { value: "annat", label: "Annat" },
     ],
   },
