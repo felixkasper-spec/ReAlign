@@ -35,19 +35,18 @@ export default function OvningsbankClient({
   const [freeOnly, setFreeOnly] = useState(false);
   const favoriteSet = useMemo(() => new Set(favoriteIds), [favoriteIds]);
 
-  const freeCount = useMemo(
-    () => exercises.filter((e) => !e.premium).length,
-    [exercises],
-  );
-
   const bodyParts = useMemo(() => {
-    const counts = new Map<string, number>();
+    const seen = new Set<string>();
+    const ordered: string[] = [];
     for (const e of exercises) {
       for (const category of e.categories) {
-        counts.set(category, (counts.get(category) ?? 0) + 1);
+        if (!seen.has(category)) {
+          seen.add(category);
+          ordered.push(category);
+        }
       }
     }
-    return [...counts.entries()];
+    return ordered;
   }, [exercises]);
 
   const equipmentOptions = useMemo(() => {
@@ -99,12 +98,11 @@ export default function OvningsbankClient({
                 onChange={() => setFreeOnly((v) => !v)}
               />
               Endast gratis
-              <span className={styles.count}>{freeCount}</span>
             </label>
           </div>
           <div className={styles.filterGroup}>
             <div className={styles.filterTitle}>Kroppsdel</div>
-            {bodyParts.map(([value, count]) => (
+            {bodyParts.map((value) => (
               <label className={styles.filterOpt} key={value}>
                 <input
                   type="checkbox"
@@ -112,7 +110,6 @@ export default function OvningsbankClient({
                   onChange={() => toggle(bodyFilter, value, setBodyFilter)}
                 />
                 {value === "Bål" ? "Mage" : value}
-                <span className={styles.count}>{count}</span>
               </label>
             ))}
           </div>
@@ -136,7 +133,7 @@ export default function OvningsbankClient({
             <span>
               {filtered.length === exercises.length
                 ? "Visar alla övningar"
-                : `${filtered.length} av ${exercises.length} övningar`}
+                : `${filtered.length} övningar matchar`}
             </span>
             {(bodyFilter.length > 0 || equipFilter.length > 0 || freeOnly || search) && (
               <button
