@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import SiteSearch from "./SiteSearch";
-import { pushToDataLayer } from "@/lib/gtm";
 import styles from "./Header.module.css";
 
 const navLinks = [
@@ -17,16 +15,13 @@ const navLinks = [
 
 export default function HeaderClient({
   loggedIn,
-  userId,
   transparent,
 }: {
   loggedIn: boolean;
-  userId: string | null;
   transparent?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -38,12 +33,6 @@ export default function HeaderClient({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  useEffect(() => {
-    if (userId) {
-      pushToDataLayer({ event: "login", user_id: userId });
-    }
-  }, [userId, pathname]);
 
   return (
     <nav className={`${styles.nav} ${transparent ? styles.transparent : ""}`}>
