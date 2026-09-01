@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import Script from "next/script";
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 const GTM_ID = "GTM-K7H75K8X";
@@ -79,6 +80,21 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        {/* Måste köra innan GTM-snuttens gtm.js hinner ladda och några
+            taggar hinner fira, annars hinner de fira okontrollerat innan
+            samtycke finns — beforeInteractive garanterar det oavsett var
+            i trädet den här komponenten placeras. */}
+        <Script id="consent-default" strategy="beforeInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+          window.gtag=gtag;
+          gtag('consent','default',{
+            ad_storage:'denied',
+            ad_user_data:'denied',
+            ad_personalization:'denied',
+            analytics_storage:'denied',
+            wait_for_update:500
+          });`}
+        </Script>
         <Script id="gtm" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -91,6 +107,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         {children}
+        <CookieConsent />
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CookieSettingsLink from "./CookieSettingsLink";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
@@ -12,6 +13,7 @@ export default function Footer() {
         <Link href="/faq">Vanliga frågor</Link>
         <Link href="/kontakt">Kontakt</Link>
         <Link href="/integritetspolicy">Integritetspolicy</Link>
+        <CookieSettingsLink />
       </div>
       <div className={styles.footRow}>
         <div className={styles.logo}>
