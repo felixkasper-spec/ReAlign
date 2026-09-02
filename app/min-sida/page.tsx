@@ -38,7 +38,7 @@ const categoryLabels: Record<string, string> = {
   hofter: "Höft & ländrygg",
   "axlar-nacke-skulderblad": "Axlar/nacke/skulderblad",
   gym: "Postural Gymträning",
-  bal: "Bålträning",
+  bal: "Postural Bålträning",
   kontorsvardag: "Kontorsvardag",
 };
 
