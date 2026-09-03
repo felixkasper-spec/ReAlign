@@ -141,31 +141,38 @@ export default async function ProgramPage({
           <span className={styles.current}>{program.title}</span>
         </div>
 
-        <div className={styles.progHead}>
-          <span className="eyebrow">{meta?.purpose ?? program.category}</span>
-          <h1>{program.title}</h1>
-          <div className={styles.progTags}>
-            {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
-            <span className="tag">{meta?.purpose ?? program.category}</span>
-            <span className="tag">
-              {program.tier === "premium" ? "Premium" : "Gratis"}
-            </span>
+        <div className={styles.heroSplit}>
+          <div className={styles.progHead}>
+            <span className="eyebrow">{meta?.purpose ?? program.category}</span>
+            <h1>{program.title}</h1>
+            <div className={styles.progTags}>
+              {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
+              <span className="tag">{meta?.purpose ?? program.category}</span>
+              <span className="tag">
+                {program.tier === "premium" ? "Premium" : "Gratis"}
+              </span>
+            </div>
           </div>
+
+          {program.hero_image && (
+            <div className={styles.heroImage}>
+              <Image
+                src={program.hero_image}
+                alt={program.title}
+                fill
+                sizes="(max-width: 880px) 700px, 320px"
+              />
+            </div>
+          )}
+
+          {program.description && (
+            <div className={styles.progIntro}>
+              {program.description.split("\n\n").map((paragraph: string, i: number) => (
+                <p key={i}>{paragraph}</p>
+              ))}
+            </div>
+          )}
         </div>
-
-        {program.hero_image && (
-          <div className={styles.heroImage}>
-            <Image src={program.hero_image} alt={program.title} fill sizes="900px" />
-          </div>
-        )}
-
-        {program.description && (
-          <div className={styles.progIntro}>
-            {program.description.split("\n\n").map((paragraph: string, i: number) => (
-              <p key={i}>{paragraph}</p>
-            ))}
-          </div>
-        )}
 
         <div className={styles.metaRow}>
           <div className={styles.metaItem}>
