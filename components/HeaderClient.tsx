@@ -103,8 +103,21 @@ export default function HeaderClient({
             <Link className={`btn btn-ghost ${styles.desktopOnly}`} href="/login">
               Logga in
             </Link>
-            <Link className={styles.mobileLoginCta} href="/login">
-              Logga in
+            <Link
+              className={styles.mobileLoginIcon}
+              href="/login"
+              aria-label="Logga in"
+              title="Logga in"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                <path
+                  d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
             </Link>
             <Link className="btn btn-primary" href="/signup">
               Skapa <span className={styles.ctaGratis}>gratis </span>konto
