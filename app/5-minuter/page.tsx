@@ -87,14 +87,17 @@ export default async function FiveMinutesPage() {
 
           <div className={styles.progIntro}>
             <p>
-              Det här är tre övningar ur vårt nybörjarprogram — inget att
-              förbereda, inget att bestämma. Bara ett snabbt sätt att känna
-              vad postural träning faktiskt gör för kroppen.
+              Ett enkelt sätt att komma igång. Gör programmet varje dag i
+              minst en vecka — ett bra sätt att känna hur det kan kännas när
+              hållningsmusklerna blir mer aktiva.
             </p>
             <p>
-              Gör dem i den ordning de står. Ingen övning ska göra ont —
-              känns något fel, hoppa över just den och gå vidare till nästa.
+              För ökad tydlighet: ställ dig upp och känn efter hur det känns
+              att bara stå. Gör sedan programmet och följ instruktionerna
+              noggrant. Ställ dig upp igen och se om du upplever någon
+              skillnad.
             </p>
+            <p>Det kan ta några dagar innan effekten känns av. Lycka till!</p>
           </div>
         </div>
 
