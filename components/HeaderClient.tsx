@@ -103,8 +103,11 @@ export default function HeaderClient({
             <Link className={`btn btn-ghost ${styles.desktopOnly}`} href="/login">
               Logga in
             </Link>
+            <Link className={styles.mobileLoginCta} href="/login">
+              Logga in
+            </Link>
             <Link className="btn btn-primary" href="/signup">
-              Skapa gratis konto
+              Skapa <span className={styles.ctaGratis}>gratis </span>konto
             </Link>
           </>
         )}
