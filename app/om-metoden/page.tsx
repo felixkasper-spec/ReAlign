@@ -601,7 +601,7 @@ export default async function OmMetodenPage() {
           <h2>Känn skillnaden på egen kropp.</h2>
           <p>Helt gratis. Prova ett kort program redan idag och känn skillnaden direkt.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link className="btn btn-primary btn-lg" href="/program/helkropp-niva-2?langd=kort">
+            <Link className="btn btn-primary btn-lg" href="/5-minuter">
               Testa ett kort program
             </Link>
             <Link className="btn btn-primary btn-lg" href="/program">
