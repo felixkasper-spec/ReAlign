@@ -23,6 +23,15 @@
   align-items: center;
 }
 
+@media (max-width: 600px) {
+  .footRow {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
 .logo {
   font-family: var(--font-newsreader), serif;
   font-size: 1.05rem;
