@@ -160,7 +160,7 @@ export default async function ProgramPage({
                 src={program.hero_image}
                 alt={program.title}
                 fill
-                sizes="(max-width: 880px) 700px, 320px"
+                sizes="(max-width: 880px) 700px, 400px"
               />
             </div>
           )}

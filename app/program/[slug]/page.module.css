@@ -46,15 +46,16 @@
 
 @media (min-width: 881px) {
   .heroSplit {
-    grid-template-columns: 1fr 320px;
-    column-gap: 28px;
-    align-items: start;
+    grid-template-columns: 1fr 400px;
+    column-gap: 32px;
+    align-items: center;
     grid-template-areas:
       "head image"
       "intro image";
   }
 
   .heroSplit .heroImage {
+    aspect-ratio: 16 / 9;
     margin-bottom: 0;
   }
 }
