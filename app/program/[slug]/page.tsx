@@ -315,7 +315,7 @@ export default async function ProgramPage({
             </Link>
           )}
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">
-            Tillbaka till Program
+            {program.slug === "kontorsvardag" ? "Se fler program →" : "Tillbaka till Program"}
           </Link>
         </div>
         <div style={{ textAlign: "center", marginTop: 14 }}>
