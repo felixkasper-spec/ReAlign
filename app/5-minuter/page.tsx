@@ -65,13 +65,12 @@ export default async function FiveMinutesPage() {
 
         <div className={styles.heroSplit}>
           <div className={styles.progHead}>
-            <span className="eyebrow">5 minuter · {meta?.purpose ?? program.category}</span>
-            <h1>Testa ett 5-minuters program</h1>
             <div className={styles.progTags}>
               <span className={`tag ${styles.tagLevel}`}>Nybörjare</span>
               <span className="tag">{meta?.purpose ?? program.category}</span>
               <span className="tag">Gratis</span>
             </div>
+            <h1 style={{ marginTop: 12 }}>Testa ett 5-minuters program</h1>
           </div>
 
           {program.hero_image && (
