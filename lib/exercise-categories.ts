@@ -12,6 +12,7 @@ const CATEGORY_OVERRIDES: Record<string, string[]> = {
   "flutter-kicks": ["Bål"],
   "postural-plank": ["Bål"],
   "wall-sidelying-hip-lifts": ["Bål"],
+  "seated-trunk-rotation": ["Bål"],
 
   "squats-gym": ["Höft & bäcken", "Knä & ben", "Helkropp"],
   "squatting-at-door": ["Höft & bäcken", "Knä & ben", "Helkropp"],
