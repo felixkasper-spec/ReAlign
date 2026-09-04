@@ -168,16 +168,9 @@ export default async function ProgramPage({
             </div>
           )}
 
-          {program.description &&
-            (program.slug === "kontorsvardag" ? (
-              <IntroExpand paragraphs={program.description.split("\n\n")} />
-            ) : (
-              <div className={styles.progIntro}>
-                {program.description.split("\n\n").map((paragraph: string, i: number) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
-              </div>
-            ))}
+          {program.description && (
+            <IntroExpand paragraphs={program.description.split("\n\n")} />
+          )}
         </div>
 
         <div className={styles.metaRow}>
