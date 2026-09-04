@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import SiteSearch from "./SiteSearch";
-import { pushToDataLayer } from "@/lib/gtm";
 import styles from "./Header.module.css";
 
 const navLinks = [
@@ -17,16 +15,13 @@ const navLinks = [
 
 export default function HeaderClient({
   loggedIn,
-  userId,
   transparent,
 }: {
   loggedIn: boolean;
-  userId: string | null;
   transparent?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -38,12 +33,6 @@ export default function HeaderClient({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  useEffect(() => {
-    if (userId) {
-      pushToDataLayer({ event: "login", user_id: userId });
-    }
-  }, [userId, pathname]);
 
   return (
     <nav className={`${styles.nav} ${transparent ? styles.transparent : ""}`}>
@@ -114,8 +103,24 @@ export default function HeaderClient({
             <Link className={`btn btn-ghost ${styles.desktopOnly}`} href="/login">
               Logga in
             </Link>
+            <Link
+              className={styles.mobileLoginIcon}
+              href="/login"
+              aria-label="Logga in"
+              title="Logga in"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                <path
+                  d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </Link>
             <Link className="btn btn-primary" href="/signup">
-              Skapa gratis konto
+              Skapa <span className={styles.ctaGratis}>gratis </span>konto
             </Link>
           </>
         )}

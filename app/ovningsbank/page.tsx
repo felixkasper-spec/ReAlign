@@ -22,45 +22,6 @@ export default async function OvningsbankPage() {
   const supabase = await createClient();
   const subscription = await getSubscription();
 
-  if (!subscription.active) {
-    return (
-      <>
-        <Header />
-        <div className="wrap">
-          <div className={styles.pageHead}>
-            <span className="eyebrow">Övningsbank</span>
-            <h1 className={styles.title}>Övningsbank</h1>
-            <p className={styles.intro}>
-              Bläddra bland alla övningar, sök på kroppsdel eller
-              utrustning, och kombinera dina favoriter till ett eget
-              program.
-            </p>
-          </div>
-          <div className={styles.lockedBox}>
-            <span className="eyebrow" style={{ color: "var(--warm)" }}>
-              Premium
-            </span>
-            <h3 style={{ fontSize: "1.2rem", margin: "10px 0 8px", fontWeight: 500 }}>
-              Övningsbanken ingår i Premium
-            </h3>
-            <p style={{ color: "var(--text)", fontSize: "0.92rem", marginBottom: 18 }}>
-              Tillsammans med alla programnivåer, progressionsspårning
-              och verktygen för att faktiskt hålla i det — första
-              månaden till halva priset, 74,50 kr, sen 149 kr/mån.
-            </p>
-            <Link className="btn btn-primary" href="/premium">
-              Läs mer om Premium →
-            </Link>
-            <p style={{ color: "var(--sage)", fontSize: "0.78rem", marginTop: 10 }}>
-              ✓ Går att betala med friskvårdsbidrag
-            </p>
-          </div>
-          <Footer />
-        </div>
-      </>
-    );
-  }
-
   const [{ data: exercises }, userResult, { data: helkroppPrograms }, premiumSlugs] =
     await Promise.all([
       supabase
@@ -124,7 +85,7 @@ export default async function OvningsbankPage() {
       <Header />
       <div className="wrap">
         <div className={styles.pageHead}>
-          <span className="eyebrow">{exercises?.length ?? 0} övningar</span>
+          <span className="eyebrow">Övningsbank</span>
           <h1 className={styles.title}>Övningsbank</h1>
           <p className={styles.intro}>
             Varje övning för sig, filtrerbar på kroppsdel och utrustning.

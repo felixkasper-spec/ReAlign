@@ -60,10 +60,7 @@ export default async function Home() {
               Gratis att komma igång — inget kort, inget konto krävs.
             </div>
             <div className={styles.heroCtas}>
-              <Link
-                className="btn btn-primary btn-lg"
-                href="/program/helkropp-niva-2?langd=kort"
-              >
+              <Link className="btn btn-primary btn-lg" href="/5-minuter">
                 Testa ett 5-minuters program
               </Link>
               <Link className="btn btn-primary btn-lg" href="/program">
@@ -100,10 +97,7 @@ export default async function Home() {
             <span className="eyebrow">Nyfiken? Två sätt att börja</span>
           </div>
           <div className={styles.twoWays}>
-            <Link
-              href="/program/helkropp-niva-2?langd=kort"
-              className={`${styles.wayCard} ${styles.sage}`}
-            >
+            <Link href="/5-minuter" className={`${styles.wayCard} ${styles.sage}`}>
               <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
                 Enklast — bara 5 minuter
               </span>

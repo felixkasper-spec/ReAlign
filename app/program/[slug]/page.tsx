@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,13 +9,19 @@ import TrainingTips from "@/components/TrainingTips";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import LockedContentNudge from "@/components/LockedContentNudge";
 import SubmitButton from "@/components/SubmitButton";
+import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
+import IntroExpand from "./IntroExpand";
 import styles from "./page.module.css";
+
+const SITTING_VIDEO_URL =
+  "https://player.vimeo.com/video/1218399947?h=1a3cddd537&title=0&byline=0&portrait=0";
 
 export async function generateMetadata({
   params,
@@ -135,35 +142,41 @@ export default async function ProgramPage({
           <span className={styles.current}>{program.title}</span>
         </div>
 
-        <div className={styles.progHead}>
-          <span className="eyebrow">{meta?.purpose ?? program.category}</span>
-          <h1>{program.title}</h1>
-          <div className={styles.progTags}>
-            {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
-            <span className="tag">{meta?.purpose ?? program.category}</span>
-            <span className="tag">
-              {program.tier === "premium" ? "Premium" : "Gratis"}
-            </span>
+        <div className={styles.heroSplit}>
+          <div className={styles.progHead}>
+            <span className="eyebrow">{meta?.purpose ?? program.category}</span>
+            <h1>{program.title}</h1>
+            <div className={styles.progTags}>
+              {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
+              <span className="tag">{meta?.purpose ?? program.category}</span>
+              <span className="tag">
+                {program.tier === "premium" ? "Premium" : "Gratis"}
+              </span>
+            </div>
           </div>
+
+          {program.hero_image && (
+            <div className={styles.heroImage}>
+              <Image
+                src={program.hero_image}
+                alt={program.title}
+                fill
+                sizes="(max-width: 880px) 700px, 400px"
+              />
+            </div>
+          )}
+
+          {program.description &&
+            (program.slug === "kontorsvardag" ? (
+              <IntroExpand paragraphs={program.description.split("\n\n")} />
+            ) : (
+              <div className={styles.progIntro}>
+                {program.description.split("\n\n").map((paragraph: string, i: number) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+            ))}
         </div>
-
-        {program.hero_image && (
-          <div className={styles.heroImage}>
-            <Image src={program.hero_image} alt={program.title} fill sizes="900px" />
-          </div>
-        )}
-
-        {program.description && <p className={styles.progIntro}>{program.description}</p>}
-
-        {program.slug === "kontorsvardag" && (
-          <p style={{ fontSize: "0.9rem", color: "var(--text-soft)", marginTop: -8, marginBottom: 20 }}>
-            Vill du ha fler tips för hur du sitter rätt vid skrivbordet? Se vår{" "}
-            <Link href="/ergonomi#sitta" style={{ color: "var(--sage)", textDecoration: "underline" }}>
-              ergonomiguide om att sitta
-            </Link>
-            .
-          </p>
-        )}
 
         <div className={styles.metaRow}>
           <div className={styles.metaItem}>
@@ -237,11 +250,33 @@ export default async function ProgramPage({
               </div>
             )}
 
-            <VariantPicker
-              variants={variants}
-              defaultVariant={defaultVariant}
-              programSlug={program.slug}
-            />
+            <div id="ovningar">
+              <VariantPicker
+                variants={variants}
+                defaultVariant={defaultVariant}
+                programSlug={program.slug}
+              />
+            </div>
+
+            {program.slug === "kontorsvardag" && (
+              <div className={styles.ergoSection}>
+                <div className={styles.ergoNote}>
+                  <span>💡</span>
+                  <p>
+                    <b>Glöm inte ergonomin</b> — Övningarna kombineras bäst
+                    med en ökad medvetenhet om hur du sitter, se videon
+                    nedan för enkla konkreta tips.
+                  </p>
+                </div>
+                <Suspense
+                  fallback={
+                    <VimeoEmbed src={SITTING_VIDEO_URL} className={styles.ergoVideo} lazy />
+                  }
+                >
+                  <VimeoPoster src={SITTING_VIDEO_URL} className={styles.ergoVideo} lazy />
+                </Suspense>
+              </div>
+            )}
           </>
         )}
 
@@ -286,7 +321,7 @@ export default async function ProgramPage({
             </Link>
           )}
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">
-            Tillbaka till Program
+            {program.slug === "kontorsvardag" ? "Se fler program →" : "Tillbaka till Program"}
           </Link>
         </div>
         <div style={{ textAlign: "center", marginTop: 14 }}>

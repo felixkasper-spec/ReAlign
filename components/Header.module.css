@@ -91,6 +91,10 @@
   display: none;
 }
 
+.mobileLoginIcon {
+  display: none;
+}
+
 .desktopOnly {
   display: inline-block;
 }
@@ -110,6 +114,9 @@
     padding: 9px 14px;
     font-size: 0.84rem;
   }
+  .ctaGratis {
+    display: none;
+  }
 }
 
 @media (max-width: 880px) {
@@ -127,6 +134,10 @@
   .nav.transparent .menuToggle {
     color: #fff;
   }
+  .nav.transparent .mobileLoginIcon {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
   .nav.transparent .mark {
     background: var(--warm);
   }
@@ -141,6 +152,17 @@
   }
   .desktopOnly {
     display: none;
+  }
+  .mobileLoginIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    color: var(--sage);
+    flex-shrink: 0;
   }
   .navlinks {
     display: none;

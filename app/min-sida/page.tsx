@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
+import LoginAnalytics from "@/components/LoginAnalytics";
 import SubmitButton from "@/components/SubmitButton";
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
@@ -37,7 +38,7 @@ const categoryLabels: Record<string, string> = {
   hofter: "Höft & ländrygg",
   "axlar-nacke-skulderblad": "Axlar/nacke/skulderblad",
   gym: "Postural Gymträning",
-  bal: "Bålträning",
+  bal: "Postural Bålträning",
   kontorsvardag: "Kontorsvardag",
 };
 
@@ -92,9 +93,9 @@ function checkoutMessage(checkout: string | undefined, active: boolean) {
 export default async function MinSidaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ checkout?: string }>;
+  searchParams: Promise<{ checkout?: string; login?: string }>;
 }) {
-  const { checkout } = await searchParams;
+  const { checkout, login } = await searchParams;
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -228,6 +229,7 @@ export default async function MinSidaPage({
 
   return (
     <>
+      <LoginAnalytics userId={user.id} shouldFire={login === "success"} />
       <Header />
       <div className={styles.shell}>
       <Sidebar

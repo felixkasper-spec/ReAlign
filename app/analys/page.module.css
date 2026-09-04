@@ -99,6 +99,25 @@
   margin-top: 28px;
 }
 
+.nextPulse {
+  animation: nextPulse 0.4s ease;
+}
+
+@keyframes nextPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(94, 116, 97, 0.55);
+  }
+  30% {
+    transform: scale(0.93);
+    box-shadow: 0 0 0 7px rgba(94, 116, 97, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(94, 116, 97, 0);
+  }
+}
+
 .resultHead {
   margin-bottom: 24px;
 }

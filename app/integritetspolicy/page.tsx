@@ -112,9 +112,18 @@ export default function IntegritetspolicyPage() {
         <div className={styles.section}>
           <h2>Cookies</h2>
           <p>
-            Vi använder endast nödvändiga cookies för att hålla dig
-            inloggad och för att tjänsten ska fungera tekniskt. Vi
-            använder inga cookies för reklam eller spårning i marknadsföringssyfte.
+            Vi använder nödvändiga cookies för att hålla dig inloggad och
+            för att tjänsten ska fungera tekniskt — dessa kräver inget
+            samtycke.
+          </p>
+          <p>
+            Om du godkänner det använder vi även cookies för statistik och
+            marknadsföring, via Google Analytics, Google Ads och Meta
+            (Facebook/Instagram) Pixel. Dessa hjälper oss förstå hur sajten
+            används och visa relevanta annonser. De sätts först när du
+            aktivt godkänner det i cookiebannern, och du kan när som helst
+            ändra ditt val via länken &quot;Cookie-inställningar&quot;
+            längst ner på sidan.
           </p>
         </div>
 

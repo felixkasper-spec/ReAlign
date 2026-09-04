@@ -67,6 +67,7 @@ export default function QuizClient() {
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({});
   const [result, setResult] = useState<ResolvedRecommendation | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [nextPulse, setNextPulse] = useState(false);
 
   const q = questions[current];
   const answered = q ? Boolean(answers[q.name]) : false;
@@ -76,6 +77,8 @@ export default function QuizClient() {
   }
 
   function next() {
+    setNextPulse(true);
+    setTimeout(() => setNextPulse(false), 400);
     if (current < questions.length - 1) {
       setCurrent((c) => c + 1);
     } else {
@@ -218,7 +221,7 @@ export default function QuizClient() {
         </button>
         <button
           type="button"
-          className="btn btn-primary"
+          className={`btn btn-primary ${nextPulse ? styles.nextPulse : ""}`}
           disabled={!answered || isPending}
           onClick={next}
         >
