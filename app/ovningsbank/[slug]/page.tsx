@@ -216,15 +216,12 @@ export default async function ExercisePage({
               )
             )}
             <div className={styles.videoCaption}>
-              <span>Video</span>
-              <div style={{ display: "flex", gap: 8 }}>
-                <FavoriteButton
-                  exerciseId={exercise.id}
-                  initialFavorited={isFavorited}
-                  loggedIn={!!user}
-                />
-                <ShareButton title={exercise.title} />
-              </div>
+              <FavoriteButton
+                exerciseId={exercise.id}
+                initialFavorited={isFavorited}
+                loggedIn={!!user}
+              />
+              <ShareButton title={exercise.title} />
             </div>
           </div>
 
