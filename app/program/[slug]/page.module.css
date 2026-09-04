@@ -86,11 +86,16 @@
   background: var(--warm-soft);
 }
 
+.jumpToExercisesRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
 .jumpToExercises {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
   padding: 8px 16px;
   border-radius: 100px;
   border: 1px solid var(--sage);

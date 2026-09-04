@@ -20,6 +20,11 @@ export default function IntroExpand({ paragraphs }: { paragraphs: string[] }) {
           {open ? "Visa mindre ▴" : "Visa mer ▾"}
         </button>
       )}
+      <div className={styles.jumpToExercisesRow}>
+        <a href="#ovningar" className={styles.jumpToExercises}>
+          Till övningar ↓
+        </a>
+      </div>
     </div>
   );
 }

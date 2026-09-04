@@ -153,12 +153,6 @@ export default async function ProgramPage({
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
             </div>
-
-            {program.slug === "kontorsvardag" && (
-              <a href="#ovningar" className={styles.jumpToExercises}>
-                Till övningar ↓
-              </a>
-            )}
           </div>
 
           {program.hero_image && (
