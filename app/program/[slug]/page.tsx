@@ -133,11 +133,9 @@ export default async function ProgramPage({
 
         <div className={styles.heroSplit}>
           <div className={styles.progHead}>
-            <span className="eyebrow">{meta?.purpose ?? program.category}</span>
             <h1>{program.title}</h1>
             <div className={styles.progTags}>
               {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
-              <span className="tag">{meta?.purpose ?? program.category}</span>
               <span className="tag">
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
