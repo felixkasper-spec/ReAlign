@@ -81,7 +81,6 @@ export default function VariantPicker({
             )}
             <span className={styles.exInfo}>
               <h3>{ex.title}</h3>
-              <span className="tag">{ex.body_part}</span>
             </span>
             <span className={styles.exArrow}>→</span>
           </Link>

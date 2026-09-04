@@ -211,7 +211,6 @@ export default async function ProgramPage({
                     )}
                     <span className={styles.exInfo}>
                       <h3>{ex.title}</h3>
-                      <span className="tag">{ex.body_part}</span>
                       <span className={`tag ${styles.tagWarmup}`}>
                         1 set – uppvärmning
                       </span>
