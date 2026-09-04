@@ -56,6 +56,7 @@ export default function VariantPicker({
         </div>
       )}
 
+      <p className={styles.exHint}>🎥 Klicka på en övning för video- och textinstruktioner</p>
       <div className={styles.exListHead}>
         <h2>Övningar i programmet</h2>
         <span>{exercises.length} st, i ordning</span>
@@ -71,6 +72,11 @@ export default function VariantPicker({
             {hasThumbnail(ex.slug) && (
               <span className={styles.exThumb}>
                 <Image src={`/exercises/${ex.slug}.jpg`} alt="" fill sizes="52px" />
+                <span className={styles.playIcon} aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="white">
+                    <path d="M3 1.5v11l9-5.5-9-5.5z" />
+                  </svg>
+                </span>
               </span>
             )}
             <span className={styles.exInfo}>

@@ -332,10 +332,16 @@
   gap: 14px;
   padding: 14px 0;
   border-top: 1px solid var(--line);
+  transition: background-color 0.15s ease;
 }
 
 .exRow:first-child {
   border-top: none;
+}
+
+.exRow:hover,
+.exRow:active {
+  background-color: var(--surface);
 }
 
 .exNum {
@@ -359,6 +365,30 @@
 
 .exThumb img {
   object-fit: cover;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playIcon svg {
+  margin-left: 1px;
+}
+
+.exHint {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  margin: 4px 0 2px;
 }
 
 .exInfo {
