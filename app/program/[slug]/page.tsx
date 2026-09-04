@@ -280,11 +280,6 @@ export default async function ProgramPage({
               </SubmitButton>
             </form>
           )}
-          {!locked && !user && (
-            <Link className="btn btn-primary" href="/min-sida">
-              Starta programmet
-            </Link>
-          )}
           {!locked && subscription.active && (
             <Link
               className="btn btn-ghost"
@@ -298,8 +293,6 @@ export default async function ProgramPage({
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">
             {program.slug === "kontorsvardag" ? "Se fler program →" : "Tillbaka till Program"}
           </Link>
-        </div>
-        <div style={{ textAlign: "center", marginTop: 14 }}>
           <ShareButton title={program.title} />
         </div>
 
