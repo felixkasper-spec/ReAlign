@@ -230,7 +230,6 @@ export default async function ExercisePage({
 
           <div>
             <div className={styles.exHead}>
-              <span className="eyebrow">{exercise.body_part}</span>
               <h1>{exercise.title}</h1>
               <div className={styles.exTags}>
                 <span className={`tag ${styles.tagBody}`}>{exercise.body_part}</span>
