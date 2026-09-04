@@ -265,7 +265,9 @@ export default async function ProgramPage({
               />
             </div>
 
-            <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
+            {!user && (
+              <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
+            )}
 
             {program.slug === "kontorsvardag" && (
               <div className={styles.ergoSection}>
