@@ -133,7 +133,27 @@
 
 .badge.premium {
   background: var(--warm-soft);
+  color: #8a5a2c;
+}
+
+.badge.beginner {
+  background: #e4ebe3;
+  color: var(--sage);
+}
+
+.badge.intermediate {
+  background: var(--sage);
+  color: #fff;
+}
+
+.badge.advanced {
+  background: var(--warm-soft);
   color: var(--warm);
+}
+
+.badge.allLevels {
+  background: #e4ebe3;
+  color: var(--sage);
 }
 
 .purpose {

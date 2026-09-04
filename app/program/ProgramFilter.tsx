@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { programMeta } from "@/lib/program-meta";
+import { levelTagKey } from "@/lib/level-tag";
 
 export type ProgramListItem = {
   id: string;
@@ -56,6 +57,12 @@ export default function ProgramFilter({
       <div className={styles.grid} id="programlista">
         {filtered.map((p) => {
           const meta = programMeta[p.slug];
+          const levelBadgeClass = {
+            beginner: styles.beginner,
+            intermediate: styles.intermediate,
+            advanced: styles.advanced,
+            allLevels: styles.allLevels,
+          }[levelTagKey(meta?.level)];
           const counts = exerciseCounts[p.id];
           const countLabel = counts
             ? counts.min === counts.max
@@ -75,7 +82,7 @@ export default function ProgramFilter({
                 </div>
               )}
               <div className={styles.cardTop}>
-                <span className={styles.badge}>{meta?.level ?? ""}</span>
+                <span className={`${styles.badge} ${levelBadgeClass}`}>{meta?.level ?? ""}</span>
                 <span
                   className={`${styles.badge} ${
                     p.tier === "premium" ? styles.premium : styles.free

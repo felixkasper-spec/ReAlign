@@ -17,6 +17,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
+import { levelTagKey } from "@/lib/level-tag";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
 import IntroExpand from "./IntroExpand";
 import SaveForLaterForm from "./SaveForLaterForm";
@@ -120,6 +121,12 @@ export default async function ProgramPage({
 
   const meta = programMeta[program.slug];
   const defaultVariant = langd ?? "full";
+  const levelTagClass = {
+    beginner: styles.tagBeginner,
+    intermediate: styles.tagIntermediate,
+    advanced: styles.tagAdvanced,
+    allLevels: styles.tagAllLevels,
+  }[levelTagKey(meta?.level)];
 
   return (
     <>
@@ -135,7 +142,7 @@ export default async function ProgramPage({
           <div className={styles.progHead}>
             <h1>{program.title}</h1>
             <div className={styles.progTags}>
-              {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
+              {meta?.level && <span className={`tag ${levelTagClass}`}>{meta.level}</span>}
               <span
                 className={`tag ${program.tier === "premium" ? styles.tagPremium : styles.tagFree}`}
               >

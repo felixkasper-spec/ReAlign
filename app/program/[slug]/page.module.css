@@ -76,9 +76,24 @@
   margin-top: 10px;
 }
 
-:global(.tag).tagLevel {
+:global(.tag).tagBeginner {
+  color: var(--sage);
+  background: #e4ebe3;
+}
+
+:global(.tag).tagIntermediate {
+  color: #fff;
+  background: var(--sage);
+}
+
+:global(.tag).tagAdvanced {
   color: var(--warm);
   background: var(--warm-soft);
+}
+
+:global(.tag).tagAllLevels {
+  color: var(--sage);
+  background: #e4ebe3;
 }
 
 :global(.tag).tagFree {
@@ -87,7 +102,7 @@
 }
 
 :global(.tag).tagPremium {
-  color: var(--warm);
+  color: #8a5a2c;
   background: var(--warm-soft);
 }
 
