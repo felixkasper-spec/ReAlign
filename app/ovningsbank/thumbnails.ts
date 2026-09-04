@@ -47,6 +47,7 @@ const SLUGS_WITH_THUMBNAIL = new Set([
   "sitting-one-leg-hip-stretch",
   "sitting-overhead-extension",
   "sitting-single-hip-lifts",
+  "sitting-torso-twist",
   "spidey-crawls",
   "squats-gym",
   "squatting-at-door",
