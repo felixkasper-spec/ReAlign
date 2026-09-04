@@ -33,9 +33,10 @@ const CATEGORY_ORDER = [
 export default async function ProgramIndexPage() {
   const supabase = await createClient();
 
-  const { data } = await supabase
-    .from("programs")
-    .select("id, slug, title, tier, hero_image, category, level");
+  const [{ data }, { data: exerciseRows }] = await Promise.all([
+    supabase.from("programs").select("id, slug, title, tier, hero_image, category, level"),
+    supabase.from("program_exercises").select("program_id, variant").eq("is_warmup", false),
+  ]);
 
   const programs = [...(data ?? [])].sort((a, b) => {
     const catA = CATEGORY_ORDER.indexOf(a.category);
@@ -43,6 +44,18 @@ export default async function ProgramIndexPage() {
     if (catA !== catB) return catA - catB;
     return (a.level ?? 0) - (b.level ?? 0);
   });
+
+  const countsByVariant: Record<string, Record<string, number>> = {};
+  for (const row of exerciseRows ?? []) {
+    countsByVariant[row.program_id] ??= {};
+    countsByVariant[row.program_id][row.variant] =
+      (countsByVariant[row.program_id][row.variant] ?? 0) + 1;
+  }
+  const exerciseCounts: Record<string, { min: number; max: number }> = {};
+  for (const [programId, variants] of Object.entries(countsByVariant)) {
+    const counts = Object.values(variants);
+    exerciseCounts[programId] = { min: Math.min(...counts), max: Math.max(...counts) };
+  }
 
   return (
     <>
@@ -66,7 +79,7 @@ export default async function ProgramIndexPage() {
         </div>
 
 
-        <ProgramFilter programs={programs} />
+        <ProgramFilter programs={programs} exerciseCounts={exerciseCounts} />
 
         <div className={styles.ctaBanner}>
           <div style={{ maxWidth: 600 }}>
