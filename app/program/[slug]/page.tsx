@@ -17,6 +17,7 @@ import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
+import SaveForLaterForm from "./SaveForLaterForm";
 import styles from "./page.module.css";
 
 const SITTING_VIDEO_URL =
@@ -173,6 +174,10 @@ export default async function ProgramPage({
             </div>
           )}
         </div>
+
+        {program.slug === "kontorsvardag" && (
+          <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
+        )}
 
         <div className={styles.metaRow}>
           <div className={styles.metaItem}>
