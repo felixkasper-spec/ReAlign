@@ -86,6 +86,25 @@
   background: var(--warm-soft);
 }
 
+.jumpToExercises {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--sage);
+  color: var(--sage);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.jumpToExercises:hover {
+  background: var(--surface);
+}
+
 .heroImage {
   position: relative;
   border-radius: 18px;

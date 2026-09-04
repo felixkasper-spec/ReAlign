@@ -153,6 +153,12 @@ export default async function ProgramPage({
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
             </div>
+
+            {program.slug === "kontorsvardag" && (
+              <a href="#ovningar" className={styles.jumpToExercises}>
+                Till övningar ↓
+              </a>
+            )}
           </div>
 
           {program.hero_image && (
@@ -250,11 +256,13 @@ export default async function ProgramPage({
               </div>
             )}
 
-            <VariantPicker
-              variants={variants}
-              defaultVariant={defaultVariant}
-              programSlug={program.slug}
-            />
+            <div id="ovningar">
+              <VariantPicker
+                variants={variants}
+                defaultVariant={defaultVariant}
+                programSlug={program.slug}
+              />
+            </div>
 
             {program.slug === "kontorsvardag" && (
               <div className={styles.ergoSection}>
