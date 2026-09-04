@@ -45,6 +45,10 @@
 }
 
 @media (min-width: 881px) {
+  .jumpToExercisesRow {
+    display: none;
+  }
+
   .heroSplit {
     grid-template-columns: 1fr 400px;
     column-gap: 32px;
