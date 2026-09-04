@@ -142,15 +142,6 @@
   margin-bottom: 14px;
 }
 
-.stats {
-  display: flex;
-  gap: 16px;
-  font-size: 0.82rem;
-  color: var(--text-soft);
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-}
-
 .ctaBanner {
   background: var(--surface);
   border-radius: 20px;

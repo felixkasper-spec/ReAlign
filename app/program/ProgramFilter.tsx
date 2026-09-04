@@ -74,9 +74,6 @@ export default function ProgramFilter({ programs }: { programs: ProgramListItem[
               </div>
               <h3>{p.title}</h3>
               <p className={styles.purpose}>{meta?.purpose}</p>
-              <div className={styles.stats}>
-                <span>{meta?.weeks}</span>
-              </div>
             </Link>
           );
         })}
