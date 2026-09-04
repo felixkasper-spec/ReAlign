@@ -17,7 +17,7 @@ import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
-import SaveForLaterForm from "./SaveForLaterForm";
+import IntroExpand from "./IntroExpand";
 import styles from "./page.module.css";
 
 const SITTING_VIDEO_URL =
@@ -166,18 +166,17 @@ export default async function ProgramPage({
             </div>
           )}
 
-          {program.description && (
-            <div className={styles.progIntro}>
-              {program.description.split("\n\n").map((paragraph: string, i: number) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-            </div>
-          )}
+          {program.description &&
+            (program.slug === "kontorsvardag" ? (
+              <IntroExpand paragraphs={program.description.split("\n\n")} />
+            ) : (
+              <div className={styles.progIntro}>
+                {program.description.split("\n\n").map((paragraph: string, i: number) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+            ))}
         </div>
-
-        {program.slug === "kontorsvardag" && (
-          <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
-        )}
 
         <div className={styles.metaRow}>
           <div className={styles.metaItem}>
