@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import styles from "./page.module.css";
 
 export type VariantExercise = {
@@ -66,6 +68,11 @@ export default function VariantPicker({
             className={styles.exRow}
           >
             <span className={styles.exNum}>{i + 1}</span>
+            {hasThumbnail(ex.slug) && (
+              <span className={styles.exThumb}>
+                <Image src={`/exercises/${ex.slug}.jpg`} alt="" fill sizes="52px" />
+              </span>
+            )}
             <span className={styles.exInfo}>
               <h3>{ex.title}</h3>
               <span className="tag">{ex.body_part}</span>

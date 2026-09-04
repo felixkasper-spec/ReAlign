@@ -12,12 +12,14 @@ import SubmitButton from "@/components/SubmitButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import VimeoPoster from "@/components/VimeoPoster";
 import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
+import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
 import IntroExpand from "./IntroExpand";
+import SaveForLaterForm from "./SaveForLaterForm";
 import styles from "./page.module.css";
 
 const SITTING_VIDEO_URL =
@@ -237,6 +239,11 @@ export default async function ProgramPage({
                     className={styles.exRow}
                   >
                     <span className={styles.exNum}>{i + 1}</span>
+                    {hasThumbnail(ex.slug) && (
+                      <span className={styles.exThumb}>
+                        <Image src={`/exercises/${ex.slug}.jpg`} alt="" fill sizes="52px" />
+                      </span>
+                    )}
                     <span className={styles.exInfo}>
                       <h3>{ex.title}</h3>
                       <span className="tag">{ex.body_part}</span>
@@ -257,6 +264,8 @@ export default async function ProgramPage({
                 programSlug={program.slug}
               />
             </div>
+
+            <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
 
             {program.slug === "kontorsvardag" && (
               <div className={styles.ergoSection}>
