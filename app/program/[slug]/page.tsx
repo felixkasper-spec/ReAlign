@@ -136,7 +136,9 @@ export default async function ProgramPage({
             <h1>{program.title}</h1>
             <div className={styles.progTags}>
               {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
-              <span className="tag">
+              <span
+                className={`tag ${program.tier === "premium" ? styles.tagPremium : styles.tagFree}`}
+              >
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
             </div>

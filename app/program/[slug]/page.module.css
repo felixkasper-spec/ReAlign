@@ -81,6 +81,16 @@
   background: var(--warm-soft);
 }
 
+.tagFree {
+  color: var(--sage);
+  background: #e4ebe3;
+}
+
+.tagPremium {
+  color: var(--warm);
+  background: var(--warm-soft);
+}
+
 .tagWarmup {
   color: var(--warm);
   background: var(--warm-soft);
