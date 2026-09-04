@@ -17,7 +17,7 @@ export default function IntroExpand({ paragraphs }: { paragraphs: string[] }) {
           className={styles.introToggle}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? "Visa mindre ▴" : "Visa mer ▾"}
+          {open ? "Visa mindre ▴" : "Läs mer ▾"}
         </button>
       )}
       <div className={styles.jumpToExercisesRow}>
