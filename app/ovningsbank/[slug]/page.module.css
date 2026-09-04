@@ -113,8 +113,9 @@
 
 .videoCaption {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
   margin-top: 14px;
   font-size: 0.82rem;
   color: var(--text-soft);
