@@ -142,7 +142,7 @@ export default async function ExercisePage({
   const metaItems = (exercise.sets_reps ?? "")
     .split(" · ")
     .filter(Boolean)
-    .filter((item: string) => !item.startsWith("Aktivering") && !item.startsWith("Stretch"));
+    .slice(0, 1);
 
   return (
     <>
