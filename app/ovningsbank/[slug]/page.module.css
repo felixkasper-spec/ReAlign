@@ -139,7 +139,7 @@
   margin-top: 8px;
 }
 
-.tagBody {
+:global(.tag).tagBody {
   color: var(--sage);
   background: #e4ebe3;
 }

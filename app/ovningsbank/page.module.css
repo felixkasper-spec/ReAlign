@@ -211,7 +211,7 @@
   gap: 6px;
 }
 
-.premiumTag {
+:global(.tag).premiumTag {
   background: var(--warm-soft);
   color: var(--warm);
 }

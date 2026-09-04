@@ -76,22 +76,22 @@
   margin-top: 10px;
 }
 
-.tagLevel {
+:global(.tag).tagLevel {
   color: var(--warm);
   background: var(--warm-soft);
 }
 
-.tagFree {
+:global(.tag).tagFree {
   color: var(--sage);
   background: #e4ebe3;
 }
 
-.tagPremium {
+:global(.tag).tagPremium {
   color: var(--warm);
   background: var(--warm-soft);
 }
 
-.tagWarmup {
+:global(.tag).tagWarmup {
   color: var(--warm);
   background: var(--warm-soft);
 }
