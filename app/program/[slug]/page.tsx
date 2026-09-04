@@ -118,21 +118,8 @@ export default async function ProgramPage({
   const progressionPrefix =
     "Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ";
 
-  let completions = 0;
-  if (user && subscription.active) {
-    const { count } = await supabase
-      .from("logged_sessions")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
-      .eq("program_id", program.id)
-      .not("completed_at", "is", null);
-    completions = count ?? 0;
-  }
-
   const meta = programMeta[program.slug];
   const defaultVariant = langd ?? "full";
-  const activeVariant = variants[defaultVariant] ? defaultVariant : "full";
-  const exerciseCount = (variants[activeVariant] ?? []).length;
 
   return (
     <>
@@ -170,26 +157,6 @@ export default async function ProgramPage({
 
           {program.description && (
             <IntroExpand paragraphs={program.description.split("\n\n")} />
-          )}
-        </div>
-
-        <div className={styles.metaRow}>
-          <div className={styles.metaItem}>
-            <b>{exerciseCount || warmup.length}</b>Övningar
-          </div>
-          {meta?.level && (
-            <div className={styles.metaItem}>
-              <b>{meta.level}</b>Nivå
-            </div>
-          )}
-          <div className={styles.metaItem}>
-            <b>{meta?.purpose ?? program.category}</b>Fokus
-          </div>
-          {completions > 0 && (
-            <div className={styles.metaItem}>
-              <b>{completions}</b>
-              {completions === 1 ? "Gång klarad" : "Gånger klarat"}
-            </div>
           )}
         </div>
 

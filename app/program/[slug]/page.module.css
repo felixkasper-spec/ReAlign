@@ -260,30 +260,6 @@
   background: var(--surface);
 }
 
-.metaRow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin: 14px 0 18px;
-  padding: 12px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.metaItem {
-  font-size: 0.8rem;
-  color: var(--text-soft);
-}
-
-.metaItem b {
-  display: block;
-  font-family: var(--font-newsreader), serif;
-  font-size: 1.1rem;
-  color: var(--text);
-  font-weight: 500;
-  margin-bottom: 2px;
-}
-
 .lockedBox {
   background: var(--warm-soft);
   border: 1px solid var(--warm);
