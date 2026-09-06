@@ -68,21 +68,35 @@ export default async function ProgramPage({
   const { langd } = await searchParams;
   const supabase = await createClient();
 
-  const { data: program } = await supabase
-    .from("programs")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
+  const [{ data: program }, subscription, userResult] = await Promise.all([
+    supabase.from("programs").select("*").eq("slug", slug).maybeSingle(),
+    getSubscription(),
+    supabase.auth.getUser(),
+  ]);
 
   if (!program) {
     notFound();
   }
 
-  const { data: rows } = await supabase
-    .from("program_exercises")
-    .select("variant, is_warmup, order_index, exercises ( slug, title, body_part )")
-    .eq("program_id", program.id)
-    .order("order_index");
+  const user = userResult.data.user;
+  const locked = program.tier === "premium" && !subscription.active;
+
+  const [{ data: rows }, nextLevelResult] = await Promise.all([
+    supabase
+      .from("program_exercises")
+      .select("variant, is_warmup, order_index, exercises ( slug, title, body_part )")
+      .eq("program_id", program.id)
+      .order("order_index"),
+    program.level != null
+      ? supabase
+          .from("programs")
+          .select("slug, title")
+          .eq("category", program.category)
+          .eq("level", program.level + 1)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+  ]);
+  const nextLevelProgram: { slug: string; title: string } | null = nextLevelResult.data;
 
   const variants: Record<string, VariantExercise[]> = {};
   const warmup: VariantExercise[] = [];
@@ -97,24 +111,6 @@ export default async function ProgramPage({
     const key = row.variant as string;
     variants[key] = variants[key] ?? [];
     variants[key].push(ex);
-  }
-
-  const [subscription, userResult] = await Promise.all([
-    getSubscription(),
-    supabase.auth.getUser(),
-  ]);
-  const locked = program.tier === "premium" && !subscription.active;
-  const user = userResult.data.user;
-
-  let nextLevelProgram: { slug: string; title: string } | null = null;
-  if (program.level != null) {
-    const { data } = await supabase
-      .from("programs")
-      .select("slug, title")
-      .eq("category", program.category)
-      .eq("level", program.level + 1)
-      .maybeSingle();
-    nextLevelProgram = data;
   }
   const progressionPrefix =
     "Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ";

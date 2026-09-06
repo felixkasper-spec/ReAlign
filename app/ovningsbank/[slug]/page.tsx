@@ -85,9 +85,10 @@ export default async function ExercisePage({
   const { program: programSlug, variant } = await searchParams;
   const supabase = await createClient();
 
-  const [{ data: exercise }, userResult] = await Promise.all([
+  const [{ data: exercise }, userResult, premiumSlugs] = await Promise.all([
     supabase.from("exercises").select("*").eq("slug", slug).maybeSingle(),
     supabase.auth.getUser(),
+    getPremiumExerciseSlugs(),
   ]);
 
   if (!exercise) {
@@ -95,29 +96,30 @@ export default async function ExercisePage({
   }
 
   const user = userResult.data.user;
-
-  const premiumSlugs = await getPremiumExerciseSlugs();
   const isPremiumExercise = premiumSlugs.has(slug);
   const subscription = isPremiumExercise ? await getSubscription() : null;
   const locked = isPremiumExercise && !subscription?.active;
 
-  let isFavorited = false;
-  if (user) {
-    const { data: fav } = await supabase
-      .from("favorites")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("exercise_id", exercise.id)
-      .maybeSingle();
-    isFavorited = !!fav;
-  }
-
-  const { data: related } = await supabase
-    .from("exercises")
-    .select("id, slug, title, body_part")
-    .eq("body_part", exercise.body_part)
-    .neq("id", exercise.id)
-    .limit(4);
+  const [favResult, { data: related }, sequenceResult] = await Promise.all([
+    user
+      ? supabase
+          .from("favorites")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("exercise_id", exercise.id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+    supabase
+      .from("exercises")
+      .select("id, slug, title, body_part")
+      .eq("body_part", exercise.body_part)
+      .neq("id", exercise.id)
+      .limit(4),
+    programSlug && variant
+      ? getProgramExerciseSequence(programSlug, variant)
+      : Promise.resolve(null),
+  ]);
+  const isFavorited = !!favResult.data;
 
   let programNav: {
     programTitle: string;
@@ -125,17 +127,14 @@ export default async function ExercisePage({
     next: { slug: string; title: string } | null;
   } | null = null;
 
-  if (programSlug && variant) {
-    const result = await getProgramExerciseSequence(programSlug, variant);
-    if (result) {
-      const i = result.sequence.findIndex((e) => e.slug === slug);
-      if (i !== -1) {
-        programNav = {
-          programTitle: result.programTitle,
-          prev: i > 0 ? result.sequence[i - 1] : null,
-          next: i < result.sequence.length - 1 ? result.sequence[i + 1] : null,
-        };
-      }
+  if (sequenceResult) {
+    const i = sequenceResult.sequence.findIndex((e) => e.slug === slug);
+    if (i !== -1) {
+      programNav = {
+        programTitle: sequenceResult.programTitle,
+        prev: i > 0 ? sequenceResult.sequence[i - 1] : null,
+        next: i < sequenceResult.sequence.length - 1 ? sequenceResult.sequence[i + 1] : null,
+      };
     }
   }
 
