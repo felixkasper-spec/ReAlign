@@ -73,6 +73,7 @@ const SLUGS_WITH_THUMBNAIL = new Set([
   "step-ups-langsam",
   "sumo-squats",
   "supine-foot-circles",
+  "tapping",
   "walking-steam-engines",
   "wall-ql-stretch",
   "wall-sidelying-hip-lifts",
