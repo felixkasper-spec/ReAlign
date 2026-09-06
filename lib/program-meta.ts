@@ -25,6 +25,7 @@ export const programMeta: Record<
   "vacka-satet-avancerat": { level: "Avancerad", weeks: "Engångspass", freq: "7 övningar", purpose: "Väcka sätet" },
   baltraning: { level: "Nybörjare", weeks: "Engångspass", freq: "6 övningar", purpose: "Postural Bålträning" },
   kontorsvardag: { level: "Nybörjare", weeks: "Engångspass", freq: "5 övningar", purpose: "Kontorsvardag" },
+  avslappning: { level: "Alla nivåer", weeks: "Engångspass", freq: "5 övningar", purpose: "Avslappning" },
   "gym-underkropp": { level: "Medel", weeks: "Engångspass", freq: "6 övningar", purpose: "Postural Gymträning" },
   "gym-overkropp": { level: "Medel", weeks: "Engångspass", freq: "7 övningar", purpose: "Postural Gymträning" },
   "gym-helkropp": { level: "Medel", weeks: "Engångspass", freq: "7 övningar", purpose: "Postural Gymträning" },

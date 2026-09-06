@@ -26,6 +26,7 @@ const CATEGORY_ORDER = [
   "rorlighet-axlar",
   "rorlighet-belastning",
   "kontorsvardag",
+  "avslappning",
   "bal",
   "gym",
 ];
