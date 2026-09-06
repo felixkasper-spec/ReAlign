@@ -54,6 +54,7 @@ const SLUGS_WITH_THUMBNAIL = new Set([
   "squatting-overhead",
   "standing-arm-circles",
   "standing-arm-rotation",
+  "standing-belt-breathing",
   "standing-bicep-stretch",
   "standing-curlpress",
   "standing-forward-bends-sides-up-down",
