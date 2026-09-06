@@ -268,7 +268,7 @@ export default async function ExercisePage({
             )}
 
             {!user && (
-              <GuestAccountPrompt text="Spara den här övningen som favorit och håll koll på dina pass." />
+              <GuestAccountPrompt />
             )}
 
             <div className={styles.ctaRow}>

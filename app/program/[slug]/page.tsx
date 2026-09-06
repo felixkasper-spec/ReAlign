@@ -272,7 +272,7 @@ export default async function ProgramPage({
         )}
 
         {!locked && !user && (
-          <GuestAccountPrompt text="Spara det här programmet, schemalägg pass och håll koll på din progression." />
+          <GuestAccountPrompt />
         )}
 
         <div className={styles.ctaRow}>

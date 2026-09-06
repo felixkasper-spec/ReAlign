@@ -139,7 +139,7 @@ export default async function FiveMinutesPage() {
         </div>
 
         {!user && (
-          <GuestAccountPrompt text="Spara dina program, schemalägg pass och håll koll på din progression." />
+          <GuestAccountPrompt />
         )}
 
         <div className={styles.ctaRow}>

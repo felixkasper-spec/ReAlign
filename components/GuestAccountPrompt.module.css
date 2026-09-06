@@ -23,8 +23,27 @@
   margin-bottom: 4px;
 }
 
-.body {
+.list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 2px 0 6px;
+}
+
+.list li {
   font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.list li::before {
+  content: "✓ ";
+  color: var(--sage);
+  font-weight: 600;
+}
+
+.note {
+  font-size: 0.78rem;
   color: var(--text-soft);
 }
 
