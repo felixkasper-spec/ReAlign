@@ -57,6 +57,7 @@ const SLUGS_WITH_THUMBNAIL = new Set([
   "standing-belt-breathing",
   "standing-bicep-stretch",
   "standing-curlpress",
+  "standing-elbow-flexes",
   "standing-forward-bends-sides-up-down",
   "standing-one-arm-chest-stretch",
   "standing-quad-stretch",
