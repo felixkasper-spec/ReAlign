@@ -66,9 +66,9 @@ export default async function FiveMinutesPage() {
         <div className={styles.heroSplit}>
           <div className={styles.progHead}>
             <div className={styles.progTags}>
-              <span className={`tag ${styles.tagLevel}`}>Nybörjare</span>
+              <span className={`tag ${styles.tagBeginner}`}>Nybörjare</span>
               <span className="tag">{meta?.purpose ?? program.category}</span>
-              <span className="tag">Gratis</span>
+              <span className={`tag ${styles.tagFree}`}>Gratis</span>
             </div>
             <h1 style={{ marginTop: 12 }}>Testa ett 5-minuters program</h1>
           </div>
@@ -139,7 +139,7 @@ export default async function FiveMinutesPage() {
         </div>
 
         {!user && (
-          <GuestAccountPrompt text="Spara dina program, schemalägg pass och håll koll på din progression." />
+          <GuestAccountPrompt />
         )}
 
         <div className={styles.ctaRow}>

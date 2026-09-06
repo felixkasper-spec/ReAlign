@@ -34,7 +34,10 @@ export default function SaveForLaterForm({
       <div className={styles.saveForLater}>
         <div>
           <b>Klart!</b>
-          <p>Vi har skickat länken till {email}.</p>
+          <p>
+            Vi har skickat länken till {email}. Hittar du inte mejlet inom
+            några minuter, kolla gärna i skräpposten.
+          </p>
         </div>
       </div>
     );

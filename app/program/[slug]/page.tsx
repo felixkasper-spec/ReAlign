@@ -12,12 +12,15 @@ import SubmitButton from "@/components/SubmitButton";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import VimeoPoster from "@/components/VimeoPoster";
 import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
+import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
+import { levelTagKey } from "@/lib/level-tag";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
 import IntroExpand from "./IntroExpand";
+import SaveForLaterForm from "./SaveForLaterForm";
 import styles from "./page.module.css";
 
 const SITTING_VIDEO_URL =
@@ -65,21 +68,35 @@ export default async function ProgramPage({
   const { langd } = await searchParams;
   const supabase = await createClient();
 
-  const { data: program } = await supabase
-    .from("programs")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
+  const [{ data: program }, subscription, userResult] = await Promise.all([
+    supabase.from("programs").select("*").eq("slug", slug).maybeSingle(),
+    getSubscription(),
+    supabase.auth.getUser(),
+  ]);
 
   if (!program) {
     notFound();
   }
 
-  const { data: rows } = await supabase
-    .from("program_exercises")
-    .select("variant, is_warmup, order_index, exercises ( slug, title, body_part )")
-    .eq("program_id", program.id)
-    .order("order_index");
+  const user = userResult.data.user;
+  const locked = program.tier === "premium" && !subscription.active;
+
+  const [{ data: rows }, nextLevelResult] = await Promise.all([
+    supabase
+      .from("program_exercises")
+      .select("variant, is_warmup, order_index, exercises ( slug, title, body_part )")
+      .eq("program_id", program.id)
+      .order("order_index"),
+    program.level != null
+      ? supabase
+          .from("programs")
+          .select("slug, title")
+          .eq("category", program.category)
+          .eq("level", program.level + 1)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+  ]);
+  const nextLevelProgram: { slug: string; title: string } | null = nextLevelResult.data;
 
   const variants: Record<string, VariantExercise[]> = {};
   const warmup: VariantExercise[] = [];
@@ -95,42 +112,17 @@ export default async function ProgramPage({
     variants[key] = variants[key] ?? [];
     variants[key].push(ex);
   }
-
-  const [subscription, userResult] = await Promise.all([
-    getSubscription(),
-    supabase.auth.getUser(),
-  ]);
-  const locked = program.tier === "premium" && !subscription.active;
-  const user = userResult.data.user;
-
-  let nextLevelProgram: { slug: string; title: string } | null = null;
-  if (program.level != null) {
-    const { data } = await supabase
-      .from("programs")
-      .select("slug, title")
-      .eq("category", program.category)
-      .eq("level", program.level + 1)
-      .maybeSingle();
-    nextLevelProgram = data;
-  }
   const progressionPrefix =
     "Efter minst 10 pass, och när du känner att du har bra koll på tekniken, du får kontakt där övningen ska kännas, och att det börjar bli lätt att göra angivet antal repetitioner, testa att gå vidare till ";
 
-  let completions = 0;
-  if (user && subscription.active) {
-    const { count } = await supabase
-      .from("logged_sessions")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
-      .eq("program_id", program.id)
-      .not("completed_at", "is", null);
-    completions = count ?? 0;
-  }
-
   const meta = programMeta[program.slug];
   const defaultVariant = langd ?? "full";
-  const activeVariant = variants[defaultVariant] ? defaultVariant : "full";
-  const exerciseCount = (variants[activeVariant] ?? []).length;
+  const levelTagClass = {
+    beginner: styles.tagBeginner,
+    intermediate: styles.tagIntermediate,
+    advanced: styles.tagAdvanced,
+    allLevels: styles.tagAllLevels,
+  }[levelTagKey(meta?.level)];
 
   return (
     <>
@@ -144,12 +136,12 @@ export default async function ProgramPage({
 
         <div className={styles.heroSplit}>
           <div className={styles.progHead}>
-            <span className="eyebrow">{meta?.purpose ?? program.category}</span>
             <h1>{program.title}</h1>
             <div className={styles.progTags}>
-              {meta?.level && <span className={`tag ${styles.tagLevel}`}>{meta.level}</span>}
-              <span className="tag">{meta?.purpose ?? program.category}</span>
-              <span className="tag">
+              {meta?.level && <span className={`tag ${levelTagClass}`}>{meta.level}</span>}
+              <span
+                className={`tag ${program.tier === "premium" ? styles.tagPremium : styles.tagFree}`}
+              >
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
             </div>
@@ -166,35 +158,8 @@ export default async function ProgramPage({
             </div>
           )}
 
-          {program.description &&
-            (program.slug === "kontorsvardag" ? (
-              <IntroExpand paragraphs={program.description.split("\n\n")} />
-            ) : (
-              <div className={styles.progIntro}>
-                {program.description.split("\n\n").map((paragraph: string, i: number) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
-              </div>
-            ))}
-        </div>
-
-        <div className={styles.metaRow}>
-          <div className={styles.metaItem}>
-            <b>{exerciseCount || warmup.length}</b>Övningar
-          </div>
-          {meta?.level && (
-            <div className={styles.metaItem}>
-              <b>{meta.level}</b>Nivå
-            </div>
-          )}
-          <div className={styles.metaItem}>
-            <b>{meta?.purpose ?? program.category}</b>Fokus
-          </div>
-          {completions > 0 && (
-            <div className={styles.metaItem}>
-              <b>{completions}</b>
-              {completions === 1 ? "Gång klarad" : "Gånger klarat"}
-            </div>
+          {program.description && (
+            <IntroExpand paragraphs={program.description.split("\n\n")} />
           )}
         </div>
 
@@ -237,9 +202,18 @@ export default async function ProgramPage({
                     className={styles.exRow}
                   >
                     <span className={styles.exNum}>{i + 1}</span>
+                    {hasThumbnail(ex.slug) && (
+                      <span className={styles.exThumb}>
+                        <Image src={`/exercises/${ex.slug}.jpg`} alt="" fill sizes="52px" />
+                        <span className={styles.playIcon} aria-hidden="true">
+                          <svg width="12" height="12" viewBox="0 0 14 14" fill="white">
+                            <path d="M3 1.5v11l9-5.5-9-5.5z" />
+                          </svg>
+                        </span>
+                      </span>
+                    )}
                     <span className={styles.exInfo}>
                       <h3>{ex.title}</h3>
-                      <span className="tag">{ex.body_part}</span>
                       <span className={`tag ${styles.tagWarmup}`}>
                         1 set – uppvärmning
                       </span>
@@ -257,6 +231,10 @@ export default async function ProgramPage({
                 programSlug={program.slug}
               />
             </div>
+
+            {!user && (
+              <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
+            )}
 
             {program.slug === "kontorsvardag" && (
               <div className={styles.ergoSection}>
@@ -294,7 +272,7 @@ export default async function ProgramPage({
         )}
 
         {!locked && !user && (
-          <GuestAccountPrompt text="Spara det här programmet, schemalägg pass och håll koll på din progression." />
+          <GuestAccountPrompt />
         )}
 
         <div className={styles.ctaRow}>
@@ -304,11 +282,6 @@ export default async function ProgramPage({
                 ✓ Markera som klar
               </SubmitButton>
             </form>
-          )}
-          {!locked && !user && (
-            <Link className="btn btn-primary" href="/min-sida">
-              Starta programmet
-            </Link>
           )}
           {!locked && subscription.active && (
             <Link
@@ -323,8 +296,6 @@ export default async function ProgramPage({
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/program">
             {program.slug === "kontorsvardag" ? "Se fler program →" : "Tillbaka till Program"}
           </Link>
-        </div>
-        <div style={{ textAlign: "center", marginTop: 14 }}>
           <ShareButton title={program.title} />
         </div>
 

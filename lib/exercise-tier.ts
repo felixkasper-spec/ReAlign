@@ -3,17 +3,21 @@ import { createClient } from "@/lib/supabase/server";
 
 /**
  * En övning är Premium-låst om den bara förekommer i premium-program —
- * förekommer den i minst ett gratisprogram (eller inget program alls)
- * förblir den fri. Härlett från program_exercises + programs.tier istället
- * för en egen tier-kolumn på exercises, samma mönster som
- * lib/exercise-categories.ts.
+ * förekommer den i minst ett gratisprogram förblir den fri. Härlett från
+ * program_exercises + programs.tier istället för en egen tier-kolumn på
+ * exercises, samma mönster som lib/exercise-categories.ts.
+ *
+ * Fristående övningar (inget program alls) har ingen programtillhörighet
+ * att härleda ifrån, så de styrs istället av exercises.is_premium direkt —
+ * satt explicit av den flaggan oavsett programtillhörighet.
  */
 export async function getPremiumExerciseSlugs(): Promise<Set<string>> {
   const supabase = await createClient();
 
-  const { data: rows } = await supabase
-    .from("program_exercises")
-    .select("exercises ( slug ), programs ( tier )");
+  const [{ data: rows }, { data: flagged }] = await Promise.all([
+    supabase.from("program_exercises").select("exercises ( slug ), programs ( tier )"),
+    supabase.from("exercises").select("slug").eq("is_premium", true),
+  ]);
 
   const seenFree = new Set<string>();
   const seenPremium = new Set<string>();
@@ -32,6 +36,9 @@ export async function getPremiumExerciseSlugs(): Promise<Set<string>> {
   const locked = new Set<string>();
   for (const slug of seenPremium) {
     if (!seenFree.has(slug)) locked.add(slug);
+  }
+  for (const row of flagged ?? []) {
+    locked.add(row.slug);
   }
   return locked;
 }

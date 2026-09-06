@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { programMeta } from "@/lib/program-meta";
+import { levelTagKey } from "@/lib/level-tag";
 
 export type ProgramListItem = {
   id: string;
@@ -18,7 +19,13 @@ export type ProgramListItem = {
 
 type Filter = "all" | "free" | "premium";
 
-export default function ProgramFilter({ programs }: { programs: ProgramListItem[] }) {
+export default function ProgramFilter({
+  programs,
+  exerciseCounts,
+}: {
+  programs: ProgramListItem[];
+  exerciseCounts: Record<string, { min: number; max: number }>;
+}) {
   const [filter, setFilter] = useState<Filter>("all");
 
   const filtered = useMemo(() => {
@@ -50,6 +57,18 @@ export default function ProgramFilter({ programs }: { programs: ProgramListItem[
       <div className={styles.grid} id="programlista">
         {filtered.map((p) => {
           const meta = programMeta[p.slug];
+          const levelBadgeClass = {
+            beginner: styles.beginner,
+            intermediate: styles.intermediate,
+            advanced: styles.advanced,
+            allLevels: styles.allLevels,
+          }[levelTagKey(meta?.level)];
+          const counts = exerciseCounts[p.id];
+          const countLabel = counts
+            ? counts.min === counts.max
+              ? `${counts.max} övningar`
+              : `${counts.min}–${counts.max} övningar`
+            : meta?.purpose;
           return (
             <Link key={p.id} href={`/program/${p.slug}`} className={styles.card}>
               {p.hero_image && (
@@ -63,7 +82,7 @@ export default function ProgramFilter({ programs }: { programs: ProgramListItem[
                 </div>
               )}
               <div className={styles.cardTop}>
-                <span className={styles.badge}>{meta?.level ?? ""}</span>
+                <span className={`${styles.badge} ${levelBadgeClass}`}>{meta?.level ?? ""}</span>
                 <span
                   className={`${styles.badge} ${
                     p.tier === "premium" ? styles.premium : styles.free
@@ -73,10 +92,7 @@ export default function ProgramFilter({ programs }: { programs: ProgramListItem[
                 </span>
               </div>
               <h3>{p.title}</h3>
-              <p className={styles.purpose}>{meta?.purpose}</p>
-              <div className={styles.stats}>
-                <span>{meta?.weeks}</span>
-              </div>
+              <p className={styles.purpose}>{countLabel}</p>
             </Link>
           );
         })}

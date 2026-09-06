@@ -113,8 +113,9 @@
 
 .videoCaption {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
   margin-top: 14px;
   font-size: 0.82rem;
   color: var(--text-soft);
@@ -122,6 +123,7 @@
 
 .exHead {
   margin-bottom: 12px;
+  text-align: center;
 }
 
 .exHead h1 {
@@ -132,28 +134,31 @@
 .exTags {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   margin-top: 8px;
 }
 
-.tagBody {
+:global(.tag).tagBody {
   color: var(--sage);
   background: #e4ebe3;
 }
 
 .metaRow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
   margin: 14px 0 18px;
-  padding: 12px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
 }
 
 .metaItem {
   font-size: 0.85rem;
   color: var(--text);
+  text-align: center;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 10px 18px;
 }
 
 .exSection {

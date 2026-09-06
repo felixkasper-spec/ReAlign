@@ -211,9 +211,9 @@
   gap: 6px;
 }
 
-.premiumTag {
+:global(.tag).premiumTag {
   background: var(--warm-soft);
-  color: var(--warm);
+  color: #8a5a2c;
 }
 
 @media (max-width: 880px) {

@@ -76,12 +76,37 @@
   margin-top: 10px;
 }
 
-.tagLevel {
+:global(.tag).tagBeginner {
+  color: var(--sage);
+  background: #e4ebe3;
+}
+
+:global(.tag).tagIntermediate {
+  color: #fff;
+  background: var(--sage);
+}
+
+:global(.tag).tagAdvanced {
   color: var(--warm);
   background: var(--warm-soft);
 }
 
-.tagWarmup {
+:global(.tag).tagAllLevels {
+  color: var(--sage);
+  background: #e4ebe3;
+}
+
+:global(.tag).tagFree {
+  color: var(--sage);
+  background: #e4ebe3;
+}
+
+:global(.tag).tagPremium {
+  color: #8a5a2c;
+  background: var(--warm-soft);
+}
+
+:global(.tag).tagWarmup {
   color: var(--warm);
   background: var(--warm-soft);
 }
@@ -260,30 +285,6 @@
   background: var(--surface);
 }
 
-.metaRow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin: 14px 0 18px;
-  padding: 12px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.metaItem {
-  font-size: 0.8rem;
-  color: var(--text-soft);
-}
-
-.metaItem b {
-  display: block;
-  font-family: var(--font-newsreader), serif;
-  font-size: 1.1rem;
-  color: var(--text);
-  font-weight: 500;
-  margin-bottom: 2px;
-}
-
 .lockedBox {
   background: var(--warm-soft);
   border: 1px solid var(--warm);
@@ -356,10 +357,16 @@
   gap: 14px;
   padding: 14px 0;
   border-top: 1px solid var(--line);
+  transition: background-color 0.15s ease;
 }
 
 .exRow:first-child {
   border-top: none;
+}
+
+.exRow:hover,
+.exRow:active {
+  background-color: var(--surface);
 }
 
 .exNum {
@@ -368,6 +375,45 @@
   color: var(--sage);
   width: 20px;
   flex-shrink: 0;
+}
+
+.exThumb {
+  display: block;
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--surface);
+}
+
+.exThumb img {
+  object-fit: cover;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playIcon svg {
+  margin-left: 1px;
+}
+
+.exHint {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  margin: 4px 0 2px;
 }
 
 .exInfo {
@@ -398,6 +444,7 @@
 
 .ctaRow {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 30px;
 }
