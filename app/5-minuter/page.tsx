@@ -52,6 +52,10 @@ export default async function FiveMinutesPage() {
   } = await supabase.auth.getUser();
 
   const meta = programMeta[PROGRAM_SLUG];
+  const firstExerciseSlug = exercises[0]?.slug;
+  const startHref = firstExerciseSlug
+    ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=kort`
+    : undefined;
 
   return (
     <>
@@ -81,6 +85,14 @@ export default async function FiveMinutesPage() {
                 fill
                 sizes="(max-width: 880px) 700px, 400px"
               />
+              {startHref && (
+                <>
+                  <div className={styles.heroScrim} />
+                  <Link href={startHref} className={styles.heroStartBtn}>
+                    Starta program →
+                  </Link>
+                </>
+              )}
             </div>
           )}
 
@@ -143,16 +155,12 @@ export default async function FiveMinutesPage() {
         )}
 
         <div className={styles.ctaRow}>
-          {user ? (
+          {user && (
             <form action={logProgramCompletion.bind(null, program.id, program.title)}>
               <SubmitButton className="btn btn-primary" pendingText="Loggar...">
                 ✓ Markera som klar
               </SubmitButton>
             </form>
-          ) : (
-            <Link className="btn btn-primary" href="/min-sida">
-              Starta programmet
-            </Link>
           )}
           <Link className="btn btn-ghost" style={{ border: "1px solid var(--line)" }} href="/">
             Tillbaka till startsidan
