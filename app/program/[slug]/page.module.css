@@ -325,6 +325,24 @@
   margin: 30px 0 20px;
 }
 
+:global(#ovningar):target .lengthPicker {
+  border-radius: 16px;
+  animation: lengthPickerHighlight 2s ease;
+}
+
+@keyframes lengthPickerHighlight {
+  0%,
+  100% {
+    background: transparent;
+    box-shadow: none;
+  }
+  15%,
+  70% {
+    background: var(--warm-soft);
+    box-shadow: 0 0 0 3px var(--warm);
+  }
+}
+
 .lengthOptions {
   display: flex;
   gap: 10px;

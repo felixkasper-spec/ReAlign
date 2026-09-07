@@ -163,9 +163,15 @@ export default async function ProgramPage({
               {startHref && (
                 <>
                   <div className={styles.heroScrim} />
-                  <Link href={startHref} className={styles.heroStartBtn}>
-                    Starta program →
-                  </Link>
+                  {startHref.startsWith("#") ? (
+                    <a href={startHref} className={styles.heroStartBtn}>
+                      Starta program →
+                    </a>
+                  ) : (
+                    <Link href={startHref} className={styles.heroStartBtn}>
+                      Starta program →
+                    </Link>
+                  )}
                 </>
               )}
             </div>
