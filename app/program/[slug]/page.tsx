@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,8 +8,6 @@ import TrainingTips from "@/components/TrainingTips";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import LockedContentNudge from "@/components/LockedContentNudge";
 import SubmitButton from "@/components/SubmitButton";
-import VimeoEmbed from "@/components/VimeoEmbed";
-import VimeoPoster from "@/components/VimeoPoster";
 import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
 import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { createClient } from "@/lib/supabase/server";
@@ -22,9 +19,6 @@ import VariantPicker, { type VariantExercise } from "./VariantPicker";
 import IntroExpand from "./IntroExpand";
 import SaveForLaterForm from "./SaveForLaterForm";
 import styles from "./page.module.css";
-
-const SITTING_VIDEO_URL =
-  "https://player.vimeo.com/video/1218399947?h=1a3cddd537&title=0&byline=0&portrait=0";
 
 export async function generateMetadata({
   params,
@@ -240,26 +234,6 @@ export default async function ProgramPage({
 
             {!user && (
               <SaveForLaterForm programSlug={program.slug} programTitle={program.title} />
-            )}
-
-            {program.slug === "kontorsvardag" && (
-              <div className={styles.ergoSection}>
-                <div className={styles.ergoNote}>
-                  <span>💡</span>
-                  <p>
-                    <b>Glöm inte ergonomin</b> — Övningarna kombineras bäst
-                    med en ökad medvetenhet om hur du sitter, se videon
-                    nedan för enkla konkreta tips.
-                  </p>
-                </div>
-                <Suspense
-                  fallback={
-                    <VimeoEmbed src={SITTING_VIDEO_URL} className={styles.ergoVideo} lazy />
-                  }
-                >
-                  <VimeoPoster src={SITTING_VIDEO_URL} className={styles.ergoVideo} lazy />
-                </Suspense>
-              </div>
             )}
           </>
         )}

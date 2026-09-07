@@ -196,12 +196,6 @@
   font-family: inherit;
 }
 
-.ergoSection {
-  margin-top: 30px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
-}
-
 .saveForLater {
   display: flex;
   align-items: center;
@@ -279,29 +273,6 @@
   .saveForLaterCheckbox {
     justify-content: center;
   }
-}
-
-.ergoNote {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  background: var(--surface);
-  border-radius: 14px;
-  padding: 16px 18px;
-  margin-bottom: 16px;
-  font-size: 0.88rem;
-  color: var(--text);
-}
-
-.ergoNote b {
-  color: var(--sage);
-  font-weight: 500;
-}
-
-.ergoVideo {
-  border-radius: 16px;
-  overflow: hidden;
-  background: var(--surface);
 }
 
 .lockedBox {

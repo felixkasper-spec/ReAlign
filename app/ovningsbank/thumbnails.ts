@@ -22,6 +22,7 @@ const SLUGS_WITH_THUMBNAIL = new Set([
   "cross-crawling",
   "deadlift",
   "downward-dog",
+  "ergonomitips-sittande",
   "flutter-kicks",
   "hand-leg-opposite-lifts-on-hands-and-knees",
   "hip-flexor-situps",
