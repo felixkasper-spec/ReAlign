@@ -27,6 +27,7 @@ export default async function OvningsbankPage() {
       supabase
         .from("exercises")
         .select("id, slug, title, body_part, equipment, sets_reps")
+        .neq("slug", "ergonomitips-sittande")
         .order("body_part")
         .order("title"),
       supabase.auth.getUser(),
