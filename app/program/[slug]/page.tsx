@@ -15,6 +15,11 @@ import { getSubscription } from "@/lib/subscription";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import { levelTagKey } from "@/lib/level-tag";
+import {
+  getCachedProgram,
+  getCachedProgramExercises,
+  getCachedNextLevelProgram,
+} from "@/lib/program-content-cache";
 import VariantPicker, { type VariantExercise } from "./VariantPicker";
 import IntroExpand from "./IntroExpand";
 import SaveForLaterForm from "./SaveForLaterForm";
@@ -26,12 +31,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createClient();
-  const { data: program } = await supabase
-    .from("programs")
-    .select("title, description, category")
-    .eq("slug", slug)
-    .maybeSingle();
+  const program = await getCachedProgram(slug);
 
   if (!program) {
     return pageMetadata({
@@ -62,8 +62,8 @@ export default async function ProgramPage({
   const { langd } = await searchParams;
   const supabase = await createClient();
 
-  const [{ data: program }, subscription, userResult] = await Promise.all([
-    supabase.from("programs").select("*").eq("slug", slug).maybeSingle(),
+  const [program, subscription, userResult] = await Promise.all([
+    getCachedProgram(slug),
     getSubscription(),
     supabase.auth.getUser(),
   ]);
@@ -75,22 +75,12 @@ export default async function ProgramPage({
   const user = userResult.data.user;
   const locked = program.tier === "premium" && !subscription.active;
 
-  const [{ data: rows }, nextLevelResult] = await Promise.all([
-    supabase
-      .from("program_exercises")
-      .select("variant, is_warmup, order_index, exercises ( slug, title, body_part )")
-      .eq("program_id", program.id)
-      .order("order_index"),
+  const [rows, nextLevelProgram] = await Promise.all([
+    getCachedProgramExercises(program.id),
     program.level != null
-      ? supabase
-          .from("programs")
-          .select("slug, title")
-          .eq("category", program.category)
-          .eq("level", program.level + 1)
-          .maybeSingle()
-      : Promise.resolve({ data: null }),
+      ? getCachedNextLevelProgram(program.category, program.level + 1)
+      : Promise.resolve(null),
   ]);
-  const nextLevelProgram: { slug: string; title: string } | null = nextLevelResult.data;
 
   const variants: Record<string, VariantExercise[]> = {};
   const warmup: VariantExercise[] = [];
