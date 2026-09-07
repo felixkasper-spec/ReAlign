@@ -113,10 +113,15 @@ export default async function ProgramPage({
   const defaultVariant = langd ?? "full";
   const firstExerciseSlug =
     warmup[0]?.slug ?? variants[defaultVariant]?.[0]?.slug ?? variants.full?.[0]?.slug;
-  const startHref =
-    !locked && firstExerciseSlug
-      ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=${defaultVariant}`
-      : undefined;
+  const hasMultipleVariants =
+    ["full", "mellan", "kort"].filter((k) => variants[k]?.length).length > 1;
+  const startHref = locked
+    ? undefined
+    : hasMultipleVariants
+      ? "#ovningar"
+      : firstExerciseSlug
+        ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=${defaultVariant}`
+        : undefined;
   const levelTagClass = {
     beginner: styles.tagBeginner,
     intermediate: styles.tagIntermediate,
