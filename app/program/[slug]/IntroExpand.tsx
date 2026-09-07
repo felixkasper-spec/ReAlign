@@ -6,9 +6,11 @@ import styles from "./page.module.css";
 export default function IntroExpand({
   paragraphs,
   startHref,
+  hideJumpRow,
 }: {
   paragraphs: string[];
   startHref?: string;
+  hideJumpRow?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [first, ...rest] = paragraphs;
@@ -26,17 +28,19 @@ export default function IntroExpand({
           {open ? "Visa mindre ▴" : "Läs mer ▾"}
         </button>
       )}
-      <div className={styles.jumpToExercisesRow}>
-        {startHref ? (
-          <a href={startHref} className={styles.startProgramBtn}>
-            Starta program →
-          </a>
-        ) : (
-          <a href="#ovningar" className={styles.jumpToExercises}>
-            Till övningar ↓
-          </a>
-        )}
-      </div>
+      {!hideJumpRow && (
+        <div className={styles.jumpToExercisesRow}>
+          {startHref ? (
+            <a href={startHref} className={styles.startProgramBtn}>
+              Starta program →
+            </a>
+          ) : (
+            <a href="#ovningar" className={styles.jumpToExercises}>
+              Till övningar ↓
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 }

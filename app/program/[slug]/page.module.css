@@ -173,6 +173,44 @@
   object-fit: cover;
 }
 
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.heroStartBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  background: var(--warm);
+  color: #fff;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.15s;
+}
+
+.heroStartBtn:hover {
+  opacity: 0.9;
+}
+
+@media (min-width: 881px) {
+  .heroScrim,
+  .heroStartBtn {
+    display: none;
+  }
+}
+
 .progIntro {
   color: var(--text);
   font-size: 1rem;

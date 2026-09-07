@@ -155,11 +155,22 @@ export default async function ProgramPage({
                 fill
                 sizes="(max-width: 880px) 700px, 400px"
               />
+              {startHref && (
+                <>
+                  <div className={styles.heroScrim} />
+                  <Link href={startHref} className={styles.heroStartBtn}>
+                    Starta program →
+                  </Link>
+                </>
+              )}
             </div>
           )}
 
           {program.description && (
-            <IntroExpand paragraphs={program.description.split("\n\n")} startHref={startHref} />
+            <IntroExpand
+              paragraphs={program.description.split("\n\n")}
+              hideJumpRow={!!startHref}
+            />
           )}
         </div>
 
