@@ -51,6 +51,8 @@ const CATEGORY_OVERRIDES: Record<string, string[]> = {
   "bridges-wide": ["Höft & bäcken", "Knä & ben"],
   "bridge-single-leg": ["Höft & bäcken", "Knä & ben"],
   "lateral-lunges-wall": ["Höft & bäcken", "Knä & ben"],
+
+  "ergonomitips-sittande": ["Höft & bäcken", "Nacke & axlar & skulderblad"],
 };
 
 export function getExerciseCategories(slug: string, bodyPart: string): string[] {
