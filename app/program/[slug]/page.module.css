@@ -141,6 +141,25 @@
   background: var(--surface);
 }
 
+.startProgramBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  border-radius: 100px;
+  border: none;
+  background: var(--warm);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.startProgramBtn:hover {
+  opacity: 0.9;
+}
+
 .heroImage {
   position: relative;
   border-radius: 18px;

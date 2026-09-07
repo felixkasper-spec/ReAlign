@@ -117,6 +117,12 @@ export default async function ProgramPage({
 
   const meta = programMeta[program.slug];
   const defaultVariant = langd ?? "full";
+  const firstExerciseSlug =
+    warmup[0]?.slug ?? variants[defaultVariant]?.[0]?.slug ?? variants.full?.[0]?.slug;
+  const startHref =
+    program.slug === "kontorsvardag" && firstExerciseSlug
+      ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=${defaultVariant}`
+      : undefined;
   const levelTagClass = {
     beginner: styles.tagBeginner,
     intermediate: styles.tagIntermediate,
@@ -159,7 +165,7 @@ export default async function ProgramPage({
           )}
 
           {program.description && (
-            <IntroExpand paragraphs={program.description.split("\n\n")} />
+            <IntroExpand paragraphs={program.description.split("\n\n")} startHref={startHref} />
           )}
         </div>
 

@@ -3,7 +3,13 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 
-export default function IntroExpand({ paragraphs }: { paragraphs: string[] }) {
+export default function IntroExpand({
+  paragraphs,
+  startHref,
+}: {
+  paragraphs: string[];
+  startHref?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [first, ...rest] = paragraphs;
 
@@ -21,9 +27,15 @@ export default function IntroExpand({ paragraphs }: { paragraphs: string[] }) {
         </button>
       )}
       <div className={styles.jumpToExercisesRow}>
-        <a href="#ovningar" className={styles.jumpToExercises}>
-          Till övningar ↓
-        </a>
+        {startHref ? (
+          <a href={startHref} className={styles.startProgramBtn}>
+            Starta program →
+          </a>
+        ) : (
+          <a href="#ovningar" className={styles.jumpToExercises}>
+            Till övningar ↓
+          </a>
+        )}
       </div>
     </div>
   );
