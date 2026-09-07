@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
 import VariantPicker, { type VariantExercise } from "../program/[slug]/VariantPicker";
+import IntroExpand from "../program/[slug]/IntroExpand";
 import styles from "../program/[slug]/page.module.css";
 
 const PROGRAM_SLUG = "helkropp-niva-2";
@@ -56,6 +57,11 @@ export default async function FiveMinutesPage() {
   const startHref = firstExerciseSlug
     ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=kort`
     : undefined;
+  const introParagraphs = [
+    "Ett enkelt sätt att komma igång. Gör programmet varje dag i minst en vecka — ett bra sätt att känna hur det kan kännas när hållningsmusklerna blir mer aktiva.",
+    "För ökad tydlighet: ställ dig upp och känn efter hur det känns att bara stå. Gör sedan programmet och följ instruktionerna noggrant. Ställ dig upp igen och se om du upplever någon skillnad.",
+    "Det kan ta några dagar innan effekten känns av. Lycka till!",
+  ];
 
   return (
     <>
@@ -96,32 +102,7 @@ export default async function FiveMinutesPage() {
             </div>
           )}
 
-          <div className={styles.progIntro}>
-            <p>
-              Ett enkelt sätt att komma igång. Gör programmet varje dag i
-              minst en vecka — ett bra sätt att känna hur det kan kännas när
-              hållningsmusklerna blir mer aktiva.
-            </p>
-            <p>
-              För ökad tydlighet: ställ dig upp och känn efter hur det känns
-              att bara stå. Gör sedan programmet och följ instruktionerna
-              noggrant. Ställ dig upp igen och se om du upplever någon
-              skillnad.
-            </p>
-            <p>Det kan ta några dagar innan effekten känns av. Lycka till!</p>
-          </div>
-        </div>
-
-        <div className={styles.metaRow}>
-          <div className={styles.metaItem}>
-            <b>{exercises.length}</b>Övningar
-          </div>
-          <div className={styles.metaItem}>
-            <b>Nybörjare</b>Nivå
-          </div>
-          <div className={styles.metaItem}>
-            <b>{meta?.purpose ?? program.category}</b>Fokus
-          </div>
+          <IntroExpand paragraphs={introParagraphs} hideJumpRow={!!startHref} />
         </div>
 
         <TrainingTips />
