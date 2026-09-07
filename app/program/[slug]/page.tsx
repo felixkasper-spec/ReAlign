@@ -114,7 +114,7 @@ export default async function ProgramPage({
   const firstExerciseSlug =
     warmup[0]?.slug ?? variants[defaultVariant]?.[0]?.slug ?? variants.full?.[0]?.slug;
   const startHref =
-    program.slug === "kontorsvardag" && firstExerciseSlug
+    !locked && firstExerciseSlug
       ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=${defaultVariant}`
       : undefined;
   const levelTagClass = {
