@@ -52,6 +52,22 @@ export const getCachedProgramExercises = unstable_cache(
   CACHE_OPTIONS,
 );
 
+export const getCachedProgramExercisesFull = unstable_cache(
+  async (programId: string) => {
+    const supabase = publicClient();
+    const { data } = await supabase
+      .from("program_exercises")
+      .select(
+        "variant, is_warmup, order_index, exercises ( slug, title, sets_reps, video_url, duration_seconds, instructions )",
+      )
+      .eq("program_id", programId)
+      .order("order_index");
+    return data;
+  },
+  ["program-exercises-full-by-program-id"],
+  CACHE_OPTIONS,
+);
+
 export const getCachedNextLevelProgram = unstable_cache(
   async (category: string, level: number) => {
     const supabase = publicClient();

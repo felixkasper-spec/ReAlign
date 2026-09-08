@@ -53,10 +53,7 @@ export default async function FiveMinutesPage() {
   } = await supabase.auth.getUser();
 
   const meta = programMeta[PROGRAM_SLUG];
-  const firstExerciseSlug = exercises[0]?.slug;
-  const startHref = firstExerciseSlug
-    ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=kort`
-    : undefined;
+  const startHref = exercises.length > 0 ? "/5-minuter/spela" : undefined;
   const introParagraphs = [
     "Ett enkelt sätt att komma igång. Gör programmet varje dag i minst en vecka — ett bra sätt att känna hur det kan kännas när hållningsmusklerna blir mer aktiva.",
     "För ökad tydlighet: ställ dig upp och känn efter hur det känns att bara stå. Gör sedan programmet och följ instruktionerna noggrant. Ställ dig upp igen och se om du upplever någon skillnad.",

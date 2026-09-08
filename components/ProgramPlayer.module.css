@@ -1,0 +1,172 @@
+.wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px 16px 32px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 14px;
+}
+
+.exitLink {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  text-decoration: none;
+}
+
+.exitLink:hover {
+  color: var(--text);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.dotFilled {
+  background: var(--sage);
+}
+
+.videoWrap {
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.video {
+  width: 100%;
+}
+
+.info {
+  padding: 18px 2px 4px;
+  text-align: center;
+}
+
+.counter {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  color: var(--sage);
+}
+
+.title {
+  font-size: 1.5rem;
+  margin: 4px 0 10px;
+}
+
+.statPill {
+  display: inline-block;
+  background: var(--surface);
+  border-radius: 100px;
+  padding: 7px 18px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.blurb {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  max-width: 40ch;
+  margin: 0 auto;
+}
+
+.controls {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer {
+  font-family: var(--font-mono), monospace;
+  font-size: 1.6rem;
+  color: var(--text);
+}
+
+.navRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.prevBtn {
+  flex: 0 0 auto;
+  padding: 13px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prevBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.nextBtn {
+  flex: 1;
+  padding: 13px 18px;
+  border-radius: 100px;
+  border: none;
+  background: var(--sage);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+.nextBtnReady {
+  background: var(--warm);
+  box-shadow: 0 0 0 4px var(--warm-soft);
+}
+
+.doneBox {
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0;
+}
+
+.doneEmoji {
+  font-size: 2.6rem;
+}
+
+.doneBox h1 {
+  font-size: 1.6rem;
+}
+
+.doneBox p {
+  color: var(--text-soft);
+  margin-top: -8px;
+}
+
+.backLink {
+  color: var(--sage);
+  text-decoration: underline;
+  font-size: 0.88rem;
+  margin-top: 6px;
+}
