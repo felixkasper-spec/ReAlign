@@ -221,9 +221,9 @@ export default function VimeoEmbed({
             position: "absolute",
             right: 10,
             bottom: 10,
-            width: 44,
-            height: 44,
-            borderRadius: 10,
+            width: 52,
+            height: 52,
+            borderRadius: 12,
             background: "rgba(0, 0, 0, 0.55)",
             border: "none",
             cursor: "pointer",
@@ -232,7 +232,7 @@ export default function VimeoEmbed({
             justifyContent: "center",
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path
               d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"
               stroke="#fff"
@@ -291,11 +291,11 @@ export default function VimeoEmbed({
           style={{
             position: "absolute",
             left: "50%",
-            bottom: 14,
+            bottom: 10,
             transform: "translateX(-50%)",
-            width: 60,
-            height: 60,
-            borderRadius: "50%",
+            width: 52,
+            height: 52,
+            borderRadius: 12,
             background: "rgba(0, 0, 0, 0.55)",
             border: "none",
             cursor: "pointer",

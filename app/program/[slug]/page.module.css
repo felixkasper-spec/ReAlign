@@ -204,13 +204,6 @@
   opacity: 0.9;
 }
 
-@media (min-width: 881px) {
-  .heroScrim,
-  .heroStartBtn {
-    display: none;
-  }
-}
-
 .progIntro {
   color: var(--text);
   font-size: 1rem;
@@ -323,6 +316,12 @@
 
 .lengthPicker {
   margin: 30px 0 20px;
+}
+
+.variantStartRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 }
 
 :global(#ovningar):target .lengthPicker {

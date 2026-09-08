@@ -53,6 +53,14 @@ export default function VariantPicker({
               </button>
             ))}
           </div>
+          <div className={styles.variantStartRow}>
+            <Link
+              href={`/program/${programSlug}/spela?variant=${active}`}
+              className={styles.startProgramBtn}
+            >
+              Starta program →
+            </Link>
+          </div>
         </div>
       )}
 

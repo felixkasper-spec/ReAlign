@@ -107,13 +107,11 @@ export default async function ProgramPage({
     ["full", "mellan", "kort"].filter((k) => variants[k]?.length).length > 1;
   const startHref = locked
     ? undefined
-    : program.slug === "kontorsvardag"
-      ? `/program/${program.slug}/spela?variant=${defaultVariant}`
-      : hasMultipleVariants
-        ? "#ovningar"
-        : firstExerciseSlug
-          ? `/ovningsbank/${firstExerciseSlug}?program=${program.slug}&variant=${defaultVariant}`
-          : undefined;
+    : hasMultipleVariants
+      ? "#ovningar"
+      : firstExerciseSlug
+        ? `/program/${program.slug}/spela?variant=${defaultVariant}`
+        : undefined;
   const levelTagClass = {
     beginner: styles.tagBeginner,
     intermediate: styles.tagIntermediate,
