@@ -19,6 +19,7 @@ export default function VimeoEmbed({
   lazy = false,
   poster = null,
   aspectRatio,
+  autoplay = false,
 }: {
   src: string;
   className?: string;
@@ -29,6 +30,12 @@ export default function VimeoEmbed({
   // gör att Vimeos spelare fyller ut sidorna med en suddig utdragen kopia
   // av bilden. Med rätt kvot formar sig rutan efter videon istället.
   aspectRatio?: number;
+  // Startar videon automatiskt, tystad — webbläsare (särskilt iOS Safari,
+  // vilket Facebook/Instagrams inbyggda webbläsare bygger på) tillåter
+  // pålitligt bara MUTED autoplay, aldrig autoplay med ljud, oavsett
+  // föregående klick. Visar en förstorad ljudknapp (samma stil som
+  // fullskärmsknappen) så besökaren kan slå på ljudet med ett tryck.
+  autoplay?: boolean;
 }) {
   const ratio = aspectRatio ?? 16 / 9;
   const VIRTUAL_HEIGHT = VIRTUAL_WIDTH / ratio;
@@ -38,6 +45,8 @@ export default function VimeoEmbed({
   const [scale, setScale] = useState<number | null>(null);
   const [visible, setVisible] = useState(!lazy);
   const [started, setStarted] = useState(false);
+  const [muted, setMuted] = useState(autoplay);
+  const embedSrc = autoplay ? `${src}&autoplay=1&muted=1` : src;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -93,6 +102,12 @@ export default function VimeoEmbed({
     playerRef.current?.requestFullscreen().catch(() => {});
   }
 
+  function handleMuteClick() {
+    const next = !muted;
+    playerRef.current?.setMuted(next).catch(() => {});
+    setMuted(next);
+  }
+
   return (
     <div
       ref={containerRef}
@@ -117,7 +132,7 @@ export default function VimeoEmbed({
       {scale !== null && visible && (
         <iframe
           ref={setIframeNode}
-          src={src}
+          src={embedSrc}
           style={{
             position: "absolute",
             top: 0,
@@ -198,6 +213,46 @@ export default function VimeoEmbed({
               strokeLinecap="round"
               strokeLinejoin="round"
             />
+          </svg>
+        </button>
+      )}
+      {scale !== null && visible && started && autoplay && (
+        <button
+          type="button"
+          onClick={handleMuteClick}
+          aria-label={muted ? "Slå på ljud" : "Stäng av ljud"}
+          style={{
+            position: "absolute",
+            left: 10,
+            bottom: 10,
+            width: 52,
+            height: 52,
+            borderRadius: 12,
+            background: "rgba(0, 0, 0, 0.55)",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M4 9v6h4l5 5V4L8 9H4z" fill="#fff" />
+            {muted ? (
+              <path
+                d="M16 9l6 6M22 9l-6 6"
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            ) : (
+              <path
+                d="M16 8a5 5 0 010 8M19 5a9 9 0 010 14"
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            )}
           </svg>
         </button>
       )}

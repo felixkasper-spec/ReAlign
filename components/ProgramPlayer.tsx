@@ -108,10 +108,12 @@ export default function ProgramPlayer({
       <div className={styles.videoWrap}>
         {current.videoUrl && (
           <VimeoEmbed
+            key={current.slug}
             src={current.videoUrl}
             className={styles.video}
             poster={current.thumbnailUrl}
             aspectRatio={current.aspectRatio}
+            autoplay
           />
         )}
       </div>
