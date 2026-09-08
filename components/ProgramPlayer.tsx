@@ -20,7 +20,7 @@ export default function ProgramPlayer({
   programTitle: string;
   backHref: string;
   loggedIn: boolean;
-  completeAction: (formData: FormData) => void | Promise<void>;
+  completeAction?: (formData: FormData) => void | Promise<void>;
   initialIndex?: number;
 }) {
   const [index, setIndex] = useState(initialIndex);
@@ -50,7 +50,7 @@ export default function ProgramPlayer({
           <span className={styles.doneEmoji}>🎉</span>
           <h1>Bra jobbat!</h1>
           <p>Du klarade hela {programTitle}.</p>
-          {loggedIn ? (
+          {loggedIn && completeAction ? (
             <form action={completeAction}>
               <SubmitButton className="btn btn-primary" pendingText="Loggar...">
                 ✓ Markera som klar
