@@ -1,18 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import VimeoEmbed from "./VimeoEmbed";
 import GuestAccountPrompt from "./GuestAccountPrompt";
 import SubmitButton from "./SubmitButton";
 import type { PlayerExercise } from "@/lib/player-data";
 import styles from "./ProgramPlayer.module.css";
-
-function formatTime(totalSeconds: number) {
-  const m = Math.floor(totalSeconds / 60);
-  const s = totalSeconds % 60;
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
 
 export default function ProgramPlayer({
   exercises,
@@ -30,27 +24,9 @@ export default function ProgramPlayer({
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState(false);
   const current = exercises[index];
-  const [secondsLeft, setSecondsLeft] = useState(current?.durationSeconds ?? 0);
-
-  // Nollställer timern när övningen byts — görs under rendering (inte i en
-  // effekt) enligt Reacts rekommenderade mönster för att "återställa state
-  // när en prop ändras", så vi slipper en extra commit-cykel bara för
-  // återställningen.
-  const [timerForIndex, setTimerForIndex] = useState(index);
-  if (index !== timerForIndex) {
-    setTimerForIndex(index);
-    setSecondsLeft(exercises[index]?.durationSeconds ?? 0);
-  }
-
-  useEffect(() => {
-    if (secondsLeft <= 0) return;
-    const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
-    return () => clearTimeout(t);
-  }, [secondsLeft]);
 
   if (!current && !done) return null;
 
-  const ready = secondsLeft <= 0;
   const isLast = index === exercises.length - 1;
 
   function goNext() {
@@ -128,7 +104,6 @@ export default function ProgramPlayer({
       </div>
 
       <div className={styles.controls}>
-        <span className={styles.timer}>{formatTime(secondsLeft)}</span>
         <div className={styles.navRow}>
           <button
             type="button"
@@ -138,11 +113,7 @@ export default function ProgramPlayer({
           >
             ← Föregående
           </button>
-          <button
-            type="button"
-            className={`${styles.nextBtn} ${ready ? styles.nextBtnReady : ""}`}
-            onClick={goNext}
-          >
+          <button type="button" className={styles.nextBtn} onClick={goNext}>
             {isLast ? "Slutför pass →" : "Nästa övning →"}
           </button>
         </div>

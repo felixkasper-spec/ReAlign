@@ -52,7 +52,9 @@ export default function VimeoEmbed({
   // ersättningsknappar (play/paus, ljud, fullskärm) att visa istället,
   // dvs. bara i autoplay-läget. Övriga videor på sajten saknar egen
   // play/paus-knapp och behöver därför Vimeos inbyggda kontroller kvar.
-  const embedSrc = autoplay ? `${src}&autoplay=1&muted=1&controls=0` : src;
+  // loop=1 spelar om videon automatiskt om den hinner ta slut innan
+  // besökaren själv gått vidare till nästa övning.
+  const embedSrc = autoplay ? `${src}&autoplay=1&muted=1&controls=0&loop=1` : src;
 
   useEffect(() => {
     const el = containerRef.current;
