@@ -65,5 +65,28 @@ export async function getClinicProgramPlayerData(token: string, startSlug?: stri
     exercises.findIndex((ex) => ex.slug === startSlug),
   );
 
-  return { label: program.label, exercises, initialIndex };
+  return { id: program.id, label: program.label, exercises, initialIndex };
+}
+
+// Räknas bara upp från listsidan (/p/[token]), inte spelarsidan — annars
+// skulle en enda övningssession blåsa upp siffran onödigt mycket. Enkel
+// läs-sen-skriv istället för en atomisk increment i databasen: helt okej
+// här eftersom det är en lågtrafik-räknare för en enskild coach, inte en
+// siffra som behöver vara exakt under samtidiga skrivningar.
+export async function recordClinicProgramVisit(id: string) {
+  const admin = createAdminClient();
+
+  const { data } = await admin
+    .from("clinic_programs")
+    .select("visit_count")
+    .eq("id", id)
+    .maybeSingle();
+
+  await admin
+    .from("clinic_programs")
+    .update({
+      visit_count: (data?.visit_count ?? 0) + 1,
+      last_visited_at: new Date().toISOString(),
+    })
+    .eq("id", id);
 }

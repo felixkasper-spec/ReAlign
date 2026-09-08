@@ -19,7 +19,7 @@ export default async function ClinicProgramDetailPage({
 
   const { data: program } = await admin
     .from("clinic_programs")
-    .select("id, label, share_token")
+    .select("id, label, share_token, visit_count, last_visited_at")
     .eq("id", id)
     .maybeSingle();
 
@@ -59,6 +59,22 @@ export default async function ClinicProgramDetailPage({
           <code style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>{link}</code>
           <CopyLinkButton link={link} />
         </div>
+
+        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 20 }}>
+          {program.visit_count > 0 ? (
+            <>
+              Öppnad <b>{program.visit_count}</b> {program.visit_count === 1 ? "gång" : "gånger"},
+              senast{" "}
+              {new Date(program.last_visited_at as string).toLocaleString("sv-SE", {
+                dateStyle: "short",
+                timeStyle: "short",
+              })}
+              .
+            </>
+          ) : (
+            <span style={{ color: "var(--warm)" }}>Länken har inte öppnats än.</span>
+          )}
+        </p>
 
         <h2 style={{ fontSize: "1.1rem", fontWeight: 500, marginBottom: 12 }}>Övningar</h2>
         <div className={styles.list} style={{ marginBottom: 28 }}>

@@ -16,7 +16,7 @@ export default async function ClinicProgramListPage({
 
   let query = admin
     .from("clinic_programs")
-    .select("id, label, share_token, created_at")
+    .select("id, label, share_token, created_at, visit_count, last_visited_at")
     .order("created_at", { ascending: false });
 
   if (q?.trim()) {
@@ -82,8 +82,21 @@ export default async function ClinicProgramListPage({
               <Link key={p.id} href={`/coaching/kundprogram/${p.id}`} className={styles.row}>
                 <div className={styles.rowInfo}>
                   <div className={styles.name}>{p.label}</div>
-                  <div className={styles.preview}>/p/{p.share_token}</div>
+                  <div className={styles.preview}>
+                    /p/{p.share_token}
+                    {p.visit_count > 0 && (
+                      <>
+                        {" "}
+                        · öppnad {p.visit_count} ggr, senast{" "}
+                        {new Date(p.last_visited_at as string).toLocaleString("sv-SE", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </>
+                    )}
+                  </div>
                 </div>
+                {p.visit_count === 0 && <span className={styles.badge}>Ej öppnad</span>}
               </Link>
             ))}
           </div>

@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
-import { getClinicProgramPlayerData } from "@/lib/clinic-program";
+import { getClinicProgramPlayerData, recordClinicProgramVisit } from "@/lib/clinic-program";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "../../program/[slug]/page.module.css";
 
@@ -33,6 +33,8 @@ export default async function ClinicProgramPage({
   if (!data || data.exercises.length === 0) {
     notFound();
   }
+
+  await recordClinicProgramVisit(data.id);
 
   return (
     <>
