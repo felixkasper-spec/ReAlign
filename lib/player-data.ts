@@ -32,7 +32,7 @@ type ProgramExerciseRow = {
   exercises: ExerciseRow | null;
 };
 
-export async function getPlayerData(programSlug: string, variant: string) {
+export async function getPlayerData(programSlug: string, variant: string, startSlug?: string) {
   const supabase = await createClient();
   const [program, subscription, userResult] = await Promise.all([
     getCachedProgram(programSlug),
@@ -76,5 +76,10 @@ export async function getPlayerData(programSlug: string, variant: string) {
     aspectRatio: thumbnails[i]?.aspectRatio ?? 16 / 9,
   }));
 
-  return { program, user, locked, exercises };
+  const initialIndex = Math.max(
+    0,
+    exercises.findIndex((ex) => ex.slug === startSlug),
+  );
+
+  return { program, user, locked, exercises, initialIndex };
 }

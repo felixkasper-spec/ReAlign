@@ -140,6 +140,19 @@ export default async function ProgramPage({
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
             </div>
+            {startHref && (
+              <div className={styles.desktopStartRow}>
+                {startHref.startsWith("#") ? (
+                  <a href={startHref} className={styles.startProgramBtn}>
+                    Starta program →
+                  </a>
+                ) : (
+                  <Link href={startHref} className={styles.startProgramBtn}>
+                    Starta program →
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
 
           {program.hero_image && (
@@ -210,7 +223,7 @@ export default async function ProgramPage({
                 {warmup.map((ex, i) => (
                   <Link
                     key={ex.slug}
-                    href={`/ovningsbank/${ex.slug}?program=${program.slug}&variant=${defaultVariant}`}
+                    href={`/program/${program.slug}/spela?variant=${defaultVariant}&start=${ex.slug}`}
                     className={styles.exRow}
                   >
                     <span className={styles.exNum}>{i + 1}</span>
@@ -240,7 +253,7 @@ export default async function ProgramPage({
               <VariantPicker
                 variants={variants}
                 defaultVariant={defaultVariant}
-                programSlug={program.slug}
+                playerBasePath={`/program/${program.slug}/spela`}
               />
             </div>
 

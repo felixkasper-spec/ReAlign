@@ -78,6 +78,13 @@ export default async function FiveMinutesPage() {
               <span className={`tag ${styles.tagFree}`}>Gratis</span>
             </div>
             <h1 style={{ marginTop: 12 }}>Testa ett 5-minuters program</h1>
+            {startHref && (
+              <div className={styles.desktopStartRow}>
+                <Link href={startHref} className={styles.startProgramBtn}>
+                  Starta program →
+                </Link>
+              </div>
+            )}
           </div>
 
           {program.hero_image && (
@@ -107,7 +114,7 @@ export default async function FiveMinutesPage() {
         <VariantPicker
           variants={{ kort: exercises }}
           defaultVariant="kort"
-          programSlug={program.slug}
+          playerBasePath="/5-minuter/spela"
         />
 
         <div className={styles.progressionBox}>

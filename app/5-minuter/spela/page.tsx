@@ -12,8 +12,13 @@ export const metadata = pageMetadata({
   path: "/5-minuter/spela",
 });
 
-export default async function FiveMinutesPlayerPage() {
-  const data = await getPlayerData(PROGRAM_SLUG, "kort");
+export default async function FiveMinutesPlayerPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ start?: string }>;
+}) {
+  const { start } = await searchParams;
+  const data = await getPlayerData(PROGRAM_SLUG, "kort", start);
   if (!data) notFound();
 
   if (data.locked || data.exercises.length === 0) {
@@ -27,6 +32,7 @@ export default async function FiveMinutesPlayerPage() {
       backHref="/5-minuter"
       loggedIn={!!data.user}
       completeAction={logProgramCompletion.bind(null, data.program.id, data.program.title)}
+      initialIndex={data.initialIndex}
     />
   );
 }

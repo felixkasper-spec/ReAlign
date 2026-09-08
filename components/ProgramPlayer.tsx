@@ -14,14 +14,16 @@ export default function ProgramPlayer({
   backHref,
   loggedIn,
   completeAction,
+  initialIndex = 0,
 }: {
   exercises: PlayerExercise[];
   programTitle: string;
   backHref: string;
   loggedIn: boolean;
   completeAction: (formData: FormData) => void | Promise<void>;
+  initialIndex?: number;
 }) {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(initialIndex);
   const [done, setDone] = useState(false);
   const current = exercises[index];
 

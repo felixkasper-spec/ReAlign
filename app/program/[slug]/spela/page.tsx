@@ -22,12 +22,12 @@ export default async function ProgramPlayerPage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ variant?: string }>;
+  searchParams: Promise<{ variant?: string; start?: string }>;
 }) {
   const { slug } = await params;
-  const { variant } = await searchParams;
+  const { variant, start } = await searchParams;
 
-  const data = await getPlayerData(slug, variant ?? "full");
+  const data = await getPlayerData(slug, variant ?? "full", start);
   if (!data) notFound();
 
   if (data.locked) {
@@ -45,6 +45,7 @@ export default async function ProgramPlayerPage({
       backHref={`/program/${slug}`}
       loggedIn={!!data.user}
       completeAction={logProgramCompletion.bind(null, data.program.id, data.program.title)}
+      initialIndex={data.initialIndex}
     />
   );
 }
