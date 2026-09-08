@@ -3,7 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
-import ClinicProgramBuilder from "./ClinicProgramBuilder";
+import { createClinicProgram } from "../actions";
+import ClinicProgramBuilder from "../ClinicProgramBuilder";
 import styles from "../../page.module.css";
 
 export default async function NewClinicProgramPage() {
@@ -31,7 +32,7 @@ export default async function NewClinicProgramPage() {
           övningarna automatiskt — eller lägg till dem för hand nedan.
         </p>
 
-        <ClinicProgramBuilder exercises={exercises ?? []} />
+        <ClinicProgramBuilder exercises={exercises ?? []} action={createClinicProgram} />
 
         <Footer />
       </div>

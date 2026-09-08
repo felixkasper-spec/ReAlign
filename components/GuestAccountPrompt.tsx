@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./GuestAccountPrompt.module.css";
 
-export default function GuestAccountPrompt() {
+export default function GuestAccountPrompt({ href = "/signup" }: { href?: string }) {
   return (
     <div className={styles.box}>
       <div className={styles.text}>
@@ -14,7 +14,7 @@ export default function GuestAccountPrompt() {
         </ul>
         <div className={styles.note}>Helt gratis, inget kort krävs.</div>
       </div>
-      <Link href="/signup" className={`btn btn-primary ${styles.btn}`}>
+      <Link href={href} className={`btn btn-primary ${styles.btn}`}>
         Skapa gratis konto →
       </Link>
     </div>

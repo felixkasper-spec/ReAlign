@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { getClinicProgramPlayerData } from "@/lib/clinic-program";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -38,6 +39,7 @@ export default async function ClinicProgramPage({
       <Header />
       <div className={`wrap ${styles.wrap}`}>
         <div className={styles.progHead}>
+          <span className="eyebrow">Satt ihop åt dig av Cleer Klinik</span>
           <h1>Ditt program</h1>
           <p style={{ color: "var(--text-soft)", marginTop: 8 }}>
             Ett program satt ihop åt dig — klicka på en övning för video- och
@@ -80,6 +82,10 @@ export default async function ClinicProgramPage({
               <span className={styles.exArrow}>→</span>
             </Link>
           ))}
+        </div>
+
+        <div style={{ marginTop: 30 }}>
+          <GuestAccountPrompt href={`/signup?source=klinik&ref=${token}`} />
         </div>
 
         <Footer />

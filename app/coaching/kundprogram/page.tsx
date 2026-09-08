@@ -5,14 +5,25 @@ import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import styles from "../page.module.css";
 
-export default async function ClinicProgramListPage() {
+export default async function ClinicProgramListPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
   await requireCoach();
+  const { q } = await searchParams;
   const admin = createAdminClient();
 
-  const { data: programs } = await admin
+  let query = admin
     .from("clinic_programs")
     .select("id, label, share_token, created_at")
     .order("created_at", { ascending: false });
+
+  if (q?.trim()) {
+    query = query.ilike("label", `%${q.trim()}%`);
+  }
+
+  const { data: programs } = await query;
 
   return (
     <>
@@ -28,16 +39,43 @@ export default async function ClinicProgramListPage() {
           varken konto eller Premium.
         </p>
 
-        <Link
-          href="/coaching/kundprogram/ny"
-          className="btn btn-primary"
-          style={{ display: "inline-block", marginBottom: 28 }}
-        >
-          + Nytt kundprogram
-        </Link>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
+          <Link href="/coaching/kundprogram/ny" className="btn btn-primary">
+            + Nytt kundprogram
+          </Link>
+          <form
+            action="/coaching/kundprogram"
+            method="get"
+            style={{ display: "flex", gap: 8, flex: 1, minWidth: 200 }}
+          >
+            <input
+              type="search"
+              name="q"
+              defaultValue={q ?? ""}
+              placeholder="Sök på namn..."
+              style={{
+                flex: 1,
+                border: "1px solid var(--line)",
+                borderRadius: 100,
+                padding: "8px 16px",
+                fontSize: "0.88rem",
+                fontFamily: "inherit",
+              }}
+            />
+            <button
+              type="submit"
+              className="btn btn-ghost"
+              style={{ border: "1px solid var(--line)" }}
+            >
+              Sök
+            </button>
+          </form>
+        </div>
 
         {!programs || programs.length === 0 ? (
-          <p className={styles.empty}>Inga kundprogram skapade än.</p>
+          <p className={styles.empty}>
+            {q ? `Inga kundprogram matchade "${q}".` : "Inga kundprogram skapade än."}
+          </p>
         ) : (
           <div className={styles.list}>
             {programs.map((p) => (

@@ -36,6 +36,7 @@ export default async function ClinicProgramPlayerPage({
       backHref={`/p/${token}`}
       loggedIn={false}
       initialIndex={data.initialIndex}
+      signupHref={`/signup?source=klinik&ref=${token}`}
     />
   );
 }

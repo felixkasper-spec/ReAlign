@@ -12,6 +12,8 @@ export async function signup(formData: FormData) {
   const firstName = (formData.get("firstName") as string)?.trim();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const source = (formData.get("source") as string)?.trim();
+  const ref = (formData.get("ref") as string)?.trim();
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -25,14 +27,17 @@ export async function signup(formData: FormData) {
     redirect(`/signup?error=${encodeURIComponent(error.message)}`);
   }
 
-  if (data.user && firstName) {
+  if (data.user && (firstName || source)) {
     // Ingen session finns ännu om e-postbekräftelse krävs, så en vanlig
     // RLS-skyddad update skulle tyst misslyckas — service role-klienten
     // kringgår det och funkar oavsett bekräftelseinställning.
     const admin = createAdminClient();
     await admin
       .from("profiles")
-      .update({ display_name: firstName })
+      .update({
+        ...(firstName ? { display_name: firstName } : {}),
+        ...(source ? { signup_source: ref ? `${source}:${ref}` : source } : {}),
+      })
       .eq("id", data.user.id);
   }
 

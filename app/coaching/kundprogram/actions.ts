@@ -43,6 +43,37 @@ export async function createClinicProgram(formData: FormData) {
   redirect(`/coaching/kundprogram/${program.id}`);
 }
 
+export async function updateClinicProgram(clinicProgramId: string, formData: FormData) {
+  await requireCoach();
+
+  const label = (formData.get("label") as string)?.trim();
+  const exerciseIds = formData.getAll("exerciseIds") as string[];
+  const notes = formData.getAll("notes") as string[];
+
+  if (!label || exerciseIds.length === 0) {
+    return;
+  }
+
+  const admin = createAdminClient();
+
+  // Delningslänken (share_token) rörs aldrig — den redan utskickade länken
+  // ska fortsätta peka på samma program, bara med uppdaterat innehåll.
+  await admin.from("clinic_programs").update({ label }).eq("id", clinicProgramId);
+  await admin.from("clinic_program_exercises").delete().eq("clinic_program_id", clinicProgramId);
+  await admin.from("clinic_program_exercises").insert(
+    exerciseIds.map((exerciseId, i) => ({
+      clinic_program_id: clinicProgramId,
+      exercise_id: exerciseId,
+      notes: notes[i]?.trim() || null,
+      order_index: i,
+    })),
+  );
+
+  revalidatePath("/coaching/kundprogram");
+  revalidatePath(`/coaching/kundprogram/${clinicProgramId}`);
+  redirect(`/coaching/kundprogram/${clinicProgramId}`);
+}
+
 export async function deleteClinicProgram(clinicProgramId: string) {
   await requireCoach();
   const admin = createAdminClient();

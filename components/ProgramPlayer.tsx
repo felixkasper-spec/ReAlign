@@ -15,6 +15,7 @@ export default function ProgramPlayer({
   loggedIn,
   completeAction,
   initialIndex = 0,
+  signupHref,
 }: {
   exercises: PlayerExercise[];
   programTitle: string;
@@ -22,6 +23,7 @@ export default function ProgramPlayer({
   loggedIn: boolean;
   completeAction?: (formData: FormData) => void | Promise<void>;
   initialIndex?: number;
+  signupHref?: string;
 }) {
   const [index, setIndex] = useState(initialIndex);
   const [done, setDone] = useState(false);
@@ -57,7 +59,7 @@ export default function ProgramPlayer({
               </SubmitButton>
             </form>
           ) : (
-            <GuestAccountPrompt />
+            <GuestAccountPrompt href={signupHref} />
           )}
           <Link href={backHref} className={styles.backLink}>
             ← Tillbaka till programmet

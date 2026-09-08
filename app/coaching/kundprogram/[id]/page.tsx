@@ -76,7 +76,14 @@ export default async function ClinicProgramDetailPage({
         </div>
 
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <Link href="/coaching/kundprogram/ny" className="btn btn-primary">
+          <Link href={`/coaching/kundprogram/${program.id}/redigera`} className="btn btn-primary">
+            Redigera program
+          </Link>
+          <Link
+            href="/coaching/kundprogram/ny"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+          >
             + Nytt kundprogram
           </Link>
           <form action={deleteClinicProgram.bind(null, program.id)}>

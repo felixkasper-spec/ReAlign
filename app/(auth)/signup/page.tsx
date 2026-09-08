@@ -13,9 +13,9 @@ export const metadata = pageMetadata({
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; success?: string }>;
+  searchParams: Promise<{ error?: string; success?: string; source?: string; ref?: string }>;
 }) {
-  const { error, success } = await searchParams;
+  const { error, success, source, ref } = await searchParams;
 
   if (success) {
     return (
@@ -42,6 +42,8 @@ export default async function SignupPage({
         {error && <div className={styles.error}>{error}</div>}
 
         <form action={signup}>
+          {source && <input type="hidden" name="source" value={source} />}
+          {ref && <input type="hidden" name="ref" value={ref} />}
           <div className={styles.field}>
             <label htmlFor="firstName">Förnamn</label>
             <input

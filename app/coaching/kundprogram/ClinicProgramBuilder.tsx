@@ -2,11 +2,10 @@
 
 import { useMemo, useState } from "react";
 import SubmitButton from "@/components/SubmitButton";
-import { createClinicProgram } from "../actions";
-import styles from "../../../min-sida/bygg-program/page.module.css";
+import styles from "../../min-sida/bygg-program/page.module.css";
 
 type Exercise = { id: string; slug: string; title: string; body_part: string };
-type SelectedRow = { id: string; title: string; notes: string };
+export type SelectedRow = { id: string; title: string; notes: string };
 
 function normalize(s: string) {
   return s
@@ -36,10 +35,24 @@ function findMatch(name: string, exercises: Exercise[]): Exercise | null {
   );
 }
 
-export default function ClinicProgramBuilder({ exercises }: { exercises: Exercise[] }) {
-  const [label, setLabel] = useState("");
+export default function ClinicProgramBuilder({
+  exercises,
+  action,
+  initialLabel = "",
+  initialSelected = [],
+  submitLabel = "Skapa länk →",
+  submitPendingText = "Skapar...",
+}: {
+  exercises: Exercise[];
+  action: (formData: FormData) => void | Promise<void>;
+  initialLabel?: string;
+  initialSelected?: SelectedRow[];
+  submitLabel?: string;
+  submitPendingText?: string;
+}) {
+  const [label, setLabel] = useState(initialLabel);
   const [notesText, setNotesText] = useState("");
-  const [selected, setSelected] = useState<SelectedRow[]>([]);
+  const [selected, setSelected] = useState<SelectedRow[]>(initialSelected);
   const [unmatchedLines, setUnmatchedLines] = useState<string[]>([]);
   const [renderKey, setRenderKey] = useState(0);
   const [search, setSearch] = useState("");
@@ -145,7 +158,7 @@ export default function ClinicProgramBuilder({ exercises }: { exercises: Exercis
         )}
       </div>
 
-      <form action={createClinicProgram} className={styles.builder}>
+      <form action={action} className={styles.builder}>
         <div className={styles.cols}>
           <div className={styles.panel}>
             <h2>Alla övningar</h2>
@@ -268,10 +281,10 @@ export default function ClinicProgramBuilder({ exercises }: { exercises: Exercis
           />
           <SubmitButton
             className="btn btn-primary"
-            pendingText="Skapar..."
+            pendingText={submitPendingText}
             disabled={selected.length === 0}
           >
-            Skapa länk →
+            {submitLabel}
           </SubmitButton>
         </div>
       </form>
