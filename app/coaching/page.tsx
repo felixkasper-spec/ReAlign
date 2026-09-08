@@ -14,9 +14,27 @@ type ThreadRow = {
   unread: number;
 };
 
+// Midnatt i svensk tid, uttryckt som en UTC-tidsstämpel — created_at lagras
+// i UTC, så vi måste räkna ut var "idag" faktiskt börjar i rätt tidszon
+// istället för att bara nollställa UTC-klockan (skulle ge fel gräns under
+// sommartid och nära midnatt).
+function startOfTodayStockholm(): Date {
+  const now = new Date();
+  const stockholmNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Stockholm" }));
+  const startOfDay = new Date(stockholmNow.getFullYear(), stockholmNow.getMonth(), stockholmNow.getDate());
+  const offsetMs = now.getTime() - stockholmNow.getTime();
+  return new Date(startOfDay.getTime() + offsetMs);
+}
+
 export default async function CoachingInboxPage() {
   await requireCoach();
   const admin = createAdminClient();
+
+  const { data: newProfiles } = await admin
+    .from("profiles")
+    .select("email, display_name, created_at, signup_source")
+    .gte("created_at", startOfTodayStockholm().toISOString())
+    .order("created_at", { ascending: false });
 
   const { data: subs } = await admin
     .from("subscriptions")
@@ -73,6 +91,44 @@ export default async function CoachingInboxPage() {
         >
           Kundprogram (delade länkar) →
         </Link>
+
+        <div
+          style={{
+            background: "var(--surface)",
+            border: "1px solid var(--line)",
+            borderRadius: 14,
+            padding: "16px 18px",
+            marginBottom: 28,
+          }}
+        >
+          <div style={{ fontWeight: 600, marginBottom: (newProfiles?.length ?? 0) > 0 ? 10 : 0 }}>
+            Nya konton idag: {newProfiles?.length ?? 0}
+          </div>
+          {(newProfiles ?? []).map((p, i) => (
+            <div
+              key={i}
+              style={{
+                fontSize: "0.85rem",
+                color: "var(--text-soft)",
+                padding: "4px 0",
+                borderTop: i > 0 ? "1px solid var(--line)" : "none",
+              }}
+            >
+              {p.display_name || p.email}
+              {p.signup_source && (
+                <span style={{ color: "var(--sage)" }}> · källa: {p.signup_source}</span>
+              )}
+              <span>
+                {" "}
+                ·{" "}
+                {new Date(p.created_at as string).toLocaleTimeString("sv-SE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            </div>
+          ))}
+        </div>
 
         {threads.length === 0 && (
           <p className={styles.empty}>
