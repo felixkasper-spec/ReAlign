@@ -47,7 +47,12 @@ export default function VimeoEmbed({
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(autoplay);
-  const embedSrc = autoplay ? `${src}&autoplay=1&muted=1` : src;
+  // controls=0 döljer Vimeos egna kontrollrad (play/paus, spolningslist,
+  // volym, inställningskugghjul) — bara meningsfullt när vi har egna
+  // ersättningsknappar (play/paus, ljud, fullskärm) att visa istället,
+  // dvs. bara i autoplay-läget. Övriga videor på sajten saknar egen
+  // play/paus-knapp och behöver därför Vimeos inbyggda kontroller kvar.
+  const embedSrc = autoplay ? `${src}&autoplay=1&muted=1&controls=0` : src;
 
   useEffect(() => {
     const el = containerRef.current;
