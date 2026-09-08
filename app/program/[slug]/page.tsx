@@ -140,17 +140,11 @@ export default async function ProgramPage({
                 {program.tier === "premium" ? "Premium" : "Gratis"}
               </span>
             </div>
-            {startHref && (
+            {startHref && !startHref.startsWith("#") && (
               <div className={styles.desktopStartRow}>
-                {startHref.startsWith("#") ? (
-                  <a href={startHref} className={styles.startProgramBtn}>
-                    Starta program →
-                  </a>
-                ) : (
-                  <Link href={startHref} className={styles.startProgramBtn}>
-                    Starta program →
-                  </Link>
-                )}
+                <Link href={startHref} className={styles.startProgramBtn}>
+                  Starta program →
+                </Link>
               </div>
             )}
           </div>

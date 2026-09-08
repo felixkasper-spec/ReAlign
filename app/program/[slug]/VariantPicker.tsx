@@ -37,7 +37,7 @@ export default function VariantPicker({
     <div>
       {keys.length > 1 && (
         <div className={styles.lengthPicker}>
-          <span className="eyebrow">Har du ont om tid?</span>
+          <span className="eyebrow">Välj programlängd</span>
           <div className={styles.lengthOptions}>
             {keys.map((key) => (
               <button
