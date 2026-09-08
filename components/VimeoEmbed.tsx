@@ -45,6 +45,7 @@ export default function VimeoEmbed({
   const [scale, setScale] = useState<number | null>(null);
   const [visible, setVisible] = useState(!lazy);
   const [started, setStarted] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(autoplay);
   const embedSrc = autoplay ? `${src}&autoplay=1&muted=1` : src;
 
@@ -91,9 +92,14 @@ export default function VimeoEmbed({
     if (node) {
       const player = new Player(node);
       playerRef.current = player;
-      player.on("play", () => setStarted(true));
+      player.on("play", () => {
+        setStarted(true);
+        setPlaying(true);
+      });
+      player.on("pause", () => setPlaying(false));
     } else {
       playerRef.current?.off("play");
+      playerRef.current?.off("pause");
       playerRef.current = null;
     }
   }, []);
@@ -106,6 +112,18 @@ export default function VimeoEmbed({
     const next = !muted;
     playerRef.current?.setMuted(next).catch(() => {});
     setMuted(next);
+  }
+
+  // Säkert att styra via SDK:n här (till skillnad från den allra första
+  // uppspelningen, se kommentaren vid klicka-för-att-spela-lagret nedan) —
+  // videon är redan igång och tystad, så play/paus omfattas inte av
+  // webbläsares restriktiva regler för uppspelning-med-ljud.
+  function handlePlayPauseClick() {
+    if (playing) {
+      playerRef.current?.pause().catch(() => {});
+    } else {
+      playerRef.current?.play().catch(() => {});
+    }
   }
 
   return (
@@ -147,14 +165,16 @@ export default function VimeoEmbed({
           allowFullScreen
         />
       )}
-      {scale !== null && visible && !started && (
+      {scale !== null && visible && !started && !autoplay && (
         // pointer-events: none — tappet ska nå fram till Vimeo-iframen under
         // och triggra dess inbyggda klicka-för-att-spela. Om vi istället
         // fångar klicket här och anropar player.play() via SDK:n går
         // kommandot via en asynkron postMessage-resa till iframen, vilket
         // gör att mobila webbläsare (särskilt iOS Safari) inte längre
         // räknar det som en direkt användarinteraktion och blockerar
-        // uppspelningen tyst.
+        // uppspelningen tyst. Vid autoplay behövs detta lager inte —
+        // videon startar av sig själv, och en egen förstorad
+        // play/paus-knapp (nedan) styr resten via SDK:n.
         <div
           aria-hidden
           style={{
@@ -254,6 +274,39 @@ export default function VimeoEmbed({
               />
             )}
           </svg>
+        </button>
+      )}
+      {scale !== null && visible && started && autoplay && (
+        <button
+          type="button"
+          onClick={handlePlayPauseClick}
+          aria-label={playing ? "Pausa" : "Spela upp"}
+          style={{
+            position: "absolute",
+            left: "50%",
+            bottom: 14,
+            transform: "translateX(-50%)",
+            width: 60,
+            height: 60,
+            borderRadius: "50%",
+            background: "rgba(0, 0, 0, 0.55)",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {playing ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff">
+              <rect x="5" y="4" width="5" height="16" rx="1.5" />
+              <rect x="14" y="4" width="5" height="16" rx="1.5" />
+            </svg>
+          ) : (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 3 }}>
+              <path d="M6 4v16l14-8z" />
+            </svg>
+          )}
         </button>
       )}
     </div>
