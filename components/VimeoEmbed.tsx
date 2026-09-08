@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Player from "@vimeo/player";
+import styles from "./VimeoEmbed.module.css";
 
 // Vimeos spelare döljer knappar (bl.a. fullskärm) bakom en pil när iframen
 // är smal — vanligt på mobil där videobredden ofta är under ~450px. Genom
@@ -47,6 +48,11 @@ export default function VimeoEmbed({
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(autoplay);
+  // Pulserar ljudknappen en kort stund efter att videon börjat spelas
+  // (tystad, se autoplay-kommentaren nedan) så besökaren märker att den
+  // går att slå på — utan att vara en permanent, påträngande markering.
+  const [muteHintActive, setMuteHintActive] = useState(false);
+  const hintShownRef = useRef(false);
   // controls=0 döljer Vimeos egna kontrollrad (play/paus, spolningslist,
   // volym, inställningskugghjul) — bara meningsfullt när vi har egna
   // ersättningsknappar (play/paus, ljud, fullskärm) att visa istället,
@@ -102,6 +108,10 @@ export default function VimeoEmbed({
       player.on("play", () => {
         setStarted(true);
         setPlaying(true);
+        if (autoplay && !hintShownRef.current) {
+          hintShownRef.current = true;
+          setMuteHintActive(true);
+        }
       });
       player.on("pause", () => setPlaying(false));
     } else {
@@ -109,7 +119,13 @@ export default function VimeoEmbed({
       playerRef.current?.off("pause");
       playerRef.current = null;
     }
-  }, []);
+  }, [autoplay]);
+
+  useEffect(() => {
+    if (!muteHintActive) return;
+    const t = setTimeout(() => setMuteHintActive(false), 3300);
+    return () => clearTimeout(t);
+  }, [muteHintActive]);
 
   function handleFullscreenClick() {
     playerRef.current?.requestFullscreen().catch(() => {});
@@ -119,6 +135,9 @@ export default function VimeoEmbed({
     const next = !muted;
     playerRef.current?.setMuted(next).catch(() => {});
     setMuted(next);
+    if (!next) {
+      setMuteHintActive(false);
+    }
   }
 
   // Säkert att styra via SDK:n här (till skillnad från den allra första
@@ -248,6 +267,7 @@ export default function VimeoEmbed({
           type="button"
           onClick={handleMuteClick}
           aria-label={muted ? "Slå på ljud" : "Stäng av ljud"}
+          className={muteHintActive ? styles.mutePulse : undefined}
           style={{
             position: "absolute",
             left: 10,
