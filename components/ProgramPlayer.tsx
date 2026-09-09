@@ -108,7 +108,7 @@ export default function ProgramPlayer({
     <div className={styles.wrap}>
       <div className={styles.topBar}>
         <Link href={backHref} className={styles.exitLink}>
-          ← Avsluta pass
+          ← Tillbaka till programöversikt
         </Link>
         <div className={styles.dots}>
           {exercises.map((ex, i) => (
