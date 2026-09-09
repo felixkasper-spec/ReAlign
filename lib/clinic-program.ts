@@ -19,6 +19,11 @@ type ClinicProgramExerciseRow = {
   exercises: ExerciseRow | null;
 };
 
+// PlayerExercise + de fulla textinstruktionerna (inte bara första stycket,
+// som `blurb` redan visar) — bara kundprogram-listsidan använder fältet,
+// för "Textinstruktioner"-dropdownen.
+export type ClinicPlayerExercise = PlayerExercise & { instructions: string | null };
+
 // Läser upp ett kundprogram via dess delningskod, helt utan inloggning —
 // service-role-klienten kringgår RLS, som annars nekar all läsning via
 // anon-nyckeln (se migration 0040).
@@ -47,13 +52,14 @@ export async function getClinicProgramPlayerData(token: string, startSlug?: stri
     ),
   );
 
-  const exercises: PlayerExercise[] = ordered
+  const exercises: ClinicPlayerExercise[] = ordered
     .filter((row): row is ClinicProgramExerciseRow & { exercises: ExerciseRow } => row.exercises != null)
     .map((row, i) => ({
       slug: row.exercises.slug,
       title: row.exercises.title,
       setsReps: row.notes?.trim() || row.exercises.sets_reps?.split(" · ")[0] || null,
       blurb: row.exercises.instructions?.split("\n\n")[0] ?? null,
+      instructions: row.exercises.instructions,
       videoUrl: row.exercises.video_url,
       durationSeconds: row.exercises.duration_seconds ?? DEFAULT_DURATION_SECONDS,
       thumbnailUrl: thumbnails[i]?.url ?? null,
