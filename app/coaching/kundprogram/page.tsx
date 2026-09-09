@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { requireCoach } from "@/lib/coach";
+import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import styles from "../page.module.css";
 
@@ -10,7 +10,8 @@ export default async function ClinicProgramListPage({
 }: {
   searchParams: Promise<{ q?: string }>;
 }) {
-  await requireCoach();
+  const user = await requireClinicStaff();
+  const isCoach = user.email === process.env.COACH_EMAIL;
   const { q } = await searchParams;
   const admin = createAdminClient();
 
@@ -29,9 +30,11 @@ export default async function ClinicProgramListPage({
     <>
       <Header />
       <div className={`wrap ${styles.wrap}`}>
-        <Link href="/coaching" className={styles.back}>
-          ← Coach-inkorg
-        </Link>
+        {isCoach && (
+          <Link href="/coaching" className={styles.back}>
+            ← Coach-inkorg
+          </Link>
+        )}
         <span className="eyebrow">Coach-verktyg</span>
         <h1>Kundprogram</h1>
         <p style={{ color: "var(--text-soft)", marginBottom: 24 }}>

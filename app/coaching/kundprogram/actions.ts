@@ -3,11 +3,11 @@
 import { randomBytes } from "crypto";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { requireCoach } from "@/lib/coach";
+import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function createClinicProgram(formData: FormData) {
-  await requireCoach();
+  await requireClinicStaff();
 
   const label = (formData.get("label") as string)?.trim();
   const exerciseIds = formData.getAll("exerciseIds") as string[];
@@ -44,7 +44,7 @@ export async function createClinicProgram(formData: FormData) {
 }
 
 export async function updateClinicProgram(clinicProgramId: string, formData: FormData) {
-  await requireCoach();
+  await requireClinicStaff();
 
   const label = (formData.get("label") as string)?.trim();
   const exerciseIds = formData.getAll("exerciseIds") as string[];
@@ -75,7 +75,7 @@ export async function updateClinicProgram(clinicProgramId: string, formData: For
 }
 
 export async function deleteClinicProgram(clinicProgramId: string) {
-  await requireCoach();
+  await requireClinicStaff();
   const admin = createAdminClient();
 
   await admin.from("clinic_programs").delete().eq("id", clinicProgramId);

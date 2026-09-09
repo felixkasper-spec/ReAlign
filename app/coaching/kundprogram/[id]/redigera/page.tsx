@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { requireCoach } from "@/lib/coach";
+import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { updateClinicProgram } from "../../actions";
 import ClinicProgramBuilder, { type SelectedRow } from "../../ClinicProgramBuilder";
@@ -13,7 +13,7 @@ export default async function EditClinicProgramPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireCoach();
+  await requireClinicStaff();
   const { id } = await params;
   const admin = createAdminClient();
 

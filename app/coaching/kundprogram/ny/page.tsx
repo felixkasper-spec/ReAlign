@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { requireCoach } from "@/lib/coach";
+import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClinicProgram } from "../actions";
 import ClinicProgramBuilder from "../ClinicProgramBuilder";
 import styles from "../../page.module.css";
 
 export default async function NewClinicProgramPage() {
-  await requireCoach();
+  await requireClinicStaff();
   const admin = createAdminClient();
 
   const { data: exercises } = await admin
