@@ -27,9 +27,14 @@ export default function Sidebar({
         ReAlign
       </Link>
       {isClinicStaff && (
-        <Link className={styles.sideLink} href="/coaching/kundprogram">
-          <span className={styles.sideIc}>▤</span>Kundprogram
-        </Link>
+        <>
+          <Link className={styles.sideLink} href="/coaching/kundprogram">
+            <span className={styles.sideIc}>▤</span>Kundprogram
+          </Link>
+          <Link className={styles.sideLink} href="/coaching/content-studio">
+            <span className={styles.sideIc}>◨</span>Content Studio
+          </Link>
+        </>
       )}
       <a className={styles.sideLink} href={`${linkPrefix}#oversikt`}>
         <span className={styles.sideIc}>◐</span>Översikt

@@ -84,13 +84,22 @@ export default async function CoachingInboxPage() {
         <span className="eyebrow">Coach-inkorg</span>
         <h1>Premium Coaching</h1>
 
-        <Link
-          href="/coaching/kundprogram"
-          className="btn btn-ghost"
-          style={{ border: "1px solid var(--line)", display: "inline-block", marginBottom: 20 }}
-        >
-          Kundprogram (delade länkar) →
-        </Link>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+          <Link
+            href="/coaching/kundprogram"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+          >
+            Kundprogram (delade länkar) →
+          </Link>
+          <Link
+            href="/coaching/content-studio"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+          >
+            Content Studio →
+          </Link>
+        </div>
 
         <div
           style={{
