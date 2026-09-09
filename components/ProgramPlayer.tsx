@@ -8,6 +8,26 @@ import SubmitButton from "./SubmitButton";
 import type { PlayerExercise } from "@/lib/player-data";
 import styles from "./ProgramPlayer.module.css";
 
+function renderInstructions(text: string) {
+  return text.split("\n\n").map((block, i) => {
+    const lines = block.split("\n").filter(Boolean);
+    const isBulletList = lines.every((l) => l.startsWith("- "));
+    if (isBulletList) {
+      return (
+        <ul className={styles.bulletList} key={i}>
+          {lines.map((line, j) => (
+            <li className={styles.bulletItem} key={j}>
+              <span className={styles.dot2} />
+              {line.replace(/^- /, "")}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return <p key={i}>{block}</p>;
+  });
+}
+
 export default function ProgramPlayer({
   exercises,
   programTitle,
@@ -27,7 +47,17 @@ export default function ProgramPlayer({
 }) {
   const [index, setIndex] = useState(initialIndex);
   const [done, setDone] = useState(false);
+  const [instructionsOpen, setInstructionsOpen] = useState(false);
   const current = exercises[index];
+
+  // Textinstruktioner ska stängas igen när man går vidare till nästa
+  // övning — justerar state under render (React-dokumenterat mönster)
+  // istället för en useEffect, så det inte blir en extra renderpass.
+  const [lastIndex, setLastIndex] = useState(index);
+  if (index !== lastIndex) {
+    setLastIndex(index);
+    setInstructionsOpen(false);
+  }
 
   if (!current && !done) return null;
 
@@ -105,6 +135,22 @@ export default function ProgramPlayer({
         <h1 className={styles.title}>{current.title}</h1>
         {current.setsReps && <div className={styles.statPill}>{current.setsReps}</div>}
         {current.blurb && <p className={styles.blurb}>{current.blurb}</p>}
+        {current.instructions && (
+          <>
+            <button
+              type="button"
+              className={styles.instructionsToggle}
+              onClick={() => setInstructionsOpen((v) => !v)}
+            >
+              {instructionsOpen ? "Dölj textinstruktioner ▴" : "Textinstruktioner ▾"}
+            </button>
+            {instructionsOpen && (
+              <div className={styles.instructionsBlock}>
+                {renderInstructions(current.instructions)}
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className={styles.controls}>

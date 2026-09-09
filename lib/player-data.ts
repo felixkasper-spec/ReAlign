@@ -8,6 +8,7 @@ export type PlayerExercise = {
   title: string;
   setsReps: string | null;
   blurb: string | null;
+  instructions: string | null;
   videoUrl: string | null;
   durationSeconds: number;
   thumbnailUrl: string | null;
@@ -70,6 +71,7 @@ export async function getPlayerData(programSlug: string, variant: string, startS
     title: ex.title,
     setsReps: ex.sets_reps?.split(" · ")[0] ?? null,
     blurb: ex.instructions?.split("\n\n")[0] ?? null,
+    instructions: ex.instructions,
     videoUrl: ex.video_url,
     durationSeconds: ex.duration_seconds ?? DEFAULT_DURATION_SECONDS,
     thumbnailUrl: thumbnails[i]?.url ?? null,

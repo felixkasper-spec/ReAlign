@@ -83,6 +83,52 @@
   margin: 0 auto;
 }
 
+.instructionsToggle {
+  display: inline-block;
+  margin-top: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--sage);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.instructionsBlock {
+  text-align: left;
+  max-width: 480px;
+  margin: 14px auto 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.instructionsBlock p + p {
+  margin-top: 12px;
+}
+
+.bulletList {
+  list-style: none;
+}
+
+.bulletItem {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  padding: 6px 0;
+}
+
+.dot2 {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sage);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
 .controls {
   margin-top: auto;
   padding-top: 20px;
