@@ -20,6 +20,20 @@ export async function requireCoach() {
   return user;
 }
 
+// Delad av requireClinicStaff() och Header (som bara vill veta om den ska
+// visa en menylänk, utan att omdirigera icke-personal bort från sidan).
+export function isClinicStaffEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  if (process.env.COACH_EMAIL && email === process.env.COACH_EMAIL) return true;
+
+  const staffEmails = (process.env.CLINIC_STAFF_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+
+  return staffEmails.includes(email.toLowerCase());
+}
+
 /**
  * Bredare gate för kundprogram-verktyget specifikt: coachen själv, plus
  * övrig klinikpersonal listad i CLINIC_STAFF_EMAILS (kommaseparerad
@@ -34,17 +48,7 @@ export async function requireClinicStaff() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const staffEmails = (process.env.CLINIC_STAFF_EMAILS ?? "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-
-  const allowed =
-    !!user &&
-    ((!!process.env.COACH_EMAIL && user.email === process.env.COACH_EMAIL) ||
-      (!!user.email && staffEmails.includes(user.email.toLowerCase())));
-
-  if (!allowed) {
+  if (!isClinicStaffEmail(user?.email)) {
     redirect("/");
   }
 
