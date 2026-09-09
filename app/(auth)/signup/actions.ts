@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getBaseUrl } from "@/lib/base-url";
+import { addToBrevoLeadList } from "@/lib/brevo";
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
@@ -14,6 +15,7 @@ export async function signup(formData: FormData) {
   const password = formData.get("password") as string;
   const source = (formData.get("source") as string)?.trim();
   const ref = (formData.get("ref") as string)?.trim();
+  const wantsNewsletter = formData.get("newsletter") === "on";
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -39,6 +41,10 @@ export async function signup(formData: FormData) {
         ...(source ? { signup_source: ref ? `${source}:${ref}` : source } : {}),
       })
       .eq("id", data.user.id);
+  }
+
+  if (wantsNewsletter) {
+    await addToBrevoLeadList(email);
   }
 
   if (data.session) {

@@ -1,9 +1,8 @@
 "use server";
 
-import { sendEmail } from "@/lib/brevo";
+import { sendEmail, addToBrevoLeadList } from "@/lib/brevo";
 
 const SITE_URL = "https://www.realignmetoden.se";
-const BREVO_LEAD_LIST_ID = process.env.BREVO_LEAD_LIST_ID;
 
 export async function sendSaveForLaterLink(formData: FormData) {
   const email = (formData.get("email") as string)?.trim();
@@ -57,34 +56,4 @@ function buildLinkEmailHtml(programTitle: string, url: string) {
     </p>
   </div>
 </div>`;
-}
-
-async function addToBrevoLeadList(email: string) {
-  if (!BREVO_LEAD_LIST_ID) {
-    console.warn(
-      "Newsletter opt-in requested but BREVO_LEAD_LIST_ID is not configured — skipping list add.",
-    );
-    return;
-  }
-
-  try {
-    const res = await fetch("https://api.brevo.com/v3/contacts", {
-      method: "POST",
-      headers: {
-        "api-key": process.env.BREVO_API_KEY!,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        listIds: [Number(BREVO_LEAD_LIST_ID)],
-        updateEnabled: true,
-      }),
-    });
-    if (!res.ok) {
-      console.error(`Brevo contact add failed (${res.status}): ${await res.text()}`);
-    }
-  } catch (e) {
-    console.error("Failed to add contact to Brevo list", e);
-  }
 }

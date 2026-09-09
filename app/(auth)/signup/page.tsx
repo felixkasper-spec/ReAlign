@@ -75,15 +75,31 @@ export default async function SignupPage({
               required
             />
           </div>
+          <label
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 8,
+              fontSize: "0.82rem",
+              color: "var(--text-soft)",
+              margin: "4px 0 18px",
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              name="newsletter"
+              defaultChecked
+              style={{ marginTop: 2, width: "auto" }}
+            />
+            Skicka mig då och då träningstips, påminnelser och information om
+            era tjänster
+          </label>
+
           <button className={`btn btn-primary ${styles.submit}`} type="submit">
             Skapa konto
           </button>
         </form>
-
-        <p style={{ fontSize: "0.78rem", color: "var(--text-soft)", marginTop: 14 }}>
-          Vi skickar dig då och då träningstips, påminnelser och information
-          om våra tjänster — du kan avsluta när du vill.
-        </p>
 
         <div className={styles.switch}>
           Har du redan ett konto? <Link href="/login">Logga in</Link>

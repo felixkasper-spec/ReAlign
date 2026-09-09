@@ -39,3 +39,34 @@ export async function sendEmail({
     throw new Error(`Brevo send failed (${res.status}): ${await res.text()}`);
   }
 }
+
+export async function addToBrevoLeadList(email: string) {
+  const listId = process.env.BREVO_LEAD_LIST_ID;
+  if (!listId) {
+    console.warn(
+      "Newsletter opt-in requested but BREVO_LEAD_LIST_ID is not configured — skipping list add.",
+    );
+    return;
+  }
+
+  try {
+    const res = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST",
+      headers: {
+        "api-key": process.env.BREVO_API_KEY!,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        listIds: [Number(listId)],
+        updateEnabled: true,
+      }),
+    });
+    if (!res.ok) {
+      console.error(`Brevo contact add failed (${res.status}): ${await res.text()}`);
+    }
+  } catch (e) {
+    console.error("Failed to add contact to Brevo list", e);
+  }
+}
