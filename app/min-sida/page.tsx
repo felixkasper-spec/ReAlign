@@ -12,6 +12,7 @@ import Sidebar from "./Sidebar";
 import MobileTabs from "./MobileTabs";
 import WeeklyTrendChart from "@/components/WeeklyTrendChart";
 import { createClient } from "@/lib/supabase/server";
+import { isClinicStaffEmail } from "@/lib/coach";
 import { stripe } from "@/lib/stripe";
 import { getSubscription } from "@/lib/subscription";
 import { getProgressionStats, streakMilestone } from "@/lib/progression";
@@ -187,6 +188,7 @@ export default async function MinSidaPage({
 
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
   const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
+  const isClinicStaff = isClinicStaffEmail(user.email);
 
   // Databasens "plan" skiljer inte på betalningsintervall — bara relevant
   // att slå upp mot Stripe för den här sidans "byt intervall"-länk, och
@@ -237,6 +239,7 @@ export default async function MinSidaPage({
         userEmail={user.email}
         hasCoaching={hasCoaching}
         isCoach={isCoach}
+        isClinicStaff={isClinicStaff}
         canBuildProgram={subscription.active}
       />
 
@@ -244,6 +247,7 @@ export default async function MinSidaPage({
         <MobileTabs
           hasCoaching={hasCoaching}
           isCoach={isCoach}
+          isClinicStaff={isClinicStaff}
           canBuildProgram={subscription.active}
         />
         <div className={styles.topbar} id="oversikt">

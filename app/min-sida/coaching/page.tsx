@@ -5,6 +5,7 @@ import Sidebar from "../Sidebar";
 import MobileTabs from "../MobileTabs";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
+import { isClinicStaffEmail } from "@/lib/coach";
 import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
 import ChatThread from "./ChatThread";
 import Composer from "./Composer";
@@ -32,6 +33,7 @@ export default async function CoachingPage() {
   }
 
   const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
+  const isClinicStaff = isClinicStaffEmail(user.email);
 
   const { data: coachingMessages } = await supabase
     .from("coaching_messages")
@@ -64,6 +66,7 @@ export default async function CoachingPage() {
           linkPrefix="/min-sida"
           activeCoaching
           isCoach={isCoach}
+          isClinicStaff={isClinicStaff}
           canBuildProgram={subscription.active}
         />
 
@@ -73,6 +76,7 @@ export default async function CoachingPage() {
             linkPrefix="/min-sida"
             activeCoaching
             isCoach={isCoach}
+            isClinicStaff={isClinicStaff}
             canBuildProgram={subscription.active}
           />
           <div className={`${shellStyles.topbar} ${styles.chatTopbar}`}>

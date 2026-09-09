@@ -15,11 +15,9 @@ const navLinks = [
 
 export default function HeaderClient({
   loggedIn,
-  isClinicStaff,
   transparent,
 }: {
   loggedIn: boolean;
-  isClinicStaff?: boolean;
   transparent?: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -65,7 +63,6 @@ export default function HeaderClient({
             {link.label}
           </Link>
         ))}
-        {isClinicStaff && <Link href="/coaching/kundprogram">Kundprogram</Link>}
         <button
           type="button"
           className={styles.navSearchBtn}
@@ -97,14 +94,6 @@ export default function HeaderClient({
                 Logga ut
               </button>
             </form>
-            {isClinicStaff && (
-              <Link
-                className={`btn btn-ghost ${styles.desktopOnly}`}
-                href="/coaching/kundprogram"
-              >
-                Kundprogram
-              </Link>
-            )}
             <Link className="btn btn-primary" href="/min-sida">
               Min sida
             </Link>

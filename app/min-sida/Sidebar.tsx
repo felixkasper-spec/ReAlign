@@ -8,6 +8,7 @@ export default function Sidebar({
   linkPrefix = "",
   activeCoaching = false,
   isCoach = false,
+  isClinicStaff = false,
   canBuildProgram = false,
 }: {
   firstName?: string | null;
@@ -16,6 +17,7 @@ export default function Sidebar({
   linkPrefix?: string;
   activeCoaching?: boolean;
   isCoach?: boolean;
+  isClinicStaff?: boolean;
   canBuildProgram?: boolean;
 }) {
   return (
@@ -24,6 +26,11 @@ export default function Sidebar({
         <span className={styles.mark} />
         ReAlign
       </Link>
+      {isClinicStaff && (
+        <Link className={styles.sideLink} href="/coaching/kundprogram">
+          <span className={styles.sideIc}>▤</span>Kundprogram
+        </Link>
+      )}
       <a className={styles.sideLink} href={`${linkPrefix}#oversikt`}>
         <span className={styles.sideIc}>◐</span>Översikt
       </a>

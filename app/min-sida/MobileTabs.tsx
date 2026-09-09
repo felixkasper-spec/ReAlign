@@ -6,16 +6,19 @@ export default function MobileTabs({
   linkPrefix = "",
   activeCoaching = false,
   isCoach = false,
+  isClinicStaff = false,
   canBuildProgram = false,
 }: {
   hasCoaching: boolean;
   linkPrefix?: string;
   activeCoaching?: boolean;
   isCoach?: boolean;
+  isClinicStaff?: boolean;
   canBuildProgram?: boolean;
 }) {
   return (
     <div className={styles.mobileTabs}>
+      {isClinicStaff && <Link href="/coaching/kundprogram">Kundprogram</Link>}
       <a href={`${linkPrefix}#oversikt`}>Översikt</a>
       {hasCoaching && (
         <Link
