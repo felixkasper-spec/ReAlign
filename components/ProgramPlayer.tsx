@@ -49,6 +49,11 @@ export default function ProgramPlayer({
   const [done, setDone] = useState(false);
   const [instructionsOpen, setInstructionsOpen] = useState(false);
   const current = exercises[index];
+  // blurb ovanför är redan första stycket av instructions — dropdownen ska
+  // fortsätta därifrån, inte upprepa det.
+  const restOfInstructions = current?.instructions
+    ? current.instructions.split("\n\n").slice(1).join("\n\n") || null
+    : null;
 
   // Textinstruktioner ska stängas igen när man går vidare till nästa
   // övning — justerar state under render (React-dokumenterat mönster)
@@ -135,7 +140,7 @@ export default function ProgramPlayer({
         <h1 className={styles.title}>{current.title}</h1>
         {current.setsReps && <div className={styles.statPill}>{current.setsReps}</div>}
         {current.blurb && <p className={styles.blurb}>{current.blurb}</p>}
-        {current.instructions && (
+        {restOfInstructions && (
           <>
             <button
               type="button"
@@ -146,7 +151,7 @@ export default function ProgramPlayer({
             </button>
             {instructionsOpen && (
               <div className={styles.instructionsBlock}>
-                {renderInstructions(current.instructions)}
+                {renderInstructions(restOfInstructions)}
               </div>
             )}
           </>
