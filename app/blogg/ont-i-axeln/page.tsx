@@ -4,32 +4,52 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogExerciseCard from "@/components/BlogExerciseCard";
 import BlogPostCard from "@/components/BlogPostCard";
+import ArticleByline from "@/components/ArticleByline";
 import { pageMetadata } from "@/lib/page-metadata";
+import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import styles from "../blog-post.module.css";
 
+const TITLE = "Ont i axeln — därför uppstår det och vad som hjälper";
+const DESCRIPTION =
+  "Axelsmärta och stela, framåtdragna axlar hänger ofta ihop med samma grundorsak. Så uppstår det, och så tränar du upp motståndet.";
+
 export const metadata = pageMetadata({
-  title: "Ont i axeln — därför uppstår det och vad som hjälper — ReAlign Metoden",
-  description:
-    "Axelsmärta och stela, framåtdragna axlar hänger ofta ihop med samma grundorsak. Så uppstår det, och så tränar du upp motståndet.",
+  title: `${TITLE} — ReAlign Metoden`,
+  description: DESCRIPTION,
   image: "/og/default.png",
   path: "/blogg/ont-i-axeln",
+});
+
+const articleJsonLd = buildArticleJsonLd({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/blogg/ont-i-axeln",
+  datePublished: "2026-08-27",
 });
 
 export default function BlogPost() {
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
           <span className="eyebrow">Axel & hållning</span>
           <h1>Ont i axeln — därför uppstår det och vad som hjälper</h1>
           <span className={styles.date}>27 augusti 2026</span>
+          <ArticleByline />
           <p className={styles.lead}>
-            Ont i axeln eller axlarna är extremt vanligt. Vanligast
-            kopplat till hållning — vid exempelvis skärmarbete, men även
-            ofta av sport, ensidig belastning i vardagen eller hur man
-            sover. Det är sällan något du behöver leva med, men det
-            kräver rätt sorts träning, inte bara stretching.
+            Ont i axeln beror sällan på axeln i sig — oftast har den fått
+            en framåtdragen, rundad position som bröstmusklerna
+            förkortas kring, medan musklerna mellan skulderbladen
+            försvagas av att aldrig aktiveras. Extremt vanligt, vanligast
+            kopplat till hållning vid skärmarbete, men även ofta av
+            sport, ensidig belastning i vardagen eller hur man sover.
+            Det är sällan något du behöver leva med, men det kräver rätt
+            sorts träning, inte bara stretching.
           </p>
         </header>
 

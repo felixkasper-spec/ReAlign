@@ -4,31 +4,50 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogExerciseCard from "@/components/BlogExerciseCard";
 import BlogPostCard from "@/components/BlogPostCard";
+import ArticleByline from "@/components/ArticleByline";
 import { pageMetadata } from "@/lib/page-metadata";
+import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import styles from "../blog-post.module.css";
 
+const TITLE = "Ont i nacken — så tränar du bort det";
+const DESCRIPTION =
+  "Varför nacken gör ont i första hand — vanligast kopplat till stillasittande och hållning, men inte bara det — och fem konkreta övningar som faktiskt gör skillnad.";
+
 export const metadata = pageMetadata({
-  title: "Ont i nacken — så tränar du bort det — ReAlign Metoden",
-  description:
-    "Varför nacken gör ont i första hand — vanligast kopplat till stillasittande och hållning, men inte bara det — och fem konkreta övningar som faktiskt gör skillnad.",
+  title: `${TITLE} — ReAlign Metoden`,
+  description: DESCRIPTION,
   image: "/og/default.png",
   path: "/blogg/ont-i-nacken",
+});
+
+const articleJsonLd = buildArticleJsonLd({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/blogg/ont-i-nacken",
+  datePublished: "2026-08-27",
 });
 
 export default function BlogPost() {
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
           <span className="eyebrow">Nacke & hållning</span>
           <h1>Ont i nacken — så tränar du bort det</h1>
           <span className={styles.date}>27 augusti 2026</span>
+          <ArticleByline />
           <p className={styles.lead}>
-            Spänd, stel eller öm nacke är en av de vanligaste sakerna vi
-            hör om — vanligast efter långa dagar framför en skärm, men
+            Ont i nacken beror sällan på att nackens muskler i sig är
+            svaga — oftast har nacken hamnat i en hållningsroll den inte
+            är byggd för och tvingas hålla uppe huvudet helt på egen
+            hand. Vanligast utlöst av långa dagar framför en skärm, men
             långt ifrån bara då. Den goda nyheten: det går nästan alltid
-            att träna bort, om man förstår varför den uppstår i första
+            att träna bort, om man förstår varför det uppstår i första
             hand.
           </p>
         </header>

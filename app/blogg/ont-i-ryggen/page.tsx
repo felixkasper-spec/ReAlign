@@ -4,31 +4,52 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogExerciseCard from "@/components/BlogExerciseCard";
 import BlogPostCard from "@/components/BlogPostCard";
+import ArticleByline from "@/components/ArticleByline";
 import { pageMetadata } from "@/lib/page-metadata";
+import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import styles from "../blog-post.module.css";
 
+const TITLE = "Ont i ryggen — vanligaste orsakerna och vad som hjälper";
+const DESCRIPTION =
+  "Ryggsmärta sitter sällan bara i ryggen. Så hänger bröstrygg, bäcken och resten av kroppen ihop med ryggvärk, och vilka övningar som faktiskt hjälper.";
+
 export const metadata = pageMetadata({
-  title: "Ont i ryggen — vanligaste orsakerna och vad som hjälper — ReAlign Metoden",
-  description:
-    "Ryggsmärta sitter sällan bara i ryggen. Så hänger bröstrygg, bäcken och resten av kroppen ihop med ryggvärk, och vilka övningar som faktiskt hjälper.",
+  title: `${TITLE} — ReAlign Metoden`,
+  description: DESCRIPTION,
   image: "/og/default.png",
   path: "/blogg/ont-i-ryggen",
+});
+
+const articleJsonLd = buildArticleJsonLd({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/blogg/ont-i-ryggen",
+  datePublished: "2026-08-27",
 });
 
 export default function BlogPost() {
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
           <span className="eyebrow">Rygg & hållning</span>
           <h1>Ont i ryggen — vanligaste orsakerna och vad som hjälper</h1>
           <span className={styles.date}>27 augusti 2026</span>
+          <ArticleByline />
           <p className={styles.lead}>
-            Ryggvärk är en av de vanligaste anledningarna till att människor
-            söker hjälp — oavsett om det sitter högt mellan skulderbladen
-            eller lågt i ländryggen. Här är vad som faktiskt brukar ligga
-            bakom det, och vad som hjälper.
+            Ryggvärk beror oftast på felbelastning — att ryggen har för
+            lite svank, för mycket svank, eller är för krum i
+            bröstryggen, vilket gör att vissa delar överarbetar medan
+            andra inte gör sitt jobb. Det är en av de vanligaste
+            anledningarna till att människor söker hjälp, oavsett om det
+            sitter högt mellan skulderbladen eller lågt i ländryggen.
+            Här är vad som faktiskt brukar ligga bakom det, och vad som
+            hjälper.
           </p>
         </header>
 

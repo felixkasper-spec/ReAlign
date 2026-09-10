@@ -4,32 +4,51 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogExerciseCard from "@/components/BlogExerciseCard";
 import BlogPostCard from "@/components/BlogPostCard";
+import ArticleByline from "@/components/ArticleByline";
 import { pageMetadata } from "@/lib/page-metadata";
+import { buildArticleJsonLd } from "@/lib/article-jsonld";
 import styles from "../blog-post.module.css";
 
+const TITLE = "Ont i ländryggen — vanligaste orsakerna och vad som hjälper";
+const DESCRIPTION =
+  "Ländryggens ytliga muskler har ofta fått en hållningsroll de inte är byggda för. Varför det händer, och vilka övningar som faktiskt bygger upp rätt stöd.";
+
 export const metadata = pageMetadata({
-  title: "Ont i ländryggen — vanligaste orsakerna och vad som hjälper — ReAlign Metoden",
-  description:
-    "Ländryggens ytliga muskler har ofta fått en hållningsroll de inte är byggda för. Varför det händer, och vilka övningar som faktiskt bygger upp rätt stöd.",
+  title: `${TITLE} — ReAlign Metoden`,
+  description: DESCRIPTION,
   image: "/og/default.png",
   path: "/blogg/ont-i-landryggen",
+});
+
+const articleJsonLd = buildArticleJsonLd({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/blogg/ont-i-landryggen",
+  datePublished: "2026-08-27",
 });
 
 export default function BlogPost() {
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
           <span className="eyebrow">Ländrygg & hållning</span>
           <h1>Ont i ländryggen — vanligaste orsakerna och vad som hjälper</h1>
           <span className={styles.date}>27 augusti 2026</span>
+          <ArticleByline />
           <p className={styles.lead}>
-            En dov värk i nedre ryggen är en av de vanligaste anledningarna
-            till att människor söker hjälp. Det handlar sällan om att
-            ländryggen i sig är svag — snarare att den fått en roll den
-            inte är byggd för. Här är vad som faktiskt ligger bakom det,
-            och vad som hjälper.
+            Ont i ländryggen beror oftast på att dess ytliga muskler
+            tvingas in i en hållningsroll de inte är byggda för, när
+            andra delar av kroppen inte gör sitt jobb och ländryggen får
+            kompensera dag efter dag. En dov värk där är en av de
+            vanligaste anledningarna till att människor söker hjälp —
+            och lösningen ligger sällan i själva ländryggen, utan i vad
+            den kompenserar för.
           </p>
         </header>
 
