@@ -26,12 +26,14 @@ export default function CoachingAnmalanPage() {
         <div className={styles.hero}>
           <span className="eyebrow">Premium Coaching</span>
           <h1>
-            En egen coach som hjälper dig bli av med spänningen — inte bara ett
-            program.
+            En Postural Terapeut i din ficka som hjälper dig uppnå dina mål —
+            oavsett om detta är att bli av med smärta, bli mer rörlig, starkare
+            eller mer funktionell.
           </h1>
           <p className={styles.heroLead}>
-            Direktkontakt med mig, för allt du annars skulle behöva gissa dig
-            till: teknik, val av övningar, vad som händer när något gör ont.
+            Jag hjälper dig analysera dina obalanser och svagheter, skapar
+            skräddarsydda program med Postural Träning i fokus, samt gymträning,
+            konditionsträning &amp; livsstil.
           </p>
 
           <a
@@ -61,7 +63,8 @@ export default function CoachingAnmalanPage() {
               <div>
                 <div className={styles.coachName}>Felix Eliasson</div>
                 <div className={styles.coachSub}>
-                  Postural Terapeut · 5 år · 1 500+ hjälpta patienter
+                  Postural Terapeut, PT &amp; Samtalscoach · 5 år · 1 500+
+                  hjälpta patienter
                 </div>
               </div>
             </div>
