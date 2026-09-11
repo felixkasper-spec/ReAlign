@@ -133,17 +133,6 @@
   display: inline-block;
 }
 
-.heroReadMore {
-  font-size: 0.86rem;
-  color: var(--text-soft);
-  text-decoration: underline;
-}
-
-.bounceArrow {
-  display: inline-block;
-  animation: bounceArrow 1.6s ease-in-out infinite;
-}
-
 @keyframes bounceArrow {
   0%,
   100% {
@@ -405,7 +394,13 @@
     background: var(--sage);
     color: #fff;
     font-size: 1.1rem;
+    line-height: 1;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     animation: bounceArrow 1.6s ease-in-out infinite;
+  }
+
+  .scrollHint span {
+    display: block;
+    transform: translateY(-1px);
   }
 }

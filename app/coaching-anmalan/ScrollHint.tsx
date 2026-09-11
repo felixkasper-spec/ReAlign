@@ -27,7 +27,7 @@ export default function ScrollHint() {
       className={styles.scrollHint}
       aria-label="Scrolla ner för att läsa mer"
     >
-      ↓
+      <span>↓</span>
     </a>
   );
 }

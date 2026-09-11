@@ -79,9 +79,6 @@ export default function CoachingAnmalanPage() {
             >
               Anmäl intresse →
             </a>
-            <a href="#steps" className={styles.heroReadMore}>
-              eller läs mer <span className={styles.bounceArrow}>↓</span>
-            </a>
           </div>
         </div>
 
