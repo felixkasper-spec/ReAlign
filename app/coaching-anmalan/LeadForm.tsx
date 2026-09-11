@@ -35,7 +35,7 @@ export default function LeadForm() {
 
   if (status === "success") {
     return (
-      <div className={styles.formCard}>
+      <div id="lead-form" className={styles.formCard}>
         <h2>Tack!</h2>
         <p>
           Jag har fått din anmälan och ringer upp dig personligen inom kort.
@@ -45,7 +45,7 @@ export default function LeadForm() {
   }
 
   return (
-    <form className={styles.formCard} onSubmit={handleSubmit}>
+    <form id="lead-form" className={styles.formCard} onSubmit={handleSubmit}>
       <h2>Nyfiken? Lämna dina uppgifter, så ringer jag dig.</h2>
       <p className={styles.formIntro}>
         Inte bindande — bara ett samtal, ingen förpliktelse.

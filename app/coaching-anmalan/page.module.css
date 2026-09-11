@@ -58,6 +58,15 @@
   font-size: 1rem;
 }
 
+.heroPills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
 .rating {
   display: inline-flex;
   align-items: center;
@@ -65,16 +74,32 @@
   background: #fff;
   border-radius: 100px;
   padding: 8px 16px;
-  margin-top: 18px;
   font-size: 0.84rem;
   color: var(--text);
   text-decoration: none;
   border: 1px solid var(--line);
 }
 
+.pricePill {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border-radius: 100px;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--sage);
+  border: 1px solid var(--line);
+}
+
 .stars {
   color: var(--warm);
   font-weight: 600;
+}
+
+.heroCta {
+  display: inline-block;
+  margin-top: 20px;
 }
 
 .grid {

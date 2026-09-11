@@ -45,16 +45,26 @@ export default function CoachingAnmalanPage() {
             konditionsträning &amp; livsstil.
           </p>
 
+          <div className={styles.heroPills}>
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Cleer+Klinik+Hulda+Lindgrens+gata+8+G%C3%B6teborg"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.rating}
+            >
+              <span className={styles.stars}>★★★★★</span>
+              <span>
+                <b>5.0</b> på Google (53 recensioner)
+              </span>
+            </a>
+            <span className={styles.pricePill}>449 kr/mån</span>
+          </div>
+
           <a
-            href="https://www.google.com/maps/search/?api=1&query=Cleer+Klinik+Hulda+Lindgrens+gata+8+G%C3%B6teborg"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.rating}
+            href="#lead-form"
+            className={`btn btn-primary btn-lg ${styles.heroCta}`}
           >
-            <span className={styles.stars}>★★★★★</span>
-            <span>
-              <b>5.0</b> på Google (53 recensioner)
-            </span>
+            Lämna dina uppgifter →
           </a>
         </div>
 
