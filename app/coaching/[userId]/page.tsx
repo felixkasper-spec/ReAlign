@@ -61,7 +61,7 @@ export default async function CoachingThreadPage({
   return (
     <>
       <Header />
-      <div className={`wrap ${styles.wrap}`}>
+      <div className={`wrap ${styles.wrap}`} style={{ paddingBottom: 220 }}>
         <Link href="/coaching" className={styles.back}>
           ← Alla trådar
         </Link>
@@ -112,13 +112,17 @@ export default async function CoachingThreadPage({
           ))}
         </div>
 
-        <ReplyForm
-          userId={userId}
-          reply={reply}
-          aiEnabled={!!process.env.ANTHROPIC_API_KEY}
-        />
-
         <Footer />
+      </div>
+
+      <div className={styles.fixedReplyBar}>
+        <div className={styles.fixedReplyBarInner}>
+          <ReplyForm
+            userId={userId}
+            reply={reply}
+            aiEnabled={!!process.env.ANTHROPIC_API_KEY}
+          />
+        </div>
       </div>
     </>
   );

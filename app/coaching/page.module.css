@@ -179,6 +179,24 @@
   opacity: 0.7;
 }
 
+.fixedReplyBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  z-index: 5;
+  padding-top: 14px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+}
+
+.fixedReplyBarInner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
 .replyForm {
   display: flex;
   flex-direction: column;
