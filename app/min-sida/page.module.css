@@ -223,6 +223,23 @@
   margin-bottom: 26px;
 }
 
+/* Kort glow när man klickar en sidomenylänk på dator — allt syns redan
+   samtidigt där (ingen scroll behövs), så det här är den enda visuella
+   bekräftelsen på att man faktiskt "gick till" rätt avsnitt. */
+.sectionFlash {
+  border-radius: 18px;
+  animation: sectionFlash 2.2s ease-out;
+}
+
+@keyframes sectionFlash {
+  0% {
+    box-shadow: 0 0 0 4px rgba(94, 116, 97, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 4px rgba(94, 116, 97, 0);
+  }
+}
+
 .panelHead {
   display: flex;
   justify-content: space-between;
@@ -479,7 +496,6 @@
   font-weight: 600;
   font-size: 0.85rem;
 }
-
 
 .mobileTabs {
   display: none;

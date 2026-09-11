@@ -1,5 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import styles from "./page.module.css";
+
+// Klick på dator ska inte behöva scrolla (allt syns redan samtidigt), men
+// då finns ingen visuell bekräftelse på att man faktiskt "gick till" rätt
+// avsnitt — flashar därför sektionen med en kort glow istället.
+function flashSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove(styles.sectionFlash);
+  // Tvingar en reflow så klassen kan läggas till igen och animationen
+  // startar om, även om man klickar på samma länk två gånger i rad.
+  void el.offsetWidth;
+  el.classList.add(styles.sectionFlash);
+  window.setTimeout(() => el.classList.remove(styles.sectionFlash), 2200);
+}
 
 export default function Sidebar({
   firstName,
@@ -36,20 +52,40 @@ export default function Sidebar({
           </Link>
         </>
       )}
-      <a className={styles.sideLink} href={`${linkPrefix}#oversikt`}>
+      <a
+        className={styles.sideLink}
+        href={`${linkPrefix}#oversikt`}
+        onClick={() => flashSection("oversikt")}
+      >
         <span className={styles.sideIc}>◐</span>Översikt
       </a>
-      <a className={styles.sideLink} href={`${linkPrefix}#favoriter`}>
+      <a
+        className={styles.sideLink}
+        href={`${linkPrefix}#favoriter`}
+        onClick={() => flashSection("favoriter")}
+      >
         <span className={styles.sideIc}>♡</span>Favoriter
       </a>
-      <a className={styles.sideLink} href={`${linkPrefix}#schema`}>
+      <a
+        className={styles.sideLink}
+        href={`${linkPrefix}#schema`}
+        onClick={() => flashSection("schema")}
+      >
         <span className={styles.sideIc}>▦</span>Schema
       </a>
-      <a className={styles.sideLink} href={`${linkPrefix}#progression`}>
+      <a
+        className={styles.sideLink}
+        href={`${linkPrefix}#progression`}
+        onClick={() => flashSection("progression")}
+      >
         <span className={styles.sideIc}>↗</span>Progression
       </a>
       {canBuildProgram && (
-        <a className={styles.sideLink} href={`${linkPrefix}#mina-program`}>
+        <a
+          className={styles.sideLink}
+          href={`${linkPrefix}#mina-program`}
+          onClick={() => flashSection("mina-program")}
+        >
           <span className={styles.sideIc}>✎</span>Mina program
         </a>
       )}
