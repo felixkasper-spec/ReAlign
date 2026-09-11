@@ -393,14 +393,7 @@
     border-radius: 50%;
     background: var(--sage);
     color: #fff;
-    font-size: 1.1rem;
-    line-height: 1;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     animation: bounceArrow 1.6s ease-in-out infinite;
-  }
-
-  .scrollHint span {
-    display: block;
-    transform: translateY(-1px);
   }
 }

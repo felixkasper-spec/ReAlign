@@ -124,6 +124,7 @@ export default function CoachingAnmalanPage() {
                 förutsättningar: tid, ork, kroppens status, tillgång till
                 utrustning/kroppsvikt med mera
               </li>
+              <li>Bild- och videofeedback på teknik, funktion och hållning</li>
               <li>Direktkontakt via chatt, svar inom 1–2 vardagar</li>
               <li>Ingen bindningstid — avsluta när du vill</li>
               <li>Begränsat antal platser för att kunna hålla kvaliteten</li>
