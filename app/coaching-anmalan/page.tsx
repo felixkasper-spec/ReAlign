@@ -1,8 +1,15 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import VimeoEmbed from "@/components/VimeoEmbed";
+import VimeoPoster from "@/components/VimeoPoster";
 import { pageMetadata } from "@/lib/page-metadata";
 import LeadForm from "./LeadForm";
 import styles from "./page.module.css";
+
+// Samma "vänstra" kundvideo som visas på förstasidan.
+const TESTIMONIAL_VIDEO_URL =
+  "https://player.vimeo.com/video/1219363318?h=4447441569&title=0&byline=0&portrait=0";
 
 export const metadata = pageMetadata({
   title: "Intresseanmälan Premium Coaching — ReAlign Metoden",
@@ -65,17 +72,43 @@ export default function CoachingAnmalanPage() {
               <div>
                 <div className={styles.coachName}>Felix Eliasson</div>
                 <div className={styles.coachSub}>
-                  Postural Terapeut, PT &amp; Samtalscoach · 5 år · 1 500+
-                  hjälpta patienter
+                  Postural Terapeut, PT &amp; Samtalscoach · 1 500+ hjälpta
+                  patienter
                 </div>
               </div>
             </div>
 
             <ul className={styles.bullets}>
+              <li>Skräddarsydda träningsprogram</li>
+              <li>
+                Obegränsad uppföljning — allt justeras efter dina
+                förutsättningar: tid, ork, kroppens status, tillgång till
+                utrustning/kroppsvikt med mera
+              </li>
               <li>Direktkontakt via chatt, svar inom 1–2 vardagar</li>
-              <li>Hjälp att justera ditt program utifrån hur kroppen känns</li>
-              <li>Begränsat antal platser för att kunna hålla kvaliteten</li>
+              <li>Ingen bindningstid — avsluta när du vill</li>
             </ul>
+
+            <div className={styles.testimonialBox}>
+              <span className={styles.testimonialLabel}>
+                Hör en kund berätta
+              </span>
+              <Suspense
+                fallback={
+                  <VimeoEmbed
+                    src={TESTIMONIAL_VIDEO_URL}
+                    className={styles.testimonialVideo}
+                    lazy
+                  />
+                }
+              >
+                <VimeoPoster
+                  src={TESTIMONIAL_VIDEO_URL}
+                  className={styles.testimonialVideo}
+                  lazy
+                />
+              </Suspense>
+            </div>
           </div>
 
           <LeadForm />

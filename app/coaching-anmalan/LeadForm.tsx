@@ -46,7 +46,10 @@ export default function LeadForm() {
 
   return (
     <form className={styles.formCard} onSubmit={handleSubmit}>
-      <h2>Lämna dina uppgifter, så ringer jag dig</h2>
+      <h2>Nyfiken? Lämna dina uppgifter, så ringer jag dig.</h2>
+      <p className={styles.formIntro}>
+        Inte bindande — bara ett samtal, ingen förpliktelse.
+      </p>
       {status === "error" && (
         <p className={styles.formError}>
           Något gick fel — testa igen om en stund.
