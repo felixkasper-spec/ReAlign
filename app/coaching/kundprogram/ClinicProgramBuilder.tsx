@@ -15,6 +15,20 @@ function normalize(s: string) {
     .trim();
 }
 
+// När en förkortning krockar mellan flera övningar (t.ex. "sc" för både
+// Spidey Crawls och Standing Curlpress), avgör denna listan vilken som ska
+// väljas istället för att lämnas som omatchad.
+const ACRONYM_PREFERENCES = new Set(
+  [
+    "Crocodile Crunches",
+    "Postural Plank",
+    "Standing Arm Circles",
+    "Spidey Crawls",
+    "Standups",
+    "Cablecross - One Arm Pulldown",
+  ].map(normalize)
+);
+
 // Initialförkortning av en titel, t.ex. "Hooklying knee squeezes" -> "hks".
 function acronym(title: string) {
   return normalize(title)
@@ -56,9 +70,13 @@ function findMatch(name: string, exercises: Exercise[]): Exercise | null {
   const exact = exercises.find((e) => normalize(e.title) === q);
   if (exact) return exact;
 
-  if (q.length >= 2 && !q.includes(" ")) {
+  if (q.length >= 1 && !q.includes(" ")) {
     const acronymHits = exercises.filter((e) => acronym(e.title) === q);
     if (acronymHits.length === 1) return acronymHits[0];
+    if (acronymHits.length > 1) {
+      const preferred = acronymHits.filter((e) => ACRONYM_PREFERENCES.has(normalize(e.title)));
+      if (preferred.length === 1) return preferred[0];
+    }
   }
 
   const partial =
