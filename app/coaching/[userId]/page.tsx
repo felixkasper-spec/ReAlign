@@ -9,6 +9,7 @@ import { linkify } from "@/lib/linkify";
 import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
 import { replyToCoachingThread } from "../actions";
 import ReplyForm from "./ReplyForm";
+import ScrollToLatest from "./ScrollToLatest";
 import styles from "../page.module.css";
 
 export default async function CoachingThreadPage({
@@ -61,7 +62,7 @@ export default async function CoachingThreadPage({
   return (
     <>
       <Header />
-      <div className={`wrap ${styles.wrap}`} style={{ paddingBottom: 220 }}>
+      <div className={`wrap ${styles.wrap}`} style={{ paddingBottom: 140 }}>
         <Link href="/coaching" className={styles.back}>
           ← Alla trådar
         </Link>
@@ -110,6 +111,7 @@ export default async function CoachingThreadPage({
               {m.body && <p>{linkify(m.body)}</p>}
             </div>
           ))}
+          <ScrollToLatest />
         </div>
 
         <Footer />

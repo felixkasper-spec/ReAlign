@@ -46,17 +46,19 @@ export default function ReplyForm({
         </div>
       )}
       {error && <p className={styles.aiDraftError}>{error}</p>}
-      <textarea
-        ref={textRef}
-        name="body"
-        placeholder="Skriv ditt svar..."
-        required
-        rows={4}
-        className={styles.textInput}
-      />
-      <SubmitButton className="btn btn-primary" pendingText="Skickar...">
-        Svara →
-      </SubmitButton>
+      <div className={styles.replyRow}>
+        <textarea
+          ref={textRef}
+          name="body"
+          placeholder="Skriv ditt svar..."
+          required
+          rows={1}
+          className={styles.textInputCompact}
+        />
+        <SubmitButton className="btn btn-primary" pendingText="Skickar...">
+          Svara →
+        </SubmitButton>
+      </div>
     </form>
   );
 }

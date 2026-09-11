@@ -187,8 +187,8 @@
   background: var(--bg);
   border-top: 1px solid var(--line);
   z-index: 5;
-  padding-top: 14px;
-  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  padding-top: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
 }
 
 .fixedReplyBarInner {
@@ -197,10 +197,20 @@
   padding: 0 32px;
 }
 
+.threadEndAnchor {
+  scroll-margin-bottom: 140px;
+}
+
 .replyForm {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+}
+
+.replyRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 .textInput {
@@ -211,6 +221,19 @@
   background: #fff;
   color: var(--text);
   resize: vertical;
+}
+
+.textInputCompact {
+  flex: 1;
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  resize: vertical;
+  min-height: 42px;
+  max-height: 140px;
 }
 
 .aiDraftRow {
