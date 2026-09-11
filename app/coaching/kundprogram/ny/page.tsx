@@ -27,13 +27,7 @@ export default async function NewClinicProgramPage() {
         <Link href="/coaching/kundprogram" className={styles.back}>
           ← Kundprogram
         </Link>
-        <span className="eyebrow">Coach-verktyg</span>
-        <h1>Nytt kundprogram</h1>
-        <p style={{ color: "var(--text-soft)", marginBottom: 24 }}>
-          Klistra in dina anteckningar (ett format som{" "}
-          <i>&quot;Spidey crawls - 2x45 sekunder&quot;</i> per rad) så matchas
-          övningarna automatiskt — eller lägg till dem för hand nedan.
-        </p>
+        <h1 style={{ marginBottom: 24 }}>Nytt kundprogram</h1>
 
         <ClinicProgramBuilder exercises={exercises ?? []} action={createClinicProgram} />
 
