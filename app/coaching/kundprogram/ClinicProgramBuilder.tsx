@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import SubmitButton from "@/components/SubmitButton";
 import styles from "../../min-sida/bygg-program/page.module.css";
 
@@ -118,7 +118,7 @@ export default function ClinicProgramBuilder({
   action,
   initialLabel = "",
   initialSelected = [],
-  submitLabel = "Skapa länk →",
+  submitLabel = "Skapa och kopiera länk →",
   submitPendingText = "Skapar...",
 }: {
   exercises: Exercise[];
@@ -128,6 +128,7 @@ export default function ClinicProgramBuilder({
   submitLabel?: string;
   submitPendingText?: string;
 }) {
+  const formId = useId();
   const [label, setLabel] = useState(initialLabel);
   const [notesText, setNotesText] = useState("");
   const [selected, setSelected] = useState<SelectedRow[]>(initialSelected);
@@ -210,6 +211,21 @@ export default function ClinicProgramBuilder({
   return (
     <div className={styles.builder}>
       <div className={styles.panel}>
+        <h2>Namn/anteckning</h2>
+        <input
+          type="text"
+          name="label"
+          form={formId}
+          placeholder="Namn/anteckning (t.ex. Anna K – vecka 1)"
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+          required
+          className={styles.textInput}
+          style={{ width: "100%" }}
+        />
+      </div>
+
+      <div className={styles.panel}>
         <h2>Klistra in anteckningar</h2>
         <textarea
           value={notesText}
@@ -248,7 +264,7 @@ export default function ClinicProgramBuilder({
         )}
       </div>
 
-      <form action={action} className={styles.builder}>
+      <form id={formId} action={action} className={styles.builder}>
         <div className={styles.panel}>
           <h2>Kundens program ({selected.length})</h2>
           {selected.length === 0 ? (
@@ -312,15 +328,6 @@ export default function ClinicProgramBuilder({
         </div>
 
         <div className={styles.saveRow}>
-          <input
-            type="text"
-            name="label"
-            placeholder="Namn/anteckning (t.ex. Anna K – vecka 1)"
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-            required
-            className={styles.textInput}
-          />
           <SubmitButton
             className="btn btn-primary"
             pendingText={submitPendingText}

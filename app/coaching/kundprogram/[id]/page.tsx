@@ -13,11 +13,14 @@ export const metadata: Metadata = { title: "Kundprogram — ReAlign Metoden" };
 
 export default async function ClinicProgramDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ ny?: string }>;
 }) {
   await requireClinicStaff();
   const { id } = await params;
+  const { ny } = await searchParams;
   const admin = createAdminClient();
 
   const { data: program } = await admin
@@ -59,34 +62,51 @@ export default async function ClinicProgramDetailPage({
             margin: "16px 0 28px",
           }}
         >
-          <code style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>{link}</code>
-          <CopyLinkButton link={link} />
+          <code style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>
+            {link}
+          </code>
+          <CopyLinkButton link={link} autoCopy={ny === "1"} />
         </div>
 
-        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 20 }}>
+        <p
+          style={{
+            color: "var(--text-soft)",
+            fontSize: "0.88rem",
+            marginBottom: 20,
+          }}
+        >
           {program.visit_count > 0 ? (
             <>
-              Öppnad <b>{program.visit_count}</b> {program.visit_count === 1 ? "gång" : "gånger"},
-              senast{" "}
-              {new Date(program.last_visited_at as string).toLocaleString("sv-SE", {
-                dateStyle: "short",
-                timeStyle: "short",
-              })}
+              Öppnad <b>{program.visit_count}</b>{" "}
+              {program.visit_count === 1 ? "gång" : "gånger"}, senast{" "}
+              {new Date(program.last_visited_at as string).toLocaleString(
+                "sv-SE",
+                {
+                  dateStyle: "short",
+                  timeStyle: "short",
+                },
+              )}
               .
             </>
           ) : (
-            <span style={{ color: "var(--warm)" }}>Länken har inte öppnats än.</span>
+            <span style={{ color: "var(--warm)" }}>
+              Länken har inte öppnats än.
+            </span>
           )}
         </p>
 
-        <h2 style={{ fontSize: "1.1rem", fontWeight: 500, marginBottom: 12 }}>Övningar</h2>
+        <h2 style={{ fontSize: "1.1rem", fontWeight: 500, marginBottom: 12 }}>
+          Övningar
+        </h2>
         <div className={styles.list} style={{ marginBottom: 28 }}>
           {(rows ?? []).map((r, i) => {
             const ex = r.exercises as unknown as { title: string } | null;
             return (
               <div key={i} className={styles.row} style={{ cursor: "default" }}>
                 <div className={styles.rowInfo}>
-                  <div className={styles.name}>{ex?.title ?? "Okänd övning"}</div>
+                  <div className={styles.name}>
+                    {ex?.title ?? "Okänd övning"}
+                  </div>
                   <div className={styles.preview}>{r.notes || "—"}</div>
                 </div>
               </div>
@@ -95,7 +115,10 @@ export default async function ClinicProgramDetailPage({
         </div>
 
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <Link href={`/coaching/kundprogram/${program.id}/redigera`} className="btn btn-primary">
+          <Link
+            href={`/coaching/kundprogram/${program.id}/redigera`}
+            className="btn btn-primary"
+          >
             Redigera program
           </Link>
           <Link

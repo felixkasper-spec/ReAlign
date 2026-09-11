@@ -40,10 +40,13 @@ export async function createClinicProgram(formData: FormData) {
   );
 
   revalidatePath("/coaching/kundprogram");
-  redirect(`/coaching/kundprogram/${program.id}`);
+  redirect(`/coaching/kundprogram/${program.id}?ny=1`);
 }
 
-export async function updateClinicProgram(clinicProgramId: string, formData: FormData) {
+export async function updateClinicProgram(
+  clinicProgramId: string,
+  formData: FormData,
+) {
   await requireClinicStaff();
 
   const label = (formData.get("label") as string)?.trim();
@@ -58,8 +61,14 @@ export async function updateClinicProgram(clinicProgramId: string, formData: For
 
   // Delningslänken (share_token) rörs aldrig — den redan utskickade länken
   // ska fortsätta peka på samma program, bara med uppdaterat innehåll.
-  await admin.from("clinic_programs").update({ label }).eq("id", clinicProgramId);
-  await admin.from("clinic_program_exercises").delete().eq("clinic_program_id", clinicProgramId);
+  await admin
+    .from("clinic_programs")
+    .update({ label })
+    .eq("id", clinicProgramId);
+  await admin
+    .from("clinic_program_exercises")
+    .delete()
+    .eq("clinic_program_id", clinicProgramId);
   await admin.from("clinic_program_exercises").insert(
     exerciseIds.map((exerciseId, i) => ({
       clinic_program_id: clinicProgramId,
