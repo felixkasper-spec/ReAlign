@@ -68,6 +68,21 @@ export default function CoachingAnmalanPage() {
           </a>
         </div>
 
+        <div className={styles.steps}>
+          <div className={styles.step}>
+            <span className={styles.stepNum}>1</span>
+            Du lämnar dina uppgifter
+          </div>
+          <div className={styles.step}>
+            <span className={styles.stepNum}>2</span>
+            Jag ringer dig — oftast samma dag
+          </div>
+          <div className={styles.step}>
+            <span className={styles.stepNum}>3</span>
+            Vi pratar om din situation, helt utan förpliktelser
+          </div>
+        </div>
+
         <div className={styles.grid}>
           <div className={styles.side}>
             <div className={styles.coachBox}>
@@ -97,6 +112,7 @@ export default function CoachingAnmalanPage() {
               </li>
               <li>Direktkontakt via chatt, svar inom 1–2 vardagar</li>
               <li>Ingen bindningstid — avsluta när du vill</li>
+              <li>Begränsat antal platser för att kunna hålla kvaliteten</li>
             </ul>
 
             <div className={styles.testimonialBox}>

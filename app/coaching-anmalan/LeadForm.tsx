@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { submitCoachingLead } from "./actions";
 import styles from "./page.module.css";
 
@@ -38,7 +39,8 @@ export default function LeadForm() {
       <div id="lead-form" className={styles.formCard}>
         <h2>Tack!</h2>
         <p>
-          Jag har fått din anmälan och ringer upp dig personligen inom kort.
+          Jag har fått din anmälan och ringer upp dig personligen, oftast samma
+          dag.
         </p>
       </div>
     );
@@ -92,7 +94,12 @@ export default function LeadForm() {
         {isPending ? "Skickar..." : "Skicka intresseanmälan →"}
       </button>
       <p className={styles.formNote}>
-        Jag ringer upp dig personligen inom kort.
+        Jag ringer upp dig personligen, oftast samma dag.
+      </p>
+      <p className={styles.formConsent}>
+        Genom att skicka in godkänner du att dina uppgifter sparas så att jag
+        kan kontakta dig. Läs vår{" "}
+        <Link href="/integritetspolicy">integritetspolicy</Link>.
       </p>
     </form>
   );
