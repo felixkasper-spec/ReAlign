@@ -5,6 +5,11 @@ import SubmitButton from "@/components/SubmitButton";
 import { generateReplyDraft } from "../actions";
 import styles from "../page.module.css";
 
+function resize(el: HTMLTextAreaElement) {
+  el.style.height = "auto";
+  el.style.height = `${el.scrollHeight}px`;
+}
+
 export default function ReplyForm({
   userId,
   reply,
@@ -26,6 +31,7 @@ export default function ReplyForm({
       setError(result.error);
     } else if (textRef.current) {
       textRef.current.value = result.draft;
+      resize(textRef.current);
       textRef.current.focus();
     }
     setPending(false);
@@ -54,6 +60,7 @@ export default function ReplyForm({
           required
           rows={1}
           className={styles.textInputCompact}
+          onInput={(e) => resize(e.currentTarget)}
         />
         <SubmitButton className="btn btn-primary" pendingText="Skickar...">
           Svara →

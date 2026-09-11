@@ -138,6 +138,32 @@
   margin-bottom: 28px;
 }
 
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: min(600px, calc(100vh - 260px));
+  margin: 20px 0 28px;
+}
+
+.cardScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardComposer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--line);
+  padding: 14px 16px;
+}
+
 .msg {
   max-width: 85%;
   border-radius: 12px;
@@ -179,28 +205,6 @@
   opacity: 0.7;
 }
 
-.fixedReplyBar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--bg);
-  border-top: 1px solid var(--line);
-  z-index: 5;
-  padding-top: 10px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
-}
-
-.fixedReplyBarInner {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 32px;
-}
-
-.threadEndAnchor {
-  scroll-margin-bottom: 140px;
-}
-
 .replyForm {
   display: flex;
   flex-direction: column;
@@ -231,9 +235,10 @@
   border: 1px solid var(--line);
   background: #fff;
   color: var(--text);
-  resize: vertical;
+  resize: none;
   min-height: 42px;
-  max-height: 140px;
+  max-height: 160px;
+  overflow-y: auto;
 }
 
 .aiDraftRow {

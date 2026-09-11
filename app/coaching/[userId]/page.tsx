@@ -62,7 +62,7 @@ export default async function CoachingThreadPage({
   return (
     <>
       <Header />
-      <div className={`wrap ${styles.wrap}`} style={{ paddingBottom: 140 }}>
+      <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching" className={styles.back}>
           ← Alla trådar
         </Link>
@@ -87,44 +87,44 @@ export default async function CoachingThreadPage({
           </Link>
         </div>
 
-        <div className={styles.thread}>
-          {messagesWithUrls.length === 0 && (
-            <p className={styles.empty}>Inga meddelanden än.</p>
-          )}
-          {messagesWithUrls.map((m) => (
-            <div
-              key={m.id}
-              className={`${styles.msg} ${
-                m.sender === "coach" ? styles.msgCoach : styles.msgUser
-              }`}
-            >
-              <span className={styles.msgMeta}>
-                {m.sender === "coach" ? "Coach" : displayName} ·{" "}
-                {new Date(m.created_at as string).toLocaleString("sv-SE")}
-              </span>
-              {m.attachment_url && m.attachment_type && (
-                <AttachmentMedia
-                  url={m.attachment_url}
-                  type={m.attachment_type}
-                />
-              )}
-              {m.body && <p>{linkify(m.body)}</p>}
-            </div>
-          ))}
-          <ScrollToLatest />
+        <div className={styles.card}>
+          <div className={styles.cardScroll}>
+            {messagesWithUrls.length === 0 && (
+              <p className={styles.empty}>Inga meddelanden än.</p>
+            )}
+            {messagesWithUrls.map((m) => (
+              <div
+                key={m.id}
+                className={`${styles.msg} ${
+                  m.sender === "coach" ? styles.msgCoach : styles.msgUser
+                }`}
+              >
+                <span className={styles.msgMeta}>
+                  {m.sender === "coach" ? "Coach" : displayName} ·{" "}
+                  {new Date(m.created_at as string).toLocaleString("sv-SE")}
+                </span>
+                {m.attachment_url && m.attachment_type && (
+                  <AttachmentMedia
+                    url={m.attachment_url}
+                    type={m.attachment_type}
+                  />
+                )}
+                {m.body && <p>{linkify(m.body)}</p>}
+              </div>
+            ))}
+            <ScrollToLatest />
+          </div>
+
+          <div className={styles.cardComposer}>
+            <ReplyForm
+              userId={userId}
+              reply={reply}
+              aiEnabled={!!process.env.ANTHROPIC_API_KEY}
+            />
+          </div>
         </div>
 
         <Footer />
-      </div>
-
-      <div className={styles.fixedReplyBar}>
-        <div className={styles.fixedReplyBarInner}>
-          <ReplyForm
-            userId={userId}
-            reply={reply}
-            aiEnabled={!!process.env.ANTHROPIC_API_KEY}
-          />
-        </div>
       </div>
     </>
   );
