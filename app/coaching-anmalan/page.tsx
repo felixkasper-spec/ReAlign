@@ -71,15 +71,20 @@ export default function CoachingAnmalanPage() {
             <span className={styles.pricePill}>449 kr/mån</span>
           </div>
 
-          <a
-            href="#lead-form"
-            className={`btn btn-primary btn-lg ${styles.heroCta}`}
-          >
-            Lämna dina uppgifter →
-          </a>
+          <div className={styles.heroCtaRow}>
+            <a
+              href="#lead-form"
+              className={`btn btn-primary btn-lg ${styles.heroCta}`}
+            >
+              Anmäl intresse →
+            </a>
+            <a href="#steps" className={styles.heroReadMore}>
+              eller läs mer ↓
+            </a>
+          </div>
         </div>
 
-        <div className={styles.steps}>
+        <div id="steps" className={styles.steps}>
           <div className={styles.step}>
             <span className={styles.stepNum}>1</span>
             Du lämnar dina uppgifter
