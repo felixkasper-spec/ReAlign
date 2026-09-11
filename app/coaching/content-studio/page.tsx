@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -5,6 +6,8 @@ import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import ContentStudioClient from "./ContentStudioClient";
 import styles from "../page.module.css";
+
+export const metadata: Metadata = { title: "Content Studio — ReAlign Metoden" };
 
 export default async function ContentStudioPage() {
   const user = await requireClinicStaff();
