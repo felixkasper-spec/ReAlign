@@ -15,14 +15,53 @@ function normalize(s: string) {
     .trim();
 }
 
-// Hittar bästa matchande övning för en fritextrad som "Spidey crawls" —
-// exakt titelmatchning först, sen startar-med/innehåller som fallback för
-// smärre stavfel eller extra ord.
+// Initialförkortning av en titel, t.ex. "Hooklying knee squeezes" -> "hks".
+function acronym(title: string) {
+  return normalize(title)
+    .split(" ")
+    .filter(Boolean)
+    .map((w) => w[0])
+    .join("");
+}
+
+// Levenshtein-avstånd (antal enstaka tecken-ändringar mellan två strängar),
+// används för att fånga upp stavfel i sista fallback-steget.
+function levenshtein(a: string, b: string) {
+  const m = a.length;
+  const n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const row = [i];
+    for (let j = 1; j <= n; j++) {
+      row[j] =
+        a[i - 1] === b[j - 1]
+          ? prev[j - 1]
+          : 1 + Math.min(prev[j - 1], prev[j], row[j - 1]);
+    }
+    prev = row;
+  }
+  return prev[n];
+}
+
+// Hittar bästa matchande övning för en fritextrad som "Spidey crawls" eller
+// en förkortning som "sc". Ordning: exakt titel -> unik initialförkortning
+// (t.ex. "hks" för Hooklying knee squeezes) -> startar-med/innehåller ->
+// stavfelstolerant (Levenshtein) som sista fallback.
 function findMatch(name: string, exercises: Exercise[]): Exercise | null {
   const q = normalize(name);
   if (!q) return null;
-  return (
-    exercises.find((e) => normalize(e.title) === q) ??
+
+  const exact = exercises.find((e) => normalize(e.title) === q);
+  if (exact) return exact;
+
+  if (q.length >= 2 && !q.includes(" ")) {
+    const acronymHits = exercises.filter((e) => acronym(e.title) === q);
+    if (acronymHits.length === 1) return acronymHits[0];
+  }
+
+  const partial =
     exercises.find((e) => {
       const t = normalize(e.title);
       return t.startsWith(q) || q.startsWith(t);
@@ -30,9 +69,25 @@ function findMatch(name: string, exercises: Exercise[]): Exercise | null {
     exercises.find((e) => {
       const t = normalize(e.title);
       return t.includes(q) || q.includes(t);
-    }) ??
-    null
-  );
+    });
+  if (partial) return partial;
+
+  if (q.length >= 3) {
+    let best: Exercise | null = null;
+    let bestDist = Infinity;
+    for (const e of exercises) {
+      const t = normalize(e.title);
+      const dist = levenshtein(q, t);
+      const threshold = Math.min(4, Math.max(1, Math.floor(Math.max(q.length, t.length) * 0.25)));
+      if (dist <= threshold && dist < bestDist) {
+        bestDist = dist;
+        best = e;
+      }
+    }
+    if (best) return best;
+  }
+
+  return null;
 }
 
 export default function ClinicProgramBuilder({
