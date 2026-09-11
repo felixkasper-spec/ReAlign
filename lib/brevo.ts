@@ -5,6 +5,14 @@ const SENDER = { name: "ReAlign Metoden", email: "no-reply@realignmetoden.se" };
 
 type EmailAddress = { email: string; name?: string };
 
+export function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export async function sendEmail({
   to,
   subject,
@@ -64,7 +72,9 @@ export async function addToBrevoLeadList(email: string) {
       }),
     });
     if (!res.ok) {
-      console.error(`Brevo contact add failed (${res.status}): ${await res.text()}`);
+      console.error(
+        `Brevo contact add failed (${res.status}): ${await res.text()}`,
+      );
     }
   } catch (e) {
     console.error("Failed to add contact to Brevo list", e);

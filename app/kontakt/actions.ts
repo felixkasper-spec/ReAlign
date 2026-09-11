@@ -1,17 +1,9 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { sendEmail } from "@/lib/brevo";
+import { sendEmail, escapeHtml } from "@/lib/brevo";
 
 const ADMIN_EMAIL = "kontakt@realignmetoden.se";
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 export async function sendContactMessage(formData: FormData) {
   const name = (formData.get("name") as string)?.trim();

@@ -5,6 +5,11 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendEmail, escapeHtml } from "@/lib/brevo";
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export async function createClinicProgram(formData: FormData) {
   await requireClinicStaff();
@@ -81,6 +86,53 @@ export async function updateClinicProgram(
   revalidatePath("/coaching/kundprogram");
   revalidatePath(`/coaching/kundprogram/${clinicProgramId}`);
   redirect(`/coaching/kundprogram/${clinicProgramId}`);
+}
+
+export async function sendClinicProgramLink(
+  clinicProgramId: string,
+  formData: FormData,
+): Promise<{ ok: boolean }> {
+  await requireClinicStaff();
+
+  const email = (formData.get("email") as string)?.trim();
+  if (!email || !isValidEmail(email)) {
+    return { ok: false };
+  }
+
+  const admin = createAdminClient();
+  const { data: program } = await admin
+    .from("clinic_programs")
+    .select("label, share_token")
+    .eq("id", clinicProgramId)
+    .maybeSingle();
+
+  if (!program) {
+    return { ok: false };
+  }
+
+  const link = `https://www.realignmetoden.se/p/${program.share_token}`;
+  const safeLabel = escapeHtml(program.label);
+
+  try {
+    await sendEmail({
+      to: [{ email }],
+      subject: "Ditt träningsprogram från Cleer Klinik",
+      replyTo: { email: "kontakt@realignmetoden.se", name: "ReAlign Metoden" },
+      html: `<p>Hej!</p><p>Här är länken till ditt träningsprogram (${safeLabel}):</p><p><a href="${link}">${link}</a></p><p>Klicka på länken för att komma igång — inget konto behövs.</p><p>Vänliga hälsningar,<br>Cleer Klinik</p>`,
+      text: `Hej!\n\nHär är länken till ditt träningsprogram (${program.label}):\n${link}\n\nKlicka på länken för att komma igång — inget konto behövs.\n\nVänliga hälsningar,\nCleer Klinik`,
+    });
+  } catch (e) {
+    console.error("Failed to send clinic program email", e);
+    return { ok: false };
+  }
+
+  await admin
+    .from("clinic_programs")
+    .update({ sent_to_email: email, sent_at: new Date().toISOString() })
+    .eq("id", clinicProgramId);
+
+  revalidatePath(`/coaching/kundprogram/${clinicProgramId}`);
+  return { ok: true };
 }
 
 export async function deleteClinicProgram(clinicProgramId: string) {

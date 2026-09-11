@@ -7,6 +7,7 @@ import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { deleteClinicProgram } from "../actions";
 import CopyLinkButton from "./CopyLinkButton";
+import SendLinkForm from "./SendLinkForm";
 import styles from "../../page.module.css";
 
 export const metadata: Metadata = { title: "Kundprogram — ReAlign Metoden" };
@@ -25,7 +26,9 @@ export default async function ClinicProgramDetailPage({
 
   const { data: program } = await admin
     .from("clinic_programs")
-    .select("id, label, share_token, visit_count, last_visited_at")
+    .select(
+      "id, label, share_token, visit_count, last_visited_at, sent_to_email, sent_at",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -52,9 +55,8 @@ export default async function ClinicProgramDetailPage({
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            gap: 12,
-            flexWrap: "wrap",
+            flexDirection: "column",
+            gap: 14,
             background: "var(--surface)",
             border: "1px solid var(--line)",
             borderRadius: 14,
@@ -62,38 +64,57 @@ export default async function ClinicProgramDetailPage({
             margin: "16px 0 28px",
           }}
         >
-          <code style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>
-            {link}
-          </code>
-          <CopyLinkButton link={link} autoCopy={ny === "1"} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
+            <code style={{ fontSize: "0.85rem", wordBreak: "break-all" }}>
+              {link}
+            </code>
+            <CopyLinkButton link={link} autoCopy={ny === "1"} />
+          </div>
+
+          <SendLinkForm clinicProgramId={program.id} />
         </div>
 
-        <p
-          style={{
-            color: "var(--text-soft)",
-            fontSize: "0.88rem",
-            marginBottom: 20,
-          }}
-        >
-          {program.visit_count > 0 ? (
-            <>
-              Öppnad <b>{program.visit_count}</b>{" "}
-              {program.visit_count === 1 ? "gång" : "gånger"}, senast{" "}
-              {new Date(program.last_visited_at as string).toLocaleString(
-                "sv-SE",
-                {
+        <div style={{ marginBottom: 20 }}>
+          <p style={{ color: "var(--text-soft)", fontSize: "0.88rem" }}>
+            {program.visit_count > 0 ? (
+              <>
+                Öppnad <b>{program.visit_count}</b>{" "}
+                {program.visit_count === 1 ? "gång" : "gånger"}, senast{" "}
+                {new Date(program.last_visited_at as string).toLocaleString(
+                  "sv-SE",
+                  {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  },
+                )}
+                .
+              </>
+            ) : (
+              <span style={{ color: "var(--warm)" }}>
+                Länken har inte öppnats än.
+              </span>
+            )}
+          </p>
+
+          {program.sent_to_email && (
+            <p style={{ color: "var(--text-soft)", fontSize: "0.88rem" }}>
+              Mejlad till <b>{program.sent_to_email}</b>
+              {program.sent_at &&
+                `, ${new Date(program.sent_at).toLocaleString("sv-SE", {
                   dateStyle: "short",
                   timeStyle: "short",
-                },
-              )}
+                })}`}
               .
-            </>
-          ) : (
-            <span style={{ color: "var(--warm)" }}>
-              Länken har inte öppnats än.
-            </span>
+            </p>
           )}
-        </p>
+        </div>
 
         <h2 style={{ fontSize: "1.1rem", fontWeight: 500, marginBottom: 12 }}>
           Övningar
