@@ -47,6 +47,12 @@
   margin: 14px 0 14px;
 }
 
+.heroSub {
+  color: var(--text);
+  font-size: 1.15rem;
+  margin: -6px 0 14px;
+}
+
 .heroLead {
   color: var(--text-soft);
   font-size: 1rem;

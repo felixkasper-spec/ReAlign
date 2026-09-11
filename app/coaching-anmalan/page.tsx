@@ -26,10 +26,12 @@ export default function CoachingAnmalanPage() {
         <div className={styles.hero}>
           <span className="eyebrow">Premium Coaching</span>
           <h1>
-            En Postural Terapeut i din ficka som hjälper dig uppnå dina mål —
-            oavsett om detta är att bli av med smärta, bli mer rörlig, starkare
-            eller mer funktionell.
+            En Postural Terapeut i din ficka som hjälper dig uppnå dina mål.
           </h1>
+          <p className={styles.heroSub}>
+            Oavsett om det är att bli av med smärta, bli mer rörlig, starkare
+            eller mer funktionell.
+          </p>
           <p className={styles.heroLead}>
             Jag hjälper dig analysera dina obalanser och svagheter, skapar
             skräddarsydda program med Postural Träning i fokus, samt gymträning,
