@@ -2,13 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import SubmitButton from "@/components/SubmitButton";
 import AttachmentMedia from "@/components/AttachmentMedia";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { linkify } from "@/lib/linkify";
 import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
 import { replyToCoachingThread } from "../actions";
+import ReplyForm from "./ReplyForm";
 import styles from "../page.module.css";
 
 export default async function CoachingThreadPage({
@@ -65,8 +65,26 @@ export default async function CoachingThreadPage({
         <Link href="/coaching" className={styles.back}>
           ← Alla trådar
         </Link>
-        <span className="eyebrow">Premium Coaching</span>
-        <h1>{displayName}</h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            gap: 10,
+          }}
+        >
+          <div>
+            <span className="eyebrow">Premium Coaching</span>
+            <h1>{displayName}</h1>
+          </div>
+          <Link
+            href={`/coaching/${userId}/journal`}
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)", flexShrink: 0 }}
+          >
+            🔒 Journal →
+          </Link>
+        </div>
 
         <div className={styles.thread}>
           {messagesWithUrls.length === 0 && (
@@ -84,25 +102,17 @@ export default async function CoachingThreadPage({
                 {new Date(m.created_at as string).toLocaleString("sv-SE")}
               </span>
               {m.attachment_url && m.attachment_type && (
-                <AttachmentMedia url={m.attachment_url} type={m.attachment_type} />
+                <AttachmentMedia
+                  url={m.attachment_url}
+                  type={m.attachment_type}
+                />
               )}
               {m.body && <p>{linkify(m.body)}</p>}
             </div>
           ))}
         </div>
 
-        <form action={reply} className={styles.replyForm}>
-          <textarea
-            name="body"
-            placeholder="Skriv ditt svar..."
-            required
-            rows={4}
-            className={styles.textInput}
-          />
-          <SubmitButton className="btn btn-primary" pendingText="Skickar...">
-            Svara →
-          </SubmitButton>
-        </form>
+        <ReplyForm userId={userId} reply={reply} />
 
         <Footer />
       </div>

@@ -20,14 +20,25 @@ type ThreadRow = {
 // sommartid och nära midnatt).
 function startOfTodayStockholm(): Date {
   const now = new Date();
-  const stockholmNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Stockholm" }));
-  const startOfDay = new Date(stockholmNow.getFullYear(), stockholmNow.getMonth(), stockholmNow.getDate());
+  const stockholmNow = new Date(
+    now.toLocaleString("en-US", { timeZone: "Europe/Stockholm" }),
+  );
+  const startOfDay = new Date(
+    stockholmNow.getFullYear(),
+    stockholmNow.getMonth(),
+    stockholmNow.getDate(),
+  );
   const offsetMs = now.getTime() - stockholmNow.getTime();
   return new Date(startOfDay.getTime() + offsetMs);
 }
 
-export default async function CoachingInboxPage() {
+export default async function CoachingInboxPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
   await requireCoach();
+  const { q } = await searchParams;
   const admin = createAdminClient();
 
   const { data: newProfiles } = await admin
@@ -77,6 +88,12 @@ export default async function CoachingInboxPage() {
     return b.lastAt.localeCompare(a.lastAt);
   });
 
+  const filteredThreads = q?.trim()
+    ? threads.filter((t) =>
+        t.name.toLowerCase().includes(q.trim().toLowerCase()),
+      )
+    : threads;
+
   return (
     <>
       <Header />
@@ -84,7 +101,14 @@ export default async function CoachingInboxPage() {
         <span className="eyebrow">Coach-inkorg</span>
         <h1>Premium Coaching</h1>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+            marginBottom: 20,
+          }}
+        >
           <Link
             href="/coaching/kundprogram"
             className="btn btn-ghost"
@@ -110,7 +134,12 @@ export default async function CoachingInboxPage() {
             marginBottom: 28,
           }}
         >
-          <div style={{ fontWeight: 600, marginBottom: (newProfiles?.length ?? 0) > 0 ? 10 : 0 }}>
+          <div
+            style={{
+              fontWeight: 600,
+              marginBottom: (newProfiles?.length ?? 0) > 0 ? 10 : 0,
+            }}
+          >
             Nya konton idag: {newProfiles?.length ?? 0}
           </div>
           {(newProfiles ?? []).map((p, i) => (
@@ -125,7 +154,10 @@ export default async function CoachingInboxPage() {
             >
               {p.display_name || p.email}
               {p.signup_source && (
-                <span style={{ color: "var(--sage)" }}> · källa: {p.signup_source}</span>
+                <span style={{ color: "var(--sage)" }}>
+                  {" "}
+                  · källa: {p.signup_source}
+                </span>
               )}
               <span>
                 {" "}
@@ -139,15 +171,53 @@ export default async function CoachingInboxPage() {
           ))}
         </div>
 
+        {threads.length > 0 && (
+          <form
+            action="/coaching"
+            method="get"
+            style={{ display: "flex", gap: 8, marginBottom: 16 }}
+          >
+            <input
+              type="search"
+              name="q"
+              defaultValue={q ?? ""}
+              placeholder="Sök på kundnamn..."
+              style={{
+                flex: 1,
+                border: "1px solid var(--line)",
+                borderRadius: 100,
+                padding: "8px 16px",
+                fontSize: "0.88rem",
+                fontFamily: "inherit",
+              }}
+            />
+            <button
+              type="submit"
+              className="btn btn-ghost"
+              style={{ border: "1px solid var(--line)" }}
+            >
+              Sök
+            </button>
+          </form>
+        )}
+
         {threads.length === 0 && (
           <p className={styles.empty}>
             Inga aktiva Premium Coaching-prenumeranter än.
           </p>
         )}
 
+        {threads.length > 0 && filteredThreads.length === 0 && (
+          <p className={styles.empty}>Ingen kund matchade &quot;{q}&quot;.</p>
+        )}
+
         <div className={styles.list}>
-          {threads.map((t) => (
-            <Link key={t.userId} href={`/coaching/${t.userId}`} className={styles.row}>
+          {filteredThreads.map((t) => (
+            <Link
+              key={t.userId}
+              href={`/coaching/${t.userId}`}
+              className={styles.row}
+            >
               <div className={styles.rowInfo}>
                 <div className={styles.name}>{t.name}</div>
                 <div className={styles.preview}>
@@ -172,7 +242,8 @@ export default async function CoachingInboxPage() {
               <div key={m.id} className={styles.contactRow}>
                 <div className={styles.rowInfo}>
                   <div className={styles.name}>
-                    {m.name} <span className={styles.contactEmail}>· {m.email}</span>
+                    {m.name}{" "}
+                    <span className={styles.contactEmail}>· {m.email}</span>
                   </div>
                   <div className={styles.contactMessage}>{m.message}</div>
                   <div className={styles.contactDate}>
