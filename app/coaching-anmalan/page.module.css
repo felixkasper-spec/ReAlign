@@ -139,6 +139,21 @@
   text-decoration: underline;
 }
 
+.bounceArrow {
+  display: inline-block;
+  animation: bounceArrow 1.6s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
 .steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
