@@ -1,0 +1,217 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.minimalHeader {
+  padding: 22px 24px;
+}
+
+.logo {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--sage);
+}
+
+.wrap {
+  flex: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+  width: 100%;
+}
+
+.hero {
+  max-width: 620px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 14px 0 14px;
+}
+
+.heroLead {
+  color: var(--text-soft);
+  font-size: 1rem;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 100px;
+  padding: 8px 16px;
+  margin-top: 18px;
+  font-size: 0.84rem;
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--line);
+}
+
+.stars {
+  color: var(--warm);
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.coachBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+.coachPhoto {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.coachPhoto img {
+  object-fit: cover;
+}
+
+.coachName {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.coachSub {
+  font-size: 0.86rem;
+  color: var(--text-soft);
+}
+
+.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+
+.bullets li {
+  font-size: 0.92rem;
+  padding-left: 26px;
+  position: relative;
+}
+
+.bullets li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--sage);
+  font-weight: 700;
+}
+
+.formCard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formCard h2 {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+}
+
+.formError {
+  color: var(--warm);
+  font-size: 0.88rem;
+}
+
+.formRow {
+  display: flex;
+  gap: 12px;
+}
+
+.formCard input,
+.formCard textarea {
+  font: inherit;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+
+.formCard textarea {
+  resize: vertical;
+}
+
+.formNote {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  text-align: center;
+  margin-top: -2px;
+}
+
+.minimalFooter {
+  text-align: center;
+  padding: 20px 24px;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  border-top: 1px solid var(--line);
+}
+
+.minimalFooter a {
+  color: var(--text-soft);
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    flex-direction: column;
+  }
+
+  .hero h1 {
+    font-size: 1.7rem;
+  }
+}

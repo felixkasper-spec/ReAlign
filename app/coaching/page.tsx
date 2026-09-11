@@ -123,6 +123,13 @@ export default async function CoachingInboxPage({
           >
             Content Studio →
           </Link>
+          <Link
+            href="/coaching/leads"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+          >
+            Leads →
+          </Link>
         </div>
 
         <div
