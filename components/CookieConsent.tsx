@@ -1,16 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { applyConsent, getStoredConsent } from "@/lib/consent";
 import styles from "./CookieConsent.module.css";
 
 export const REOPEN_EVENT = "realign:open-cookie-settings";
 
+// Lead-annonssidan har ingen klientsidesspårning att be om samtycke för —
+// konverteringar mäts server-side istället, se lib/server-conversion.ts.
+// Att visa bannern där hade bara varit friktion utan funktion.
+const EXCLUDED_PATHS = ["/coaching-anmalan"];
+
 export default function CookieConsent() {
+  const pathname = usePathname();
+  const excluded = EXCLUDED_PATHS.includes(pathname);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (excluded) return;
+
     // queueMicrotask: localStorage finns bara i webbläsaren, så värdet är
     // först känt efter mount — en riktig extern källa vi synkar från, inte
     // state vi kunde räknat ut direkt under rendering.
@@ -32,14 +42,14 @@ export default function CookieConsent() {
     }
     window.addEventListener(REOPEN_EVENT, reopen);
     return () => window.removeEventListener(REOPEN_EVENT, reopen);
-  }, []);
+  }, [excluded]);
 
   function choose(choice: "granted" | "denied") {
     applyConsent(choice);
     setVisible(false);
   }
 
-  if (!visible) return null;
+  if (excluded || !visible) return null;
 
   return (
     <div className={styles.banner} role="dialog" aria-label="Cookiesamtycke">
@@ -57,7 +67,11 @@ export default function CookieConsent() {
         >
           Endast nödvändiga
         </button>
-        <button type="button" className="btn btn-primary" onClick={() => choose("granted")}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => choose("granted")}
+        >
           Godkänn alla
         </button>
       </div>

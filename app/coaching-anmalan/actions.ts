@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { trackLeadConversion } from "@/lib/server-conversion";
 
 export async function submitCoachingLead(
   formData: FormData,
@@ -21,6 +22,10 @@ export async function submitCoachingLead(
     email: email || null,
     situation,
   });
+
+  if (!error) {
+    await trackLeadConversion({ phone, email });
+  }
 
   return { ok: !error };
 }
