@@ -41,6 +41,30 @@
   text-align: center;
 }
 
+.heroByline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.heroAvatar {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.heroAvatar img {
+  object-fit: cover;
+}
+
 .hero h1 {
   font-size: 2.1rem;
   line-height: 1.2;

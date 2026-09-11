@@ -31,6 +31,17 @@ export default function CoachingAnmalanPage() {
 
       <div className={styles.wrap}>
         <div className={styles.hero}>
+          <div className={styles.heroByline}>
+            <div className={styles.heroAvatar}>
+              <Image
+                src="/om-oss/felix.jpg"
+                alt="Felix Eliasson"
+                fill
+                sizes="32px"
+              />
+            </div>
+            Felix Eliasson
+          </div>
           <span className="eyebrow">Premium Coaching</span>
           <h1>
             En Postural Terapeut i din ficka som hjälper dig uppnå dina mål.
