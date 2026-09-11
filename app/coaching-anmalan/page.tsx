@@ -5,6 +5,7 @@ import VimeoEmbed from "@/components/VimeoEmbed";
 import VimeoPoster from "@/components/VimeoPoster";
 import { pageMetadata } from "@/lib/page-metadata";
 import LeadForm from "./LeadForm";
+import ScrollHint from "./ScrollHint";
 import styles from "./page.module.css";
 
 // Samma "vänstra" kundvideo som visas på förstasidan.
@@ -161,6 +162,8 @@ export default function CoachingAnmalanPage() {
         © 2026 Felix Kasper AB ·{" "}
         <Link href="/integritetspolicy">Integritetspolicy</Link>
       </footer>
+
+      <ScrollHint />
     </div>
   );
 }
