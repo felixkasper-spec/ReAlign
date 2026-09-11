@@ -69,7 +69,6 @@ export default function CoachingAnmalanPage() {
                 <b>5.0</b> på Google (53 recensioner)
               </span>
             </a>
-            <span className={styles.pricePill}>449 kr/mån</span>
           </div>
 
           <div className={styles.heroCtaRow}>
@@ -98,7 +97,7 @@ export default function CoachingAnmalanPage() {
         </div>
 
         <div className={styles.grid}>
-          <div className={styles.side}>
+          <div className={styles.infoCard}>
             <div className={styles.coachBox}>
               <div className={styles.coachPhoto}>
                 <Image
@@ -130,6 +129,15 @@ export default function CoachingAnmalanPage() {
               <li>Begränsat antal platser för att kunna hålla kvaliteten</li>
             </ul>
 
+            <div className={styles.priceLine}>
+              <span className={styles.priceLineLabel}>
+                Allt det här ingår för
+              </span>
+              <span className={styles.priceLineAmount}>449 kr/mån</span>
+            </div>
+          </div>
+
+          <div className={styles.testimonialSection}>
             <div className={styles.testimonialBox}>
               <span className={styles.testimonialLabel}>
                 Hör en kund berätta
