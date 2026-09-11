@@ -153,7 +153,7 @@ export default function ClinicProgramBuilder({
 
   function parseNotes() {
     const lines = notesText
-      .split("\n")
+      .split(/[\n,]+/)
       .map((l) => l.trim())
       .filter(Boolean);
 
