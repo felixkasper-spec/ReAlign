@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,6 +7,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClinicProgram } from "../actions";
 import ClinicProgramBuilder from "../ClinicProgramBuilder";
 import styles from "../../page.module.css";
+
+export const metadata: Metadata = { title: "Nytt kundprogram — ReAlign Metoden" };
 
 export default async function NewClinicProgramPage() {
   await requireClinicStaff();

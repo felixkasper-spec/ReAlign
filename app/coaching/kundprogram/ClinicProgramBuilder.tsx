@@ -26,7 +26,7 @@ const ACRONYM_PREFERENCES = new Set(
     "Spidey Crawls",
     "Standups",
     "Cablecross - One Arm Pulldown",
-  ].map(normalize)
+  ].map(normalize),
 );
 
 // Initialförkortning av en titel, t.ex. "Hooklying knee squeezes" -> "hks".
@@ -74,7 +74,9 @@ function findMatch(name: string, exercises: Exercise[]): Exercise | null {
     const acronymHits = exercises.filter((e) => acronym(e.title) === q);
     if (acronymHits.length === 1) return acronymHits[0];
     if (acronymHits.length > 1) {
-      const preferred = acronymHits.filter((e) => ACRONYM_PREFERENCES.has(normalize(e.title)));
+      const preferred = acronymHits.filter((e) =>
+        ACRONYM_PREFERENCES.has(normalize(e.title)),
+      );
       if (preferred.length === 1) return preferred[0];
     }
   }
@@ -96,7 +98,10 @@ function findMatch(name: string, exercises: Exercise[]): Exercise | null {
     for (const e of exercises) {
       const t = normalize(e.title);
       const dist = levenshtein(q, t);
-      const threshold = Math.min(4, Math.max(1, Math.floor(Math.max(q.length, t.length) * 0.25)));
+      const threshold = Math.min(
+        4,
+        Math.max(1, Math.floor(Math.max(q.length, t.length) * 0.25)),
+      );
       if (dist <= threshold && dist < bestDist) {
         bestDist = dist;
         best = e;
@@ -131,7 +136,10 @@ export default function ClinicProgramBuilder({
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState("");
 
-  const selectedSet = useMemo(() => new Set(selected.map((s) => s.id)), [selected]);
+  const selectedSet = useMemo(
+    () => new Set(selected.map((s) => s.id)),
+    [selected],
+  );
 
   const bodyParts = useMemo(() => {
     const seen = new Set<string>();
@@ -148,7 +156,11 @@ export default function ClinicProgramBuilder({
   const available = exercises
     .filter((e) => !selectedSet.has(e.id))
     .filter((e) => !bodyFilter || e.body_part === bodyFilter)
-    .filter((e) => !search.trim() || e.title.toLowerCase().includes(search.trim().toLowerCase()))
+    .filter(
+      (e) =>
+        !search.trim() ||
+        e.title.toLowerCase().includes(search.trim().toLowerCase()),
+    )
     .sort((a, b) => a.title.localeCompare(b.title));
 
   function parseNotes() {
@@ -202,7 +214,9 @@ export default function ClinicProgramBuilder({
         <textarea
           value={notesText}
           onChange={(e) => setNotesText(e.target.value)}
-          placeholder={"Spidey crawls - 2x45 sekunder\nSitting knee squeezes - 2x10 upp till 50%"}
+          placeholder={
+            "Spidey crawls - 2x45 sekunder\nSitting knee squeezes - 2x10 upp till 50%"
+          }
           rows={8}
           className={styles.searchInput}
           style={{ resize: "vertical", fontFamily: "inherit" }}
@@ -217,7 +231,10 @@ export default function ClinicProgramBuilder({
         </button>
 
         {unmatchedLines.length > 0 && (
-          <p className={styles.hint} style={{ color: "var(--warm)", marginTop: 12 }}>
+          <p
+            className={styles.hint}
+            style={{ color: "var(--warm)", marginTop: 12 }}
+          >
             Kunde inte hitta matchande övning för {unmatchedLines.length} rad
             {unmatchedLines.length > 1 ? "er" : ""}, lägg till för hand nedan:
             <br />
@@ -232,114 +249,66 @@ export default function ClinicProgramBuilder({
       </div>
 
       <form action={action} className={styles.builder}>
-        <div className={styles.cols}>
-          <div className={styles.panel}>
-            <h2>Alla övningar</h2>
-
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Sök övning..."
-              className={styles.searchInput}
-            />
-
-            <div className={styles.filterRow}>
-              <button
-                type="button"
-                className={`${styles.filterChip} ${bodyFilter === "" ? styles.filterChipActive : ""}`}
-                onClick={() => setBodyFilter("")}
-              >
-                Alla
-              </button>
-              {bodyParts.map((bp) => (
-                <button
-                  key={bp}
-                  type="button"
-                  className={`${styles.filterChip} ${bodyFilter === bp ? styles.filterChipActive : ""}`}
-                  onClick={() => setBodyFilter(bp)}
-                >
-                  {bp}
-                </button>
-              ))}
-            </div>
-
-            {available.length === 0 ? (
-              <p className={styles.hint}>Inga övningar matchade.</p>
-            ) : (
-              <ul className={styles.list}>
-                {available.map((ex) => (
-                  <li key={ex.id} className={styles.row}>
-                    <div>
-                      <div className={styles.rowTitle}>{ex.title}</div>
-                      <div className={styles.rowMeta}>{ex.body_part}</div>
-                    </div>
-                    <button type="button" className={styles.addBtn} onClick={() => add(ex)}>
-                      + Lägg till
+        <div className={styles.panel}>
+          <h2>Kundens program ({selected.length})</h2>
+          {selected.length === 0 ? (
+            <p className={styles.hint}>
+              Tolka en anteckningstext ovan, eller lägg till övningar för hand
+              från listan nedan.
+            </p>
+          ) : (
+            <ul className={styles.list}>
+              {selected.map((row, i) => (
+                <li key={`${renderKey}-${row.id}`} className={styles.row}>
+                  <span className={styles.num}>{i + 1}</span>
+                  <div className={styles.rowBody}>
+                    <div className={styles.rowTitle}>{row.title}</div>
+                    <input
+                      type="text"
+                      name="notes"
+                      defaultValue={row.notes}
+                      placeholder="Sets/reps, t.ex. 2x12"
+                      className={styles.searchInput}
+                      style={{
+                        marginTop: 4,
+                        marginBottom: 0,
+                        padding: "6px 10px",
+                      }}
+                    />
+                  </div>
+                  <div className={styles.rowActions}>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => move(i, -1)}
+                      disabled={i === 0}
+                      aria-label="Flytta upp"
+                    >
+                      ↑
                     </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className={styles.panel}>
-            <h2>Kundens program ({selected.length})</h2>
-            {selected.length === 0 ? (
-              <p className={styles.hint}>
-                Tolka en anteckningstext ovan, eller lägg till övningar för hand från listan
-                till vänster.
-              </p>
-            ) : (
-              <ul className={styles.list}>
-                {selected.map((row, i) => (
-                  <li key={`${renderKey}-${row.id}`} className={styles.row}>
-                    <span className={styles.num}>{i + 1}</span>
-                    <div className={styles.rowBody}>
-                      <div className={styles.rowTitle}>{row.title}</div>
-                      <input
-                        type="text"
-                        name="notes"
-                        defaultValue={row.notes}
-                        placeholder="Sets/reps, t.ex. 2x12"
-                        className={styles.searchInput}
-                        style={{ marginTop: 4, marginBottom: 0, padding: "6px 10px" }}
-                      />
-                    </div>
-                    <div className={styles.rowActions}>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => move(i, -1)}
-                        disabled={i === 0}
-                        aria-label="Flytta upp"
-                      >
-                        ↑
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => move(i, 1)}
-                        disabled={i === selected.length - 1}
-                        aria-label="Flytta ner"
-                      >
-                        ↓
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => remove(row.id)}
-                        aria-label="Ta bort"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                    <input type="hidden" name="exerciseIds" value={row.id} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => move(i, 1)}
+                      disabled={i === selected.length - 1}
+                      aria-label="Flytta ner"
+                    >
+                      ↓
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => remove(row.id)}
+                      aria-label="Ta bort"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <input type="hidden" name="exerciseIds" value={row.id} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className={styles.saveRow}>
@@ -359,6 +328,60 @@ export default function ClinicProgramBuilder({
           >
             {submitLabel}
           </SubmitButton>
+        </div>
+
+        <div className={styles.panel}>
+          <h2>Alla övningar</h2>
+
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Sök övning..."
+            className={styles.searchInput}
+          />
+
+          <div className={styles.filterRow}>
+            <button
+              type="button"
+              className={`${styles.filterChip} ${bodyFilter === "" ? styles.filterChipActive : ""}`}
+              onClick={() => setBodyFilter("")}
+            >
+              Alla
+            </button>
+            {bodyParts.map((bp) => (
+              <button
+                key={bp}
+                type="button"
+                className={`${styles.filterChip} ${bodyFilter === bp ? styles.filterChipActive : ""}`}
+                onClick={() => setBodyFilter(bp)}
+              >
+                {bp}
+              </button>
+            ))}
+          </div>
+
+          {available.length === 0 ? (
+            <p className={styles.hint}>Inga övningar matchade.</p>
+          ) : (
+            <ul className={styles.list}>
+              {available.map((ex) => (
+                <li key={ex.id} className={styles.row}>
+                  <div>
+                    <div className={styles.rowTitle}>{ex.title}</div>
+                    <div className={styles.rowMeta}>{ex.body_part}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className={styles.addBtn}
+                    onClick={() => add(ex)}
+                  >
+                    + Lägg till
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </form>
     </div>

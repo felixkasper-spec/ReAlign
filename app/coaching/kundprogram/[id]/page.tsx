@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -7,6 +8,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { deleteClinicProgram } from "../actions";
 import CopyLinkButton from "./CopyLinkButton";
 import styles from "../../page.module.css";
+
+export const metadata: Metadata = { title: "Kundprogram — ReAlign Metoden" };
 
 export default async function ClinicProgramDetailPage({
   params,
