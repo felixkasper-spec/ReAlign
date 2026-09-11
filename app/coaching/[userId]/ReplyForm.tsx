@@ -8,9 +8,11 @@ import styles from "../page.module.css";
 export default function ReplyForm({
   userId,
   reply,
+  aiEnabled,
 }: {
   userId: string;
   reply: (formData: FormData) => void | Promise<void>;
+  aiEnabled: boolean;
 }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,16 +33,18 @@ export default function ReplyForm({
 
   return (
     <form action={reply} className={styles.replyForm}>
-      <div className={styles.aiDraftRow}>
-        <button
-          type="button"
-          className={styles.aiDraftBtn}
-          onClick={handleSuggest}
-          disabled={pending}
-        >
-          {pending ? "Tar fram förslag..." : "✨ Föreslå svar"}
-        </button>
-      </div>
+      {aiEnabled && (
+        <div className={styles.aiDraftRow}>
+          <button
+            type="button"
+            className={styles.aiDraftBtn}
+            onClick={handleSuggest}
+            disabled={pending}
+          >
+            {pending ? "Tar fram förslag..." : "✨ Föreslå svar"}
+          </button>
+        </div>
+      )}
       {error && <p className={styles.aiDraftError}>{error}</p>}
       <textarea
         ref={textRef}

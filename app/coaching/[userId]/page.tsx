@@ -112,7 +112,11 @@ export default async function CoachingThreadPage({
           ))}
         </div>
 
-        <ReplyForm userId={userId} reply={reply} />
+        <ReplyForm
+          userId={userId}
+          reply={reply}
+          aiEnabled={!!process.env.ANTHROPIC_API_KEY}
+        />
 
         <Footer />
       </div>
