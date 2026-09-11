@@ -16,17 +16,24 @@ function sha256(value: string): string {
 export async function trackLeadConversion(lead: {
   phone: string;
   email?: string | null;
+  fbclid?: string | null;
 }) {
   const token = process.env.META_CONVERSIONS_API_TOKEN;
   const pixelId = process.env.META_PIXEL_ID;
   if (!token || !pixelId) return;
 
   try {
-    const userData: Record<string, string[]> = {
+    const userData: Record<string, string | string[]> = {
       ph: [sha256(lead.phone.replace(/\D/g, ""))],
     };
     if (lead.email) {
       userData.em = [sha256(lead.email)];
+    }
+    if (lead.fbclid) {
+      // fbc byggs enligt Metas format (fb.<subdomain_index>.<creation_time_ms>.<fbclid>)
+      // eftersom vi inte har en riktig _fbc-cookie att läsa av — sidan sätter
+      // som bekant inga cookies alls.
+      userData.fbc = `fb.1.${Date.now()}.${lead.fbclid}`;
     }
 
     await fetch(

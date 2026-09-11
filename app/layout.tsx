@@ -37,6 +37,11 @@ export const metadata: Metadata = {
   title: "Hållning — ReAlign Metoden",
   description:
     "Postural träning som återställer kroppens naturliga balans. Program och ergonomiguider, helt gratis att komma igång med.",
+  verification: {
+    other: {
+      "facebook-domain-verification": "ys47mr7rrppm9wyscab8hv0bqzho9q",
+    },
+  },
   openGraph: {
     title: "ReAlign Metoden — Hållningsträning som håller",
     description:
@@ -106,7 +111,9 @@ export default function RootLayout({
         </Script>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
         />
         {children}
         <CookieConsent />

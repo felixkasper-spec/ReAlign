@@ -15,7 +15,9 @@ export default async function CoachingLeadsPage() {
 
   const { data: leads } = await admin
     .from("coaching_leads")
-    .select("id, name, phone, email, situation, contacted_at, created_at")
+    .select(
+      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, contacted_at, created_at",
+    )
     .order("created_at", { ascending: false });
 
   const notContacted = (leads ?? []).filter((l) => !l.contacted_at).length;
@@ -65,6 +67,12 @@ export default async function CoachingLeadsPage() {
                 </div>
                 {l.situation && (
                   <div className={styles.contactMessage}>{l.situation}</div>
+                )}
+                {(l.utm_source || l.utm_campaign) && (
+                  <div className={styles.leadSource}>
+                    Via {l.utm_source || "okänd källa"}
+                    {l.utm_campaign && ` · ${l.utm_campaign}`}
+                  </div>
                 )}
                 <div className={styles.contactDate}>
                   {new Date(l.created_at as string).toLocaleString("sv-SE", {

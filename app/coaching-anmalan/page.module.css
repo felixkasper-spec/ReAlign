@@ -257,6 +257,7 @@
 
 .formCard {
   grid-area: form;
+  position: relative;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -320,6 +321,14 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .formError {

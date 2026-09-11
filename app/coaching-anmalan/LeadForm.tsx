@@ -5,11 +5,26 @@ import Link from "next/link";
 import { submitCoachingLead } from "./actions";
 import styles from "./page.module.css";
 
-export default function LeadForm() {
+type LeadFormProps = {
+  fbclid?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+};
+
+export default function LeadForm({
+  fbclid,
+  utmSource,
+  utmMedium,
+  utmCampaign,
+}: LeadFormProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [situation, setSituation] = useState("");
+  // Honeypot — osynligt fält som bara bottar fyller i. Riktiga besökare
+  // varken ser eller når det.
+  const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [isPending, startTransition] = useTransition();
 
@@ -21,6 +36,11 @@ export default function LeadForm() {
       formData.set("phone", phone);
       formData.set("email", email);
       formData.set("situation", situation);
+      formData.set("website", website);
+      formData.set("fbclid", fbclid ?? "");
+      formData.set("utm_source", utmSource ?? "");
+      formData.set("utm_medium", utmMedium ?? "");
+      formData.set("utm_campaign", utmCampaign ?? "");
       const result = await submitCoachingLead(formData);
       if (result.ok) {
         setStatus("success");
@@ -28,6 +48,7 @@ export default function LeadForm() {
         setPhone("");
         setEmail("");
         setSituation("");
+        setWebsite("");
       } else {
         setStatus("error");
       }
@@ -86,6 +107,18 @@ export default function LeadForm() {
         required
         rows={3}
       />
+      <div className={styles.honeypot} aria-hidden="true">
+        <label htmlFor="website">Lämna det här fältet tomt</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
       <button
         type="submit"
         className="btn btn-primary btn-lg"

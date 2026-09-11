@@ -20,7 +20,18 @@ export const metadata = pageMetadata({
   path: "/coaching-anmalan",
 });
 
-export default function CoachingAnmalanPage() {
+export default async function CoachingAnmalanPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    fbclid?: string;
+    utm_source?: string;
+    utm_medium?: string;
+    utm_campaign?: string;
+  }>;
+}) {
+  const { fbclid, utm_source, utm_medium, utm_campaign } = await searchParams;
+
   return (
     <div className={styles.page}>
       <header className={styles.minimalHeader}>
@@ -160,7 +171,12 @@ export default function CoachingAnmalanPage() {
             </div>
           </div>
 
-          <LeadForm />
+          <LeadForm
+            fbclid={fbclid}
+            utmSource={utm_source}
+            utmMedium={utm_medium}
+            utmCampaign={utm_campaign}
+          />
         </div>
       </div>
 
