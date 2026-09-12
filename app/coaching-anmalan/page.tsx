@@ -145,6 +145,9 @@ export default async function CoachingAnmalanPage({
                 Allt det här ingår för
               </span>
               <span className={styles.priceLineAmount}>449 kr/mån</span>
+              <span className={styles.priceLineNote}>
+                ✓ Går att betala med friskvårdsbidrag
+              </span>
             </div>
           </div>
 
