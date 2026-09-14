@@ -29,9 +29,16 @@ type Intake = {
   photo_paths: string[];
 } | null;
 
+type ProblemEntry = { text: string; painLevel: string };
+
 export default function IntakeForm({ intake }: { intake: Intake }) {
   const [hasProblem, setHasProblem] = useState(true);
-  const [problems, setProblems] = useState<string[]>([intake?.symptoms ?? ""]);
+  const [problems, setProblems] = useState<ProblemEntry[]>([
+    {
+      text: intake?.symptoms ?? "",
+      painLevel: intake?.pain_level != null ? String(intake.pain_level) : "",
+    },
+  ]);
   const [photos, setPhotos] = useState<File[]>([]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,12 +71,20 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
   }
 
-  function updateProblem(index: number, value: string) {
-    setProblems((prev) => prev.map((p, i) => (i === index ? value : p)));
+  function updateProblemText(index: number, value: string) {
+    setProblems((prev) =>
+      prev.map((p, i) => (i === index ? { ...p, text: value } : p)),
+    );
+  }
+
+  function updateProblemPain(index: number, value: string) {
+    setProblems((prev) =>
+      prev.map((p, i) => (i === index ? { ...p, painLevel: value } : p)),
+    );
   }
 
   function addProblem() {
-    setProblems((prev) => [...prev, ""]);
+    setProblems((prev) => [...prev, { text: "", painLevel: "" }]);
   }
 
   function removeProblem(index: number) {
@@ -105,9 +120,14 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
 
       if (hasProblem) {
         const joined = problems
-          .map((p) => p.trim())
-          .filter(Boolean)
-          .map((p, i) => `Problem ${i + 1}: ${p}`)
+          .map((p) => ({ text: p.text.trim(), painLevel: p.painLevel.trim() }))
+          .filter((p) => p.text)
+          .map((p, i) => {
+            const painSuffix = p.painLevel
+              ? ` (störningsgrad ${p.painLevel}/10)`
+              : "";
+            return `Problem ${i + 1}${painSuffix}: ${p.text}`;
+          })
           .join("\n\n");
         formData.set("symptoms", joined);
       }
@@ -214,12 +234,23 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
                   Problem {i + 1}
                   {i === 0 && problems.length > 1 ? " (viktigast)" : ""}
                   <textarea
-                    value={problem}
-                    onChange={(e) => updateProblem(i, e.target.value)}
+                    value={problem.text}
+                    onChange={(e) => updateProblemText(i, e.target.value)}
                     required={i === 0}
                     rows={4}
                     className={styles.textarea}
                     placeholder="Fyll i ditt svar här..."
+                  />
+                </label>
+                <label className={styles.field}>
+                  Hur mycket stör detta dig en genomsnittlig dag? (1–10)
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={problem.painLevel}
+                    onChange={(e) => updateProblemPain(i, e.target.value)}
+                    className={`${shellStyles.textInput} ${styles.numberInput}`}
                   />
                 </label>
                 {problems.length > 1 && (
@@ -241,17 +272,6 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
             >
               + Lägg till ett problem
             </button>
-            <label className={styles.field}>
-              Hur mycket stör problemet dig en genomsnittlig dag? (1–10)
-              <input
-                type="number"
-                name="pain_level"
-                min={1}
-                max={10}
-                defaultValue={intake?.pain_level ?? ""}
-                className={`${shellStyles.textInput} ${styles.numberInput}`}
-              />
-            </label>
           </>
         ) : (
           <>
