@@ -132,7 +132,7 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
               min={100}
               max={230}
               defaultValue={intake?.height_cm ?? ""}
-              className={shellStyles.textInput}
+              className={`${shellStyles.textInput} ${styles.numberInput}`}
             />
           </label>
           <label className={styles.field}>
@@ -143,7 +143,7 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
               min={30}
               max={250}
               defaultValue={intake?.weight_kg ?? ""}
-              className={shellStyles.textInput}
+              className={`${shellStyles.textInput} ${styles.numberInput}`}
             />
           </label>
         </div>
@@ -202,7 +202,7 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
                 min={1}
                 max={10}
                 defaultValue={intake?.pain_level ?? ""}
-                className={shellStyles.textInput}
+                className={`${shellStyles.textInput} ${styles.numberInput}`}
               />
             </label>
           </>

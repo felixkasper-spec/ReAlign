@@ -30,6 +30,18 @@
   min-width: 140px;
 }
 
+.numberInput {
+  width: 100%;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .help {
   font-size: 0.82rem;
   color: var(--text-soft);
