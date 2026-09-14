@@ -87,7 +87,7 @@ export default async function CoachingAnmalanPage({
               href="#lead-form"
               className={`btn btn-primary btn-lg ${styles.heroCta}`}
             >
-              Anmäl intresse →
+              Jag vill bli uppringd →
             </a>
           </div>
         </div>
