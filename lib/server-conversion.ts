@@ -17,6 +17,8 @@ export async function trackLeadConversion(lead: {
   phone: string;
   email?: string | null;
   fbclid?: string | null;
+  clientIp?: string | null;
+  userAgent?: string | null;
 }) {
   const token = process.env.META_CONVERSIONS_API_TOKEN;
   const pixelId = process.env.META_PIXEL_ID;
@@ -28,6 +30,14 @@ export async function trackLeadConversion(lead: {
     };
     if (lead.email) {
       userData.em = [sha256(lead.email)];
+    }
+    // Inte hashade — Meta vill ha dessa i klartext. De kommer direkt från
+    // request-headers (samma anrop som sparar leaden), inte från cookies.
+    if (lead.clientIp) {
+      userData.client_ip_address = lead.clientIp;
+    }
+    if (lead.userAgent) {
+      userData.client_user_agent = lead.userAgent;
     }
     if (lead.fbclid) {
       // fbc byggs enligt Metas format (fb.<subdomain_index>.<creation_time_ms>.<fbclid>)

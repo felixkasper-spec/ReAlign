@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { trackLeadConversion } from "@/lib/server-conversion";
 import { notifyNewLead } from "@/lib/pushover";
@@ -38,7 +39,10 @@ export async function submitCoachingLead(
   });
 
   if (!error) {
-    await trackLeadConversion({ phone, email, fbclid });
+    const h = await headers();
+    const clientIp = h.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const userAgent = h.get("user-agent");
+    await trackLeadConversion({ phone, email, fbclid, clientIp, userAgent });
     await notifyNewLead({ name, phone, situation });
   }
 
