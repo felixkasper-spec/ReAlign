@@ -54,6 +54,7 @@ export default function LeadControls({
     <div className={styles.leadControls}>
       <select
         value={status}
+        data-status={status || undefined}
         onChange={handleStatusChange}
         className={styles.leadStatusSelect}
         disabled={deleting}

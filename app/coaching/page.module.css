@@ -144,11 +144,36 @@
 .leadStatusSelect {
   font: inherit;
   font-size: 0.82rem;
+  font-weight: 500;
   padding: 7px 10px;
   border-radius: 8px;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--text);
+}
+
+.leadStatusSelect[data-status="no_answer"] {
+  background: #fbf0d9;
+  border-color: #dba847;
+  color: #7a5a12;
+}
+
+.leadStatusSelect[data-status="not_interested"] {
+  background: #f8e2dd;
+  border-color: #c17b6b;
+  color: #8a3f2f;
+}
+
+.leadStatusSelect[data-status="purchased"] {
+  background: #e2ecdf;
+  border-color: var(--sage);
+  color: #2f4a32;
+}
+
+.leadStatusSelect[data-status="follow_up"] {
+  background: #dfe6ee;
+  border-color: #6f8caa;
+  color: #2c4560;
 }
 
 .leadNotesInput {
