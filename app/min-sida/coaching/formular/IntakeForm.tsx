@@ -30,6 +30,7 @@ type Intake = {
 } | null;
 
 export default function IntakeForm({ intake }: { intake: Intake }) {
+  const [hasProblem, setHasProblem] = useState(true);
   const [photos, setPhotos] = useState<File[]>([]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -150,33 +151,77 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
 
       <section className={shellStyles.panel}>
         <div className={shellStyles.panelHead}>
-          <h2>Symptom/problem</h2>
+          <h2>Vad vill du ha hjälp med?</h2>
         </div>
-        <p className={styles.help}>
-          Beskriv i fri text. Skriv gärna om: vart på kroppen det sitter, när
-          det började, om det kom av ett trauma eller &quot;oprovocerat&quot;,
-          när på dygnet/efter vilka aktiviteter det är som värst, och om du fått
-          en diagnos.
-        </p>
-        <textarea
-          name="symptoms"
-          required
-          rows={5}
-          defaultValue={intake?.symptoms ?? ""}
-          className={styles.textarea}
-          placeholder="Fyll i ditt svar här..."
-        />
-        <label className={styles.field}>
-          Hur mycket stör problemet dig en genomsnittlig dag? (1–10)
-          <input
-            type="number"
-            name="pain_level"
-            min={1}
-            max={10}
-            defaultValue={intake?.pain_level ?? ""}
-            className={shellStyles.textInput}
-          />
-        </label>
+        <div className={styles.radioGroup}>
+          <label className={styles.radioOption}>
+            <input
+              type="radio"
+              name="has_problem"
+              value="ja"
+              checked={hasProblem}
+              onChange={() => setHasProblem(true)}
+            />
+            Jag har smärta eller ett specifikt problem
+          </label>
+          <label className={styles.radioOption}>
+            <input
+              type="radio"
+              name="has_problem"
+              value="nej"
+              checked={!hasProblem}
+              onChange={() => setHasProblem(false)}
+            />
+            Jag har inget specifikt problem — jag vill bara träna för bättre
+            form, hållning eller känna mig lättare i kroppen
+          </label>
+        </div>
+
+        {hasProblem ? (
+          <>
+            <p className={styles.help}>
+              Beskriv i fri text. Har du flera problem? Skriv om det du helst
+              vill bli av med först, fortsätt sedan i fallande ordning. Skriv
+              gärna om: vart på kroppen det sitter, när det började, om det kom
+              av ett trauma eller &quot;oprovocerat&quot;, när på dygnet/efter
+              vilka aktiviteter det är som värst, och om du fått en diagnos.
+            </p>
+            <textarea
+              name="symptoms"
+              required
+              rows={5}
+              defaultValue={intake?.symptoms ?? ""}
+              className={styles.textarea}
+              placeholder="Fyll i ditt svar här..."
+            />
+            <label className={styles.field}>
+              Hur mycket stör problemet dig en genomsnittlig dag? (1–10)
+              <input
+                type="number"
+                name="pain_level"
+                min={1}
+                max={10}
+                defaultValue={intake?.pain_level ?? ""}
+                className={shellStyles.textInput}
+              />
+            </label>
+          </>
+        ) : (
+          <>
+            <p className={styles.help}>
+              Beskriv gärna vad du vill uppnå — t.ex. bättre form, bättre
+              hållning, mer styrka eller att känna dig lättare i kroppen.
+            </p>
+            <textarea
+              name="symptoms"
+              required
+              rows={4}
+              defaultValue={intake?.symptoms ?? ""}
+              className={styles.textarea}
+              placeholder="Fyll i ditt svar här..."
+            />
+          </>
+        )}
       </section>
 
       <section className={shellStyles.panel}>

@@ -37,6 +37,27 @@
   margin-bottom: 12px;
 }
 
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.radioOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.radioOption input {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
 .textarea {
   font: inherit;
   padding: 11px 14px;

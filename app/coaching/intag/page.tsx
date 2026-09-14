@@ -78,7 +78,7 @@ export default async function CoachingIntakePage() {
                   </div>
 
                   <div className={styles.contactMessage}>
-                    <b>Symptom/problem:</b> {intake.symptoms}
+                    <b>Vill ha hjälp med:</b> {intake.symptoms}
                     {intake.pain_level != null && (
                       <> (smärtnivå {intake.pain_level}/10)</>
                     )}

@@ -73,8 +73,8 @@ export default async function CoachingIntakePage() {
               <span className="eyebrow">Min sida</span>
               <h1>Kom igång-formulär</h1>
               <p>
-                Fyll i det här så att Felix har allt som behövs för att bygga
-                ditt skräddarsydda program. Tar cirka 5–10 minuter.
+                Fyll i det här så att Felix har allt som behövs för att sätta
+                ihop en skräddarsydd plan för dig. Tar cirka 5–10 minuter.
               </p>
             </div>
           </div>
