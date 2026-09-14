@@ -64,8 +64,8 @@ export default async function CoachingAnmalanPage({
           </p>
           <p className={styles.heroLead}>
             Jag hjälper dig analysera dina obalanser och svagheter, skapar
-            skräddarsydda program med Postural Träning i fokus, samt gymträning,
-            konditionsträning &amp; livsstil.
+            skräddarsydda program med Postural Träning i fokus. Om det önskas
+            hjälper jag dig även med gymträning, konditionsträning och livsstil.
           </p>
 
           <div className={styles.heroPills}>
