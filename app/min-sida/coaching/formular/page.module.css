@@ -1,0 +1,107 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 640px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-top: 14px;
+}
+
+.field:first-child {
+  margin-top: 0;
+}
+
+.row .field {
+  flex: 1;
+  min-width: 140px;
+}
+
+.help {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.textarea {
+  font: inherit;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+  resize: vertical;
+}
+
+.success {
+  background: #fff;
+  border: 1px solid var(--sage);
+  color: var(--sage);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: var(--warm);
+  font-size: 0.88rem;
+}
+
+.photoGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.photoChip,
+.photoChipExisting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border-radius: 100px;
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+.photoChip button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+.photoChipExisting {
+  color: var(--text-soft);
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

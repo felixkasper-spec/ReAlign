@@ -5,6 +5,7 @@ export default function MobileTabs({
   hasCoaching,
   linkPrefix = "",
   activeCoaching = false,
+  activeFormular = false,
   isCoach = false,
   isClinicStaff = false,
   canBuildProgram = false,
@@ -12,6 +13,7 @@ export default function MobileTabs({
   hasCoaching: boolean;
   linkPrefix?: string;
   activeCoaching?: boolean;
+  activeFormular?: boolean;
   isCoach?: boolean;
   isClinicStaff?: boolean;
   canBuildProgram?: boolean;
@@ -33,10 +35,20 @@ export default function MobileTabs({
           Chatt med coach
         </Link>
       )}
+      {hasCoaching && (
+        <Link
+          href="/min-sida/coaching/formular"
+          className={activeFormular ? styles.mobileTabActive : undefined}
+        >
+          Kom igång-formulär
+        </Link>
+      )}
       <a href={`${linkPrefix}#favoriter`}>Favoriter</a>
       <a href={`${linkPrefix}#schema`}>Schema</a>
       <a href={`${linkPrefix}#progression`}>Progression</a>
-      {canBuildProgram && <a href={`${linkPrefix}#mina-program`}>Mina program</a>}
+      {canBuildProgram && (
+        <a href={`${linkPrefix}#mina-program`}>Mina program</a>
+      )}
       {isCoach && <Link href="/coaching">Coach-inkorg</Link>}
     </div>
   );

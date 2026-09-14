@@ -130,6 +130,13 @@ export default async function CoachingInboxPage({
           >
             Leads →
           </Link>
+          <Link
+            href="/coaching/intag"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+          >
+            Kom igång-formulär →
+          </Link>
         </div>
 
         <div

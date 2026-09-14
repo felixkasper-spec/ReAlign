@@ -23,6 +23,7 @@ export default function Sidebar({
   hasCoaching,
   linkPrefix = "",
   activeCoaching = false,
+  activeFormular = false,
   isCoach = false,
   isClinicStaff = false,
   canBuildProgram = false,
@@ -32,6 +33,7 @@ export default function Sidebar({
   hasCoaching: boolean;
   linkPrefix?: string;
   activeCoaching?: boolean;
+  activeFormular?: boolean;
   isCoach?: boolean;
   isClinicStaff?: boolean;
   canBuildProgram?: boolean;
@@ -95,6 +97,14 @@ export default function Sidebar({
           href="/min-sida/coaching"
         >
           <span className={styles.sideIc}>✉</span>Chatt med coach
+        </Link>
+      )}
+      {hasCoaching && (
+        <Link
+          className={`${styles.sideLink} ${activeFormular ? styles.sideLinkActive : ""}`}
+          href="/min-sida/coaching/formular"
+        >
+          <span className={styles.sideIc}>☑</span>Kom igång-formulär
         </Link>
       )}
       {isCoach && (
