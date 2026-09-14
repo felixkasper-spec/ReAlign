@@ -26,7 +26,8 @@ export default async function PremiumCoachingPage() {
 
   const alreadyCoaching =
     subscription?.active && subscription.plan === "premium_coaching";
-  const isBasePremium = subscription?.active && subscription.plan !== "premium_coaching";
+  const isBasePremium =
+    subscription?.active && subscription.plan !== "premium_coaching";
 
   return (
     <>
@@ -55,9 +56,9 @@ export default async function PremiumCoachingPage() {
               </span>
               <h3>Det här är kärnan i Premium Coaching.</h3>
               <p className={styles.spotlightIntro}>
-                En direktlinje till mig, för allt du annars skulle behöva
-                gissa dig till eller boka tid för. Så här använder de flesta
-                sin chatt:
+                En direktlinje till mig, för allt du annars skulle behöva gissa
+                dig till eller boka tid för. Så här använder de flesta sin
+                chatt:
               </p>
             </div>
             <div className={styles.checklist}>
@@ -72,8 +73,8 @@ export default async function PremiumCoachingPage() {
               </div>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
-                Hjälp att justera ditt program eller välja rätt nivå utifrån
-                hur du mår
+                Hjälp att justera ditt program eller välja rätt nivå utifrån hur
+                du mår
               </div>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
@@ -94,23 +95,23 @@ export default async function PremiumCoachingPage() {
               </div>
             </div>
             <p className={styles.spotlightNote}>
-              Behöver du en fullständig utredning — en terapeut som ser dig
-              röra dig live och bygger ett program helt från grunden — då
+              Behöver du en fullständig utredning — en terapeut som ser dig röra
+              dig live och bygger ett program helt från grunden — då
               rekommenderar jag istället en{" "}
-              <Link href="/videosamtal">videosamtals-analys</Link>
-              . Chatten är till för det löpande — analysen för djupdykningen.
+              <Link href="/videosamtal">videosamtals-analys</Link>. Chatten är
+              till för det löpande — analysen för djupdykningen.
             </p>
           </div>
 
           <div className={styles.reasonGrid}>
             <div className={styles.reason}>
-              <b>Allt i Premium</b>Alla programnivåer, Postural Gymträning,
-              alla övningsvideor, PDF-nedladdning, progressionsspårning och
+              <b>Allt i Premium</b>Alla programnivåer, Postural Gymträning, alla
+              övningsvideor, PDF-nedladdning, progressionsspårning och
               veckobrev.
             </div>
             <div className={styles.reason}>
-              <b>Svar inom 1–2 vardagar</b>En riktig person på kliniken
-              läser och svarar på dina meddelanden — inte en bot.
+              <b>Svar inom 1–2 vardagar</b>En riktig person på kliniken läser
+              och svarar på dina meddelanden — inte en bot.
             </div>
             <div className={styles.reason}>
               <b>Begränsat antal platser</b>Vi tar in ett begränsat antal
@@ -120,7 +121,10 @@ export default async function PremiumCoachingPage() {
           </div>
         </div>
 
-        <div className={styles.section} style={{ borderTop: "none", paddingTop: 0 }}>
+        <div
+          className={styles.section}
+          style={{ borderTop: "none", paddingTop: 0 }}
+        >
           <div className={styles.coachBox}>
             <div className={styles.coachPhoto}>
               <Image
@@ -161,26 +165,43 @@ export default async function PremiumCoachingPage() {
 
           {alreadyCoaching ? (
             <>
-              <p>Din prenumeration är aktiv — chatta med din coach på Min sida.</p>
-              <Link className="btn btn-primary btn-lg" href="/min-sida/coaching">
+              <p>
+                Din prenumeration är aktiv — chatta med din coach på Min sida.
+              </p>
+              <Link
+                className="btn btn-primary btn-lg"
+                href="/min-sida/coaching"
+              >
                 Till chatten →
               </Link>
             </>
           ) : isBasePremium ? (
             <>
               <p>
-                Du har redan Premium — uppgradera direkt, ingen ny
-                registrering behövs.
+                Du har redan Premium — uppgradera direkt, ingen ny registrering
+                behövs.
               </p>
-              <Link className="btn btn-primary btn-lg" href="/min-sida/byt-plan?to=premium_coaching">
+              <Link
+                className="btn btn-primary btn-lg"
+                href="/min-sida/byt-plan?to=premium_coaching"
+              >
                 Uppgradera till Premium Coaching →
               </Link>
             </>
           ) : user ? (
             <>
               <p>Kom igång direkt — betalning sker säkert via Stripe.</p>
-              <form action={createCheckoutSession.bind(null, "premium_coaching", "month")}>
-                <SubmitButton className="btn btn-primary btn-lg" pendingText="Öppnar Stripe...">
+              <form
+                action={createCheckoutSession.bind(
+                  null,
+                  "premium_coaching",
+                  "month",
+                )}
+              >
+                <SubmitButton
+                  className="btn btn-primary btn-lg"
+                  pendingText="Öppnar Stripe..."
+                >
                   Bli Premium Coaching →
                 </SubmitButton>
               </form>
@@ -188,7 +209,10 @@ export default async function PremiumCoachingPage() {
           ) : (
             <>
               <p>Skapa ett konto för att komma igång.</p>
-              <Link className="btn btn-primary btn-lg" href="/signup">
+              <Link
+                className="btn btn-primary btn-lg"
+                href="/signup?next=/premium-coaching"
+              >
                 Skapa konto →
               </Link>
             </>

@@ -6,6 +6,15 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getBaseUrl } from "@/lib/base-url";
 import { addToBrevoLeadList } from "@/lib/brevo";
 
+// Bara en relativ sökväg inom sajten, aldrig en extern URL — annars kan
+// "next" missbrukas som en öppen redirect (t.ex. "//evil.com").
+function safeNextPath(next: string | undefined): string {
+  if (next && next.startsWith("/") && !next.startsWith("//")) {
+    return next;
+  }
+  return "/min-sida";
+}
+
 export async function signup(formData: FormData) {
   const supabase = await createClient();
   const origin = await getBaseUrl();
@@ -15,6 +24,7 @@ export async function signup(formData: FormData) {
   const password = formData.get("password") as string;
   const source = (formData.get("source") as string)?.trim();
   const ref = (formData.get("ref") as string)?.trim();
+  const next = safeNextPath((formData.get("next") as string)?.trim());
   const wantsNewsletter = formData.get("newsletter") === "on";
 
   const { data, error } = await supabase.auth.signUp({
@@ -49,7 +59,7 @@ export async function signup(formData: FormData) {
 
   if (data.session) {
     // "Confirm email" är avstängt i Supabase — kontot är redan aktivt.
-    redirect("/min-sida");
+    redirect(next);
   }
 
   redirect("/signup?success=1");

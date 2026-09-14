@@ -5,7 +5,8 @@ import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata({
   title: "Skapa konto — ReAlign Metoden",
-  description: "Skapa ett gratis konto för att spara favoriter och schemalägga din träning.",
+  description:
+    "Skapa ett gratis konto för att spara favoriter och schemalägga din träning.",
   image: "/og/default.png",
   path: "/signup",
 });
@@ -13,9 +14,15 @@ export const metadata = pageMetadata({
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; success?: string; source?: string; ref?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    success?: string;
+    source?: string;
+    ref?: string;
+    next?: string;
+  }>;
 }) {
-  const { error, success, source, ref } = await searchParams;
+  const { error, success, source, ref, next } = await searchParams;
 
   if (success) {
     return (
@@ -44,6 +51,7 @@ export default async function SignupPage({
         <form action={signup}>
           {source && <input type="hidden" name="source" value={source} />}
           {ref && <input type="hidden" name="ref" value={ref} />}
+          {next && <input type="hidden" name="next" value={next} />}
           <div className={styles.field}>
             <label htmlFor="firstName">Förnamn</label>
             <input
