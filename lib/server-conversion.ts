@@ -36,7 +36,7 @@ export async function trackLeadConversion(lead: {
       userData.fbc = `fb.1.${Date.now()}.${lead.fbclid}`;
     }
 
-    await fetch(
+    const res = await fetch(
       `https://graph.facebook.com/v21.0/${pixelId}/events?access_token=${token}`,
       {
         method: "POST",
@@ -54,8 +54,18 @@ export async function trackLeadConversion(lead: {
         }),
       },
     );
-  } catch {
+
+    if (!res.ok) {
+      // Meta svarar med 200 vid fel också om man inte kollar statusen —
+      // logga så felet syns i Vercel-loggarna istället för att försvinna
+      // tyst (det är annars omöjligt att felsöka varför inget dyker upp i
+      // Events Manager).
+      const body = await res.text();
+      console.error("Meta Conversions API-fel:", res.status, body);
+    }
+  } catch (err) {
     // Bästa-försök — ett misslyckat spårningsanrop ska aldrig påverka
-    // leadinskickningen.
+    // leadinskickningen, men logga det så det går att felsöka.
+    console.error("Meta Conversions API — nätverksfel:", err);
   }
 }

@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { trackLeadConversion } from "@/lib/server-conversion";
+import { notifyNewLead } from "@/lib/pushover";
 
 export async function submitCoachingLead(
   formData: FormData,
@@ -38,6 +39,7 @@ export async function submitCoachingLead(
 
   if (!error) {
     await trackLeadConversion({ phone, email, fbclid });
+    await notifyNewLead({ name, phone, situation });
   }
 
   return { ok: !error };

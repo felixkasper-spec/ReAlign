@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { markLeadContacted } from "./actions";
+import LeadControls from "./LeadControls";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = { title: "Leads — ReAlign Metoden" };
@@ -16,11 +16,11 @@ export default async function CoachingLeadsPage() {
   const { data: leads } = await admin
     .from("coaching_leads")
     .select(
-      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, contacted_at, created_at",
+      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, notes, created_at",
     )
     .order("created_at", { ascending: false });
 
-  const notContacted = (leads ?? []).filter((l) => !l.contacted_at).length;
+  const noStatus = (leads ?? []).filter((l) => !l.status).length;
 
   return (
     <>
@@ -38,13 +38,13 @@ export default async function CoachingLeadsPage() {
             marginBottom: 24,
           }}
         >
-          {notContacted > 0 ? (
+          {noStatus > 0 ? (
             <>
-              <b>{notContacted}</b> {notContacted === 1 ? "person" : "personer"}{" "}
-              väntar på att bli uppringda.
+              <b>{noStatus}</b> {noStatus === 1 ? "person" : "personer"} väntar
+              på att hanteras.
             </>
           ) : (
-            "Alla leads är kontaktade."
+            "Alla leads har en status."
           )}
         </p>
 
@@ -79,28 +79,13 @@ export default async function CoachingLeadsPage() {
                     dateStyle: "short",
                     timeStyle: "short",
                   })}
-                  {l.contacted_at && (
-                    <>
-                      {" "}
-                      · kontaktad{" "}
-                      {new Date(l.contacted_at as string).toLocaleString(
-                        "sv-SE",
-                        {
-                          dateStyle: "short",
-                          timeStyle: "short",
-                        },
-                      )}
-                    </>
-                  )}
                 </div>
               </div>
-              {!l.contacted_at && (
-                <form action={markLeadContacted.bind(null, l.id)}>
-                  <button type="submit" className={styles.markReadBtn}>
-                    Markera som kontaktad
-                  </button>
-                </form>
-              )}
+              <LeadControls
+                leadId={l.id}
+                initialStatus={l.status}
+                initialNotes={l.notes}
+              />
             </div>
           ))}
         </div>
