@@ -26,10 +26,20 @@ type Intake = {
   weekly_time_budget: string | null;
   goals: string | null;
   other_info: string | null;
-  photo_paths: string[];
+  photo_front_path: string | null;
+  photo_back_path: string | null;
+  photo_left_path: string | null;
+  photo_right_path: string | null;
 } | null;
 
 type ProblemEntry = { text: string; painLevel: string };
+
+const PHOTO_SLOTS = [
+  { key: "front", label: "Framifrån" },
+  { key: "back", label: "Bakifrån" },
+  { key: "left", label: "Vänster sida" },
+  { key: "right", label: "Höger sida" },
+] as const;
 
 export default function IntakeForm({ intake }: { intake: Intake }) {
   const [hasProblem, setHasProblem] = useState(true);
@@ -39,36 +49,47 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
       painLevel: intake?.pain_level != null ? String(intake.pain_level) : "",
     },
   ]);
-  const [photos, setPhotos] = useState<File[]>([]);
+  const [photos, setPhotos] = useState<(File | null)[]>([
+    null,
+    null,
+    null,
+    null,
+  ]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files ?? []);
+  const existingPhotoPaths = [
+    intake?.photo_front_path ?? null,
+    intake?.photo_back_path ?? null,
+    intake?.photo_left_path ?? null,
+    intake?.photo_right_path ?? null,
+  ];
+
+  function handleSlotPhotoChange(
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
     setError(null);
 
-    for (const f of files) {
-      if (!f.type.startsWith("image/")) {
-        setError("Bara bilder kan bifogas här.");
-        e.target.value = "";
-        return;
-      }
-      if (f.size > MAX_ATTACHMENT_BYTES) {
-        setError("En bild är för stor (max 25 MB).");
-        e.target.value = "";
-        return;
-      }
+    if (!file.type.startsWith("image/")) {
+      setError("Bara bilder kan bifogas här.");
+      return;
+    }
+    if (file.size > MAX_ATTACHMENT_BYTES) {
+      setError("En bild är för stor (max 25 MB).");
+      return;
     }
 
-    setPhotos((prev) => [...prev, ...files]);
-    e.target.value = "";
+    setPhotos((prev) => prev.map((p, i) => (i === index ? file : p)));
   }
 
-  function removePhoto(index: number) {
-    setPhotos((prev) => prev.filter((_, i) => i !== index));
+  function removeSlotPhoto(index: number) {
+    setPhotos((prev) => prev.map((p, i) => (i === index ? null : p)));
   }
 
   function updateProblemText(index: number, value: string) {
@@ -101,20 +122,22 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
 
     try {
       const supabase = createClient();
-      const uploadedPaths: string[] = [];
 
-      for (const file of photos) {
-        const { path, token } = await createAttachmentUploadUrl(
-          file.name,
-          file.size,
-          file.type,
-        );
-        const { error: uploadError } = await supabase.storage
-          .from(COACHING_ATTACHMENT_BUCKET)
-          .uploadToSignedUrl(path, token, file);
-        if (uploadError) throw uploadError;
-        uploadedPaths.push(path);
-      }
+      const finalPhotoPaths = await Promise.all(
+        photos.map(async (file, i) => {
+          if (!file) return existingPhotoPaths[i];
+          const { path, token } = await createAttachmentUploadUrl(
+            file.name,
+            file.size,
+            file.type,
+          );
+          const { error: uploadError } = await supabase.storage
+            .from(COACHING_ATTACHMENT_BUCKET)
+            .uploadToSignedUrl(path, token, file);
+          if (uploadError) throw uploadError;
+          return path;
+        }),
+      );
 
       const formData = new FormData(formRef.current);
 
@@ -133,13 +156,18 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
       }
 
       const result = await submitCoachingIntake(
-        [...(intake?.photo_paths ?? []), ...uploadedPaths],
+        {
+          front: finalPhotoPaths[0],
+          back: finalPhotoPaths[1],
+          left: finalPhotoPaths[2],
+          right: finalPhotoPaths[3],
+        },
         formData,
       );
 
       if (result.ok) {
         setSuccess(true);
-        setPhotos([]);
+        setPhotos([null, null, null, null]);
       } else {
         setError(result.error ?? "Något gick fel, försök igen.");
       }
@@ -413,41 +441,50 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
           <h2>Hållningsfoton</h2>
         </div>
         <p className={styles.help}>
-          Ladda gärna upp 2–3 bilder (framifrån, bakifrån, från sidan) i
+          Ladda upp fyra bilder — framifrån, bakifrån och från båda sidorna — i
           vanliga, åtsittande kläder, stående avslappnat. Hjälper Felix göra en
           hållningsanalys inför ditt program.
         </p>
-        <div className={styles.photoGrid}>
-          {[...(intake?.photo_paths ?? [])].map((path) => (
-            <div key={path} className={styles.photoChipExisting}>
-              Tidigare uppladdad bild
-            </div>
-          ))}
-          {photos.map((file, i) => (
-            <div key={`${file.name}-${i}`} className={styles.photoChip}>
-              <span>{file.name}</span>
-              <button
-                type="button"
-                onClick={() => removePhoto(i)}
-                aria-label="Ta bort bild"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
+        <div className={styles.photoSlots}>
+          {PHOTO_SLOTS.map((slot, i) => {
+            const file = photos[i];
+            const existingPath = existingPhotoPaths[i];
+            return (
+              <div key={slot.key} className={styles.photoSlot}>
+                <span className={styles.photoSlotLabel}>{slot.label}</span>
+                {file ? (
+                  <div className={styles.photoChip}>
+                    <span>{file.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeSlotPhoto(i)}
+                      aria-label={`Ta bort ${slot.label.toLowerCase()}`}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : existingPath ? (
+                  <div className={styles.photoChipExisting}>
+                    Tidigare uppladdad bild
+                  </div>
+                ) : null}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleSlotPhotoChange(i, e)}
+                  className={styles.fileInput}
+                  id={`intake-photo-${slot.key}`}
+                />
+                <label
+                  htmlFor={`intake-photo-${slot.key}`}
+                  className="btn btn-ghost"
+                >
+                  {file || existingPath ? "Byt bild" : "+ Lägg till bild"}
+                </label>
+              </div>
+            );
+          })}
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          ref={fileInputRef}
-          onChange={handlePhotoChange}
-          className={styles.fileInput}
-          id="intake-photos"
-        />
-        <label htmlFor="intake-photos" className="btn btn-ghost">
-          + Lägg till bilder
-        </label>
       </section>
 
       <section className={shellStyles.panel}>

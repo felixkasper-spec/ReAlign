@@ -35,8 +35,15 @@ function optionalInt(formData: FormData, key: string): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+type PhotoSlotPaths = {
+  front: string | null;
+  back: string | null;
+  left: string | null;
+  right: string | null;
+};
+
 export async function submitCoachingIntake(
-  photoPaths: string[],
+  photoPaths: PhotoSlotPaths,
   formData: FormData,
 ): Promise<{ ok: boolean; error?: string }> {
   const { supabase, user } = await requireCoachingUser();
@@ -63,7 +70,10 @@ export async function submitCoachingIntake(
       weekly_time_budget: optionalText(formData, "weekly_time_budget"),
       goals: optionalText(formData, "goals"),
       other_info: optionalText(formData, "other_info"),
-      photo_paths: photoPaths,
+      photo_front_path: photoPaths.front,
+      photo_back_path: photoPaths.back,
+      photo_left_path: photoPaths.left,
+      photo_right_path: photoPaths.right,
       submitted_at: new Date().toISOString(),
     },
     { onConflict: "user_id" },

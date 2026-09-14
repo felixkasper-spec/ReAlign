@@ -33,6 +33,7 @@
 
 .numberInput {
   width: 100%;
+  flex: none;
   appearance: textfield;
   -moz-appearance: textfield;
 }
@@ -122,11 +123,23 @@
   font-size: 0.88rem;
 }
 
-.photoGrid {
+.photoSlots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.photoSlot {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.photoSlotLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .photoChip,

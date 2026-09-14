@@ -18,21 +18,33 @@ export default async function CoachingIntakePage() {
   const { data: intakes } = await admin
     .from("coaching_intake")
     .select(
-      "id, height_cm, weight_kg, symptoms, pain_level, previous_injuries, medications, sedentary_work, sleep_habits, current_training, equipment_access, session_length, weekly_time_budget, goals, other_info, photo_paths, submitted_at, profiles(display_name, email)",
+      "id, height_cm, weight_kg, symptoms, pain_level, previous_injuries, medications, sedentary_work, sleep_habits, current_training, equipment_access, session_length, weekly_time_budget, goals, other_info, photo_front_path, photo_back_path, photo_left_path, photo_right_path, submitted_at, profiles(display_name, email)",
     )
     .order("submitted_at", { ascending: false });
 
+  const PHOTO_FIELDS = [
+    { key: "photo_front_path", label: "Framifrån" },
+    { key: "photo_back_path", label: "Bakifrån" },
+    { key: "photo_left_path", label: "Vänster sida" },
+    { key: "photo_right_path", label: "Höger sida" },
+  ] as const;
+
   const withPhotoUrls = await Promise.all(
     (intakes ?? []).map(async (intake) => {
-      const photoUrls = await Promise.all(
-        (intake.photo_paths ?? []).map(async (path: string) => {
+      const photos = await Promise.all(
+        PHOTO_FIELDS.map(async ({ key, label }) => {
+          const path = intake[key] as string | null;
+          if (!path) return null;
           const { data } = await admin.storage
             .from(COACHING_ATTACHMENT_BUCKET)
             .createSignedUrl(path, 3600);
-          return data?.signedUrl ?? null;
+          return data?.signedUrl ? { label, url: data.signedUrl } : null;
         }),
       );
-      return { ...intake, photoUrls: photoUrls.filter(Boolean) as string[] };
+      return {
+        ...intake,
+        photos: photos.filter(Boolean) as { label: string; url: string }[],
+      };
     }),
   );
 
@@ -146,18 +158,18 @@ export default async function CoachingIntakePage() {
                     </div>
                   )}
 
-                  {intake.photoUrls.length > 0 && (
+                  {intake.photos.length > 0 && (
                     <div className={styles.contactMessage}>
                       <b>Hållningsfoton:</b>{" "}
-                      {intake.photoUrls.map((url, i) => (
+                      {intake.photos.map((photo) => (
                         <a
-                          key={url}
-                          href={url}
+                          key={photo.label}
+                          href={photo.url}
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{ marginRight: 10 }}
                         >
-                          Bild {i + 1}
+                          {photo.label}
                         </a>
                       ))}
                     </div>
