@@ -1,0 +1,63 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.minimalHeader {
+  padding: 22px 24px;
+}
+
+.logo {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--sage);
+}
+
+.wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 24px 60px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.card h1 {
+  font-family: var(--font-newsreader), serif;
+  font-size: 2rem;
+  margin: 10px 0 18px;
+}
+
+.card p {
+  color: var(--text-soft);
+  margin-bottom: 22px;
+}
+
+.loginNote {
+  margin-top: 16px !important;
+  margin-bottom: 0 !important;
+  font-size: 0.85rem;
+}

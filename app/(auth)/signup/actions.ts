@@ -5,15 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getBaseUrl } from "@/lib/base-url";
 import { addToBrevoLeadList } from "@/lib/brevo";
-
-// Bara en relativ sökväg inom sajten, aldrig en extern URL — annars kan
-// "next" missbrukas som en öppen redirect (t.ex. "//evil.com").
-function safeNextPath(next: string | undefined): string {
-  if (next && next.startsWith("/") && !next.startsWith("//")) {
-    return next;
-  }
-  return "/min-sida";
-}
+import { safeNextPath } from "@/lib/safe-redirect";
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();

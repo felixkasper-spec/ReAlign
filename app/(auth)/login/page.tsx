@@ -5,7 +5,8 @@ import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata({
   title: "Logga in — ReAlign Metoden",
-  description: "Logga in för att komma åt dina favoriter, ditt schema och din träningslogg.",
+  description:
+    "Logga in för att komma åt dina favoriter, ditt schema och din träningslogg.",
   image: "/og/default.png",
   path: "/login",
 });
@@ -13,9 +14,9 @@ export const metadata = pageMetadata({
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
 
   return (
     <div className={styles.wrap}>
@@ -27,6 +28,7 @@ export default async function LoginPage({
         {error && <div className={styles.error}>{error}</div>}
 
         <form action={login}>
+          {next && <input type="hidden" name="next" value={next} />}
           <div className={styles.field}>
             <label htmlFor="email">E-post</label>
             <input
@@ -53,7 +55,12 @@ export default async function LoginPage({
         </form>
 
         <div className={styles.switch}>
-          Inget konto än? <Link href="/signup">Skapa ett gratis</Link>
+          Inget konto än?{" "}
+          <Link
+            href={next ? `/signup?next=${encodeURIComponent(next)}` : "/signup"}
+          >
+            Skapa ett gratis
+          </Link>
         </div>
       </div>
     </div>
