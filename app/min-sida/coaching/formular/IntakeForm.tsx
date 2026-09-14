@@ -31,6 +31,7 @@ type Intake = {
 
 export default function IntakeForm({ intake }: { intake: Intake }) {
   const [hasProblem, setHasProblem] = useState(true);
+  const [problems, setProblems] = useState<string[]>([intake?.symptoms ?? ""]);
   const [photos, setPhotos] = useState<File[]>([]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,6 +64,18 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
   }
 
+  function updateProblem(index: number, value: string) {
+    setProblems((prev) => prev.map((p, i) => (i === index ? value : p)));
+  }
+
+  function addProblem() {
+    setProblems((prev) => [...prev, ""]);
+  }
+
+  function removeProblem(index: number) {
+    setProblems((prev) => prev.filter((_, i) => i !== index));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!formRef.current) return;
@@ -89,6 +102,16 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
       }
 
       const formData = new FormData(formRef.current);
+
+      if (hasProblem) {
+        const joined = problems
+          .map((p) => p.trim())
+          .filter(Boolean)
+          .map((p, i) => `Problem ${i + 1}: ${p}`)
+          .join("\n\n");
+        formData.set("symptoms", joined);
+      }
+
       const result = await submitCoachingIntake(
         [...(intake?.photo_paths ?? []), ...uploadedPaths],
         formData,
@@ -180,20 +203,44 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
         {hasProblem ? (
           <>
             <p className={styles.help}>
-              Beskriv i fri text. Har du flera problem? Skriv om det du helst
-              vill bli av med först, fortsätt sedan i fallande ordning. Skriv
-              gärna om: vart på kroppen det sitter, när det började, om det kom
-              av ett trauma eller &quot;oprovocerat&quot;, när på dygnet/efter
-              vilka aktiviteter det är som värst, och om du fått en diagnos.
+              Beskriv i fri text. Skriv gärna om: vart på kroppen det sitter,
+              när det började, om det kom av ett trauma eller
+              &quot;oprovocerat&quot;, när på dygnet/efter vilka aktiviteter det
+              är som värst, och om du fått en diagnos.
             </p>
-            <textarea
-              name="symptoms"
-              required
-              rows={5}
-              defaultValue={intake?.symptoms ?? ""}
-              className={styles.textarea}
-              placeholder="Fyll i ditt svar här..."
-            />
+            {problems.map((problem, i) => (
+              <div key={i} className={styles.problemBlock}>
+                <label className={styles.field}>
+                  Problem {i + 1}
+                  {i === 0 && problems.length > 1 ? " (viktigast)" : ""}
+                  <textarea
+                    value={problem}
+                    onChange={(e) => updateProblem(i, e.target.value)}
+                    required={i === 0}
+                    rows={4}
+                    className={styles.textarea}
+                    placeholder="Fyll i ditt svar här..."
+                  />
+                </label>
+                {problems.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeProblem(i)}
+                    className={styles.removeProblem}
+                  >
+                    Ta bort problem {i + 1}
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addProblem}
+              className="btn btn-ghost"
+              style={{ alignSelf: "flex-start" }}
+            >
+              + Lägg till ett problem
+            </button>
             <label className={styles.field}>
               Hur mycket stör problemet dig en genomsnittlig dag? (1–10)
               <input
