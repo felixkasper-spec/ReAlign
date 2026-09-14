@@ -78,25 +78,26 @@ export default function LeadForm({
           Något gick fel — testa igen om en stund.
         </p>
       )}
-      <div className={styles.formRow}>
-        <input
-          type="text"
-          placeholder="Namn"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="tel"
-          placeholder="Telefonnummer"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Namn"
+        autoComplete="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <input
+        type="tel"
+        placeholder="Telefonnummer"
+        autoComplete="tel"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        required
+      />
       <input
         type="email"
         placeholder="Mejl (valfritt)"
+        autoComplete="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
