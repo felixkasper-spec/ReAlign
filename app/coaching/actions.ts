@@ -48,26 +48,40 @@ export async function generateReplyDraft(
 
   const admin = createAdminClient();
 
-  const [{ data: profile }, { data: messages }, { data: journalEntries }] =
-    await Promise.all([
-      admin
-        .from("profiles")
-        .select("display_name, email")
-        .eq("id", userId)
-        .maybeSingle(),
-      admin
-        .from("coaching_messages")
-        .select("sender, body, created_at")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(20),
-      admin
-        .from("coaching_journal_entries")
-        .select("body, created_at")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(10),
-    ]);
+  const [
+    { data: profile },
+    { data: messages },
+    { data: journalEntries },
+    { data: pastReplies },
+  ] = await Promise.all([
+    admin
+      .from("profiles")
+      .select("display_name, email")
+      .eq("id", userId)
+      .maybeSingle(),
+    admin
+      .from("coaching_messages")
+      .select("sender, body, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(20),
+    admin
+      .from("coaching_journal_entries")
+      .select("body, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(10),
+    // Terapeutens egna tidigare skickade svar, oavsett kund — används som
+    // stilreferens så förslagen gradvis låter mer som honom själv i takt
+    // med att han skickar fler meddelanden. Ingen modellträning, bara
+    // färska exempel i prompten varje gång.
+    admin
+      .from("coaching_messages")
+      .select("body")
+      .eq("sender", "coach")
+      .order("created_at", { ascending: false })
+      .limit(15),
+  ]);
 
   const thread = (messages ?? []).slice().reverse();
   if (thread.length === 0) {
@@ -86,6 +100,11 @@ export async function generateReplyDraft(
     .map((n) => `- ${n.body}`)
     .join("\n");
 
+  const styleExamples = (pastReplies ?? [])
+    .filter((m) => m.body?.trim())
+    .map((m) => `- ${m.body}`)
+    .join("\n");
+
   const client = new Anthropic();
 
   try {
@@ -97,11 +116,17 @@ export async function generateReplyDraft(
 
 Terapeuten läser alltid igenom och redigerar utkastet innan det skickas, så var hellre lite försiktig med starka medicinska påståenden eller definitiva diagnoser än övertygande men fel. Om något i meddelandet tyder på akuta eller allvarliga symptom, uppmana kunden att söka vård istället för att bara ge träningsråd.
 
+Nedan finns exempel på meddelanden terapeuten själv skrivit tidigare (till olika kunder) — använd dem bara som referens för TON och STIL (ordval, meningslängd, hur formell/personlig han är), inte för sakinnehållet i dem.
+
 Svara ENDAST med själva utkastet till meddelande — ingen inledning, inga citattecken, ingen kommentar om att det är ett utkast.`,
       messages: [
         {
           role: "user",
-          content: `Konversation med ${displayName} (senaste meddelandet sist):\n\n${transcript}${
+          content: `${
+            styleExamples
+              ? `Exempel på terapeutens egen skrivstil, från tidigare konversationer:\n${styleExamples}\n\n---\n\n`
+              : ""
+          }Konversation med ${displayName} (senaste meddelandet sist):\n\n${transcript}${
             notes
               ? `\n\nCoachens privata anteckningar om kunden (kunden ser inte dessa):\n${notes}`
               : ""
