@@ -117,13 +117,6 @@ export default async function CoachingInboxPage({
             Kundprogram (delade länkar) →
           </Link>
           <Link
-            href="/coaching/content-studio"
-            className="btn btn-ghost"
-            style={{ border: "1px solid var(--line)" }}
-          >
-            Content Studio →
-          </Link>
-          <Link
             href="/coaching/leads"
             className="btn btn-ghost"
             style={{ border: "1px solid var(--line)" }}

@@ -21,10 +21,7 @@ export default function MobileTabs({
   return (
     <div className={styles.mobileTabs}>
       {isClinicStaff && (
-        <>
-          <Link href="/coaching/kundprogram">Kundprogram</Link>
-          <Link href="/coaching/content-studio">Content Studio</Link>
-        </>
+        <Link href="/coaching/kundprogram">Kundprogram</Link>
       )}
       <a href={`${linkPrefix}#oversikt`}>Översikt</a>
       {hasCoaching && (
