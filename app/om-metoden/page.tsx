@@ -363,18 +363,6 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
-                    <div className={styles.muscleImg}>
-                      <Image src="/muscles/levator-scapulae.png" alt="Levator scapulae" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
-                    </div>
-                    <b>Levator scapulae</b>
-                    <p>
-                      Går från de översta halskotorna ner till skulderbladets
-                      övre hörn och lyfter skulderbladet uppåt. Jobbar
-                      tillsammans med rhomboideus för att hålla skulderbladet
-                      i sin naturliga position.
-                    </p>
-                  </div>
-                  <div className={styles.muscleCard}>
                     <div className={`${styles.muscleImg} ${styles.muscleImgPair}`}>
                       <div>
                         <Image src="/muscles/supraspinatus.png" alt="Supraspinatus" fill sizes="(max-width: 480px) 50vw, (max-width: 800px) 25vw, 17vw" />
