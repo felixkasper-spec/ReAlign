@@ -6,19 +6,94 @@ import { revalidatePath } from "next/cache";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, escapeHtml } from "@/lib/brevo";
+import {
+  CLINIC_PROGRAM_VIDEO_BUCKET,
+  MAX_CLINIC_PROGRAM_VIDEO_BYTES,
+} from "@/lib/clinic-program-video";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export async function createClinicProgramVideoUploadUrl(
+  fileName: string,
+  fileSize: number,
+  mime: string,
+) {
+  await requireClinicStaff();
+
+  if (!mime.startsWith("video/")) {
+    throw new Error("Bara videofiler kan laddas upp.");
+  }
+  if (fileSize > MAX_CLINIC_PROGRAM_VIDEO_BYTES) {
+    throw new Error("Filen är för stor (max 100 MB).");
+  }
+
+  const admin = createAdminClient();
+  const ext = fileName.split(".").pop()?.toLowerCase() || "mp4";
+  const path = `${crypto.randomUUID()}.${ext}`;
+
+  const { data, error } = await admin.storage
+    .from(CLINIC_PROGRAM_VIDEO_BUCKET)
+    .createSignedUploadUrl(path);
+
+  if (error || !data) {
+    throw new Error("Kunde inte förbereda uppladdningen.");
+  }
+
+  const {
+    data: { publicUrl },
+  } = admin.storage.from(CLINIC_PROGRAM_VIDEO_BUCKET).getPublicUrl(path);
+
+  return { path, token: data.token, publicUrl };
+}
+
+// exerciseIds/notes/customTitles/customVideoUrls är parallella listor (en
+// per rad i byggaren, i ordning) — en rad är antingen en biblioteks-övning
+// (exerciseId satt, customTitle tom) eller en egen övning (tvärtom).
+function buildProgramExerciseRows(
+  clinicProgramId: string,
+  formData: FormData,
+) {
+  const exerciseIds = formData.getAll("exerciseIds") as string[];
+  const notes = formData.getAll("notes") as string[];
+  const customTitles = formData.getAll("customTitles") as string[];
+  const customVideoUrls = formData.getAll("customVideoUrls") as string[];
+
+  return exerciseIds
+    .map((exerciseId, i) => {
+      const customTitle = customTitles[i]?.trim();
+      const customVideoUrl = customVideoUrls[i]?.trim();
+      const rowNotes = notes[i]?.trim() || null;
+
+      if (customTitle && customVideoUrl) {
+        return {
+          clinic_program_id: clinicProgramId,
+          exercise_id: null,
+          custom_title: customTitle,
+          custom_video_url: customVideoUrl,
+          notes: rowNotes,
+          order_index: i,
+        };
+      }
+      if (!exerciseId) return null;
+      return {
+        clinic_program_id: clinicProgramId,
+        exercise_id: exerciseId,
+        notes: rowNotes,
+        order_index: i,
+      };
+    })
+    .filter((row): row is NonNullable<typeof row> => row !== null);
 }
 
 export async function createClinicProgram(formData: FormData) {
   await requireClinicStaff();
 
   const label = (formData.get("label") as string)?.trim();
-  const exerciseIds = formData.getAll("exerciseIds") as string[];
-  const notes = formData.getAll("notes") as string[];
+  const rowCount = formData.getAll("exerciseIds").length;
 
-  if (!label || exerciseIds.length === 0) {
+  if (!label || rowCount === 0) {
     return;
   }
 
@@ -35,14 +110,10 @@ export async function createClinicProgram(formData: FormData) {
     return;
   }
 
-  await admin.from("clinic_program_exercises").insert(
-    exerciseIds.map((exerciseId, i) => ({
-      clinic_program_id: program.id,
-      exercise_id: exerciseId,
-      notes: notes[i]?.trim() || null,
-      order_index: i,
-    })),
-  );
+  const rows = buildProgramExerciseRows(program.id, formData);
+  if (rows.length > 0) {
+    await admin.from("clinic_program_exercises").insert(rows);
+  }
 
   revalidatePath("/coaching/kundprogram");
   redirect(`/coaching/kundprogram/${program.id}?ny=1`);
@@ -55,10 +126,9 @@ export async function updateClinicProgram(
   await requireClinicStaff();
 
   const label = (formData.get("label") as string)?.trim();
-  const exerciseIds = formData.getAll("exerciseIds") as string[];
-  const notes = formData.getAll("notes") as string[];
+  const rowCount = formData.getAll("exerciseIds").length;
 
-  if (!label || exerciseIds.length === 0) {
+  if (!label || rowCount === 0) {
     return;
   }
 
@@ -74,14 +144,11 @@ export async function updateClinicProgram(
     .from("clinic_program_exercises")
     .delete()
     .eq("clinic_program_id", clinicProgramId);
-  await admin.from("clinic_program_exercises").insert(
-    exerciseIds.map((exerciseId, i) => ({
-      clinic_program_id: clinicProgramId,
-      exercise_id: exerciseId,
-      notes: notes[i]?.trim() || null,
-      order_index: i,
-    })),
-  );
+
+  const rows = buildProgramExerciseRows(clinicProgramId, formData);
+  if (rows.length > 0) {
+    await admin.from("clinic_program_exercises").insert(rows);
+  }
 
   revalidatePath("/coaching/kundprogram");
   revalidatePath(`/coaching/kundprogram/${clinicProgramId}`);
@@ -116,10 +183,10 @@ export async function sendClinicProgramLink(
   try {
     await sendEmail({
       to: [{ email }],
-      subject: "Ditt träningsprogram från Cleer Klinik",
+      subject: "Ditt träningsprogram från ReAlign Metoden",
       replyTo: { email: "kontakt@realignmetoden.se", name: "ReAlign Metoden" },
       html: buildClinicProgramEmailHtml(safeLabel, link),
-      text: `Hej!\n\nHär är länken till ditt träningsprogram, ${program.label}:\n${link}\n\nInget konto behövs — klicka bara på länken för att komma igång.\n\nVänliga hälsningar,\nCleer Klinik`,
+      text: `Hej!\n\nHär är länken till ditt träningsprogram, ${program.label}:\n${link}\n\nInget konto behövs — klicka bara på länken för att komma igång.\n\nVänliga hälsningar,\nReAlign Metoden`,
     });
   } catch (e) {
     console.error("Failed to send clinic program email", e);
@@ -154,7 +221,7 @@ function buildClinicProgramEmailHtml(safeLabel: string, url: string) {
       Inget konto behövs — klicka bara på länken för att komma igång.
     </p>
     <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7267;line-height:1.5;margin:0;">
-      Vänliga hälsningar,<br>Cleer Klinik
+      Vänliga hälsningar,<br>ReAlign Metoden
     </p>
   </div>
 </div>`;

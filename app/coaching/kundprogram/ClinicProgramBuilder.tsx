@@ -1,11 +1,20 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import SubmitButton from "@/components/SubmitButton";
+import { createClient } from "@/lib/supabase/client";
+import { CLINIC_PROGRAM_VIDEO_BUCKET } from "@/lib/clinic-program-video";
+import { createClinicProgramVideoUploadUrl } from "./actions";
 import styles from "../../min-sida/bygg-program/page.module.css";
 
 type Exercise = { id: string; slug: string; title: string; body_part: string };
-export type SelectedRow = { id: string; title: string; notes: string };
+export type SelectedRow = {
+  id: string;
+  title: string;
+  notes: string;
+  isCustom?: boolean;
+  customVideoUrl?: string;
+};
 
 function normalize(s: string) {
   return s
@@ -136,6 +145,12 @@ export default function ClinicProgramBuilder({
   const [renderKey, setRenderKey] = useState(0);
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState("");
+  const [customTitle, setCustomTitle] = useState("");
+  const [customVideoFile, setCustomVideoFile] = useState<File | null>(null);
+  const [customNote, setCustomNote] = useState("");
+  const [customUploading, setCustomUploading] = useState(false);
+  const [customError, setCustomError] = useState<string | null>(null);
+  const customFileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedSet = useMemo(
     () => new Set(selected.map((s) => s.id)),
@@ -194,8 +209,49 @@ export default function ClinicProgramBuilder({
     setSelected((prev) => [...prev, { id: ex.id, title: ex.title, notes: "" }]);
   }
 
-  function remove(id: string) {
-    setSelected((prev) => prev.filter((s) => s.id !== id));
+  async function addCustom() {
+    const title = customTitle.trim();
+    if (!title || !customVideoFile) return;
+
+    setCustomError(null);
+    setCustomUploading(true);
+    try {
+      const { path, token, publicUrl } = await createClinicProgramVideoUploadUrl(
+        customVideoFile.name,
+        customVideoFile.size,
+        customVideoFile.type,
+      );
+      const supabase = createClient();
+      const { error } = await supabase.storage
+        .from(CLINIC_PROGRAM_VIDEO_BUCKET)
+        .uploadToSignedUrl(path, token, customVideoFile);
+      if (error) throw error;
+
+      setSelected((prev) => [
+        ...prev,
+        {
+          id: `custom-${crypto.randomUUID()}`,
+          title,
+          notes: customNote.trim(),
+          isCustom: true,
+          customVideoUrl: publicUrl,
+        },
+      ]);
+      setCustomTitle("");
+      setCustomVideoFile(null);
+      if (customFileInputRef.current) customFileInputRef.current.value = "";
+      setCustomNote("");
+    } catch (err) {
+      setCustomError(
+        err instanceof Error ? err.message : "Något gick fel, försök igen.",
+      );
+    } finally {
+      setCustomUploading(false);
+    }
+  }
+
+  function remove(rowId: string) {
+    setSelected((prev) => prev.filter((s) => s.id !== rowId));
   }
 
   function move(index: number, dir: -1 | 1) {
@@ -278,12 +334,19 @@ export default function ClinicProgramBuilder({
                 <li key={`${renderKey}-${row.id}`} className={styles.row}>
                   <span className={styles.num}>{i + 1}</span>
                   <div className={styles.rowBody}>
-                    <div className={styles.rowTitle}>{row.title}</div>
+                    <div className={styles.rowTitle}>
+                      {row.title}
+                      {row.isCustom && (
+                        <span className={styles.customBadge}>Egen övning</span>
+                      )}
+                    </div>
                     <input
                       type="text"
                       name="notes"
                       defaultValue={row.notes}
-                      placeholder="Sets/reps, t.ex. 2x12"
+                      placeholder={
+                        row.isCustom ? "Kommentar" : "Sets/reps, t.ex. 2x12"
+                      }
                       className={styles.searchInput}
                       style={{
                         marginTop: 4,
@@ -320,11 +383,78 @@ export default function ClinicProgramBuilder({
                       ✕
                     </button>
                   </div>
-                  <input type="hidden" name="exerciseIds" value={row.id} />
+                  <input
+                    type="hidden"
+                    name="exerciseIds"
+                    value={row.isCustom ? "" : row.id}
+                  />
+                  <input
+                    type="hidden"
+                    name="customTitles"
+                    value={row.isCustom ? row.title : ""}
+                  />
+                  <input
+                    type="hidden"
+                    name="customVideoUrls"
+                    value={row.isCustom ? row.customVideoUrl ?? "" : ""}
+                  />
                 </li>
               ))}
             </ul>
           )}
+        </div>
+
+        <div className={styles.panel}>
+          <h2>Lägg till egen övning</h2>
+          <p className={styles.hint}>
+            Inte i övningsbiblioteket, eller en variant anpassad för just den
+            här kunden? Spela in eller ladda upp en video direkt här,
+            tillsammans med en kort kommentar.
+          </p>
+          {customError && (
+            <p style={{ color: "var(--warm)", fontSize: "0.88rem", marginBottom: 8 }}>
+              {customError}
+            </p>
+          )}
+          <input
+            type="text"
+            value={customTitle}
+            onChange={(e) => setCustomTitle(e.target.value)}
+            placeholder="Namn på övningen"
+            className={styles.textInput}
+            style={{ width: "100%", marginBottom: 8 }}
+          />
+
+          <input
+            type="file"
+            accept="video/*"
+            capture="environment"
+            ref={customFileInputRef}
+            onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              setCustomError(null);
+              setCustomVideoFile(f);
+            }}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+
+          <input
+            type="text"
+            value={customNote}
+            onChange={(e) => setCustomNote(e.target.value)}
+            placeholder="Kommentar (valfritt)"
+            className={styles.searchInput}
+            style={{ marginBottom: 8 }}
+          />
+          <button
+            type="button"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+            onClick={addCustom}
+            disabled={!customTitle.trim() || !customVideoFile || customUploading}
+          >
+            {customUploading ? "Laddar upp..." : "+ Lägg till egen övning"}
+          </button>
         </div>
 
         <div className={styles.saveRow}>

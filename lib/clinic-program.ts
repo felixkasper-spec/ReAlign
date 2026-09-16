@@ -14,8 +14,11 @@ type ExerciseRow = {
 };
 
 type ClinicProgramExerciseRow = {
+  id: string;
   notes: string | null;
   order_index: number;
+  custom_title: string | null;
+  custom_video_url: string | null;
   exercises: ExerciseRow | null;
 };
 
@@ -35,31 +38,45 @@ export async function getClinicProgramPlayerData(token: string, startSlug?: stri
 
   const { data: rows } = await admin
     .from("clinic_program_exercises")
-    .select("notes, order_index, exercises ( slug, title, sets_reps, video_url, duration_seconds, instructions )")
+    .select(
+      "id, notes, order_index, custom_title, custom_video_url, exercises ( slug, title, sets_reps, video_url, duration_seconds, instructions )",
+    )
     .eq("clinic_program_id", program.id)
     .order("order_index");
 
   const ordered = (rows ?? []) as unknown as ClinicProgramExerciseRow[];
 
+  const videoUrls = ordered.map((row) => row.exercises?.video_url ?? row.custom_video_url);
   const thumbnails = await Promise.all(
-    ordered.map((row) =>
-      row.exercises?.video_url ? getVimeoThumbnail(row.exercises.video_url) : Promise.resolve(null),
-    ),
+    videoUrls.map((url) => (url ? getVimeoThumbnail(url) : Promise.resolve(null))),
   );
 
-  const exercises: PlayerExercise[] = ordered
-    .filter((row): row is ClinicProgramExerciseRow & { exercises: ExerciseRow } => row.exercises != null)
-    .map((row, i) => ({
-      slug: row.exercises.slug,
-      title: row.exercises.title,
-      setsReps: row.notes?.trim() || row.exercises.sets_reps?.split(" · ")[0] || null,
-      blurb: row.exercises.instructions?.split("\n\n")[0] ?? null,
-      instructions: row.exercises.instructions,
-      videoUrl: row.exercises.video_url,
-      durationSeconds: row.exercises.duration_seconds ?? DEFAULT_DURATION_SECONDS,
+  const exercises: PlayerExercise[] = ordered.map((row, i) => {
+    if (row.exercises) {
+      return {
+        slug: row.exercises.slug,
+        title: row.exercises.title,
+        setsReps: row.notes?.trim() || row.exercises.sets_reps?.split(" · ")[0] || null,
+        blurb: row.exercises.instructions?.split("\n\n")[0] ?? null,
+        instructions: row.exercises.instructions,
+        videoUrl: row.exercises.video_url,
+        durationSeconds: row.exercises.duration_seconds ?? DEFAULT_DURATION_SECONDS,
+        thumbnailUrl: thumbnails[i]?.url ?? null,
+        aspectRatio: thumbnails[i]?.aspectRatio ?? 16 / 9,
+      };
+    }
+    return {
+      slug: `custom-${row.id}`,
+      title: row.custom_title ?? "Egen övning",
+      setsReps: row.notes?.trim() || null,
+      blurb: null,
+      instructions: null,
+      videoUrl: row.custom_video_url,
+      durationSeconds: DEFAULT_DURATION_SECONDS,
       thumbnailUrl: thumbnails[i]?.url ?? null,
       aspectRatio: thumbnails[i]?.aspectRatio ?? 16 / 9,
-    }));
+    };
+  });
 
   const initialIndex = Math.max(
     0,

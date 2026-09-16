@@ -6,6 +6,7 @@ import VimeoEmbed from "./VimeoEmbed";
 import GuestAccountPrompt from "./GuestAccountPrompt";
 import SubmitButton from "./SubmitButton";
 import type { PlayerExercise } from "@/lib/player-data";
+import { isVimeoUrl } from "@/lib/video-url";
 import styles from "./ProgramPlayer.module.css";
 
 function renderInstructions(text: string) {
@@ -121,16 +122,30 @@ export default function ProgramPlayer({
       </div>
 
       <div className={styles.videoWrap}>
-        {current.videoUrl && (
-          <VimeoEmbed
-            key={current.slug}
-            src={current.videoUrl}
-            className={styles.video}
-            poster={current.thumbnailUrl}
-            aspectRatio={current.aspectRatio}
-            autoplay
-          />
-        )}
+        {current.videoUrl &&
+          (isVimeoUrl(current.videoUrl) ? (
+            <VimeoEmbed
+              key={current.slug}
+              src={current.videoUrl}
+              className={styles.video}
+              poster={current.thumbnailUrl}
+              aspectRatio={current.aspectRatio}
+              autoplay
+            />
+          ) : (
+            // Egeninspelade, direktlänkade videofiler (uppladdade till
+            // Supabase Storage) — ingen Vimeo-spelare att luta sig mot, så
+            // bara vanliga inbyggda webbläsarkontroller istället för de
+            // anpassade knapparna VimeoEmbed bygger.
+            <video
+              key={current.slug}
+              className={styles.video}
+              src={current.videoUrl}
+              poster={current.thumbnailUrl ?? undefined}
+              controls
+              playsInline
+            />
+          ))}
       </div>
 
       <div className={styles.info}>

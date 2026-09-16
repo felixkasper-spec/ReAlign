@@ -36,7 +36,7 @@ export default async function ClinicProgramDetailPage({
 
   const { data: rows } = await admin
     .from("clinic_program_exercises")
-    .select("notes, order_index, exercises ( title )")
+    .select("notes, order_index, custom_title, exercises ( title )")
     .eq("clinic_program_id", id)
     .order("order_index");
 
@@ -126,7 +126,10 @@ export default async function ClinicProgramDetailPage({
               <div key={i} className={styles.row} style={{ cursor: "default" }}>
                 <div className={styles.rowInfo}>
                   <div className={styles.name}>
-                    {ex?.title ?? "Okänd övning"}
+                    {ex?.title ?? r.custom_title ?? "Okänd övning"}
+                    {!ex && r.custom_title && (
+                      <span className={styles.customBadge}>Egen övning</span>
+                    )}
                   </div>
                   <div className={styles.preview}>{r.notes || "—"}</div>
                 </div>

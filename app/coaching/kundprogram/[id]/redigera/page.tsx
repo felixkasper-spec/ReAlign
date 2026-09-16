@@ -25,20 +25,26 @@ export default async function EditClinicProgramPage({
     admin.from("exercises").select("id, slug, title, body_part").order("body_part").order("title"),
     admin
       .from("clinic_program_exercises")
-      .select("notes, order_index, exercises ( id, title )")
+      .select("id, notes, order_index, custom_title, custom_video_url, exercises ( id, title )")
       .eq("clinic_program_id", id)
       .order("order_index"),
   ]);
 
   if (!program) notFound();
 
-  const initialSelected: SelectedRow[] = (rows ?? [])
-    .map((r) => {
-      const ex = r.exercises as unknown as { id: string; title: string } | null;
-      if (!ex) return null;
+  const initialSelected: SelectedRow[] = (rows ?? []).map((r) => {
+    const ex = r.exercises as unknown as { id: string; title: string } | null;
+    if (ex) {
       return { id: ex.id, title: ex.title, notes: r.notes ?? "" };
-    })
-    .filter((r): r is SelectedRow => r != null);
+    }
+    return {
+      id: `custom-${r.id}`,
+      title: r.custom_title ?? "Egen övning",
+      notes: r.notes ?? "",
+      isCustom: true,
+      customVideoUrl: r.custom_video_url ?? "",
+    };
+  });
 
   return (
     <>

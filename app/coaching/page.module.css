@@ -43,6 +43,19 @@
   margin-bottom: 4px;
 }
 
+.customBadge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--sage);
+  font-size: 0.7rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
 .preview {
   color: var(--text-soft);
   font-size: 0.85rem;
