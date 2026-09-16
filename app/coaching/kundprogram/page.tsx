@@ -20,7 +20,9 @@ export default async function ClinicProgramListPage({
 
   let query = admin
     .from("clinic_programs")
-    .select("id, label, share_token, created_at, visit_count, last_visited_at")
+    .select(
+      "id, label, share_token, created_at, visit_count, last_visited_at, clinic_program_exercises(count)",
+    )
     .order("created_at", { ascending: false });
 
   if (q?.trim()) {
@@ -84,27 +86,42 @@ export default async function ClinicProgramListPage({
           </p>
         ) : (
           <div className={styles.list}>
-            {programs.map((p) => (
-              <Link key={p.id} href={`/coaching/kundprogram/${p.id}`} className={styles.row}>
-                <div className={styles.rowInfo}>
-                  <div className={styles.name}>{p.label}</div>
-                  <div className={styles.preview}>
-                    /p/{p.share_token}
-                    {p.visit_count > 0 && (
-                      <>
-                        {" "}
-                        · öppnad {p.visit_count} ggr, senast{" "}
-                        {new Date(p.last_visited_at as string).toLocaleString("sv-SE", {
-                          dateStyle: "short",
-                          timeStyle: "short",
-                        })}
-                      </>
-                    )}
+            {programs.map((p) => {
+              const exerciseCount =
+                (p.clinic_program_exercises as unknown as { count: number }[] | null)?.[0]
+                  ?.count ?? 0;
+              const isBroken = exerciseCount === 0;
+              return (
+                <Link key={p.id} href={`/coaching/kundprogram/${p.id}`} className={styles.row}>
+                  <div className={styles.rowInfo}>
+                    <div className={styles.name}>{p.label}</div>
+                    <div className={styles.preview}>
+                      /p/{p.share_token}
+                      {p.visit_count > 0 && (
+                        <>
+                          {" "}
+                          · öppnad {p.visit_count} ggr, senast{" "}
+                          {new Date(p.last_visited_at as string).toLocaleString("sv-SE", {
+                            dateStyle: "short",
+                            timeStyle: "short",
+                          })}
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-                {p.visit_count === 0 && <span className={styles.badge}>Ej öppnad</span>}
-              </Link>
-            ))}
+                  {isBroken ? (
+                    <span
+                      className={styles.badge}
+                      style={{ background: "#f2d4d4", color: "#7a2020" }}
+                    >
+                      ⚠ Trasig länk — 0 övningar
+                    </span>
+                  ) : (
+                    p.visit_count === 0 && <span className={styles.badge}>Ej öppnad</span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
         )}
 
