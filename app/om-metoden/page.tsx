@@ -252,6 +252,9 @@ export default async function OmMetodenPage() {
               <div className={styles.accordionBody}>
                 <div className={styles.muscleGrid}>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/tibialis-posterior.png" alt="Tibialis posterior" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Tibialis posterior</b>
                     <p>
                       Sitter i underbenet och roterar in foten i relation
@@ -260,6 +263,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/popliteus.png" alt="Popliteus" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Popliteus</b>
                     <p>
                       Sitter snett över knäets baksida och vrider in
@@ -267,6 +273,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/adduktorer.jpg" alt="Adduktorer" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Adduktorer</b>
                     <p>
                       Sitter på insidan av låret och för lårbenet inåt i
@@ -276,6 +285,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/psoas-major.png" alt="Psoas major" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Psoas major</b>
                     <p>
                       Går från ländryggraden ner till insidan av lårbenet.
@@ -287,6 +299,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/iliacus.png" alt="Iliacus" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Iliacus</b>
                     <p>
                       Sitter inne i bäckenet och går ihop med psoas major
@@ -297,6 +312,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/quadratus-lumborum.png" alt="Quadratus lumborum" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>QL (quadratus lumborum)</b>
                     <p>
                       Hjälper iliopsoas att föra bäckenet framåt — ger oss
@@ -305,6 +323,14 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={`${styles.muscleImg} ${styles.muscleImgPair}`}>
+                      <div>
+                        <Image src="/muscles/multifider.jpg" alt="Multifider" fill sizes="(max-width: 480px) 50vw, (max-width: 800px) 25vw, 17vw" />
+                      </div>
+                      <div>
+                        <Image src="/muscles/rotatorer.png" alt="Rotatorer" fill sizes="(max-width: 480px) 50vw, (max-width: 800px) 25vw, 17vw" />
+                      </div>
+                    </div>
                     <b>Multifider & rotatorer</b>
                     <p>
                       Går längs hela ryggraden och är de muskler vi
@@ -312,6 +338,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/diafragma.jpg" alt="Diafragma" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Diafragma</b>
                     <p>
                       Den viktigaste muskeln i andningsprocessen: aktiv
@@ -323,6 +352,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/rhomboideus.jpg" alt="Rhomboideus" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Rhomboideus</b>
                     <p>
                       Sitter mellan skulderbladen och drar dem bakåt,
@@ -331,6 +363,14 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={`${styles.muscleImg} ${styles.muscleImgPair}`}>
+                      <div>
+                        <Image src="/muscles/supraspinatus.png" alt="Supraspinatus" fill sizes="(max-width: 480px) 50vw, (max-width: 800px) 25vw, 17vw" />
+                      </div>
+                      <div>
+                        <Image src="/muscles/infraspinatus.png" alt="Infraspinatus" fill sizes="(max-width: 480px) 50vw, (max-width: 800px) 25vw, 17vw" />
+                      </div>
+                    </div>
                     <b>Supra-/infraspinatus</b>
                     <p>
                       Två muskler på skulderbladen som roterar överarmen
@@ -340,6 +380,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/serratus-anterior.png" alt="Serratus anterior" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Serratus anterior</b>
                     <p>
                       Sitter på sidorna av bröstkorgen och för axlarna
@@ -347,6 +390,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/scalenerna.png" alt="Scalenerna" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Scalenerna</b>
                     <p>
                       Sitter på sidan av nacken och för, i det här
@@ -355,6 +401,9 @@ export default async function OmMetodenPage() {
                     </p>
                   </div>
                   <div className={styles.muscleCard}>
+                    <div className={styles.muscleImg}>
+                      <Image src="/muscles/sternocleidomastoideus.png" alt="Sternocleidomastoideus" fill sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw" />
+                    </div>
                     <b>Sternocleidomastoideus</b>
                     <p>
                       Sitter på framsidan av halsen och arbetar

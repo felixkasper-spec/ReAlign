@@ -184,6 +184,17 @@
   padding: 8px;
 }
 
+.muscleImgPair {
+  display: flex;
+  height: 100%;
+  gap: 1px;
+}
+
+.muscleImgPair > div {
+  position: relative;
+  flex: 1;
+}
+
 .muscleCard p {
   padding: 4px 16px 16px;
   font-size: 0.86rem !important;
