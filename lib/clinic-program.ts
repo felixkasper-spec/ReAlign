@@ -36,13 +36,20 @@ export async function getClinicProgramPlayerData(token: string, startSlug?: stri
 
   if (!program) return null;
 
-  const { data: rows } = await admin
+  const { data: rows, error: rowsError } = await admin
     .from("clinic_program_exercises")
     .select(
       "id, notes, order_index, custom_title, custom_video_url, exercises ( slug, title, sets_reps, video_url, duration_seconds, instructions )",
     )
     .eq("clinic_program_id", program.id)
     .order("order_index");
+
+  if (rowsError) {
+    // T.ex. en migration som inte körts (kolumn saknas) — utan denna logg
+    // ser detta bara ut som "programmet har 0 övningar" och ger 404 för
+    // ALLA kundprogram utan någon ledtråd i Vercel-loggarna om varför.
+    console.error("getClinicProgramPlayerData — kunde inte hämta övningsrader:", rowsError);
+  }
 
   const ordered = (rows ?? []) as unknown as ClinicProgramExerciseRow[];
 
