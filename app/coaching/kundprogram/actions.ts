@@ -112,7 +112,17 @@ export async function createClinicProgram(formData: FormData) {
 
   const rows = buildProgramExerciseRows(program.id, formData);
   if (rows.length > 0) {
-    await admin.from("clinic_program_exercises").insert(rows);
+    const { error: rowsError } = await admin.rpc("replace_clinic_program_exercises", {
+      p_clinic_program_id: program.id,
+      p_rows: rows,
+    });
+    if (rowsError) {
+      // Programmet skapades men övningarna kunde inte sparas (t.ex. samma
+      // övning tillagd två gånger) — städa bort det tomma programmet
+      // istället för att lämna en delningslänk som alltid ger 404.
+      await admin.from("clinic_programs").delete().eq("id", program.id);
+      redirect("/coaching/kundprogram/ny?error=1");
+    }
   }
 
   revalidatePath("/coaching/kundprogram");
@@ -140,14 +150,19 @@ export async function updateClinicProgram(
     .from("clinic_programs")
     .update({ label })
     .eq("id", clinicProgramId);
-  await admin
-    .from("clinic_program_exercises")
-    .delete()
-    .eq("clinic_program_id", clinicProgramId);
 
   const rows = buildProgramExerciseRows(clinicProgramId, formData);
-  if (rows.length > 0) {
-    await admin.from("clinic_program_exercises").insert(rows);
+  // Byte av övningslista görs i en enda transaktion (delete+insert i
+  // replace_clinic_program_exercises) — om inserten misslyckas (t.ex. samma
+  // övning tillagd två gånger) rullas raderingen tillbaka automatiskt, så
+  // kundens redan skickade länk fortsätter peka på det gamla, fungerande
+  // innehållet istället för att tystas ner till ett tomt program.
+  const { error: rowsError } = await admin.rpc("replace_clinic_program_exercises", {
+    p_clinic_program_id: clinicProgramId,
+    p_rows: rows,
+  });
+  if (rowsError) {
+    redirect(`/coaching/kundprogram/${clinicProgramId}/redigera?error=1`);
   }
 
   revalidatePath("/coaching/kundprogram");

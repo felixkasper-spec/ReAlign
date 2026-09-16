@@ -206,7 +206,9 @@ export default function ClinicProgramBuilder({
   }
 
   function add(ex: Exercise) {
-    setSelected((prev) => [...prev, { id: ex.id, title: ex.title, notes: "" }]);
+    setSelected((prev) =>
+      prev.some((s) => s.id === ex.id) ? prev : [...prev, { id: ex.id, title: ex.title, notes: "" }],
+    );
   }
 
   async function addCustom() {

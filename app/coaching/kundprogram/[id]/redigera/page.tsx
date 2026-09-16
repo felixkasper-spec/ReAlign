@@ -13,11 +13,14 @@ export const metadata: Metadata = { title: "Redigera kundprogram — ReAlign Met
 
 export default async function EditClinicProgramPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
   await requireClinicStaff();
   const { id } = await params;
+  const { error } = await searchParams;
   const admin = createAdminClient();
 
   const [{ data: program }, { data: exercises }, { data: rows }] = await Promise.all([
@@ -58,6 +61,23 @@ export default async function EditClinicProgramPage({
         <p style={{ color: "var(--text-soft)", marginBottom: 24 }}>
           Länken kunden redan har fortsätter fungera — sparar du ändras bara innehållet den visar.
         </p>
+
+        {error === "1" && (
+          <p
+            style={{
+              background: "var(--warm-soft)",
+              color: "#5a4530",
+              borderRadius: 12,
+              padding: "12px 16px",
+              fontSize: "0.9rem",
+              marginBottom: 20,
+            }}
+          >
+            Kunde inte spara övningarna — kontrollera att ingen övning ligger
+            med två gånger i listan, och försök igen. Kundens länk visar
+            fortfarande det gamla innehållet.
+          </p>
+        )}
 
         <ClinicProgramBuilder
           exercises={exercises ?? []}
