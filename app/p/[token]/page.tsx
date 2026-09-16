@@ -41,11 +41,11 @@ export default async function ClinicProgramPage({
       <Header />
       <div className={`wrap ${styles.wrap}`}>
         <div className={styles.progHead}>
-          <span className="eyebrow">Program från Cleer Klinik</span>
+          <span className="eyebrow">Program från ReAlign Metoden</span>
           <h1>Ditt program</h1>
           <p style={{ color: "var(--text-soft)", marginTop: 8 }}>
-            Klicka på en övning för video- och textinstruktioner, eller kör
-            hela passet i följd genom att trycka på &quot;Starta program&quot;.
+            Kör hela passet i följd genom att trycka på &quot;Starta
+            program&quot;.
           </p>
           <div style={{ marginTop: 14 }}>
             <Link href={`/p/${token}/spela`} className={styles.startProgramBtn}>
@@ -54,7 +54,6 @@ export default async function ClinicProgramPage({
           </div>
         </div>
 
-        <p className={styles.exHint}>🎥 Klicka på en övning för video- och textinstruktioner</p>
         <div className={styles.exListHead}>
           <h2>Övningar i programmet</h2>
           <span>{data.exercises.length} st, i ordning</span>
