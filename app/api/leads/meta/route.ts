@@ -19,6 +19,12 @@ export async function POST(request: Request) {
   const phone = (body?.phone as string)?.trim();
   const email = (body?.email as string)?.trim();
   const formName = (body?.formName as string)?.trim();
+  // Svaret på en eventuell egen fråga i snabbformuläret (t.ex. "Vad vill du
+  // ha hjälp med?") — om den inte finns med faller vi tillbaka på att bara
+  // notera att leadet kom via ett snabbformulär.
+  const message = (body?.message as string)?.trim();
+  const situation =
+    message || (formName ? `Via Metas snabbformulär: ${formName}` : "Via Metas snabbformulär");
 
   if (!name || !phone) {
     return Response.json({ ok: false, error: "name och phone krävs" }, { status: 400 });
@@ -29,7 +35,7 @@ export async function POST(request: Request) {
     name,
     phone,
     email: email || null,
-    situation: formName ? `Via Metas snabbformulär: ${formName}` : "Via Metas snabbformulär",
+    situation,
     utm_source: "meta",
     utm_medium: "lead_ad",
     utm_campaign: formName || null,
@@ -40,11 +46,7 @@ export async function POST(request: Request) {
     return Response.json({ ok: false }, { status: 500 });
   }
 
-  await notifyNewLead({
-    name,
-    phone,
-    situation: formName ? `Snabbformulär: ${formName}` : "Snabbformulär (Meta)",
-  });
+  await notifyNewLead({ name, phone, situation });
 
   return Response.json({ ok: true });
 }
