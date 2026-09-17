@@ -29,12 +29,20 @@ export default async function CoachingLeadsPage({
   const admin = createAdminClient();
   const { status: statusFilter, q } = await searchParams;
 
-  const { data: allLeads } = await admin
+  const { data: allLeads, error: leadsError } = await admin
     .from("coaching_leads")
     .select(
       "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, notes, created_at, status_updated_at",
     )
     .order("created_at", { ascending: false });
+
+  if (leadsError) {
+    // T.ex. en migration som inte körts (kolumn saknas) — utan denna logg
+    // och felbanner ser detta bara ut som "inga leads" istället för det
+    // tekniska felet det faktiskt är. Samma tysta-fel-mönster som orsakade
+    // kundprogram-incidenten.
+    console.error("CoachingLeadsPage — kunde inte hämta leads:", leadsError);
+  }
 
   const query = q?.trim().toLowerCase();
   const searched = (allLeads ?? []).filter((l) => {
@@ -142,12 +150,29 @@ export default async function CoachingLeadsPage({
           ))}
         </div>
 
-        {leads.length === 0 && (
-          <p className={styles.empty}>
-            {query || statusFilter
-              ? "Inga leads matchade."
-              : "Inga intresseanmälningar än."}
+        {leadsError ? (
+          <p
+            style={{
+              background: "var(--warm-soft)",
+              color: "#5a4530",
+              borderRadius: 12,
+              padding: "12px 16px",
+              fontSize: "0.9rem",
+              marginBottom: 20,
+            }}
+          >
+            Kunde inte hämta leads just nu (tekniskt fel) — det här visar
+            <b> inte</b> att leads saknas, bara att listan inte gick att
+            läsa. Ladda om sidan, eller hör av dig om det upprepas.
           </p>
+        ) : (
+          leads.length === 0 && (
+            <p className={styles.empty}>
+              {query || statusFilter
+                ? "Inga leads matchade."
+                : "Inga intresseanmälningar än."}
+            </p>
+          )
         )}
 
         <div className={styles.list}>

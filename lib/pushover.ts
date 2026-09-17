@@ -41,12 +41,21 @@ export async function notifyNewLead(lead: {
   });
 }
 
-// Push-notis när ett "Inget svar"-lead är moget för nästa steg i
-// uppföljningskadensen (se lib/lead-followup.ts + api/cron/lead-followup).
-export async function notifyLeadFollowUp(lead: { name: string; phone: string; step: string }) {
+// Push-notis när ett eller flera "Inget svar"-leads är mogna för nästa steg
+// i uppföljningskadensen (se lib/lead-followup.ts + api/cron/lead-followup).
+// EN sammanfattande notis per körning, inte en per lead — annars blir det
+// spammigt om flera leads råkar vara mogna samma dag.
+export async function notifyLeadFollowUpBatch(
+  leads: { name: string; phone: string; step: string }[],
+) {
+  if (leads.length === 0) return;
+
   await sendPushover({
-    title: `Dags att följa upp: ${lead.step}`,
-    message: `${lead.name} · ${lead.phone}\nHar inte svarat — dags för nästa steg i uppföljningen.`,
+    title:
+      leads.length === 1
+        ? "1 lead redo för uppföljning"
+        : `${leads.length} leads redo för uppföljning`,
+    message: leads.map((l) => `${l.name} · ${l.phone} — ${l.step}`).join("\n"),
     url: "https://www.realignmetoden.se/coaching/leads?status=no_answer",
     url_title: "Öppna leads",
   });
