@@ -186,6 +186,12 @@ export default function ClinicProgramBuilder({
       .filter(Boolean);
 
     const matched: SelectedRow[] = [];
+    // id -> index i matched — så att samma övning omnämnd på flera rader
+    // (t.ex. samma övning återkommer på flera dagar i en inklistrad text,
+    // eller två olika formuleringar som råkar tolkas till samma övning)
+    // slås ihop till EN rad istället för att bli en osynlig dubblett som
+    // databasen sen avvisar vid sparande (unique-index per övning/program).
+    const matchedIndexById = new Map<string, number>();
     const unmatched: string[] = [];
 
     for (const line of lines) {
@@ -194,7 +200,17 @@ export default function ClinicProgramBuilder({
       const notePart = m ? m[2] : "";
       const ex = findMatch(namePart, exercises);
       if (ex) {
-        matched.push({ id: ex.id, title: ex.title, notes: notePart });
+        const existingIndex = matchedIndexById.get(ex.id);
+        if (existingIndex !== undefined) {
+          const existing = matched[existingIndex];
+          matched[existingIndex] = {
+            ...existing,
+            notes: [existing.notes, notePart].filter(Boolean).join(" / "),
+          };
+        } else {
+          matchedIndexById.set(ex.id, matched.length);
+          matched.push({ id: ex.id, title: ex.title, notes: notePart });
+        }
       } else {
         unmatched.push(line);
       }
@@ -407,6 +423,60 @@ export default function ClinicProgramBuilder({
         </div>
 
         <div className={styles.panel}>
+          <h2>Alla övningar</h2>
+
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Sök övning..."
+            className={styles.searchInput}
+          />
+
+          <div className={styles.filterRow}>
+            <button
+              type="button"
+              className={`${styles.filterChip} ${bodyFilter === "" ? styles.filterChipActive : ""}`}
+              onClick={() => setBodyFilter("")}
+            >
+              Alla
+            </button>
+            {bodyParts.map((bp) => (
+              <button
+                key={bp}
+                type="button"
+                className={`${styles.filterChip} ${bodyFilter === bp ? styles.filterChipActive : ""}`}
+                onClick={() => setBodyFilter(bp)}
+              >
+                {bp}
+              </button>
+            ))}
+          </div>
+
+          {available.length === 0 ? (
+            <p className={styles.hint}>Inga övningar matchade.</p>
+          ) : (
+            <ul className={styles.list}>
+              {available.map((ex) => (
+                <li key={ex.id} className={styles.row}>
+                  <div>
+                    <div className={styles.rowTitle}>{ex.title}</div>
+                    <div className={styles.rowMeta}>{ex.body_part}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className={styles.addBtn}
+                    onClick={() => add(ex)}
+                  >
+                    + Lägg till
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className={styles.panel}>
           <h2>Lägg till egen övning</h2>
           <p className={styles.hint}>
             Inte i övningsbiblioteket, eller en variant anpassad för just den
@@ -467,60 +537,6 @@ export default function ClinicProgramBuilder({
           >
             {submitLabel}
           </SubmitButton>
-        </div>
-
-        <div className={styles.panel}>
-          <h2>Alla övningar</h2>
-
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Sök övning..."
-            className={styles.searchInput}
-          />
-
-          <div className={styles.filterRow}>
-            <button
-              type="button"
-              className={`${styles.filterChip} ${bodyFilter === "" ? styles.filterChipActive : ""}`}
-              onClick={() => setBodyFilter("")}
-            >
-              Alla
-            </button>
-            {bodyParts.map((bp) => (
-              <button
-                key={bp}
-                type="button"
-                className={`${styles.filterChip} ${bodyFilter === bp ? styles.filterChipActive : ""}`}
-                onClick={() => setBodyFilter(bp)}
-              >
-                {bp}
-              </button>
-            ))}
-          </div>
-
-          {available.length === 0 ? (
-            <p className={styles.hint}>Inga övningar matchade.</p>
-          ) : (
-            <ul className={styles.list}>
-              {available.map((ex) => (
-                <li key={ex.id} className={styles.row}>
-                  <div>
-                    <div className={styles.rowTitle}>{ex.title}</div>
-                    <div className={styles.rowMeta}>{ex.body_part}</div>
-                  </div>
-                  <button
-                    type="button"
-                    className={styles.addBtn}
-                    onClick={() => add(ex)}
-                  >
-                    + Lägg till
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </form>
     </div>

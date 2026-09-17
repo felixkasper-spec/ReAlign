@@ -60,7 +60,7 @@ function buildProgramExerciseRows(
   const customTitles = formData.getAll("customTitles") as string[];
   const customVideoUrls = formData.getAll("customVideoUrls") as string[];
 
-  return exerciseIds
+  const rows = exerciseIds
     .map((exerciseId, i) => {
       const customTitle = customTitles[i]?.trim();
       const customVideoUrl = customVideoUrls[i]?.trim();
@@ -85,6 +85,32 @@ function buildProgramExerciseRows(
       };
     })
     .filter((row): row is NonNullable<typeof row> => row !== null);
+
+  // Sista skyddsnät mot clinic_program_exercises_unique_exercise (unique
+  // per program+övning): slår ihop ev. rader med samma exercise_id istället
+  // för att låta inserten misslyckas — builderns UI ska redan förhindra
+  // detta (se parseNotes/add i ClinicProgramBuilder.tsx), men det här gör
+  // sparandet robust även om en dubblett ändå slinker igenom.
+  const seenExerciseIds = new Map<string, number>();
+  const deduped: typeof rows = [];
+  for (const row of rows) {
+    if (row.exercise_id === null) {
+      deduped.push(row);
+      continue;
+    }
+    const existingIndex = seenExerciseIds.get(row.exercise_id);
+    if (existingIndex === undefined) {
+      seenExerciseIds.set(row.exercise_id, deduped.length);
+      deduped.push(row);
+    } else {
+      const existing = deduped[existingIndex];
+      deduped[existingIndex] = {
+        ...existing,
+        notes: [existing.notes, row.notes].filter(Boolean).join(" / ") || null,
+      };
+    }
+  }
+  return deduped;
 }
 
 export async function createClinicProgram(formData: FormData) {
@@ -117,9 +143,11 @@ export async function createClinicProgram(formData: FormData) {
       p_rows: rows,
     });
     if (rowsError) {
-      // Programmet skapades men övningarna kunde inte sparas (t.ex. samma
-      // övning tillagd två gånger) — städa bort det tomma programmet
-      // istället för att lämna en delningslänk som alltid ger 404.
+      // Programmet skapades men övningarna kunde inte sparas — städa bort
+      // det tomma programmet istället för att lämna en delningslänk som
+      // alltid ger 404. Loggar hela felet (inte bara antagandet "dubblett")
+      // så en oväntad orsak går att felsöka via server-loggen.
+      console.error("replace_clinic_program_exercises failed (create)", rowsError);
       await admin.from("clinic_programs").delete().eq("id", program.id);
       redirect("/coaching/kundprogram/ny?error=1");
     }
@@ -162,6 +190,7 @@ export async function updateClinicProgram(
     p_rows: rows,
   });
   if (rowsError) {
+    console.error("replace_clinic_program_exercises failed (update)", rowsError);
     redirect(`/coaching/kundprogram/${clinicProgramId}/redigera?error=1`);
   }
 
