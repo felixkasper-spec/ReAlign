@@ -8,7 +8,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 export function getFollowUpReminder(statusUpdatedAt: string): string | null {
   const daysSince = (Date.now() - new Date(statusUpdatedAt).getTime()) / DAY_MS;
 
-  if (daysSince >= 3) return "⏰ Dags för sista uppföljningen (SMS 3)";
+  if (daysSince >= 3) return "⏰ Dags för sista uppföljningen (ring + SMS 3)";
   if (daysSince >= 1) return "⏰ Dags för uppföljning 2 (ring + SMS 2)";
   return null;
 }

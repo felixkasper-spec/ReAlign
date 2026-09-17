@@ -110,6 +110,13 @@ export default function LeadControls({
         disabled={deleting}
       />
       <div className={styles.leadControlsRow}>
+        <a
+          href={`tel:${phone}`}
+          className={styles.markReadBtn}
+          style={{ textDecoration: "none", display: "inline-block" }}
+        >
+          📞 Ring
+        </a>
         {SMS_TEMPLATES.map((template) => (
           <a
             key={template.label}
