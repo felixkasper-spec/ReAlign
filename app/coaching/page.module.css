@@ -189,6 +189,92 @@
   color: #2c4560;
 }
 
+.leadRow {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.leadSummary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 18px;
+}
+
+.leadSummary::-webkit-details-marker {
+  display: none;
+}
+
+.leadSummary::after {
+  content: "▾";
+  margin-left: auto;
+  color: var(--sage);
+  flex-shrink: 0;
+}
+
+.leadRow[open] .leadSummary::after {
+  content: "▴";
+}
+
+.leadSummaryName {
+  font-weight: 600;
+}
+
+.leadSummaryMeta {
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.leadStatusBadge {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+}
+
+.leadStatusBadge[data-status="no_answer"] {
+  background: #fbf0d9;
+  border-color: #dba847;
+  color: #7a5a12;
+}
+
+.leadStatusBadge[data-status="not_interested"] {
+  background: #f8e2dd;
+  border-color: #c17b6b;
+  color: #8a3f2f;
+}
+
+.leadStatusBadge[data-status="purchased"] {
+  background: #e2ecdf;
+  border-color: var(--sage);
+  color: #2f4a32;
+}
+
+.leadStatusBadge[data-status="follow_up"] {
+  background: #dfe6ee;
+  border-color: #6f8caa;
+  color: #2c4560;
+}
+
+.leadDetails {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 18px 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
 .leadFollowUpReminder {
   margin-top: 6px;
   display: inline-block;

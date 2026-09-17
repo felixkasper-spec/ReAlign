@@ -62,6 +62,16 @@ export default function LeadControls({
   const [savedNotes, setSavedNotes] = useState(initialNotes ?? "");
   const [pending, startTransition] = useTransition();
   const [deleting, setDeleting] = useState(false);
+  const [smsPick, setSmsPick] = useState("");
+
+  function handleSmsPick(e: React.ChangeEvent<HTMLSelectElement>) {
+    const index = Number(e.target.value);
+    const template = SMS_TEMPLATES[index];
+    if (template) {
+      window.location.href = buildSmsHref(template, name, phone);
+    }
+    setSmsPick("");
+  }
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
@@ -117,17 +127,19 @@ export default function LeadControls({
         >
           📞 Ring
         </a>
-        {SMS_TEMPLATES.map((template) => (
-          <a
-            key={template.label}
-            href={buildSmsHref(template, name, phone)}
-            className={styles.markReadBtn}
-            style={{ textDecoration: "none", display: "inline-block" }}
-            title={template.text(name.trim().split(/\s+/)[0] || name)}
-          >
-            📱 {template.label}
-          </a>
-        ))}
+        <select
+          value={smsPick}
+          onChange={handleSmsPick}
+          className={styles.markReadBtn}
+          disabled={deleting}
+        >
+          <option value="">📱 Skicka SMS...</option>
+          {SMS_TEMPLATES.map((template, i) => (
+            <option key={template.label} value={i}>
+              {template.label}
+            </option>
+          ))}
+        </select>
         {notes !== savedNotes && (
           <button
             type="button"

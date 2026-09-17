@@ -20,6 +20,13 @@ const STATUS_FILTERS = [
   { value: "follow_up", label: "Följ upp" },
 ] as const;
 
+const STATUS_LABELS: Record<string, string> = {
+  no_answer: "Inget svar",
+  not_interested: "Ej intresserad",
+  purchased: "Köpt",
+  follow_up: "Följ upp",
+};
+
 export default async function CoachingLeadsPage({
   searchParams,
 }: {
@@ -182,41 +189,50 @@ export default async function CoachingLeadsPage({
                 ? getFollowUpReminder(l.status_updated_at as string)
                 : null;
             return (
-              <div key={l.id} className={styles.contactRow}>
-                <div className={styles.rowInfo}>
-                  <div className={styles.name}>
-                    {l.name}{" "}
-                    <a href={`tel:${l.phone}`} className={styles.contactEmail}>
-                      · {l.phone}
-                    </a>
-                    {l.email && (
-                      <span className={styles.contactEmail}> · {l.email}</span>
+              <details key={l.id} className={styles.leadRow}>
+                <summary className={styles.leadSummary}>
+                  <span className={styles.leadSummaryName}>{l.name}</span>
+                  <span className={styles.leadSummaryMeta}>{l.phone}</span>
+                  {l.email && (
+                    <span className={styles.leadSummaryMeta}>{l.email}</span>
+                  )}
+                  <span
+                    className={styles.leadStatusBadge}
+                    data-status={l.status || undefined}
+                  >
+                    {l.status ? STATUS_LABELS[l.status] : "Ingen status"}
+                  </span>
+                  {reminder && (
+                    <span className={styles.leadFollowUpReminder}>⏰</span>
+                  )}
+                </summary>
+                <div className={styles.leadDetails}>
+                  <div className={styles.rowInfo}>
+                    {l.situation && (
+                      <div className={styles.contactMessage}>{l.situation}</div>
+                    )}
+                    {(l.utm_source || l.utm_campaign) && (
+                      <div className={styles.leadSource}>
+                        Via {l.utm_source || "okänd källa"}
+                        {l.utm_campaign && ` · ${l.utm_campaign}`}
+                      </div>
+                    )}
+                    <div className={styles.contactDate}>
+                      {formatRelativeTime(l.created_at as string)}
+                    </div>
+                    {reminder && (
+                      <div className={styles.leadFollowUpReminder}>{reminder}</div>
                     )}
                   </div>
-                  {l.situation && (
-                    <div className={styles.contactMessage}>{l.situation}</div>
-                  )}
-                  {(l.utm_source || l.utm_campaign) && (
-                    <div className={styles.leadSource}>
-                      Via {l.utm_source || "okänd källa"}
-                      {l.utm_campaign && ` · ${l.utm_campaign}`}
-                    </div>
-                  )}
-                  <div className={styles.contactDate}>
-                    {formatRelativeTime(l.created_at as string)}
-                  </div>
-                  {reminder && (
-                    <div className={styles.leadFollowUpReminder}>{reminder}</div>
-                  )}
+                  <LeadControls
+                    leadId={l.id}
+                    name={l.name}
+                    phone={l.phone}
+                    initialStatus={l.status}
+                    initialNotes={l.notes}
+                  />
                 </div>
-                <LeadControls
-                  leadId={l.id}
-                  name={l.name}
-                  phone={l.phone}
-                  initialStatus={l.status}
-                  initialNotes={l.notes}
-                />
-              </div>
+              </details>
             );
           })}
         </div>
