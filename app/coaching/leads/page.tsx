@@ -9,18 +9,49 @@ import styles from "../page.module.css";
 
 export const metadata: Metadata = { title: "Leads — ReAlign Metoden" };
 
-export default async function CoachingLeadsPage() {
+const STATUS_FILTERS = [
+  { value: "", label: "Alla" },
+  { value: "none", label: "Ingen status" },
+  { value: "no_answer", label: "Inget svar / ring igen" },
+  { value: "not_interested", label: "Ej intresserad" },
+  { value: "purchased", label: "Köpt" },
+  { value: "follow_up", label: "Följ upp" },
+] as const;
+
+export default async function CoachingLeadsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
   await requireCoach();
   const admin = createAdminClient();
+  const { status: statusFilter } = await searchParams;
 
-  const { data: leads } = await admin
+  const { data: allLeads } = await admin
     .from("coaching_leads")
     .select(
       "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, notes, created_at",
     )
     .order("created_at", { ascending: false });
 
-  const noStatus = (leads ?? []).filter((l) => !l.status).length;
+  const noStatus = (allLeads ?? []).filter((l) => !l.status).length;
+
+  const counts = Object.fromEntries(
+    STATUS_FILTERS.map((f) => [
+      f.value,
+      f.value === ""
+        ? (allLeads ?? []).length
+        : f.value === "none"
+          ? noStatus
+          : (allLeads ?? []).filter((l) => l.status === f.value).length,
+    ]),
+  );
+
+  const leads = (allLeads ?? []).filter((l) => {
+    if (!statusFilter) return true;
+    if (statusFilter === "none") return !l.status;
+    return l.status === statusFilter;
+  });
 
   return (
     <>
@@ -48,8 +79,26 @@ export default async function CoachingLeadsPage() {
           )}
         </p>
 
-        {(!leads || leads.length === 0) && (
-          <p className={styles.empty}>Inga intresseanmälningar än.</p>
+        <div className={styles.leadFilterBar}>
+          {STATUS_FILTERS.map((f) => (
+            <Link
+              key={f.value}
+              href={f.value ? `/coaching/leads?status=${f.value}` : "/coaching/leads"}
+              data-status={f.value || undefined}
+              data-active={(statusFilter ?? "") === f.value || undefined}
+              className={styles.leadFilterPill}
+            >
+              {f.label} <span>{counts[f.value]}</span>
+            </Link>
+          ))}
+        </div>
+
+        {leads.length === 0 && (
+          <p className={styles.empty}>
+            {statusFilter
+              ? "Inga leads med den här statusen."
+              : "Inga intresseanmälningar än."}
+          </p>
         )}
 
         <div className={styles.list}>
@@ -83,6 +132,8 @@ export default async function CoachingLeadsPage() {
               </div>
               <LeadControls
                 leadId={l.id}
+                name={l.name}
+                phone={l.phone}
                 initialStatus={l.status}
                 initialNotes={l.notes}
               />

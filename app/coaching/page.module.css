@@ -189,6 +189,63 @@
   color: #2c4560;
 }
 
+.leadFilterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.leadFilterPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text-soft);
+  text-decoration: none;
+}
+
+.leadFilterPill span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.leadFilterPill[data-active] {
+  border-color: var(--text);
+  color: var(--text);
+  background: var(--surface);
+}
+
+.leadFilterPill[data-status="no_answer"][data-active] {
+  background: #fbf0d9;
+  border-color: #dba847;
+  color: #7a5a12;
+}
+
+.leadFilterPill[data-status="not_interested"][data-active] {
+  background: #f8e2dd;
+  border-color: #c17b6b;
+  color: #8a3f2f;
+}
+
+.leadFilterPill[data-status="purchased"][data-active] {
+  background: #e2ecdf;
+  border-color: var(--sage);
+  color: #2f4a32;
+}
+
+.leadFilterPill[data-status="follow_up"][data-active] {
+  background: #dfe6ee;
+  border-color: #6f8caa;
+  color: #2c4560;
+}
+
 .leadNotesInput {
   font: inherit;
   font-size: 0.82rem;

@@ -12,12 +12,27 @@ const STATUS_OPTIONS = [
   { value: "follow_up", label: "Följ upp" },
 ];
 
+// sms:-länkar öppnar telefonens egna SMS-app med numret och texten redan
+// ifyllda — coachen trycker bara skicka (eller redigerar först). "?" funkar
+// på både iOS och Android numera (äldre iOS ville ha "&", inte längre
+// relevant). Man ropas första förnamnet ut ur hela namnet för en personligare
+// hälsning.
+function buildFollowUpSmsHref(name: string, phone: string) {
+  const firstName = name.trim().split(/\s+/)[0] || name;
+  const message = `Hej ${firstName}! Felix här på ReAlign Metoden — försökte ringa dig angående din intresseanmälan för Premium Coaching. Hör gärna av dig när det passar, annars ringer jag igen! 🙂`;
+  return `sms:${phone}?body=${encodeURIComponent(message)}`;
+}
+
 export default function LeadControls({
   leadId,
+  name,
+  phone,
   initialStatus,
   initialNotes,
 }: {
   leadId: string;
+  name: string;
+  phone: string;
   initialStatus: string | null;
   initialNotes: string | null;
 }) {
@@ -74,6 +89,13 @@ export default function LeadControls({
         disabled={deleting}
       />
       <div className={styles.leadControlsRow}>
+        <a
+          href={buildFollowUpSmsHref(name, phone)}
+          className={styles.markReadBtn}
+          style={{ textDecoration: "none", display: "inline-block" }}
+        >
+          📱 Skicka SMS
+        </a>
         {notes !== savedNotes && (
           <button
             type="button"
