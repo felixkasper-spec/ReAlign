@@ -15,12 +15,33 @@ const STATUS_OPTIONS = [
 // sms:-länkar öppnar telefonens egna SMS-app med numret och texten redan
 // ifyllda — coachen trycker bara skicka (eller redigerar först). "?" funkar
 // på både iOS och Android numera (äldre iOS ville ha "&", inte längre
-// relevant). Man ropas första förnamnet ut ur hela namnet för en personligare
-// hälsning.
-function buildFollowUpSmsHref(name: string, phone: string) {
+// relevant).
+//
+// Tre steg i uppföljningskadensen för ett lead som inte svarar i telefon:
+// SMS 1 samma dag direkt efter missat samtal, SMS 2 nästa dag efter ett
+// andra missat samtal, SMS 3 som sista försök 2–3 dagar senare. Se
+// coaching/leads/page.tsx för påminnelsen om NÄR nästa steg är aktuellt.
+const SMS_TEMPLATES = [
+  {
+    label: "SMS 1 · missat samtal",
+    text: (firstName: string) =>
+      `Hej ${firstName}! Felix här på ReAlign Metoden — försökte ringa dig angående din intresseanmälan för Premium Coaching. Hör gärna av dig när det passar, annars ringer jag igen! 🙂`,
+  },
+  {
+    label: "SMS 2 · andra försöket",
+    text: (firstName: string) =>
+      `Hej ${firstName}, provade ringa igen men missade dig. Funkar det bättre om du själv skriver en tid som passar, så ringer jag då istället? 🙂 / Felix, ReAlign Metoden`,
+  },
+  {
+    label: "SMS 3 · sista försöket",
+    text: (firstName: string) =>
+      `Hej igen ${firstName}! Hör av dig när det passar, annars antar jag att timing inte är rätt just nu — helt okej, du är alltid välkommen att höra av dig senare. / Felix`,
+  },
+] as const;
+
+function buildSmsHref(template: (typeof SMS_TEMPLATES)[number], name: string, phone: string) {
   const firstName = name.trim().split(/\s+/)[0] || name;
-  const message = `Hej ${firstName}! Felix här på ReAlign Metoden — försökte ringa dig angående din intresseanmälan för Premium Coaching. Hör gärna av dig när det passar, annars ringer jag igen! 🙂`;
-  return `sms:${phone}?body=${encodeURIComponent(message)}`;
+  return `sms:${phone}?body=${encodeURIComponent(template.text(firstName))}`;
 }
 
 export default function LeadControls({
@@ -89,13 +110,17 @@ export default function LeadControls({
         disabled={deleting}
       />
       <div className={styles.leadControlsRow}>
-        <a
-          href={buildFollowUpSmsHref(name, phone)}
-          className={styles.markReadBtn}
-          style={{ textDecoration: "none", display: "inline-block" }}
-        >
-          📱 Skicka SMS
-        </a>
+        {SMS_TEMPLATES.map((template) => (
+          <a
+            key={template.label}
+            href={buildSmsHref(template, name, phone)}
+            className={styles.markReadBtn}
+            style={{ textDecoration: "none", display: "inline-block" }}
+            title={template.text(name.trim().split(/\s+/)[0] || name)}
+          >
+            📱 {template.label}
+          </a>
+        ))}
         {notes !== savedNotes && (
           <button
             type="button"

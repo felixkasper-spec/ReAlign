@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatRelativeTime } from "@/lib/relative-time";
+import { getFollowUpReminder } from "@/lib/lead-followup";
 import LeadControls from "./LeadControls";
 import styles from "../page.module.css";
 
@@ -31,7 +32,7 @@ export default async function CoachingLeadsPage({
   const { data: allLeads } = await admin
     .from("coaching_leads")
     .select(
-      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, notes, created_at",
+      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, notes, created_at, status_updated_at",
     )
     .order("created_at", { ascending: false });
 
@@ -150,40 +151,49 @@ export default async function CoachingLeadsPage({
         )}
 
         <div className={styles.list}>
-          {(leads ?? []).map((l) => (
-            <div key={l.id} className={styles.contactRow}>
-              <div className={styles.rowInfo}>
-                <div className={styles.name}>
-                  {l.name}{" "}
-                  <a href={`tel:${l.phone}`} className={styles.contactEmail}>
-                    · {l.phone}
-                  </a>
-                  {l.email && (
-                    <span className={styles.contactEmail}> · {l.email}</span>
+          {(leads ?? []).map((l) => {
+            const reminder =
+              l.status === "no_answer"
+                ? getFollowUpReminder(l.status_updated_at as string)
+                : null;
+            return (
+              <div key={l.id} className={styles.contactRow}>
+                <div className={styles.rowInfo}>
+                  <div className={styles.name}>
+                    {l.name}{" "}
+                    <a href={`tel:${l.phone}`} className={styles.contactEmail}>
+                      · {l.phone}
+                    </a>
+                    {l.email && (
+                      <span className={styles.contactEmail}> · {l.email}</span>
+                    )}
+                  </div>
+                  {l.situation && (
+                    <div className={styles.contactMessage}>{l.situation}</div>
+                  )}
+                  {(l.utm_source || l.utm_campaign) && (
+                    <div className={styles.leadSource}>
+                      Via {l.utm_source || "okänd källa"}
+                      {l.utm_campaign && ` · ${l.utm_campaign}`}
+                    </div>
+                  )}
+                  <div className={styles.contactDate}>
+                    {formatRelativeTime(l.created_at as string)}
+                  </div>
+                  {reminder && (
+                    <div className={styles.leadFollowUpReminder}>{reminder}</div>
                   )}
                 </div>
-                {l.situation && (
-                  <div className={styles.contactMessage}>{l.situation}</div>
-                )}
-                {(l.utm_source || l.utm_campaign) && (
-                  <div className={styles.leadSource}>
-                    Via {l.utm_source || "okänd källa"}
-                    {l.utm_campaign && ` · ${l.utm_campaign}`}
-                  </div>
-                )}
-                <div className={styles.contactDate}>
-                  {formatRelativeTime(l.created_at as string)}
-                </div>
+                <LeadControls
+                  leadId={l.id}
+                  name={l.name}
+                  phone={l.phone}
+                  initialStatus={l.status}
+                  initialNotes={l.notes}
+                />
               </div>
-              <LeadControls
-                leadId={l.id}
-                name={l.name}
-                phone={l.phone}
-                initialStatus={l.status}
-                initialNotes={l.notes}
-              />
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <Footer />

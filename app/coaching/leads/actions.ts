@@ -20,7 +20,10 @@ export async function updateLeadStatus(leadId: string, status: string | null) {
   }
 
   const admin = createAdminClient();
-  await admin.from("coaching_leads").update({ status }).eq("id", leadId);
+  await admin
+    .from("coaching_leads")
+    .update({ status, status_updated_at: new Date().toISOString() })
+    .eq("id", leadId);
 
   revalidatePath("/coaching/leads");
 }
