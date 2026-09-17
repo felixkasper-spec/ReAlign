@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { formatRelativeTime } from "@/lib/relative-time";
 import LeadControls from "./LeadControls";
 import styles from "../page.module.css";
 
@@ -21,11 +22,11 @@ const STATUS_FILTERS = [
 export default async function CoachingLeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; q?: string }>;
 }) {
   await requireCoach();
   const admin = createAdminClient();
-  const { status: statusFilter } = await searchParams;
+  const { status: statusFilter, q } = await searchParams;
 
   const { data: allLeads } = await admin
     .from("coaching_leads")
@@ -34,24 +35,42 @@ export default async function CoachingLeadsPage({
     )
     .order("created_at", { ascending: false });
 
-  const noStatus = (allLeads ?? []).filter((l) => !l.status).length;
+  const query = q?.trim().toLowerCase();
+  const searched = (allLeads ?? []).filter((l) => {
+    if (!query) return true;
+    return (
+      l.name?.toLowerCase().includes(query) ||
+      l.phone?.toLowerCase().includes(query) ||
+      l.email?.toLowerCase().includes(query)
+    );
+  });
+
+  const noStatus = searched.filter((l) => !l.status).length;
 
   const counts = Object.fromEntries(
     STATUS_FILTERS.map((f) => [
       f.value,
       f.value === ""
-        ? (allLeads ?? []).length
+        ? searched.length
         : f.value === "none"
           ? noStatus
-          : (allLeads ?? []).filter((l) => l.status === f.value).length,
+          : searched.filter((l) => l.status === f.value).length,
     ]),
   );
 
-  const leads = (allLeads ?? []).filter((l) => {
+  const leads = searched.filter((l) => {
     if (!statusFilter) return true;
     if (statusFilter === "none") return !l.status;
     return l.status === statusFilter;
   });
+
+  function pillHref(statusValue: string) {
+    const params = new URLSearchParams();
+    if (statusValue) params.set("status", statusValue);
+    if (q?.trim()) params.set("q", q.trim());
+    const qs = params.toString();
+    return qs ? `/coaching/leads?${qs}` : "/coaching/leads";
+  }
 
   return (
     <>
@@ -79,11 +98,40 @@ export default async function CoachingLeadsPage({
           )}
         </p>
 
+        <form
+          action="/coaching/leads"
+          method="get"
+          style={{ display: "flex", gap: 8, marginBottom: 16, maxWidth: 340 }}
+        >
+          {statusFilter && <input type="hidden" name="status" value={statusFilter} />}
+          <input
+            type="search"
+            name="q"
+            defaultValue={q ?? ""}
+            placeholder="Sök namn, telefon eller mejl..."
+            style={{
+              flex: 1,
+              border: "1px solid var(--line)",
+              borderRadius: 100,
+              padding: "8px 16px",
+              fontSize: "0.88rem",
+              fontFamily: "inherit",
+            }}
+          />
+          <button
+            type="submit"
+            className="btn btn-ghost"
+            style={{ border: "1px solid var(--line)" }}
+          >
+            Sök
+          </button>
+        </form>
+
         <div className={styles.leadFilterBar}>
           {STATUS_FILTERS.map((f) => (
             <Link
               key={f.value}
-              href={f.value ? `/coaching/leads?status=${f.value}` : "/coaching/leads"}
+              href={pillHref(f.value)}
               data-status={f.value || undefined}
               data-active={(statusFilter ?? "") === f.value || undefined}
               className={styles.leadFilterPill}
@@ -95,8 +143,8 @@ export default async function CoachingLeadsPage({
 
         {leads.length === 0 && (
           <p className={styles.empty}>
-            {statusFilter
-              ? "Inga leads med den här statusen."
+            {query || statusFilter
+              ? "Inga leads matchade."
               : "Inga intresseanmälningar än."}
           </p>
         )}
@@ -124,10 +172,7 @@ export default async function CoachingLeadsPage({
                   </div>
                 )}
                 <div className={styles.contactDate}>
-                  {new Date(l.created_at as string).toLocaleString("sv-SE", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })}
+                  {formatRelativeTime(l.created_at as string)}
                 </div>
               </div>
               <LeadControls
