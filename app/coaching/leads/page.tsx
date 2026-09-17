@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { formatRelativeTime } from "@/lib/relative-time";
 import { getFollowUpReminder } from "@/lib/lead-followup";
 import LeadControls from "./LeadControls";
+import AutoRefresh from "./AutoRefresh";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = { title: "Leads — ReAlign Metoden" };
@@ -91,6 +92,7 @@ export default async function CoachingLeadsPage({
   return (
     <>
       <Header />
+      <AutoRefresh />
       <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching" className={styles.back}>
           ← Coach-inkorg
