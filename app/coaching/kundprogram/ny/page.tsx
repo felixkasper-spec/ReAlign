@@ -13,11 +13,11 @@ export const metadata: Metadata = { title: "Nytt kundprogram — ReAlign Metoden
 export default async function NewClinicProgramPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; detail?: string }>;
 }) {
   await requireClinicStaff();
   const admin = createAdminClient();
-  const { error } = await searchParams;
+  const { error, detail } = await searchParams;
 
   const { data: exercises } = await admin
     .from("exercises")
@@ -45,8 +45,15 @@ export default async function NewClinicProgramPage({
               marginBottom: 20,
             }}
           >
-            Kunde inte spara övningarna — kontrollera att ingen övning ligger
-            med två gånger i listan, och försök igen.
+            Kunde inte spara övningarna, försök igen.
+            {detail && (
+              <>
+                <br />
+                <span style={{ fontFamily: "monospace", fontSize: "0.82rem" }}>
+                  Feldetalj: {detail}
+                </span>
+              </>
+            )}
           </p>
         )}
 

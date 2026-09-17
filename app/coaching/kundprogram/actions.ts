@@ -60,7 +60,11 @@ function buildProgramExerciseRows(
   const customTitles = formData.getAll("customTitles") as string[];
   const customVideoUrls = formData.getAll("customVideoUrls") as string[];
 
-  const rows = exerciseIds
+  // Samma övning får förekomma flera gånger i samma program (t.ex. både som
+  // uppvärmning och nedvarvning) — ingen dedupp här, se migration
+  // 0059_allow_repeated_clinic_program_exercises.sql som tog bort
+  // databasens unique-spärr per övning/program.
+  return exerciseIds
     .map((exerciseId, i) => {
       const customTitle = customTitles[i]?.trim();
       const customVideoUrl = customVideoUrls[i]?.trim();
@@ -85,32 +89,6 @@ function buildProgramExerciseRows(
       };
     })
     .filter((row): row is NonNullable<typeof row> => row !== null);
-
-  // Sista skyddsnät mot clinic_program_exercises_unique_exercise (unique
-  // per program+övning): slår ihop ev. rader med samma exercise_id istället
-  // för att låta inserten misslyckas — builderns UI ska redan förhindra
-  // detta (se parseNotes/add i ClinicProgramBuilder.tsx), men det här gör
-  // sparandet robust även om en dubblett ändå slinker igenom.
-  const seenExerciseIds = new Map<string, number>();
-  const deduped: typeof rows = [];
-  for (const row of rows) {
-    if (row.exercise_id === null) {
-      deduped.push(row);
-      continue;
-    }
-    const existingIndex = seenExerciseIds.get(row.exercise_id);
-    if (existingIndex === undefined) {
-      seenExerciseIds.set(row.exercise_id, deduped.length);
-      deduped.push(row);
-    } else {
-      const existing = deduped[existingIndex];
-      deduped[existingIndex] = {
-        ...existing,
-        notes: [existing.notes, row.notes].filter(Boolean).join(" / ") || null,
-      };
-    }
-  }
-  return deduped;
 }
 
 export async function createClinicProgram(formData: FormData) {
@@ -145,11 +123,14 @@ export async function createClinicProgram(formData: FormData) {
     if (rowsError) {
       // Programmet skapades men övningarna kunde inte sparas — städa bort
       // det tomma programmet istället för att lämna en delningslänk som
-      // alltid ger 404. Loggar hela felet (inte bara antagandet "dubblett")
-      // så en oväntad orsak går att felsöka via server-loggen.
+      // alltid ger 404. Skickar med det faktiska DB-felet i URL:en (inte
+      // bara antagandet "dubblett") så den syns direkt i UI:t — det gick
+      // inte längre att lita på att orsaken alltid var en dubblett.
       console.error("replace_clinic_program_exercises failed (create)", rowsError);
       await admin.from("clinic_programs").delete().eq("id", program.id);
-      redirect("/coaching/kundprogram/ny?error=1");
+      redirect(
+        `/coaching/kundprogram/ny?error=1&detail=${encodeURIComponent(rowsError.message)}`,
+      );
     }
   }
 
@@ -181,17 +162,19 @@ export async function updateClinicProgram(
 
   const rows = buildProgramExerciseRows(clinicProgramId, formData);
   // Byte av övningslista görs i en enda transaktion (delete+insert i
-  // replace_clinic_program_exercises) — om inserten misslyckas (t.ex. samma
-  // övning tillagd två gånger) rullas raderingen tillbaka automatiskt, så
-  // kundens redan skickade länk fortsätter peka på det gamla, fungerande
-  // innehållet istället för att tystas ner till ett tomt program.
+  // replace_clinic_program_exercises) — om inserten misslyckas av någon
+  // anledning rullas raderingen tillbaka automatiskt, så kundens redan
+  // skickade länk fortsätter peka på det gamla, fungerande innehållet
+  // istället för att tystas ner till ett tomt program.
   const { error: rowsError } = await admin.rpc("replace_clinic_program_exercises", {
     p_clinic_program_id: clinicProgramId,
     p_rows: rows,
   });
   if (rowsError) {
     console.error("replace_clinic_program_exercises failed (update)", rowsError);
-    redirect(`/coaching/kundprogram/${clinicProgramId}/redigera?error=1`);
+    redirect(
+      `/coaching/kundprogram/${clinicProgramId}/redigera?error=1&detail=${encodeURIComponent(rowsError.message)}`,
+    );
   }
 
   revalidatePath("/coaching/kundprogram");

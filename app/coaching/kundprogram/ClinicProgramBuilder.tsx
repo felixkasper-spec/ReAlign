@@ -9,6 +9,11 @@ import styles from "../../min-sida/bygg-program/page.module.css";
 
 type Exercise = { id: string; slug: string; title: string; body_part: string };
 export type SelectedRow = {
+  // Unikt per RAD i programmet — skiljer sig från `id` när samma övning
+  // förekommer flera gånger (t.ex. uppvärmning + nedvarvning), så att
+  // ta bort/flytta/rendera en specifik rad inte råkar träffa alla rader
+  // som råkar peka på samma övning.
+  rowId: string;
   id: string;
   title: string;
   notes: string;
@@ -152,11 +157,6 @@ export default function ClinicProgramBuilder({
   const [customError, setCustomError] = useState<string | null>(null);
   const customFileInputRef = useRef<HTMLInputElement>(null);
 
-  const selectedSet = useMemo(
-    () => new Set(selected.map((s) => s.id)),
-    [selected],
-  );
-
   const bodyParts = useMemo(() => {
     const seen = new Set<string>();
     const list: string[] = [];
@@ -170,7 +170,6 @@ export default function ClinicProgramBuilder({
   }, [exercises]);
 
   const available = exercises
-    .filter((e) => !selectedSet.has(e.id))
     .filter((e) => !bodyFilter || e.body_part === bodyFilter)
     .filter(
       (e) =>
@@ -186,12 +185,6 @@ export default function ClinicProgramBuilder({
       .filter(Boolean);
 
     const matched: SelectedRow[] = [];
-    // id -> index i matched — så att samma övning omnämnd på flera rader
-    // (t.ex. samma övning återkommer på flera dagar i en inklistrad text,
-    // eller två olika formuleringar som råkar tolkas till samma övning)
-    // slås ihop till EN rad istället för att bli en osynlig dubblett som
-    // databasen sen avvisar vid sparande (unique-index per övning/program).
-    const matchedIndexById = new Map<string, number>();
     const unmatched: string[] = [];
 
     for (const line of lines) {
@@ -200,17 +193,15 @@ export default function ClinicProgramBuilder({
       const notePart = m ? m[2] : "";
       const ex = findMatch(namePart, exercises);
       if (ex) {
-        const existingIndex = matchedIndexById.get(ex.id);
-        if (existingIndex !== undefined) {
-          const existing = matched[existingIndex];
-          matched[existingIndex] = {
-            ...existing,
-            notes: [existing.notes, notePart].filter(Boolean).join(" / "),
-          };
-        } else {
-          matchedIndexById.set(ex.id, matched.length);
-          matched.push({ id: ex.id, title: ex.title, notes: notePart });
-        }
+        // Samma övning får gärna förekomma flera gånger (t.ex. omnämnd på
+        // flera dagar i den inklistrade texten) — varje rad blir en egen
+        // rad i programmet, inte en sammanslagning.
+        matched.push({
+          rowId: crypto.randomUUID(),
+          id: ex.id,
+          title: ex.title,
+          notes: notePart,
+        });
       } else {
         unmatched.push(line);
       }
@@ -222,9 +213,12 @@ export default function ClinicProgramBuilder({
   }
 
   function add(ex: Exercise) {
-    setSelected((prev) =>
-      prev.some((s) => s.id === ex.id) ? prev : [...prev, { id: ex.id, title: ex.title, notes: "" }],
-    );
+    // Samma övning kan läggas till flera gånger med flit (t.ex. som både
+    // uppvärmning och nedvarvning) — ingen dubblett-spärr här.
+    setSelected((prev) => [
+      ...prev,
+      { rowId: crypto.randomUUID(), id: ex.id, title: ex.title, notes: "" },
+    ]);
   }
 
   async function addCustom() {
@@ -248,6 +242,7 @@ export default function ClinicProgramBuilder({
       setSelected((prev) => [
         ...prev,
         {
+          rowId: crypto.randomUUID(),
           id: `custom-${crypto.randomUUID()}`,
           title,
           notes: customNote.trim(),
@@ -269,7 +264,7 @@ export default function ClinicProgramBuilder({
   }
 
   function remove(rowId: string) {
-    setSelected((prev) => prev.filter((s) => s.id !== rowId));
+    setSelected((prev) => prev.filter((s) => s.rowId !== rowId));
   }
 
   function move(index: number, dir: -1 | 1) {
@@ -349,7 +344,7 @@ export default function ClinicProgramBuilder({
           ) : (
             <ul className={styles.list}>
               {selected.map((row, i) => (
-                <li key={`${renderKey}-${row.id}`} className={styles.row}>
+                <li key={`${renderKey}-${row.rowId}`} className={styles.row}>
                   <span className={styles.num}>{i + 1}</span>
                   <div className={styles.rowBody}>
                     <div className={styles.rowTitle}>
@@ -395,7 +390,7 @@ export default function ClinicProgramBuilder({
                     <button
                       type="button"
                       className={styles.iconBtn}
-                      onClick={() => remove(row.id)}
+                      onClick={() => remove(row.rowId)}
                       aria-label="Ta bort"
                     >
                       ✕

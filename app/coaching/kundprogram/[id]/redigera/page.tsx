@@ -16,11 +16,11 @@ export default async function EditClinicProgramPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; detail?: string }>;
 }) {
   await requireClinicStaff();
   const { id } = await params;
-  const { error } = await searchParams;
+  const { error, detail } = await searchParams;
   const admin = createAdminClient();
 
   const [{ data: program }, { data: exercises }, { data: rows }] = await Promise.all([
@@ -38,9 +38,10 @@ export default async function EditClinicProgramPage({
   const initialSelected: SelectedRow[] = (rows ?? []).map((r) => {
     const ex = r.exercises as unknown as { id: string; title: string } | null;
     if (ex) {
-      return { id: ex.id, title: ex.title, notes: r.notes ?? "" };
+      return { rowId: r.id, id: ex.id, title: ex.title, notes: r.notes ?? "" };
     }
     return {
+      rowId: r.id,
       id: `custom-${r.id}`,
       title: r.custom_title ?? "Egen övning",
       notes: r.notes ?? "",
@@ -73,9 +74,16 @@ export default async function EditClinicProgramPage({
               marginBottom: 20,
             }}
           >
-            Kunde inte spara övningarna — kontrollera att ingen övning ligger
-            med två gånger i listan, och försök igen. Kundens länk visar
+            Kunde inte spara övningarna, försök igen. Kundens länk visar
             fortfarande det gamla innehållet.
+            {detail && (
+              <>
+                <br />
+                <span style={{ fontFamily: "monospace", fontSize: "0.82rem" }}>
+                  Feldetalj: {detail}
+                </span>
+              </>
+            )}
           </p>
         )}
 
