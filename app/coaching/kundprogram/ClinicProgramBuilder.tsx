@@ -422,6 +422,16 @@ export default function ClinicProgramBuilder({
           )}
         </div>
 
+        <div className={styles.saveRow}>
+          <SubmitButton
+            className="btn btn-primary"
+            pendingText={submitPendingText}
+            disabled={selected.length === 0}
+          >
+            {submitLabel}
+          </SubmitButton>
+        </div>
+
         <div className={styles.panel}>
           <h2>Alla övningar</h2>
 
@@ -527,16 +537,6 @@ export default function ClinicProgramBuilder({
           >
             {customUploading ? "Laddar upp..." : "+ Lägg till egen övning"}
           </button>
-        </div>
-
-        <div className={styles.saveRow}>
-          <SubmitButton
-            className="btn btn-primary"
-            pendingText={submitPendingText}
-            disabled={selected.length === 0}
-          >
-            {submitLabel}
-          </SubmitButton>
         </div>
       </form>
     </div>
