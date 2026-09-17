@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
+import TrainingTips from "@/components/TrainingTips";
 import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { getClinicProgramPlayerData, recordClinicProgramVisit } from "@/lib/clinic-program";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -53,6 +54,8 @@ export default async function ClinicProgramPage({
             </Link>
           </div>
         </div>
+
+        <TrainingTips />
 
         <div className={styles.exListHead}>
           <h2>Övningar i programmet</h2>
