@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateLeadStatus, updateLeadNotes, deleteLead } from "./actions";
+import { updateLeadStatus, updateLeadNotes, deleteLead, logCallAttempt } from "./actions";
 import styles from "../page.module.css";
 
 const STATUS_OPTIONS = [
@@ -124,6 +124,17 @@ export default function LeadControls({
           href={`tel:${phone}`}
           className={styles.markReadBtn}
           style={{ textDecoration: "none", display: "inline-block" }}
+          onClick={() => {
+            // Om leadet redan är markerat "no_answer" räknas det här klicket
+            // som ett nytt samtalsförsök — nollställer uppföljningsklockan
+            // så nästa påminnelse räknas från just det här samtalet, inte
+            // från det första missade samtalet för länge sen.
+            if (status === "no_answer") {
+              startTransition(async () => {
+                await logCallAttempt(leadId);
+              });
+            }
+          }}
         >
           📞 Ring
         </a>
