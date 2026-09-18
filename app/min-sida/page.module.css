@@ -168,6 +168,33 @@
   margin-bottom: 20px;
 }
 
+.intakeModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 22, 18, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.intakeModalBox {
+  background: #fff;
+  border-radius: 18px;
+  padding: 32px 28px;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.35);
+}
+
+.intakeModalBox p {
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
 .statRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

@@ -8,6 +8,7 @@ import SubmitButton from "@/components/SubmitButton";
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 import ShareButton from "./ShareButton";
+import IntakeSuccessModal from "./IntakeSuccessModal";
 import Sidebar from "./Sidebar";
 import MobileTabs from "./MobileTabs";
 import WeeklyTrendChart from "@/components/WeeklyTrendChart";
@@ -94,9 +95,9 @@ function checkoutMessage(checkout: string | undefined, active: boolean) {
 export default async function MinSidaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ checkout?: string; login?: string }>;
+  searchParams: Promise<{ checkout?: string; login?: string; intake?: string }>;
 }) {
-  const { checkout, login } = await searchParams;
+  const { checkout, login, intake } = await searchParams;
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -232,6 +233,7 @@ export default async function MinSidaPage({
   return (
     <>
       <LoginAnalytics userId={user.id} shouldFire={login === "success"} />
+      {intake === "success" && <IntakeSuccessModal />}
       <Header />
       <div className={styles.shell}>
       <Sidebar

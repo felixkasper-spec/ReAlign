@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { createAttachmentUploadUrl } from "../../actions";
 import {
@@ -57,8 +58,8 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
   ]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   const existingPhotoPaths = [
     intake?.photo_front_path ?? null,
@@ -118,7 +119,6 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
 
     setPending(true);
     setError(null);
-    setSuccess(false);
 
     try {
       const supabase = createClient();
@@ -166,11 +166,14 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
       );
 
       if (result.ok) {
-        setSuccess(true);
-        setPhotos([null, null, null, null]);
-      } else {
-        setError(result.error ?? "Något gick fel, försök igen.");
+        // Formuläret ligger långt ner på en lång sida — ett meddelande
+        // högst upp syns aldrig där användaren faktiskt är när de skickar
+        // in. Skicka istället tillbaka till Min sida med en tydlig
+        // popup-bekräftelse.
+        router.push("/min-sida?intake=success");
+        return;
       }
+      setError(result.error ?? "Något gick fel, försök igen.");
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Något gick fel, försök igen.",
@@ -182,12 +185,6 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
-      {success && (
-        <p className={styles.success}>
-          Tack! Dina svar är sparade — Felix hör av sig när ditt program är
-          klart.
-        </p>
-      )}
       {error && <p className={styles.error}>{error}</p>}
 
       <section className={shellStyles.panel}>
