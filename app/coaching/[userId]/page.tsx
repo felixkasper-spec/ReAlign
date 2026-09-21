@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import AttachmentMedia from "@/components/AttachmentMedia";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -60,8 +58,6 @@ export default async function CoachingThreadPage({
   const displayName = profile.display_name || profile.email;
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching" className={styles.back}>
           ← Alla trådar
@@ -123,9 +119,6 @@ export default async function CoachingThreadPage({
             />
           </div>
         </div>
-
-        <Footer />
       </div>
-    </>
   );
 }

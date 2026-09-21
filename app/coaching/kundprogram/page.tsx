@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import styles from "../page.module.css";
@@ -32,12 +30,10 @@ export default async function ClinicProgramListPage({
   const { data: programs } = await query;
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         {isCoach && (
           <Link href="/coaching" className={styles.back}>
-            ← Coach-inkorg
+            ← Admin
           </Link>
         )}
         <span className="eyebrow">Coach-verktyg</span>
@@ -124,9 +120,6 @@ export default async function ClinicProgramListPage({
             })}
           </div>
         )}
-
-        <Footer />
       </div>
-    </>
   );
 }

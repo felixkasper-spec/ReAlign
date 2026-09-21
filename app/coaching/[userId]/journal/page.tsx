@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import AttachmentMedia from "@/components/AttachmentMedia";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -53,8 +51,6 @@ export default async function CoachingJournalPage({
   const displayName = profile.display_name || profile.email;
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         <Link href={`/coaching/${userId}`} className={styles.back}>
           ← Till chatten
@@ -110,9 +106,6 @@ export default async function CoachingJournalPage({
             </div>
           ))}
         </div>
-
-        <Footer />
       </div>
-    </>
   );
 }

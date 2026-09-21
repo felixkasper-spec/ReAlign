@@ -1,0 +1,306 @@
+/* Kalenderkortet får en svag varm ton (märkesfärgen) så det sticker ut
+   lite mot resten av den annars helt neutrala admin-sidan — inget drastiskt,
+   bara en antydan om att det här är sidans huvudinnehåll. */
+.wrap {
+  margin-bottom: 32px;
+  background: linear-gradient(180deg, rgba(217, 142, 92, 0.08), rgba(217, 142, 92, 0.02));
+  border: 1px solid rgba(217, 142, 92, 0.22);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navBtn,
+.todayBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: #fff;
+}
+
+.navBtn:hover,
+.todayBtn:hover {
+  border-color: var(--warm);
+  color: #06232c;
+}
+
+.headerLabelBtn {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-left: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.headerLabelBtn:hover {
+  background: rgba(217, 142, 92, 0.14);
+}
+
+.viewToggle {
+  display: flex;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.toggleBtn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.toggleBtn:hover:not([data-active]) {
+  color: var(--text);
+  background: rgba(217, 142, 92, 0.12);
+}
+
+.toggleBtn[data-active] {
+  background: var(--warm);
+  color: #fff;
+}
+
+/* max-height sätts inline från CalendarGrid.tsx — beror på om "Alla"-vyns
+   dubbla rubrikrad visas eller ej, så en fast siffra här skulle antingen bli
+   för kort eller lämna tomrum. */
+.scrollArea {
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.grid {
+  display: grid;
+  position: relative;
+  grid-template-columns: 56px repeat(var(--col-count), 1fr);
+}
+
+.cornerCell {
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #f6ece0;
+}
+
+.dayHeader {
+  padding: 8px 6px;
+  min-height: 34px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background: #f6ece0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Klickbar dagsrubrik (veckovyn) — samma utseende som förut, bara en
+   diskret hover som antyder att den går att trycka på. */
+a.dayHeader:hover {
+  background: rgba(217, 142, 92, 0.22);
+}
+
+.dayHeaderFull {
+  display: inline;
+}
+
+.dayHeaderShort {
+  display: none;
+  font-weight: 700;
+}
+
+/* Behandlar-underrubrik i "Alla"-vyn — en rad under datumet per person,
+   samma idé som Bokadirekt. Fast top-offset eftersom .dayHeader ovanför har
+   en fast min-height, så sticky-positioneringen förblir korrekt. */
+.staffSubHeader {
+  padding: 4px 6px;
+  min-height: 26px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background: #f6ece0;
+  position: sticky;
+  top: 34px;
+  z-index: 2;
+}
+
+.staffAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--warm);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.dayHeaderNum {
+  font-size: 0.9rem;
+}
+
+.timeLabel {
+  font-size: 0.7rem;
+  color: var(--text-soft);
+  text-align: right;
+  padding-right: 6px;
+  transform: translateY(-7px);
+  border-right: 1px solid var(--line);
+}
+
+.cell {
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  background: #e8b384;
+  cursor: pointer;
+}
+
+.cell:hover {
+  outline: 2px solid var(--warm);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.cell[data-available] {
+  background: #fff;
+  border-left: 1px solid var(--warm);
+  border-top: 1px solid rgba(217, 142, 92, 0.35);
+}
+
+/* Förhandsvisning medan man drar i "Öppna/stäng tider"-läget — vinner över
+   både den tillgängliga och den otillgängliga bakgrundsfärgen. Grön = ska
+   öppnas, röd = ska stängas (avgörs av startcellens läge, se
+   dragModeOpenRef i CalendarGrid.tsx). */
+.cell[data-pending="open"] {
+  background: var(--sage) !important;
+}
+
+.cell[data-pending="close"] {
+  background: #b5533f !important;
+}
+
+.booking {
+  margin: 1px 3px;
+  background: var(--sage);
+  color: #fff;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.bookingTime {
+  font-weight: 600;
+}
+
+.bookingName {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bookingService {
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobil (à la Bokadirekt): smalare tidsgutter så alla 7 veckodagar får
+   plats utan horisontell scroll, förkortad veckodag ("M" istället för
+   "Måndag") staplad ovanför datumet, och en högre synlig del av dygnet
+   eftersom skärmen är avlång istället för bred. !important krävs bara på
+   max-height eftersom CalendarGrid.tsx sätter den inline för desktop-måttet
+   (beror på om "Alla"-vyns dubbla rubrikrad visas) — mobilmåttet ska alltid
+   vinna oavsett det. */
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 32px repeat(var(--col-count), 1fr);
+  }
+
+  .scrollArea {
+    max-height: calc(100dvh - 280px) !important;
+    min-height: 360px;
+  }
+
+  .timeLabel {
+    font-size: 0.6rem;
+    padding-right: 2px;
+  }
+
+  .dayHeader {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    padding: 6px 2px;
+    font-size: 0.66rem;
+  }
+
+  .dayHeaderFull {
+    display: none;
+  }
+
+  .dayHeaderShort {
+    display: inline;
+    font-size: 0.72rem;
+  }
+
+  .dayHeaderNum {
+    font-size: 0.78rem;
+  }
+
+  .staffSubHeader {
+    font-size: 0.6rem;
+    padding: 3px 2px;
+  }
+
+  .booking {
+    font-size: 0.62rem;
+    padding: 2px 3px;
+  }
+}

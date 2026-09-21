@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatRelativeTime } from "@/lib/relative-time";
@@ -91,13 +89,9 @@ export default async function CoachingLeadsPage({
 
   return (
     <>
-      <Header />
       <AutoRefresh />
       <div className={`wrap ${styles.wrap}`}>
-        <Link href="/coaching" className={styles.back}>
-          ← Coach-inkorg
-        </Link>
-        <span className="eyebrow">Intresseanmälningar</span>
+        <span className="eyebrow">Admin</span>
         <h1>Leads — Premium Coaching</h1>
         <p
           style={{
@@ -238,8 +232,6 @@ export default async function CoachingLeadsPage({
             );
           })}
         </div>
-
-        <Footer />
       </div>
     </>
   );

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
@@ -49,11 +47,9 @@ export default async function CoachingIntakePage() {
   );
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching" className={styles.back}>
-          ← Coach-inkorg
+          ← Admin
         </Link>
         <span className="eyebrow">Premium Coaching</span>
         <h1>Kom igång-formulär</h1>
@@ -186,9 +182,6 @@ export default async function CoachingIntakePage() {
             );
           })}
         </div>
-
-        <Footer />
       </div>
-    </>
   );
 }

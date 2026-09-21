@@ -104,7 +104,7 @@ export default function Sidebar({
       )}
       {isCoach && (
         <Link className={styles.sideLink} href="/coaching">
-          <span className={styles.sideIc}>◈</span>Coach-inkorg
+          <span className={styles.sideIc}>◈</span>Admin
         </Link>
       )}
       <div className={styles.sideBottom}>

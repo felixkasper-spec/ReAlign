@@ -1,0 +1,430 @@
+/* Fullbreddsram för hela /coaching-avdelningen (à la Bokadirekt) — ingen
+   max-width här, till skillnad från den vanliga globala .wrap-klassen som
+   annars klämmer ihop kalenderns rutnät i onödan. Vänsterpaddingen håller
+   plats åt den fixerade sidomenyn (se .sidebar) eftersom den ligger utanför
+   det vanliga flödet. */
+.pageWrap {
+  padding: 12px 24px 60px 188px;
+  width: 100%;
+}
+
+.pageLayout {
+  display: block;
+}
+
+/* Sidomenyn får en egen mörk, cyan-tonad färgskala (baserad på --warm) så den
+   visuellt skiljer sig från resten av den ljusa admin-sidan — samma idé som
+   Bokadirekts mörka vänstermeny, fast i Cleers egna märkesfärg istället för
+   deras marinblå. Fixerad och kant-i-kant med hela vänstersidan (inte en
+   flytande "kort"-ruta) så den mörka ytan alltid täcker hela höjden, även
+   när sidans innehåll är längre än skärmen. */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 164px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 8px 18px;
+  background: linear-gradient(165deg, #2b2417, #1e1910);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.sidebarLogo {
+  display: inline-flex;
+  margin: 2px 0 14px 6px;
+}
+
+.sidebarLink {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: #e8ddc9;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sidebarLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebarLink[data-active] {
+  background: var(--warm);
+  color: #3a2a15;
+  font-weight: 600;
+}
+
+.sidebarDropdown summary {
+  list-style: none;
+}
+
+.sidebarDropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebarDropdown summary::after {
+  content: "▾";
+  float: right;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.sidebarDropdown[open] summary::after {
+  content: "▴";
+}
+
+.sidebarSubList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 0 4px 12px;
+}
+
+.sidebarSubLink {
+  display: block;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #c9b896;
+  text-decoration: none;
+}
+
+.sidebarSubLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sidebarSubLink[data-active] {
+  background: rgba(217, 142, 92, 0.32);
+  color: #fff;
+  font-weight: 600;
+}
+
+.mainContent {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Hamburgarknapp för mobil — bara synlig under brytpunkten, öppnar
+   sidomenyn som en nedfällbar panel istället för den fixerade
+   helhöjdsremsan som finns på desktop. */
+.mobileMenuBtn {
+  display: none;
+}
+
+.mobileOverlay {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .pageWrap {
+    padding: 68px 16px 60px;
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(165deg, #2b2417, #1e1910);
+    color: #e8ddc9;
+    cursor: pointer;
+    z-index: 20;
+  }
+
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 16, 10, 0.4);
+    z-index: 14;
+  }
+
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 62px;
+    left: 14px;
+    right: 14px;
+    bottom: auto;
+    width: auto;
+    max-height: calc(100dvh - 90px);
+    border-radius: 14px;
+    z-index: 15;
+    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar[data-open] {
+    display: flex;
+  }
+
+  .sidebarLogo {
+    display: none;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(20, 22, 18, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Ingen margin-left: auto här längre — "Öppna/stäng tider"-länken
+   (page.tsx) har egna auto-marginaler åt båda hållen som centrerar den
+   mellan personalfiltret och den här sökrutan, och den räkningen bygger på
+   att sökrutan i övrigt beter sig som ett vanligt flex-element. */
+.customerSearch {
+  position: relative;
+  width: 260px;
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .customerSearch {
+    width: 100%;
+  }
+}
+
+.customerSearch input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.customerSearch input:focus {
+  outline: none;
+  border-color: var(--warm);
+  box-shadow: 0 0 0 3px rgba(217, 142, 92, 0.18);
+}
+
+.customerSuggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.customerSuggestionRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.customerSuggestionRow:last-child {
+  border-bottom: none;
+}
+
+.customerSuggestionRow:hover {
+  background: rgba(217, 142, 92, 0.12);
+}
+
+.customerSuggestionRow span {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+}
+
+.colorPicker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.colorSwatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.colorSwatch[data-selected] {
+  border-color: var(--text);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.modalBox {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.35);
+}
+
+.modalHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.modalHead h2 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.modalHead button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-soft);
+}
+
+.modalList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.modalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.modalForm input,
+.modalForm select {
+  font: inherit;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  width: 100%;
+}
+
+.modalForm input:focus,
+.modalForm select:focus {
+  outline: none;
+  border-color: var(--warm);
+  box-shadow: 0 0 0 3px rgba(217, 142, 92, 0.18);
+}
+
+.smallGhostBtn {
+  border: 1px solid var(--line);
+  background: none;
+  border-radius: 100px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.miniCalBox {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  width: 280px;
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.35);
+}
+
+.miniCalHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.miniCalHead button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 2px 8px;
+}
+
+.miniCalGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.miniCalWeekday {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-soft);
+  padding: 4px 0;
+}
+
+.miniCalDay {
+  aspect-ratio: 1;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.miniCalDay:disabled {
+  cursor: default;
+}
+
+.miniCalDay:not(:disabled):hover {
+  background: var(--surface);
+}
+
+.miniCalDay[data-selected] {
+  background: var(--warm);
+  color: #fff;
+  font-weight: 600;
+}

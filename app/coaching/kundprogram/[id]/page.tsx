@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { deleteClinicProgram } from "../actions";
@@ -43,8 +41,6 @@ export default async function ClinicProgramDetailPage({
   const link = `https://www.realignmetoden.se/p/${program.share_token}`;
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching/kundprogram" className={styles.back}>
           ← Kundprogram
@@ -162,9 +158,6 @@ export default async function ClinicProgramDetailPage({
             </button>
           </form>
         </div>
-
-        <Footer />
       </div>
-    </>
   );
 }

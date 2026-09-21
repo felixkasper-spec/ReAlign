@@ -46,7 +46,7 @@ export default function MobileTabs({
       {canBuildProgram && (
         <a href={`${linkPrefix}#mina-program`}>Mina program</a>
       )}
-      {isCoach && <Link href="/coaching">Coach-inkorg</Link>}
+      {isCoach && <Link href="/coaching">Admin</Link>}
     </div>
   );
 }

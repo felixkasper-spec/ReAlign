@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { updateClinicProgram } from "../../actions";
@@ -51,8 +49,6 @@ export default async function EditClinicProgramPage({
   });
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         <Link href={`/coaching/kundprogram/${id}`} className={styles.back}>
           ← Kundprogram
@@ -95,9 +91,6 @@ export default async function EditClinicProgramPage({
           submitLabel="Spara ändringar →"
           submitPendingText="Sparar..."
         />
-
-        <Footer />
       </div>
-    </>
   );
 }

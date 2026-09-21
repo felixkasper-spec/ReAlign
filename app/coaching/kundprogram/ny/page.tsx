@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClinicProgram } from "../actions";
@@ -26,8 +24,6 @@ export default async function NewClinicProgramPage({
     .order("title");
 
   return (
-    <>
-      <Header />
       <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching/kundprogram" className={styles.back}>
           ← Kundprogram
@@ -58,9 +54,6 @@ export default async function NewClinicProgramPage({
         )}
 
         <ClinicProgramBuilder exercises={exercises ?? []} action={createClinicProgram} />
-
-        <Footer />
       </div>
-    </>
   );
 }

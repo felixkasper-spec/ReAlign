@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { markContactMessageRead } from "./actions";
@@ -95,11 +93,9 @@ export default async function CoachingInboxPage({
     : threads;
 
   return (
-    <>
-      <Header />
-      <div className={`wrap ${styles.wrap}`}>
-        <span className="eyebrow">Coach-inkorg</span>
-        <h1>Premium Coaching</h1>
+    <div className={`wrap ${styles.wrap}`}>
+      <span className="eyebrow">Admin</span>
+      <h1>Meddelanden</h1>
 
         <div
           style={{
@@ -271,9 +267,6 @@ export default async function CoachingInboxPage({
             ))}
           </div>
         </div>
-
-        <Footer />
-      </div>
-    </>
+    </div>
   );
 }
