@@ -7,7 +7,7 @@ import { CLINIC_PROGRAM_VIDEO_BUCKET } from "@/lib/clinic-program-video";
 import { createClinicProgramVideoUploadUrl } from "./actions";
 import styles from "../../min-sida/bygg-program/page.module.css";
 
-type Exercise = { id: string; slug: string; title: string; body_part: string };
+export type Exercise = { id: string; slug: string; title: string; body_part: string };
 export type SelectedRow = {
   // Unikt per RAD i programmet — skiljer sig från `id` när samma övning
   // förekommer flera gånger (t.ex. uppvärmning + nedvarvning), så att
@@ -127,6 +127,118 @@ function findMatch(name: string, exercises: Exercise[]): Exercise | null {
   return null;
 }
 
+// Letar efter övningsnamn var som helst i en löpande text (t.ex. en
+// journalanteckning skriven som prosa, inte en per-rad-lista) — istället
+// för att kräva att hela raden bara är ett övningsnamn. Övningens titel
+// måste förekomma som en sammanhängande ordföljd i texten (ordgränser, inte
+// bara delsträng, så "curl" inte råkar träffa mitt i "curlpress"), och en
+// eventuell sets×reps-uppgift precis efter (t.ex. "2x45 sekunder") plockas
+// med som anteckning om den finns. Längre titlar prioriteras före kortare
+// så att en mer specifik övning inte "äts upp" av en generell delträff, och
+// varje ord i texten kan bara ingå i en enda träff.
+function scanFreeTextForExercises(text: string, exercises: Exercise[]): SelectedRow[] {
+  const rawTokens = text.split(/\s+/).filter(Boolean);
+  const normTokens = rawTokens.map((t) => normalize(t));
+  const consumed = new Array<boolean>(rawTokens.length).fill(false);
+  const results: SelectedRow[] = [];
+
+  const candidates = [...exercises].sort((a, b) => {
+    const aLen = normalize(a.title).split(" ").filter(Boolean).length;
+    const bLen = normalize(b.title).split(" ").filter(Boolean).length;
+    return bLen - aLen;
+  });
+
+  for (const ex of candidates) {
+    const needle = normalize(ex.title).split(" ").filter(Boolean);
+    if (needle.length === 0) continue;
+    // Ensamma korta ord (t.ex. "arm") ger för många falska träffar i fri
+    // text — kräv antingen flera ord eller ett tillräckligt distinkt ord.
+    if (needle.length === 1 && needle[0].length < 5) continue;
+
+    for (let i = 0; i <= normTokens.length - needle.length; i++) {
+      if (consumed[i]) continue;
+
+      let ok = true;
+      for (let j = 0; j < needle.length; j++) {
+        if (consumed[i + j] || normTokens[i + j] !== needle[j]) {
+          ok = false;
+          break;
+        }
+      }
+      if (!ok) continue;
+
+      for (let j = 0; j < needle.length; j++) consumed[i + j] = true;
+
+      const tailStr = rawTokens.slice(i + needle.length, i + needle.length + 8).join(" ");
+      const repsMatch = tailStr.match(/\d+\s*[x×]\s*\d+/i);
+      let notes = "";
+      if (repsMatch && repsMatch.index != null) {
+        // Bygger anteckningen av hela ord (inte teckenavklippning) — max två
+        // ord efter själva NxM-delen, och stannar vid ett bindeord som
+        // "och"/"samt" så nästa mening (t.ex. nästa övning) inte hänger med.
+        const afterReps = tailStr.slice(repsMatch.index + repsMatch[0].length).trim();
+        const stopWords = new Set(["och", "samt", "men", "sedan", "därefter"]);
+        const keep: string[] = [];
+        for (const w of afterReps.split(/\s+/).filter(Boolean)) {
+          if (stopWords.has(normalize(w))) break;
+          keep.push(w);
+          if (keep.length >= 2) break;
+        }
+        notes = [repsMatch[0], ...keep].join(" ").trim();
+      }
+
+      results.push({
+        rowId: crypto.randomUUID(),
+        id: ex.id,
+        title: ex.title,
+        notes,
+      });
+    }
+  }
+
+  return results;
+}
+
+function parseExerciseNotes(text: string, exercises: Exercise[]) {
+  const lines = text
+    .split(/[\n,]+/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+
+  const matched: SelectedRow[] = [];
+  const unmatched: string[] = [];
+
+  for (const line of lines) {
+    const m = line.match(/^(.*?)\s*[-–—]\s*(.*)$/);
+    const namePart = m ? m[1] : line;
+    const notePart = m ? m[2] : "";
+    const ex = findMatch(namePart, exercises);
+    if (ex) {
+      // Samma övning får gärna förekomma flera gånger (t.ex. omnämnd på
+      // flera dagar i den inklistrade texten) — varje rad blir en egen
+      // rad i programmet, inte en sammanslagning.
+      matched.push({
+        rowId: crypto.randomUUID(),
+        id: ex.id,
+        title: ex.title,
+        notes: notePart,
+      });
+    } else {
+      // Raden matchade inte som helhet (t.ex. en journalanteckning med
+      // annan info blandat med övningarna) — sök igenom den löpande texten
+      // istället för att ge upp direkt.
+      const found = scanFreeTextForExercises(line, exercises);
+      if (found.length > 0) {
+        matched.push(...found);
+      } else {
+        unmatched.push(line);
+      }
+    }
+  }
+
+  return { matched, unmatched };
+}
+
 export default function ClinicProgramBuilder({
   exercises,
   action,
@@ -134,19 +246,41 @@ export default function ClinicProgramBuilder({
   initialSelected = [],
   submitLabel = "Skapa och kopiera länk →",
   submitPendingText = "Skapar...",
+  customerPhone,
+  customerName,
+  customerEmail,
+  initialNotesText = "",
+  autoParseInitial = false,
 }: {
   exercises: Exercise[];
   action: (formData: FormData) => void | Promise<void>;
   initialLabel?: string;
   initialSelected?: SelectedRow[];
   submitLabel?: string;
+  customerPhone?: string;
+  customerName?: string;
+  customerEmail?: string;
   submitPendingText?: string;
+  // Förifyller "Klistra in anteckningar"-fältet, t.ex. med en
+  // journalanteckning eller markerad text därifrån (se kundens sida).
+  initialNotesText?: string;
+  // Kör "Tolka text" direkt vid montering istället för att kräva ett extra
+  // klick — bara meningsfullt tillsammans med initialNotesText.
+  autoParseInitial?: boolean;
 }) {
   const formId = useId();
   const [label, setLabel] = useState(initialLabel);
-  const [notesText, setNotesText] = useState("");
-  const [selected, setSelected] = useState<SelectedRow[]>(initialSelected);
-  const [unmatchedLines, setUnmatchedLines] = useState<string[]>([]);
+  const [notesText, setNotesText] = useState(initialNotesText);
+  const [selected, setSelected] = useState<SelectedRow[]>(() =>
+    autoParseInitial && initialNotesText.trim()
+      ? parseExerciseNotes(initialNotesText, exercises).matched
+      : initialSelected,
+  );
+  const [unmatchedLines, setUnmatchedLines] = useState<string[]>(() =>
+    autoParseInitial && initialNotesText.trim()
+      ? parseExerciseNotes(initialNotesText, exercises).unmatched
+      : [],
+  );
   const [renderKey, setRenderKey] = useState(0);
   const [search, setSearch] = useState("");
   const [bodyFilter, setBodyFilter] = useState("");
@@ -179,34 +313,7 @@ export default function ClinicProgramBuilder({
     .sort((a, b) => a.title.localeCompare(b.title));
 
   function parseNotes() {
-    const lines = notesText
-      .split(/[\n,]+/)
-      .map((l) => l.trim())
-      .filter(Boolean);
-
-    const matched: SelectedRow[] = [];
-    const unmatched: string[] = [];
-
-    for (const line of lines) {
-      const m = line.match(/^(.*?)\s*[-–—]\s*(.*)$/);
-      const namePart = m ? m[1] : line;
-      const notePart = m ? m[2] : "";
-      const ex = findMatch(namePart, exercises);
-      if (ex) {
-        // Samma övning får gärna förekomma flera gånger (t.ex. omnämnd på
-        // flera dagar i den inklistrade texten) — varje rad blir en egen
-        // rad i programmet, inte en sammanslagning.
-        matched.push({
-          rowId: crypto.randomUUID(),
-          id: ex.id,
-          title: ex.title,
-          notes: notePart,
-        });
-      } else {
-        unmatched.push(line);
-      }
-    }
-
+    const { matched, unmatched } = parseExerciseNotes(notesText, exercises);
     setSelected(matched);
     setUnmatchedLines(unmatched);
     setRenderKey((k) => k + 1);
@@ -334,6 +441,9 @@ export default function ClinicProgramBuilder({
       </div>
 
       <form id={formId} action={action} className={styles.builder}>
+        {customerPhone && <input type="hidden" name="customer_phone" value={customerPhone} />}
+        {customerName && <input type="hidden" name="customer_name" value={customerName} />}
+        {customerEmail && <input type="hidden" name="customer_email" value={customerEmail} />}
         <div className={styles.panel}>
           <h2>Kundens program ({selected.length})</h2>
           {selected.length === 0 ? (
@@ -427,8 +537,8 @@ export default function ClinicProgramBuilder({
           </SubmitButton>
         </div>
 
-        <div className={styles.panel}>
-          <h2>Alla övningar</h2>
+        <details className={styles.panel}>
+          <summary className={styles.panelSummary}>Alla övningar</summary>
 
           <input
             type="text"
@@ -479,10 +589,10 @@ export default function ClinicProgramBuilder({
               ))}
             </ul>
           )}
-        </div>
+        </details>
 
-        <div className={styles.panel}>
-          <h2>Lägg till egen övning</h2>
+        <details className={styles.panel}>
+          <summary className={styles.panelSummary}>Lägg till egen övning</summary>
           <p className={styles.hint}>
             Inte i övningsbiblioteket, eller en variant anpassad för just den
             här kunden? Spela in eller ladda upp en video direkt här,
@@ -532,7 +642,7 @@ export default function ClinicProgramBuilder({
           >
             {customUploading ? "Laddar upp..." : "+ Lägg till egen övning"}
           </button>
-        </div>
+        </details>
       </form>
     </div>
   );

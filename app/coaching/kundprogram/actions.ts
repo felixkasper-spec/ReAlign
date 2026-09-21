@@ -91,27 +91,46 @@ function buildProgramExerciseRows(
     .filter((row): row is NonNullable<typeof row> => row !== null);
 }
 
-export async function createClinicProgram(formData: FormData) {
-  await requireClinicStaff();
+export type CreateProgramResult =
+  | { ok: true; id: string; shareToken: string; label: string }
+  | { ok: false; error: string; rowsFailedDetail?: string };
 
+// Delad av createClinicProgram (redirectar till programmets egen sida) och
+// createClinicProgramInline (returnerar resultatet istället, för att kunna
+// visa delningslänk + skicka-knappar direkt på kundens sida utan att lämna
+// den — se app/coaching/kunder/[phone]/ProgramFromJournal.tsx).
+async function insertClinicProgram(formData: FormData): Promise<CreateProgramResult> {
   const label = (formData.get("label") as string)?.trim();
   const rowCount = formData.getAll("exerciseIds").length;
 
   if (!label || rowCount === 0) {
-    return;
+    return { ok: false, error: "Namn och minst en övning krävs." };
   }
 
   const admin = createAdminClient();
   const shareToken = randomBytes(6).toString("base64url");
 
+  // Sätts bara när programmet skapas från en kunds profil (dolda fält i
+  // formuläret, se kundprogram/ny/page.tsx och kundens sida) — annars null
+  // precis som tidigare, fristående program.
+  const customerPhone = (formData.get("customer_phone") as string)?.trim() || null;
+  const customerName = (formData.get("customer_name") as string)?.trim() || null;
+  const customerEmail = (formData.get("customer_email") as string)?.trim() || null;
+
   const { data: program, error } = await admin
     .from("clinic_programs")
-    .insert({ label, share_token: shareToken })
+    .insert({
+      label,
+      share_token: shareToken,
+      customer_phone: customerPhone,
+      customer_name: customerName,
+      customer_email: customerEmail,
+    })
     .select("id")
     .single();
 
   if (error || !program) {
-    return;
+    return { ok: false, error: "Kunde inte skapa programmet." };
   }
 
   const rows = buildProgramExerciseRows(program.id, formData);
@@ -128,14 +147,41 @@ export async function createClinicProgram(formData: FormData) {
       // inte längre att lita på att orsaken alltid var en dubblett.
       console.error("replace_clinic_program_exercises failed (create)", rowsError);
       await admin.from("clinic_programs").delete().eq("id", program.id);
-      redirect(
-        `/coaching/kundprogram/ny?error=1&detail=${encodeURIComponent(rowsError.message)}`,
-      );
+      return { ok: false, error: "Kunde inte spara övningarna.", rowsFailedDetail: rowsError.message };
     }
   }
 
+  if (customerPhone) revalidatePath(`/coaching/kunder/${customerPhone}`);
   revalidatePath("/coaching/kundprogram");
-  redirect(`/coaching/kundprogram/${program.id}?ny=1`);
+  return { ok: true, id: program.id, shareToken, label };
+}
+
+export async function createClinicProgram(formData: FormData) {
+  await requireClinicStaff();
+
+  const result = await insertClinicProgram(formData);
+  if (!result.ok) {
+    if (result.rowsFailedDetail) {
+      redirect(
+        `/coaching/kundprogram/ny?error=1&detail=${encodeURIComponent(result.rowsFailedDetail)}`,
+      );
+    }
+    return;
+  }
+
+  redirect(`/coaching/kundprogram/${result.id}?ny=1`);
+}
+
+// Samma skapande-logik som createClinicProgram, men returnerar resultatet
+// istället för att redirecta — används med useActionState() från kundens
+// sida (ProgramFromJournal.tsx) så att delningslänk + skicka-knappar kan
+// visas direkt där utan sidbyte.
+export async function createClinicProgramInline(
+  _prevState: CreateProgramResult,
+  formData: FormData,
+): Promise<CreateProgramResult> {
+  await requireClinicStaff();
+  return insertClinicProgram(formData);
 }
 
 export async function updateClinicProgram(

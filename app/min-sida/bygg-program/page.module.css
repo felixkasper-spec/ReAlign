@@ -36,6 +36,37 @@
   margin-bottom: 16px;
 }
 
+/* Fällbara paneler ("Alla övningar", "Lägg till egen övning") — samma
+   plats i layouten som innan, bara kollapsade som standard. */
+.panelSummary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.panel[open] > .panelSummary {
+  margin-bottom: 16px;
+}
+
+.panelSummary::-webkit-details-marker {
+  display: none;
+}
+
+.panelSummary::after {
+  content: "+";
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--text-soft);
+}
+
+.panel[open] > .panelSummary::after {
+  content: "−";
+}
+
 .searchInput {
   width: 100%;
   font: inherit;

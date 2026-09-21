@@ -1,0 +1,196 @@
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  margin-bottom: 10px;
+}
+
+.composerWrap {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  margin-bottom: 16px;
+}
+
+.composerRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.composerField {
+  flex: 1;
+  min-width: 200px;
+  font: inherit;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  resize: vertical;
+}
+
+.fileInput {
+  display: none;
+}
+
+.attachBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.attachChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.82rem;
+  background: var(--warm-soft);
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
+.attachChip button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.composerError {
+  color: var(--warm);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+.journalEntry {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  background: var(--surface);
+}
+
+.journalMeta {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.journalBody {
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.journalAttachment img,
+.journalAttachment video {
+  max-width: 220px;
+  border-radius: 8px;
+  margin-top: 8px;
+  display: block;
+}
+
+.deleteBtn {
+  border: none;
+  background: none;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tokenLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.tokenLink input {
+  flex: 1;
+  min-width: 200px;
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text-soft);
+}
+
+/* Formulär/sessioner som fällbara paneler sida vid sida — tar minimal
+   plats tills man klickar, istället för två fullbreddssektioner. */
+.dropdownRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.dropdownCard {
+  /* Sidans .wrap är begränsad till 720px (se ../page.module.css) — smalt
+     nog att tre kort med för stor min-width tvingas radbryta. 190px håller
+     dem sida vid sida på hela raden i praktiken. */
+  flex: 1 1 190px;
+  min-width: 190px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.dropdownCard[open] {
+  border-color: var(--sage-light);
+}
+
+.dropdownSummary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.dropdownSummary::-webkit-details-marker {
+  display: none;
+}
+
+.dropdownHint {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-soft);
+}
+
+.dropdownBody {
+  padding: 0 16px 16px;
+}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireClinicStaff } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { toInternationalPhone } from "@/lib/customer-identity";
 import { deleteClinicProgram } from "../actions";
 import CopyLinkButton from "./CopyLinkButton";
 import SendLinkForm from "./SendLinkForm";
@@ -25,7 +26,7 @@ export default async function ClinicProgramDetailPage({
   const { data: program } = await admin
     .from("clinic_programs")
     .select(
-      "id, label, share_token, visit_count, last_visited_at, sent_to_email, sent_at",
+      "id, label, share_token, visit_count, last_visited_at, sent_to_email, sent_at, customer_phone, customer_name, customer_email",
     )
     .eq("id", id)
     .maybeSingle();
@@ -39,6 +40,10 @@ export default async function ClinicProgramDetailPage({
     .order("order_index");
 
   const link = `https://www.realignmetoden.se/p/${program.share_token}`;
+  const smsMessage = `Hej! Här är länken till ditt träningsprogram, ${program.label}: ${link}`;
+  const smsHref = program.customer_phone
+    ? `sms:${toInternationalPhone(program.customer_phone)}&body=${encodeURIComponent(smsMessage)}`
+    : null;
 
   return (
       <div className={`wrap ${styles.wrap}`}>
@@ -47,6 +52,13 @@ export default async function ClinicProgramDetailPage({
         </Link>
         <span className="eyebrow">Kundprogram skapat</span>
         <h1>{program.label}</h1>
+        {program.customer_phone && (
+          <p style={{ fontSize: "0.88rem", marginBottom: 4 }}>
+            <Link href={`/coaching/kunder/${program.customer_phone}`}>
+              {program.customer_name || "Se kundprofil"} →
+            </Link>
+          </p>
+        )}
 
         <div
           style={{
@@ -74,7 +86,14 @@ export default async function ClinicProgramDetailPage({
             <CopyLinkButton link={link} autoCopy={ny === "1"} />
           </div>
 
-          <SendLinkForm clinicProgramId={program.id} />
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <SendLinkForm clinicProgramId={program.id} initialEmail={program.customer_email ?? ""} />
+            {smsHref && (
+              <a href={smsHref} className="btn btn-ghost" style={{ border: "1px solid var(--line)" }}>
+                Skicka via sms
+              </a>
+            )}
+          </div>
         </div>
 
         <div style={{ marginBottom: 20 }}>

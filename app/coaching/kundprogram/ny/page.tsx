@@ -11,11 +11,17 @@ export const metadata: Metadata = { title: "Nytt kundprogram — ReAlign Metoden
 export default async function NewClinicProgramPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; detail?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    detail?: string;
+    phone?: string;
+    name?: string;
+    email?: string;
+  }>;
 }) {
   await requireClinicStaff();
   const admin = createAdminClient();
-  const { error, detail } = await searchParams;
+  const { error, detail, phone, name, email } = await searchParams;
 
   const { data: exercises } = await admin
     .from("exercises")
@@ -53,7 +59,14 @@ export default async function NewClinicProgramPage({
           </p>
         )}
 
-        <ClinicProgramBuilder exercises={exercises ?? []} action={createClinicProgram} />
+        <ClinicProgramBuilder
+          exercises={exercises ?? []}
+          action={createClinicProgram}
+          initialLabel={name ?? ""}
+          customerPhone={phone}
+          customerName={name}
+          customerEmail={email}
+        />
       </div>
   );
 }

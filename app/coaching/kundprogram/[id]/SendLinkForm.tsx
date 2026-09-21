@@ -6,10 +6,12 @@ import styles from "../../../min-sida/bygg-program/page.module.css";
 
 export default function SendLinkForm({
   clinicProgramId,
+  initialEmail = "",
 }: {
   clinicProgramId: string;
+  initialEmail?: string;
 }) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(initialEmail);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [isPending, startTransition] = useTransition();
 
