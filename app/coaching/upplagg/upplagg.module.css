@@ -1,0 +1,146 @@
+.empty {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.addRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addRow input {
+  flex: 1;
+  max-width: 260px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.searchInput {
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.85rem;
+  width: 240px;
+  max-width: 100%;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--warm);
+  box-shadow: 0 0 0 3px rgba(0, 196, 245, 0.18);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: 1.3fr 120px 1.4fr 1.4fr 190px;
+  min-width: 780px;
+}
+
+.headerCell {
+  padding: 10px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+
+.headerCell:last-child {
+  border-right: none;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.cellInput {
+  width: 100%;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.86rem;
+  padding: 6px 6px;
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.cellInput:focus {
+  outline: none;
+  background: rgba(0, 196, 245, 0.1);
+}
+
+.sessionsCell {
+  gap: 4px;
+}
+
+.sessionsInput {
+  width: 36px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.86rem;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 6px;
+}
+
+.sessionsInput:focus {
+  outline: none;
+  background: rgba(0, 196, 245, 0.1);
+}
+
+.sessionsSep {
+  color: var(--text-soft);
+}
+
+.actionsCell {
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 0.74rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.iconBtn:hover {
+  background: rgba(0, 196, 245, 0.1);
+  color: var(--text);
+}
