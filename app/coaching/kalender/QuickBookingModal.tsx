@@ -3,7 +3,12 @@
 import { useRef, useState, useTransition } from "react";
 import type { LeadOwner } from "@/lib/lead-owner";
 import { DEFAULT_BOOKING_COLOR } from "@/lib/booking-colors";
-import { createBookingAsStaff, searchCustomers, type CustomerMatch } from "./actions";
+import {
+  createBookingAsStaff,
+  createCustomerFromCalendar,
+  searchCustomers,
+  type CustomerMatch,
+} from "./actions";
 import BookingColorPicker from "./BookingColorPicker";
 import styles from "./admin-shell.module.css";
 
@@ -119,6 +124,30 @@ export default function QuickBookingModal({
     });
   }
 
+  // Registrerar bara kunden (namn/telefon/mejl) utan att boka den här
+  // specifika tiden — t.ex. när man vill lägga in någon man pratat med men
+  // inte bestämt en exakt tid med än.
+  function handleCreateCustomerOnly() {
+    if (!name.trim() || !phone.trim()) {
+      setError("Fyll i namn och telefonnummer för att skapa kunden.");
+      return;
+    }
+    setError(null);
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.set("customer_name", name);
+      formData.set("customer_phone", phone);
+      formData.set("customer_email", email);
+
+      const result = await createCustomerFromCalendar(formData);
+      if (!result.ok) {
+        setError(result.error ?? "Något gick fel.");
+        return;
+      }
+      onClose();
+    });
+  }
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalBox} onClick={(e) => e.stopPropagation()}>
@@ -210,9 +239,19 @@ export default function QuickBookingModal({
               }}
             />
           </label>
-          <button type="submit" className="btn btn-primary" disabled={pending}>
-            {pending ? "Bokar..." : "Boka"}
-          </button>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button type="submit" className="btn btn-primary" disabled={pending}>
+              {pending ? "Bokar..." : "Boka"}
+            </button>
+            <button
+              type="button"
+              onClick={handleCreateCustomerOnly}
+              className={styles.smallGhostBtn}
+              disabled={pending}
+            >
+              Skapa kund utan bokning
+            </button>
+          </div>
         </form>
       </div>
     </div>

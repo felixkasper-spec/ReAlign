@@ -3,11 +3,47 @@
 import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { normalizePhone } from "@/lib/customer-identity";
 import {
   COACHING_JOURNAL_BUCKET,
   MAX_JOURNAL_ATTACHMENT_BYTES,
   journalAttachmentTypeFromMime,
 } from "@/lib/coaching-journal";
+
+// Skapar (eller uppdaterar namn/mejl på) en kund direkt, utan att kräva en
+// bokning — se customers-tabellen (migration 0071, som också håller
+// login-kopplingen). Upsert på telefonnummer rör bara namn/mejl, aldrig
+// linked_user_id, så en befintlig inloggningskoppling aldrig nollställs av
+// misstag här.
+export async function createCustomer(
+  name: string,
+  phone: string,
+  email: string,
+): Promise<{ ok: boolean; error?: string; phone?: string }> {
+  await requireCoach();
+
+  const trimmedName = name.trim();
+  const normalizedPhone = normalizePhone(phone);
+  if (!trimmedName || !normalizedPhone) {
+    return { ok: false, error: "Namn och telefonnummer krävs." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("customers")
+    .upsert(
+      { phone: normalizedPhone, name: trimmedName, email: email.trim() || null },
+      { onConflict: "phone" },
+    );
+
+  if (error) {
+    console.error("createCustomer — kunde inte spara:", error);
+    return { ok: false, error: "Kunde inte skapa kunden." };
+  }
+
+  revalidatePath("/coaching/kunder");
+  return { ok: true, phone: normalizedPhone };
+}
 
 // Signerad uppladdnings-URL, precis som ReAligns coaching-chatt — kringgår
 // gränsen för hur stor en server actions body får vara, och bucketen är

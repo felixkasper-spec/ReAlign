@@ -232,8 +232,55 @@ export async function createBookingAsStaff(
     return { ok: false, error: "Kunde inte spara bokningen." };
   }
 
+  // Registrerar/uppdaterar kunden i customers-tabellen också, så den dyker
+  // upp direkt i kundlistan — inte bara indirekt via bokningen. Rör bara
+  // namn/mejl, aldrig linked_user_id, så en befintlig inloggningskoppling
+  // inte nollställs av misstag.
+  const normalizedPhone = normalizePhone(phone);
+  if (normalizedPhone) {
+    const { error: customerError } = await admin
+      .from("customers")
+      .upsert({ phone: normalizedPhone, name, email }, { onConflict: "phone" });
+    if (customerError) {
+      console.error("createBookingAsStaff — kunde inte uppdatera kunden:", customerError);
+    }
+  }
+
   revalidatePath("/coaching/kalender");
+  revalidatePath("/coaching/kunder");
   return { ok: true };
+}
+
+// Skapar en kund direkt från kalenderns bokningsskapare, utan att boka en
+// specifik tid — t.ex. när man vill registrera en kund man pratat med men
+// inte bestämt en exakt tid med än. Samma upsert-mönster som kundsidans
+// "Lägg till kund" (se app/coaching/kunder/actions.ts).
+export async function createCustomerFromCalendar(
+  formData: FormData,
+): Promise<{ ok: boolean; error?: string; phone?: string }> {
+  await requireCoach();
+
+  const name = (formData.get("customer_name") as string)?.trim();
+  const phone = (formData.get("customer_phone") as string)?.trim();
+  const email = (formData.get("customer_email") as string)?.trim() || null;
+
+  const normalizedPhone = normalizePhone(phone ?? "");
+  if (!name || !normalizedPhone) {
+    return { ok: false, error: "Namn och telefonnummer krävs." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("customers")
+    .upsert({ phone: normalizedPhone, name, email }, { onConflict: "phone" });
+
+  if (error) {
+    console.error("createCustomerFromCalendar — kunde inte spara:", error);
+    return { ok: false, error: "Kunde inte skapa kunden." };
+  }
+
+  revalidatePath("/coaching/kunder");
+  return { ok: true, phone: normalizedPhone };
 }
 
 // Justerar en befintlig bokning (öppnas från BookingDetailModal). Till

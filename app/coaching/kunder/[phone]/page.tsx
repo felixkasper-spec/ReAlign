@@ -61,7 +61,16 @@ export default async function CustomerDetailPage({
 
   const bookings = (allBookings ?? []).filter((b) => normalizePhone(b.customer_phone) === phone);
 
-  if (bookings.length === 0) {
+  // Kunder tillagda direkt (kundsidan, eller "Skapa kund" i kalenderns
+  // bokningsskapare) har ännu ingen bokning att hämta namn/mejl ifrån —
+  // faller tillbaka på customers-raden istället för att visa "hittades ej".
+  const { data: standaloneCustomer } = await admin
+    .from("customers")
+    .select("name, email, linked_user_id")
+    .eq("phone", phone)
+    .maybeSingle();
+
+  if (bookings.length === 0 && !standaloneCustomer) {
     return (
       <div className={`wrap ${listStyles.wrap}`}>
         <Link href="/coaching/kunder" className={listStyles.back}>
@@ -72,7 +81,10 @@ export default async function CustomerDetailPage({
     );
   }
 
-  const canonical = bookings[0];
+  const canonical = bookings[0] ?? {
+    customer_name: standaloneCustomer!.name || phone,
+    customer_email: standaloneCustomer!.email,
+  };
   const { data: services } = await admin.from("booking_services").select("id, name");
   const serviceNameById = new Map((services ?? []).map((s) => [s.id, s.name]));
 
@@ -131,22 +143,16 @@ export default async function CustomerDetailPage({
     .order("body_part")
     .order("title");
 
-  const { data: customerLink } = await admin
-    .from("customers")
-    .select("linked_user_id")
-    .eq("phone", phone)
-    .maybeSingle();
-
   let linkedProfile: { userId: string; email: string; displayName: string | null } | null = null;
-  if (customerLink?.linked_user_id) {
+  if (standaloneCustomer?.linked_user_id) {
     const { data: linkedProfileRow } = await admin
       .from("profiles")
       .select("email, display_name")
-      .eq("id", customerLink.linked_user_id)
+      .eq("id", standaloneCustomer.linked_user_id)
       .maybeSingle();
     if (linkedProfileRow) {
       linkedProfile = {
-        userId: customerLink.linked_user_id,
+        userId: standaloneCustomer.linked_user_id,
         email: linkedProfileRow.email,
         displayName: linkedProfileRow.display_name,
       };

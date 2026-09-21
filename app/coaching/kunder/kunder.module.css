@@ -265,3 +265,30 @@
   color: var(--text-soft);
   font-size: 0.76rem;
 }
+
+.addCustomerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.addCustomerRow input {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.addCustomerRow input[placeholder="Namn"],
+.addCustomerRow input[type="tel"] {
+  flex: 1;
+  min-width: 140px;
+}
+
+.addCustomerRow input[type="email"] {
+  flex: 1;
+  min-width: 180px;
+}
