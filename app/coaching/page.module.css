@@ -240,6 +240,16 @@
   color: var(--text-soft);
 }
 
+.leadOwnerBadge {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+}
+
 .leadStatusBadge[data-status="no_answer"] {
   background: #fbf0d9;
   border-color: #dba847;

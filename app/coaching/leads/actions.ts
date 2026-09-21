@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { LeadOwner } from "@/lib/lead-owner";
 
 const LEAD_STATUSES = [
   "no_answer",
@@ -11,6 +12,8 @@ const LEAD_STATUSES = [
   "follow_up",
 ] as const;
 type LeadStatus = (typeof LEAD_STATUSES)[number];
+
+const LEAD_OWNERS = ["felix", "christopher"] as const;
 
 export async function updateLeadStatus(leadId: string, status: string | null) {
   await requireCoach();
@@ -68,6 +71,38 @@ export async function updateLeadNotes(leadId: string, notes: string) {
     .from("coaching_leads")
     .update({ notes: notes.trim() || null })
     .eq("id", leadId);
+
+  revalidatePath("/coaching/leads");
+}
+
+// Manuell rättning av vilket enskilt lead som tillhör vem — en säkerhetsventil
+// ifall "vem kör annonsen just nu"-inställningen glömdes bort att växlas.
+export async function updateLeadOwner(leadId: string, owner: string | null) {
+  await requireCoach();
+
+  if (owner !== null && !LEAD_OWNERS.includes(owner as LeadOwner)) {
+    return;
+  }
+
+  const admin = createAdminClient();
+  await admin.from("coaching_leads").update({ owner }).eq("id", leadId);
+
+  revalidatePath("/coaching/leads");
+}
+
+// "Vem kör annonsen just nu" — påverkar bara NYA leads framåt (se
+// getCurrentLeadOwner i coaching-anmalan/actions.ts), rör aldrig redan
+// sparade leads.
+export async function setActiveLeadOwner(owner: string) {
+  await requireCoach();
+
+  if (!LEAD_OWNERS.includes(owner as LeadOwner)) return;
+
+  const admin = createAdminClient();
+  await admin
+    .from("lead_owner_setting")
+    .update({ owner, updated_at: new Date().toISOString() })
+    .eq("id", 1);
 
   revalidatePath("/coaching/leads");
 }

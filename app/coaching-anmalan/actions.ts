@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { trackLeadConversion } from "@/lib/server-conversion";
 import { notifyNewLead } from "@/lib/pushover";
+import { getCurrentLeadOwner } from "@/lib/lead-owner";
 
 export async function submitCoachingLead(
   formData: FormData,
@@ -28,6 +29,7 @@ export async function submitCoachingLead(
   }
 
   const supabase = await createClient();
+  const owner = await getCurrentLeadOwner();
   const { error } = await supabase.from("coaching_leads").insert({
     name,
     phone,
@@ -36,6 +38,7 @@ export async function submitCoachingLead(
     utm_source: utmSource || null,
     utm_medium: utmMedium || null,
     utm_campaign: utmCampaign || null,
+    owner,
   });
 
   if (!error) {

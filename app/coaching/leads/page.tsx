@@ -4,6 +4,8 @@ import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatRelativeTime } from "@/lib/relative-time";
 import { getFollowUpReminder } from "@/lib/lead-followup";
+import { getCurrentLeadOwner, LEAD_OWNER_LABELS } from "@/lib/lead-owner";
+import { setActiveLeadOwner } from "./actions";
 import LeadControls from "./LeadControls";
 import AutoRefresh from "./AutoRefresh";
 import styles from "../page.module.css";
@@ -26,19 +28,27 @@ const STATUS_LABELS: Record<string, string> = {
   follow_up: "Följ upp",
 };
 
+const OWNER_FILTERS = [
+  { value: "", label: "Alla" },
+  { value: "felix", label: "Felix" },
+  { value: "christopher", label: "Christopher" },
+  { value: "none", label: "Okänd" },
+] as const;
+
 export default async function CoachingLeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; q?: string }>;
+  searchParams: Promise<{ status?: string; owner?: string; q?: string }>;
 }) {
   await requireCoach();
   const admin = createAdminClient();
-  const { status: statusFilter, q } = await searchParams;
+  const { status: statusFilter, owner: ownerFilter, q } = await searchParams;
+  const currentOwner = await getCurrentLeadOwner();
 
   const { data: allLeads, error: leadsError } = await admin
     .from("coaching_leads")
     .select(
-      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, notes, created_at, status_updated_at",
+      "id, name, phone, email, situation, utm_source, utm_medium, utm_campaign, status, owner, notes, created_at, status_updated_at",
     )
     .order("created_at", { ascending: false });
 
@@ -73,15 +83,31 @@ export default async function CoachingLeadsPage({
     ]),
   );
 
+  const ownerCounts = Object.fromEntries(
+    OWNER_FILTERS.map((f) => [
+      f.value,
+      f.value === ""
+        ? searched.length
+        : f.value === "none"
+          ? searched.filter((l) => !l.owner).length
+          : searched.filter((l) => l.owner === f.value).length,
+    ]),
+  );
+
   const leads = searched.filter((l) => {
-    if (!statusFilter) return true;
-    if (statusFilter === "none") return !l.status;
-    return l.status === statusFilter;
+    const statusOk =
+      !statusFilter || (statusFilter === "none" ? !l.status : l.status === statusFilter);
+    const ownerOk =
+      !ownerFilter || (ownerFilter === "none" ? !l.owner : l.owner === ownerFilter);
+    return statusOk && ownerOk;
   });
 
-  function pillHref(statusValue: string) {
+  function buildHref(overrides: { status?: string; owner?: string }) {
     const params = new URLSearchParams();
-    if (statusValue) params.set("status", statusValue);
+    const status = overrides.status !== undefined ? overrides.status : (statusFilter ?? "");
+    const owner = overrides.owner !== undefined ? overrides.owner : (ownerFilter ?? "");
+    if (status) params.set("status", status);
+    if (owner) params.set("owner", owner);
     if (q?.trim()) params.set("q", q.trim());
     const qs = params.toString();
     return qs ? `/coaching/leads?${qs}` : "/coaching/leads";
@@ -110,12 +136,44 @@ export default async function CoachingLeadsPage({
           )}
         </p>
 
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 10,
+            marginBottom: 20,
+            background: "var(--surface)",
+            border: "1px solid var(--line)",
+            borderRadius: 100,
+            padding: "8px 8px 8px 16px",
+            width: "fit-content",
+          }}
+        >
+          <span style={{ fontSize: "0.85rem", color: "var(--text-soft)" }}>
+            Annonsen körs just nu av:
+          </span>
+          {(["felix", "christopher"] as const).map((o) => (
+            <form key={o} action={setActiveLeadOwner.bind(null, o)}>
+              <button
+                type="submit"
+                className={styles.leadFilterPill}
+                data-active={currentOwner === o || undefined}
+                style={{ border: "1px solid var(--line)", cursor: "pointer" }}
+              >
+                {LEAD_OWNER_LABELS[o]}
+              </button>
+            </form>
+          ))}
+        </div>
+
         <form
           action="/coaching/leads"
           method="get"
           style={{ display: "flex", gap: 8, marginBottom: 16, maxWidth: 340 }}
         >
           {statusFilter && <input type="hidden" name="status" value={statusFilter} />}
+          {ownerFilter && <input type="hidden" name="owner" value={ownerFilter} />}
           <input
             type="search"
             name="q"
@@ -140,10 +198,23 @@ export default async function CoachingLeadsPage({
         </form>
 
         <div className={styles.leadFilterBar}>
+          {OWNER_FILTERS.map((f) => (
+            <Link
+              key={f.value}
+              href={buildHref({ owner: f.value })}
+              data-active={(ownerFilter ?? "") === f.value || undefined}
+              className={styles.leadFilterPill}
+            >
+              {f.label} <span>{ownerCounts[f.value]}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className={styles.leadFilterBar}>
           {STATUS_FILTERS.map((f) => (
             <Link
               key={f.value}
-              href={pillHref(f.value)}
+              href={buildHref({ status: f.value })}
               data-status={f.value || undefined}
               data-active={(statusFilter ?? "") === f.value || undefined}
               className={styles.leadFilterPill}
@@ -171,7 +242,7 @@ export default async function CoachingLeadsPage({
         ) : (
           leads.length === 0 && (
             <p className={styles.empty}>
-              {query || statusFilter
+              {query || statusFilter || ownerFilter
                 ? "Inga leads matchade."
                 : "Inga intresseanmälningar än."}
             </p>
@@ -197,6 +268,11 @@ export default async function CoachingLeadsPage({
                     data-status={l.status || undefined}
                   >
                     {l.status ? STATUS_LABELS[l.status] : "Ingen status"}
+                  </span>
+                  <span className={styles.leadOwnerBadge}>
+                    {l.owner
+                      ? LEAD_OWNER_LABELS[l.owner as "felix" | "christopher"]
+                      : "Okänd"}
                   </span>
                   {reminder && (
                     <span className={styles.leadFollowUpReminder}>⏰</span>
@@ -226,6 +302,7 @@ export default async function CoachingLeadsPage({
                     phone={l.phone}
                     initialStatus={l.status}
                     initialNotes={l.notes}
+                    initialOwner={l.owner}
                   />
                 </div>
               </details>
