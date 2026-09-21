@@ -1,5 +1,6 @@
-// Cleers bokningskunder har inga konton (se app/boka) — enda stabila
-// identiteten över flera bokningar är telefonnumret, men samma person kan
+// Fysiska klinikkunder (bokningar, journal, kundprogram) har inga konton
+// — enda stabila identiteten över flera bokningar är telefonnumret, men
+// samma person kan
 // skriva det som "070-123 45 67", "0701234567" eller "+46701234567". Alla
 // journal-/formulärkopplingar nycklas därför på en normaliserad form av
 // numret istället för strängen precis som den skrevs in.
