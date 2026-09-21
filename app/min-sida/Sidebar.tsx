@@ -86,14 +86,12 @@ export default function Sidebar({
           <span className={styles.sideIc}>✎</span>Mina program
         </a>
       )}
-      {hasCoaching && (
-        <Link
-          className={`${styles.sideLink} ${activeCoaching ? styles.sideLinkActive : ""}`}
-          href="/min-sida/coaching"
-        >
-          <span className={styles.sideIc}>✉</span>Chatt med coach
-        </Link>
-      )}
+      <Link
+        className={`${styles.sideLink} ${activeCoaching ? styles.sideLinkActive : ""}`}
+        href="/min-sida/coaching"
+      >
+        <span className={styles.sideIc}>✉</span>Chatt med coach
+      </Link>
       {hasCoaching && (
         <Link
           className={`${styles.sideLink} ${activeFormular ? styles.sideLinkActive : ""}`}

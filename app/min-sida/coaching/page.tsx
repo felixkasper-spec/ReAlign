@@ -27,10 +27,13 @@ export default async function CoachingPage() {
     getSubscription(),
   ]);
 
+  // Chatten är öppen för alla inloggade användare, inte bara Premium
+  // Coaching-prenumeranter — behövs för att kunna svara fysiska
+  // klinikkunder (kopplade via customers-tabellen, se kundens sida i
+  // adminverktyget) som inte nödvändigtvis har en aktiv prenumeration.
+  // hasCoaching styr fortfarande "Kom igång-formulär"-länken, som är en
+  // Premium Coaching-specifik onboarding-flow.
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
-  if (!hasCoaching) {
-    redirect("/min-sida");
-  }
 
   const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
   const isClinicStaff = isClinicStaffEmail(user.email);

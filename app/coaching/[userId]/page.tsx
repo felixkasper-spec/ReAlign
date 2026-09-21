@@ -29,6 +29,22 @@ export default async function CoachingThreadPage({
     notFound();
   }
 
+  // Visar tydligt om den inloggade användaren är kopplad till en fysisk
+  // klinikkund (se customers-tabellen och kopplingsverktyget på kundens
+  // sida) samt om den har en aktiv Premium Coaching-prenumeration — chatten
+  // är öppen för alla inloggade, så det är inte längre givet vem man
+  // chattar med bara utifrån att tråden finns.
+  const [{ data: linkedCustomer }, { data: subscription }] = await Promise.all([
+    admin.from("customers").select("phone, name").eq("linked_user_id", userId).maybeSingle(),
+    admin
+      .from("subscriptions")
+      .select("plan, status")
+      .eq("user_id", userId)
+      .in("status", ["active", "trialing"])
+      .maybeSingle(),
+  ]);
+  const hasPremiumCoaching = subscription?.plan === "premium_coaching";
+
   const { data: messages } = await admin
     .from("coaching_messages")
     .select("id, sender, body, created_at, attachment_path, attachment_type")
@@ -71,8 +87,18 @@ export default async function CoachingThreadPage({
           }}
         >
           <div>
-            <span className="eyebrow">Premium Coaching</span>
+            <span className="eyebrow">
+              {hasPremiumCoaching ? "Premium Coaching" : "Meddelande"}
+            </span>
             <h1>{displayName}</h1>
+            {linkedCustomer && (
+              <p style={{ fontSize: "0.88rem", marginTop: 4 }}>
+                Kopplad kund:{" "}
+                <Link href={`/coaching/kunder/${linkedCustomer.phone}`}>
+                  {linkedCustomer.name || linkedCustomer.phone} →
+                </Link>
+              </p>
+            )}
           </div>
           <Link
             href={`/coaching/${userId}/journal`}

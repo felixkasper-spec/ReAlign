@@ -194,3 +194,74 @@
 .dropdownBody {
   padding: 0 16px 16px;
 }
+
+/* Koppla kundens telefonprofil till ett inlogg (LoginLink.tsx) — unik
+   funktion för ReAlign, finns inte på Cleer Klinik-sidan eftersom den
+   sidan inte har inloggade konton alls. */
+.loginLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.loginLinkInput {
+  flex: 1;
+  min-width: 220px;
+  max-width: 320px;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+}
+
+.loginLinkInput:focus {
+  outline: none;
+  border-color: var(--warm);
+}
+
+.loginLinkResults {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 260px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.loginLinkResultRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.loginLinkResultRow:last-child {
+  border-bottom: none;
+}
+
+.loginLinkResultRow:hover {
+  background: var(--surface);
+}
+
+.loginLinkResultRow span {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+}

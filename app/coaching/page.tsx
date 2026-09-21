@@ -10,6 +10,9 @@ type ThreadRow = {
   lastBody: string | null;
   lastAt: string | null;
   unread: number;
+  plan: string | null;
+  customerPhone: string | null;
+  customerName: string | null;
 };
 
 // Midnatt i svensk tid, uttryckt som en UTC-tidsstämpel — created_at lagras
@@ -45,12 +48,6 @@ export default async function CoachingInboxPage({
     .gte("created_at", startOfTodayStockholm().toISOString())
     .order("created_at", { ascending: false });
 
-  const { data: subs } = await admin
-    .from("subscriptions")
-    .select("user_id, profiles ( email, display_name )")
-    .eq("plan", "premium_coaching")
-    .in("status", ["active", "trialing"]);
-
   const { data: messages } = await admin
     .from("coaching_messages")
     .select("user_id, sender, body, created_at, read_at")
@@ -61,21 +58,49 @@ export default async function CoachingInboxPage({
     .select("id, name, email, message, created_at, read_at")
     .order("created_at", { ascending: false });
 
-  const threads: ThreadRow[] = (subs ?? []).map((s) => {
-    const profile = s.profiles as unknown as {
-      email: string;
-      display_name: string | null;
-    } | null;
-    const msgs = (messages ?? []).filter((m) => m.user_id === s.user_id);
+  // Trådlistan byggs från VILKA SOM HELST som skrivit ett meddelande, inte
+  // bara aktiva Premium Coaching-prenumeranter — chatten är öppen för alla
+  // inloggade användare (se app/min-sida/coaching/page.tsx), bland annat
+  // för att kunna svara fysiska klinikkunder som kopplat sitt inlogg via
+  // customers-tabellen (se kundens sida i adminverktyget) men inte
+  // nödvändigtvis har en aktiv prenumeration.
+  const userIds = [...new Set((messages ?? []).map((m) => m.user_id as string))];
+
+  const [{ data: profiles }, { data: subs }, { data: linkedCustomers }] =
+    userIds.length > 0
+      ? await Promise.all([
+          admin.from("profiles").select("id, email, display_name").in("id", userIds),
+          admin.from("subscriptions").select("user_id, plan, status").in("user_id", userIds),
+          admin.from("customers").select("phone, name, linked_user_id").in("linked_user_id", userIds),
+        ])
+      : [{ data: [] }, { data: [] }, { data: [] }];
+
+  const profileById = new Map((profiles ?? []).map((p) => [p.id, p]));
+  const planByUserId = new Map(
+    (subs ?? [])
+      .filter((s) => s.status === "active" || s.status === "trialing")
+      .map((s) => [s.user_id, s.plan as string]),
+  );
+  const customerByUserId = new Map(
+    (linkedCustomers ?? []).map((c) => [c.linked_user_id as string, c]),
+  );
+
+  const threads: ThreadRow[] = userIds.map((userId) => {
+    const profile = profileById.get(userId);
+    const msgs = (messages ?? []).filter((m) => m.user_id === userId);
     const last = msgs[0];
     const unread = msgs.filter((m) => m.sender === "user" && !m.read_at).length;
+    const linkedCustomer = customerByUserId.get(userId);
 
     return {
-      userId: s.user_id as string,
-      name: profile?.display_name || profile?.email || s.user_id,
+      userId,
+      name: profile?.display_name || profile?.email || userId,
       lastBody: last?.body ?? null,
       lastAt: (last?.created_at as string | undefined) ?? null,
       unread,
+      plan: planByUserId.get(userId) ?? null,
+      customerPhone: linkedCustomer?.phone ?? null,
+      customerName: linkedCustomer?.name ?? null,
     };
   });
 
@@ -205,9 +230,7 @@ export default async function CoachingInboxPage({
         )}
 
         {threads.length === 0 && (
-          <p className={styles.empty}>
-            Inga aktiva Premium Coaching-prenumeranter än.
-          </p>
+          <p className={styles.empty}>Inga meddelanden än.</p>
         )}
 
         {threads.length > 0 && filteredThreads.length === 0 && (
@@ -222,7 +245,19 @@ export default async function CoachingInboxPage({
               className={styles.row}
             >
               <div className={styles.rowInfo}>
-                <div className={styles.name}>{t.name}</div>
+                <div className={styles.name}>
+                  {t.name}
+                  {t.plan === "premium_coaching" && (
+                    <span className={styles.leadOwnerBadge} style={{ marginLeft: 8 }}>
+                      Premium Coaching
+                    </span>
+                  )}
+                  {t.customerPhone && (
+                    <span className={styles.leadOwnerBadge} style={{ marginLeft: 8 }}>
+                      {t.customerName ? `Kund: ${t.customerName}` : "Kopplad kund"}
+                    </span>
+                  )}
+                </div>
                 <div className={styles.preview}>
                   {t.lastBody ?? "Inga meddelanden än"}
                 </div>

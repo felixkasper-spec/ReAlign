@@ -24,14 +24,12 @@ export default function MobileTabs({
         <Link href="/coaching/kundprogram">Kundprogram</Link>
       )}
       <a href={`${linkPrefix}#oversikt`}>Översikt</a>
-      {hasCoaching && (
-        <Link
-          href="/min-sida/coaching"
-          className={activeCoaching ? styles.mobileTabActive : undefined}
-        >
-          Chatt med coach
-        </Link>
-      )}
+      <Link
+        href="/min-sida/coaching"
+        className={activeCoaching ? styles.mobileTabActive : undefined}
+      >
+        Chatt med coach
+      </Link>
       {hasCoaching && (
         <Link
           href="/min-sida/coaching/formular"

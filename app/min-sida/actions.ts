@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe";
 import { getBaseUrl } from "@/lib/base-url";
-import { getSubscription } from "@/lib/subscription";
 import {
   COACHING_ATTACHMENT_BUCKET,
   MAX_ATTACHMENT_BYTES,
@@ -182,6 +181,10 @@ export async function updateMarketingEmails(optIn: boolean) {
   revalidatePath("/min-sida");
 }
 
+// Chatten är öppen för alla inloggade användare (inte bara Premium
+// Coaching-prenumeranter) — se app/min-sida/coaching/page.tsx för
+// bakgrunden. Namnet är kvar från när funktionen bara gällde
+// coaching-prenumeranter, men den enda kvarvarande spärren är inloggning.
 async function requireCoachingUser() {
   const supabase = await createClient();
   const {
@@ -190,11 +193,6 @@ async function requireCoachingUser() {
 
   if (!user) {
     redirect("/login");
-  }
-
-  const subscription = await getSubscription();
-  if (!subscription.active || subscription.plan !== "premium_coaching") {
-    redirect("/min-sida");
   }
 
   return { supabase, user };

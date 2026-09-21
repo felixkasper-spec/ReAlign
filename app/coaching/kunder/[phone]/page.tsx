@@ -7,6 +7,7 @@ import { COACHING_JOURNAL_BUCKET } from "@/lib/coaching-journal";
 import { getBaseUrl } from "@/lib/base-url";
 import ProgramFromJournal from "./ProgramFromJournal";
 import TokenLinkInput from "./TokenLinkInput";
+import LoginLink from "./LoginLink";
 import listStyles from "../../page.module.css";
 import styles from "../kunder.module.css";
 
@@ -130,6 +131,28 @@ export default async function CustomerDetailPage({
     .order("body_part")
     .order("title");
 
+  const { data: customerLink } = await admin
+    .from("customers")
+    .select("linked_user_id")
+    .eq("phone", phone)
+    .maybeSingle();
+
+  let linkedProfile: { userId: string; email: string; displayName: string | null } | null = null;
+  if (customerLink?.linked_user_id) {
+    const { data: linkedProfileRow } = await admin
+      .from("profiles")
+      .select("email, display_name")
+      .eq("id", customerLink.linked_user_id)
+      .maybeSingle();
+    if (linkedProfileRow) {
+      linkedProfile = {
+        userId: customerLink.linked_user_id,
+        email: linkedProfileRow.email,
+        displayName: linkedProfileRow.display_name,
+      };
+    }
+  }
+
   return (
     <div className={`wrap ${listStyles.wrap}`}>
       <Link href="/coaching/kunder" className={listStyles.back}>
@@ -137,10 +160,17 @@ export default async function CustomerDetailPage({
         </Link>
         <span className="eyebrow">Kund</span>
         <h1>{canonical.customer_name}</h1>
-        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 28 }}>
+        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 12 }}>
           {phone}
           {canonical.customer_email ? ` · ${canonical.customer_email}` : ""}
         </p>
+
+        <LoginLink phone={phone} customerName={canonical.customer_name} linkedProfile={linkedProfile} />
+        {linkedProfile && (
+          <p style={{ fontSize: "0.85rem", marginTop: -12, marginBottom: 20 }}>
+            <Link href={`/coaching/${linkedProfile.userId}`}>Öppna chatt med kunden →</Link>
+          </p>
+        )}
 
         <div className={styles.dropdownRow}>
           <details className={styles.dropdownCard}>
