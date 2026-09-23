@@ -22,7 +22,10 @@ export default async function CoachingPage() {
     redirect("/login");
   }
 
-  const [{ data: profile }, subscription] = await Promise.all([
+  // Samma fallback-mönster som coach-sidan (/coaching/[userId]) — ett fel på
+  // en enda extra kolumn (t.ex. en migration som inte hunnit köras) ska
+  // aldrig kunna slå ut resten av sidans data, bara dölja Drive-bannern.
+  const [profileResult, subscription] = await Promise.all([
     supabase
       .from("profiles")
       .select("display_name, drive_folder_url")
@@ -30,6 +33,17 @@ export default async function CoachingPage() {
       .single(),
     getSubscription(),
   ]);
+  let profile: { display_name: string | null; drive_folder_url: string | null } | null =
+    profileResult.data;
+  if (profileResult.error) {
+    console.error("CoachingPage — kunde inte hämta profil (med drive_folder_url):", profileResult.error);
+    const fallback = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .single();
+    profile = fallback.data ? { ...fallback.data, drive_folder_url: null } : null;
+  }
 
   // Chatten är öppen för alla inloggade användare, inte bara Premium
   // Coaching-prenumeranter — behövs för att kunna svara fysiska

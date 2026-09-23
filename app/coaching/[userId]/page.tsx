@@ -20,11 +20,29 @@ export default async function CoachingThreadPage({
   await requireCoach();
   const admin = createAdminClient();
 
-  const { data: profile } = await admin
-    .from("profiles")
-    .select("email, display_name, drive_folder_url")
-    .eq("id", userId)
-    .maybeSingle();
+  // Läses in med en fallback utan drive_folder_url om selecten misslyckas
+  // (t.ex. en migration som inte hunnit köras på databasen än) — annars
+  // skulle ETT fel på en enda extra kolumn slå ut hela sidan till en 404,
+  // som om kunden inte fanns, istället för att bara sakna Drive-knappen.
+  let profile: { email: string; display_name: string | null; drive_folder_url: string | null } | null = null;
+  {
+    const { data, error } = await admin
+      .from("profiles")
+      .select("email, display_name, drive_folder_url")
+      .eq("id", userId)
+      .maybeSingle();
+    if (error) {
+      console.error("CoachingThreadPage — kunde inte hämta profil (med drive_folder_url):", error);
+      const fallback = await admin
+        .from("profiles")
+        .select("email, display_name")
+        .eq("id", userId)
+        .maybeSingle();
+      profile = fallback.data ? { ...fallback.data, drive_folder_url: null } : null;
+    } else {
+      profile = data;
+    }
+  }
 
   if (!profile) {
     notFound();
