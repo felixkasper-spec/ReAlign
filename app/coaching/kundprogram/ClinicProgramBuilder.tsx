@@ -335,11 +335,16 @@ export default function ClinicProgramBuilder({
     setCustomError(null);
     setCustomUploading(true);
     try {
-      const { path, token, publicUrl } = await createClinicProgramVideoUploadUrl(
+      const uploadUrlResult = await createClinicProgramVideoUploadUrl(
         customVideoFile.name,
         customVideoFile.size,
         customVideoFile.type,
       );
+      if (!uploadUrlResult.ok) {
+        setCustomError(uploadUrlResult.error);
+        return;
+      }
+      const { path, token, publicUrl } = uploadUrlResult;
       const supabase = createClient();
       const { error } = await supabase.storage
         .from(CLINIC_PROGRAM_VIDEO_BUCKET)

@@ -15,18 +15,27 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Next.js döljer thrown Error-meddelanden från Server Actions i
+// produktionsbyggen (av säkerhetsskäl — samma "digest"-only-beteende som
+// bakom React-felkod #441) — därför måste fel returneras som {ok:false,
+// error} precis som resten av action-filerna i appen, annars ser
+// användaren bara en kryptisk generisk textsträng istället för det
+// faktiska felet.
 export async function createClinicProgramVideoUploadUrl(
   fileName: string,
   fileSize: number,
   mime: string,
-) {
+): Promise<
+  | { ok: true; path: string; token: string; publicUrl: string }
+  | { ok: false; error: string }
+> {
   await requireClinicStaff();
 
   if (!mime.startsWith("video/")) {
-    throw new Error("Bara videofiler kan laddas upp.");
+    return { ok: false, error: "Bara videofiler kan laddas upp." };
   }
   if (fileSize > MAX_CLINIC_PROGRAM_VIDEO_BYTES) {
-    throw new Error("Filen är för stor (max 100 MB).");
+    return { ok: false, error: "Filen är för stor (max 100 MB)." };
   }
 
   const admin = createAdminClient();
@@ -38,14 +47,15 @@ export async function createClinicProgramVideoUploadUrl(
     .createSignedUploadUrl(path);
 
   if (error || !data) {
-    throw new Error("Kunde inte förbereda uppladdningen.");
+    console.error("createClinicProgramVideoUploadUrl — kunde inte förbereda uppladdning:", error);
+    return { ok: false, error: "Kunde inte förbereda uppladdningen." };
   }
 
   const {
     data: { publicUrl },
   } = admin.storage.from(CLINIC_PROGRAM_VIDEO_BUCKET).getPublicUrl(path);
 
-  return { path, token: data.token, publicUrl };
+  return { ok: true, path, token: data.token, publicUrl };
 }
 
 // exerciseIds/notes/customTitles/customVideoUrls är parallella listor (en
