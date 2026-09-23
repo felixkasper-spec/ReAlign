@@ -4,6 +4,7 @@ import { useId, useMemo, useRef, useState } from "react";
 import SubmitButton from "@/components/SubmitButton";
 import { createClient } from "@/lib/supabase/client";
 import { CLINIC_PROGRAM_VIDEO_BUCKET } from "@/lib/clinic-program-video";
+import { compressVideoIfPossible } from "@/lib/video-compress";
 import { createClinicProgramVideoUploadUrl } from "./actions";
 import styles from "../../min-sida/bygg-program/page.module.css";
 
@@ -302,6 +303,7 @@ export default function ClinicProgramBuilder({
   const [customVideoFile, setCustomVideoFile] = useState<File | null>(null);
   const [customNote, setCustomNote] = useState("");
   const [customUploading, setCustomUploading] = useState(false);
+  const [customStage, setCustomStage] = useState<"compressing" | "uploading" | null>(null);
   const [customError, setCustomError] = useState<string | null>(null);
   const customFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -349,10 +351,18 @@ export default function ClinicProgramBuilder({
     setCustomError(null);
     setCustomUploading(true);
     try {
+      // Supabase-projektets lagring har ett 50MB-tak på gratisplanen (kräver
+      // Pro för att höja) — best effort-komprimering i webbläsaren innan
+      // uppladdning tills vidare, se lib/video-compress.ts. Faller tillbaka
+      // på originalfilen om komprimering inte stöds/misslyckas.
+      setCustomStage("compressing");
+      const fileToUpload = await compressVideoIfPossible(customVideoFile);
+
+      setCustomStage("uploading");
       const uploadUrlResult = await createClinicProgramVideoUploadUrl(
-        customVideoFile.name,
-        customVideoFile.size,
-        customVideoFile.type,
+        fileToUpload.name,
+        fileToUpload.size,
+        fileToUpload.type,
       );
       if (!uploadUrlResult.ok) {
         setCustomError(uploadUrlResult.error);
@@ -368,7 +378,7 @@ export default function ClinicProgramBuilder({
       for (let attempt = 1; attempt <= 3; attempt++) {
         const { error } = await supabase.storage
           .from(CLINIC_PROGRAM_VIDEO_BUCKET)
-          .uploadToSignedUrl(path, token, customVideoFile);
+          .uploadToSignedUrl(path, token, fileToUpload);
         uploadError = error;
         if (!error || attempt === 3 || !isLikelyNetworkError(error)) break;
         await sleep(1200 * attempt);
@@ -400,6 +410,7 @@ export default function ClinicProgramBuilder({
       );
     } finally {
       setCustomUploading(false);
+      setCustomStage(null);
     }
   }
 
@@ -672,7 +683,11 @@ export default function ClinicProgramBuilder({
             onClick={addCustom}
             disabled={!customTitle.trim() || !customVideoFile || customUploading}
           >
-            {customUploading ? "Laddar upp..." : "+ Lägg till egen övning"}
+            {customStage === "compressing"
+              ? "Komprimerar video..."
+              : customStage === "uploading"
+                ? "Laddar upp..."
+                : "+ Lägg till egen övning"}
           </button>
         </details>
       </form>
