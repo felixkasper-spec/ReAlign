@@ -7,6 +7,20 @@ import { CLINIC_PROGRAM_VIDEO_BUCKET } from "@/lib/clinic-program-video";
 import { createClinicProgramVideoUploadUrl } from "./actions";
 import styles from "../../min-sida/bygg-program/page.module.css";
 
+// "Load failed" (Safari) / "Failed to fetch" (Chrome) är webbläsarens
+// generiska text för en trasig fetch — här nästan alltid ett nätverksglapp
+// mitt i en stor uppladdning på mobilnät, inte ett faktiskt fel med filen.
+// Värt att både försöka igen automatiskt och visa en begriplig text för,
+// istället för att bara skylta den kryptiska originaltexten.
+function isLikelyNetworkError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  return /load failed|failed to fetch|network ?error/i.test(message);
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export type Exercise = { id: string; slug: string; title: string; body_part: string };
 export type SelectedRow = {
   // Unikt per RAD i programmet — skiljer sig från `id` när samma övning
@@ -346,10 +360,20 @@ export default function ClinicProgramBuilder({
       }
       const { path, token, publicUrl } = uploadUrlResult;
       const supabase = createClient();
-      const { error } = await supabase.storage
-        .from(CLINIC_PROGRAM_VIDEO_BUCKET)
-        .uploadToSignedUrl(path, token, customVideoFile);
-      if (error) throw error;
+
+      // Upp till tre försök — bara vid nätverksglapp (se isLikelyNetworkError),
+      // inte vid t.ex. en ogiltig signerad URL där ett nytt försök ändå
+      // skulle misslyckas likadant.
+      let uploadError: unknown = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        const { error } = await supabase.storage
+          .from(CLINIC_PROGRAM_VIDEO_BUCKET)
+          .uploadToSignedUrl(path, token, customVideoFile);
+        uploadError = error;
+        if (!error || attempt === 3 || !isLikelyNetworkError(error)) break;
+        await sleep(1200 * attempt);
+      }
+      if (uploadError) throw uploadError;
 
       setSelected((prev) => [
         ...prev,
@@ -368,7 +392,11 @@ export default function ClinicProgramBuilder({
       setCustomNote("");
     } catch (err) {
       setCustomError(
-        err instanceof Error ? err.message : "Något gick fel, försök igen.",
+        isLikelyNetworkError(err)
+          ? "Uppladdningen misslyckades — troligen på grund av anslutningen (stor fil + svagt nät). Testa gärna på wifi, eller försök igen."
+          : err instanceof Error
+            ? err.message
+            : "Något gick fel, försök igen.",
       );
     } finally {
       setCustomUploading(false);
