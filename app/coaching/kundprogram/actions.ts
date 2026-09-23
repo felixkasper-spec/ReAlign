@@ -35,7 +35,7 @@ export async function createClinicProgramVideoUploadUrl(
     return { ok: false, error: "Bara videofiler kan laddas upp." };
   }
   if (fileSize > MAX_CLINIC_PROGRAM_VIDEO_BYTES) {
-    return { ok: false, error: "Filen är för stor (max 100 MB)." };
+    return { ok: false, error: "Filen är för stor (max 500 MB)." };
   }
 
   const admin = createAdminClient();
