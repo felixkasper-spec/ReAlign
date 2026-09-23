@@ -615,7 +615,6 @@ export default function ClinicProgramBuilder({
           <input
             type="file"
             accept="video/*"
-            capture="environment"
             ref={customFileInputRef}
             onChange={(e) => {
               const f = e.target.files?.[0] ?? null;
