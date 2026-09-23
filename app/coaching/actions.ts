@@ -147,6 +147,28 @@ Svara ENDAST med själva utkastet till meddelande — ingen inledning, inga cita
   }
 }
 
+// Sätter/rensar en kunds Drive-mapplänk (se migration 0073) — coachen
+// skapar och delar mappen själv i sitt eget Drive-konto, det här bara
+// lagrar och visar URL:en i chatten. Tomt värde rensar länken.
+export async function updateCoachingDriveLink(userId: string, url: string) {
+  await requireCoach();
+
+  const trimmed = url.trim();
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("profiles")
+    .update({ drive_folder_url: trimmed || null })
+    .eq("id", userId);
+
+  if (error) {
+    console.error("updateCoachingDriveLink — kunde inte spara:", error);
+    return { ok: false, error: "Kunde inte spara länken." };
+  }
+
+  revalidatePath(`/coaching/${userId}`);
+  return { ok: true };
+}
+
 export async function markContactMessageRead(messageId: string) {
   await requireCoach();
 

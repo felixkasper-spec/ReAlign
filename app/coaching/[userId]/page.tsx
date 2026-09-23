@@ -6,6 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { linkify } from "@/lib/linkify";
 import { COACHING_ATTACHMENT_BUCKET } from "@/lib/coaching-attachments";
 import { replyToCoachingThread } from "../actions";
+import DriveLinkButton from "./DriveLinkButton";
 import ReplyForm from "./ReplyForm";
 import ScrollToLatest from "./ScrollToLatest";
 import styles from "../page.module.css";
@@ -21,7 +22,7 @@ export default async function CoachingThreadPage({
 
   const { data: profile } = await admin
     .from("profiles")
-    .select("email, display_name")
+    .select("email, display_name, drive_folder_url")
     .eq("id", userId)
     .maybeSingle();
 
@@ -100,13 +101,16 @@ export default async function CoachingThreadPage({
               </p>
             )}
           </div>
-          <Link
-            href={`/coaching/${userId}/journal`}
-            className="btn btn-ghost"
-            style={{ border: "1px solid var(--line)", flexShrink: 0 }}
-          >
-            🔒 Journal →
-          </Link>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <DriveLinkButton userId={userId} initialUrl={profile.drive_folder_url} />
+            <Link
+              href={`/coaching/${userId}/journal`}
+              className="btn btn-ghost"
+              style={{ border: "1px solid var(--line)", flexShrink: 0 }}
+            >
+              🔒 Journal →
+            </Link>
+          </div>
         </div>
 
         <div className={styles.card}>

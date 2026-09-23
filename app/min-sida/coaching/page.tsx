@@ -23,7 +23,11 @@ export default async function CoachingPage() {
   }
 
   const [{ data: profile }, subscription] = await Promise.all([
-    supabase.from("profiles").select("display_name").eq("id", user.id).single(),
+    supabase
+      .from("profiles")
+      .select("display_name, drive_folder_url")
+      .eq("id", user.id)
+      .single(),
     getSubscription(),
   ]);
 
@@ -102,6 +106,25 @@ export default async function CoachingPage() {
                 </div>
               </div>
             </div>
+
+            {profile?.drive_folder_url && (
+              <a
+                href={profile.drive_folder_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  padding: "10px 16px",
+                  fontSize: "0.85rem",
+                  textAlign: "center",
+                  borderBottom: "1px solid var(--line)",
+                  color: "var(--sage)",
+                  textDecoration: "none",
+                }}
+              >
+                📁 Har du en bild eller video att dela? Lägg den i Drive-mappen →
+              </a>
+            )}
 
             <div className={styles.scroll}>
               <ChatThread messages={messagesWithUrls} />
