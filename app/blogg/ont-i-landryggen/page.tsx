@@ -1,8 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import BlogExerciseCard from "@/components/BlogExerciseCard";
 import BlogPostCard from "@/components/BlogPostCard";
 import ArticleByline from "@/components/ArticleByline";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -62,148 +60,21 @@ export default function BlogPost() {
         </div>
 
         <div className={styles.article}>
-          <nav className={styles.toc} aria-label="Innehåll i artikeln">
-            <span className={styles.tocLabel}>I den här artikeln</span>
-            <div className={styles.tocLinks}>
-              <a href="#varfor">Varför gör det ont?</a>
-              <a href="#ovningar">Övningar som hjälper</a>
-              <a href="#ergonomi">Ergonomi & vardagstips</a>
-            </div>
-          </nav>
-
-          <h2 id="varfor">Varför gör ländryggen ont?</h2>
-          <p>
-            Ländryggens ytliga muskler är inte hållningsmuskler — men det
-            är precis den rollen de ofta tvingas in i. Det händer när
-            andra delar av kroppen inte gör sitt jobb som de ska, vilket
-            gör att ländryggen får kompensera dag efter dag, till den
-            grad att den blir kroniskt överbelastad.
-          </p>
-
-          <div className={styles.perspectiveBox}>
-            <span className="eyebrow">Postural träning-perspektivet</span>
-            <h2>Ländryggen är sällan grundorsaken — bara där det märks</h2>
-            <p>
-              Den vanligaste anledningen är att de djupa hållningsmusklerna
-              i höft och ljumske inte gör sitt jobb som de ska. De håller
-              då inte bäcken och ländrygg i rätt position, vilket tvingar
-              ländryggens ytliga muskler att kompensera för att hålla uppe
-              överkroppen. Det är därför det sällan blir en hållbar
-              förbättring av att bara träna upp ländryggen i sig — den är
-              redan överbelastad. Lösningen är inte att stärka den
-              ytterligare för att klara belastningen, utan att ta bort
-              själva anledningen till att den är överbelastad: få de djupa
-              hållningsmusklerna i höft och ljumske att ta över igen.
-            </p>
-            <p>
-              Ett annat vanligt problem är en krum, stel bröstrygg
-              tillsammans med ett framåtskjutet huvud. Det är lätt att
-              glömma att ryggraden är en sammanhängande enhet, även om vi
-              delar in den i ländrygg, mellanrygg och bröstrygg som
-              separata delar — obalanser i en del påverkar självklart
-              hela ryggraden. En stel bröstrygg och ett framskjutet huvud
-              sätter ländryggen i ett onaturligt läge, vilket förstärker
-              samma överbelastning underifrån.
-            </p>
-          </div>
-
-          <p>
-            Två saker brukar hjälpa mest: aktivera och stärka de djupa
-            hållningsmusklerna i höft och ljumske så att de kan ta
-            tillbaka sin roll, och frigöra rörligheten i övre delen av
-            ryggen så att den slutar belasta ländryggen underifrån.
-          </p>
-
-          <h2 id="ovningar">Övningar som bygger upp stödet</h2>
-          <ol>
-            <li>
-              <b>Hooklying knee squeezes.</b> Aktiverar de djupa
-              hållningsmusklerna i höft och ljumske, som ska hålla bäckenet
-              i rätt position.
-              <div className={styles.exerciseRow}>
-                <BlogExerciseCard
-                  slug="hooklying-knee-squeezes"
-                  title="Hooklying Knee Squeezes"
-                />
-              </div>
-            </li>
-            <li>
-              <b>Hooklying single hip lifts.</b> Bygger vidare på samma
-              aktivering, med fokus på att styra bäckenet stabilt genom
-              rörelsen.
-              <div className={styles.exerciseRow}>
-                <BlogExerciseCard
-                  slug="hooklying-single-hip-lifts"
-                  title="Hooklying Single Hip Lifts"
-                />
-              </div>
-            </li>
-            <li>
-              <b>Supine foot circles.</b> Kopplar in fot och höft
-              tillsammans, så att aktiveringen sprider sig genom hela
-              kedjan underifrån.
-              <div className={styles.exerciseRow}>
-                <BlogExerciseCard
-                  slug="supine-foot-circles"
-                  title="Supine Foot Circles"
-                />
-              </div>
-            </li>
-            <li>
-              <b>Wide cobra.</b> Rör upp rörligheten i bröstryggen, som
-              annars tvingar ländryggen att kompensera för dess stelhet.
-              <div className={styles.exerciseRow}>
-                <BlogExerciseCard slug="wide-cobra" title="Wide Cobra" />
-              </div>
-            </li>
-            <li>
-              <b>Standing shoulder shrugs.</b> Motverkar den framåtskjutna
-              huvud- och axelposition som sätter hela ryggraden, ländryggen
-              inkluderad, i ett onaturligt läge.
-              <div className={styles.exerciseRow}>
-                <BlogExerciseCard
-                  slug="standing-shoulder-shrugs"
-                  title="Standing Shoulder Shrugs"
-                />
-              </div>
-            </li>
-          </ol>
-
-          <p id="ergonomi">
-            <b>Tänk också på:</b> oavsett vad som ligger bakom
-            överbelastningen hjälper det att röra på sig och variera
-            position genom dagen — kroppen är inte gjord för att stå still
-            i en enda position, oavsett vilken.
-          </p>
-
-          <p>
-            Balans i kroppen är inte allt — läs vår{" "}
-            <Link href="/ergonomi">ergonomiguide</Link> för konkreta tips
-            om hur du kan använda kroppen i vanliga vardagliga situationer,
-            som att sitta, stå, lyfta och sova.
-          </p>
-
           <div className={styles.ctaBand}>
-            <p>Ett ordnat program för höft och ländrygg, helt gratis:</p>
-            <Link className="btn btn-primary" href="/program/hofter-niva-1">
-              Testa Höft & ländrygg — Nivå 1, gratis →
-            </Link>
-            <p style={{ fontSize: "0.85rem", marginTop: 14, marginBottom: 4 }}>
-              Redo för nästa steg?{" "}
-              <Link href="/program/hofter-niva-2">Höft & ländrygg — Nivå 2</Link>.
+            <p>
+              Hela artikeln — med grundorsaken förklarad, fem övningar med
+              instruktionsvideo och ergonomitips — finns hos vår klinik i
+              Göteborg, Cleer Klinik.
             </p>
-            <p style={{ fontSize: "0.85rem", marginTop: 0, marginBottom: 0 }}>
-              Jobbar du på kontor? Testa vårt{" "}
-              <Link href="/program/kontorsvardag">kontorsprogram</Link>.
-            </p>
+            <a
+              className="btn btn-primary"
+              href="https://www.cleerklinik.se/blogg/ont-i-landryggen"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Läs hela artikeln hos Cleer Klinik →
+            </a>
           </div>
-
-          <p className={styles.softLink}>
-            Om värken är återkommande och du vill förstå var i kedjan din
-            egen obalans sitter, kan ett{" "}
-            <Link href="/videosamtal">videosamtal med en av våra terapeuter</Link>{" "}
-            ge en tydligare bild än att gissa själv.
-          </p>
 
           <h3 className={styles.relatedHead}>Relaterat</h3>
           <div className={styles.relatedGrid}>
