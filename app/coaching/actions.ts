@@ -4,6 +4,8 @@ import Anthropic from "@anthropic-ai/sdk";
 import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendEmail } from "@/lib/brevo";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function replyToCoachingThread(
   userId: string,
@@ -33,6 +35,53 @@ export async function replyToCoachingThread(
 
   revalidatePath(`/coaching/${userId}`);
   revalidatePath("/coaching");
+
+  // Mejlar kunden att ett nytt meddelande väntar — innehållet själv visas
+  // bara i chatten (inte i mejlet), dels för att hälsorelaterat innehåll
+  // inte ska ligga i inkorgen i klartext, dels för att mejlet inte ska
+  // behöva uppdateras om coachen redigerar/skickar fler meddelanden i rad.
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("email, display_name")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (profile?.email) {
+    const baseUrl = await getBaseUrl();
+    const chatUrl = `${baseUrl}/min-sida/coaching`;
+    try {
+      await sendEmail({
+        to: [{ email: profile.email, name: profile.display_name ?? undefined }],
+        subject: "Nytt meddelande från din coach — ReAlign Metoden",
+        replyTo: { email: "kontakt@realignmetoden.se", name: "ReAlign Metoden" },
+        html: buildNewMessageEmailHtml(chatUrl),
+        text: `Hej!\n\nDu har fått ett nytt meddelande från din coach på ReAlign Metoden. Logga in för att läsa och svara:\n${chatUrl}\n\nVänliga hälsningar,\nReAlign Metoden`,
+      });
+    } catch (e) {
+      console.error("replyToCoachingThread — kunde inte skicka mejlnotis:", e);
+    }
+  }
+}
+
+function buildNewMessageEmailHtml(chatUrl: string) {
+  return `
+<div style="background:#fafaf7;padding:32px 16px;">
+  <div style="max-width:440px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px 28px;border:1px solid #dadfd8;">
+    <div style="margin-bottom:24px;">
+      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#5e7461;vertical-align:middle;margin-right:8px;"></span
+      ><span style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#2b2e2a;vertical-align:middle;">ReAlign</span>
+    </div>
+    <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#2b2e2a;line-height:1.5;margin:0 0 24px;">
+      Du har fått ett nytt meddelande från din coach.
+    </p>
+    <div style="text-align:center;margin:0 0 20px;">
+      <a href="${chatUrl}" style="display:inline-block;background:#d98e5c;color:#2b2e2a;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-decoration:none;padding:12px 28px;border-radius:100px;">Läs och svara →</a>
+    </div>
+    <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7267;line-height:1.5;margin:0;">
+      Vänliga hälsningar,<br>ReAlign Metoden
+    </p>
+  </div>
+</div>`;
 }
 
 export async function generateReplyDraft(
