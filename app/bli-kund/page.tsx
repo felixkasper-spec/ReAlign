@@ -43,7 +43,7 @@ export default async function BliKundPage() {
       <div className={styles.wrap}>
         <div className={styles.card}>
           <span className="eyebrow">Premium Coaching</span>
-          <h1>449 kr/mån</h1>
+          <h1>249 kr/mån</h1>
 
           {alreadyCoaching ? (
             <>

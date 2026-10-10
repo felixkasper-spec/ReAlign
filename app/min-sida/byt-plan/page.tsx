@@ -11,7 +11,7 @@ import styles from "./page.module.css";
 const planLabels: Record<string, { name: string; price: number; unit: string }> = {
   premium: { name: "Premium (månadsvis)", price: 149, unit: "kr/mån" },
   premium_yearly: { name: "Premium (årsvis)", price: 1341, unit: "kr/år" },
-  premium_coaching: { name: "Premium Coaching", price: 449, unit: "kr/mån" },
+  premium_coaching: { name: "Premium Coaching", price: 249, unit: "kr/mån" },
 };
 
 export default async function BytPlanPage({

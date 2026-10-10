@@ -721,7 +721,7 @@ export default async function MinSidaPage({
                       <Link href="/premium-coaching" style={{ color: "var(--warm)" }}>
                         Premium Coaching
                       </Link>{" "}
-                      – 449 kr/mån.
+                      – 249 kr/mån.
                     </p>
                   </div>
                 </>

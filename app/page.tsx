@@ -406,7 +406,7 @@ export default async function Home() {
               <span className="eyebrow" style={{ color: "var(--warm)" }}>
                 Premium Coaching
               </span>
-              <p className={styles.tierPrice}>449 kr/mån</p>
+              <p className={styles.tierPrice}>249 kr/mån</p>
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Premium&quot;</li>
                 <li>Direktkontakt med en coach via chatt</li>

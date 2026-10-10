@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 export const metadata = pageMetadata({
   title: "Premium Coaching — ReAlign Metoden",
   description:
-    "Allt i Premium, plus direktkontakt med en coach via chatt. 449 kr/mån, begränsat antal platser.",
+    "Allt i Premium, plus direktkontakt med en coach via chatt. 249 kr/mån, begränsat antal platser.",
   image: "/og/premium-coaching.png",
   path: "/premium-coaching",
 });
@@ -161,7 +161,7 @@ export default async function PremiumCoachingPage() {
           <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
             {alreadyCoaching ? "Du är redan medlem" : "Premium Coaching"}
           </span>
-          <h2>449 kr/mån</h2>
+          <h2>249 kr/mån</h2>
 
           {alreadyCoaching ? (
             <>

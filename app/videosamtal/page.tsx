@@ -100,7 +100,7 @@ export default function VideosamtalPage() {
         <p className={styles.altNote}>
           Letar du efter löpande stöd istället för en engångsanalys? Se{" "}
           <Link href="/premium-coaching">Premium Coaching</Link> — chatt med
-          en coach för 449 kr/mån.
+          en coach för 249 kr/mån.
         </p>
 
         <Footer />
