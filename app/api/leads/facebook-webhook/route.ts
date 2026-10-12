@@ -11,19 +11,6 @@ import { getCurrentLeadOwner } from "@/lib/lead-owner";
 // → Webhooks, se .env.example för de tre hemligheter som krävs.
 const GRAPH_API_VERSION = "v21.0";
 
-// Leads från specifika formulär pingar bara Felix personligen (egen
-// Pushover-nyckel) istället för den delade PUSHOVER_USER_KEY — t.ex. en
-// kampanj Felix kör själv och vill ringa upp direkt utan att Christopher
-// också aviseras. Kommaseparerad lista med formulär-ID:n. Osatt/tom =
-// ingen går till Felix-bara-nyckeln, allt går som vanligt till den delade.
-const FELIX_ONLY_FORM_IDS = process.env.PUSHOVER_FELIX_ONLY_FORM_IDS?.split(",")
-  .map((id) => id.trim())
-  .filter(Boolean);
-
-function isFelixOnly(formId: string): boolean {
-  return !!FELIX_ONLY_FORM_IDS?.includes(formId);
-}
-
 // Metas verifieringshandskakning — körs en gång när webhooken sparas i
 // Meta-appens gränssnitt, och ibland igen om prenumerationen görs om.
 export async function GET(request: Request) {
@@ -165,7 +152,7 @@ export async function POST(request: Request) {
         continue;
       }
 
-      await notifyNewLead({ name: lead.name, phone: lead.phone, situation }, isFelixOnly(change.value.form_id));
+      await notifyNewLead({ name: lead.name, phone: lead.phone, situation });
 
       console.log(
         `Meta leadgen-webhook — sparade lead ${lead.name} (${lead.phone}) från formulär ${change.value.form_id}`,

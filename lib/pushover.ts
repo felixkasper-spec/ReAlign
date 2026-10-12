@@ -1,18 +1,13 @@
 const PUSHOVER_API_URL = "https://api.pushover.net/1/messages.json";
 
-async function sendPushover(
-  payload: {
-    title: string;
-    message: string;
-    url: string;
-    url_title: string;
-  },
-  // Skickar till en annan Pushover-nyckel än den delade — t.ex. leads från
-  // en specifik kampanj som bara ska gå till en person, se notifyNewLead.
-  userKeyOverride?: string,
-) {
+async function sendPushover(payload: {
+  title: string;
+  message: string;
+  url: string;
+  url_title: string;
+}) {
   const token = process.env.PUSHOVER_API_TOKEN;
-  const userKey = userKeyOverride || process.env.PUSHOVER_USER_KEY;
+  const userKey = process.env.PUSHOVER_USER_KEY;
   if (!token || !userKey) return;
 
   try {
@@ -33,26 +28,17 @@ async function sendPushover(
 // Push-notis till Felix telefon när ett nytt lead kommer in via
 // /coaching-anmalan. Inaktiv (no-op) tills PUSHOVER_USER_KEY +
 // PUSHOVER_API_TOKEN är satta.
-export async function notifyNewLead(
-  lead: {
-    name: string;
-    phone: string;
-    situation?: string | null;
-  },
-  // true för leads från specifika kampanjer (se PUSHOVER_FELIX_ONLY_FORM_IDS
-  // i facebook-webhook/route.ts) som bara ska pinga Felix personligen,
-  // istället för den delade PUSHOVER_USER_KEY.
-  felixOnly = false,
-) {
-  await sendPushover(
-    {
-      title: "Ny intresseanmälan",
-      message: `${lead.name} · ${lead.phone}${lead.situation ? `\n${lead.situation}` : ""}`,
-      url: "https://www.realignmetoden.se/coaching/leads",
-      url_title: "Öppna leads",
-    },
-    felixOnly ? process.env.PUSHOVER_FELIX_USER_KEY : undefined,
-  );
+export async function notifyNewLead(lead: {
+  name: string;
+  phone: string;
+  situation?: string | null;
+}) {
+  await sendPushover({
+    title: "Ny intresseanmälan",
+    message: `${lead.name} · ${lead.phone}${lead.situation ? `\n${lead.situation}` : ""}`,
+    url: "https://www.realignmetoden.se/coaching/leads",
+    url_title: "Öppna leads",
+  });
 }
 
 // Push-notis när ett eller flera "Inget svar"-leads är mogna för nästa steg
