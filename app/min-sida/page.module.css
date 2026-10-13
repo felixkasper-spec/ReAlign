@@ -547,6 +547,28 @@
     border-bottom: 1px solid var(--line);
   }
 
+  /* Diskret vink om att det finns fler flikar att svepa till — en pil som
+     "fastnar" på högerkanten medan man scrollar raden i sidled (sticky
+     flex-item, inte en overlay, så den aldrig kan täcka en flik man
+     försöker trycka på). Utan den är det lätt att missa t.ex.
+     "Kom igång-formulär" om den hamnar utanför skärmen, särskilt för den
+     som inte är van vid att svepa i sidled på en lista med pillar. */
+  .mobileTabs::after {
+    content: "›";
+    position: sticky;
+    right: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    background: linear-gradient(to right, transparent, var(--bg) 55%);
+    pointer-events: none;
+  }
+
   .mobileTabs a {
     flex-shrink: 0;
     padding: 8px 16px;
