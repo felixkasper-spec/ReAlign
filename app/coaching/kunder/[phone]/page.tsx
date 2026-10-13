@@ -61,9 +61,22 @@ export default async function CustomerDetailPage({
   // journal/formulär/kundprogram att visa (allt det är kopplat via telefon,
   // som saknas) — en egen, enklare vy nedan istället för att tvinga resten
   // av sidans telefon-beroende frågor genom en null/e-post-sträng.
-  const isEmailKey = rawParam.includes("@");
+  //
+  // rawParam kan vara URL-encodad ("%40") eller redan avkodad ("@") beroende
+  // på var anropet kommer ifrån — avkoda FÖRST och kolla sedan, annars missar
+  // "@"-kollen den encodade formen och skickar kontot till fel-grenen nedan
+  // (telefon-sökningen), som är exakt buggen som gjorde att en nyss skapad
+  // konto-kund visade "Ingen kund med det telefonnumret hittades."
+  let decodedParam = rawParam;
+  try {
+    decodedParam = decodeURIComponent(rawParam);
+  } catch {
+    // Ogiltig procent-sekvens — använd rawParam oavkodad, bättre än att
+    // krascha hela sidan.
+  }
+  const isEmailKey = decodedParam.includes("@");
   if (isEmailKey) {
-    const email = decodeURIComponent(rawParam);
+    const email = decodedParam;
     const { data: accountCustomer } = await admin
       .from("customers")
       .select("name, email, linked_user_id")
