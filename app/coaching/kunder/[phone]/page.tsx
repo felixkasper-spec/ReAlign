@@ -225,9 +225,14 @@ export default async function CustomerDetailPage({
         </Link>
         <span className="eyebrow">Kund</span>
         <h1>{displayName}</h1>
-        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 20 }}>
+        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 12 }}>
           {email} · Bara konto, inget telefonnummer sparat
         </p>
+        {userId && (
+          <p style={{ fontSize: "0.85rem", marginBottom: 20 }}>
+            <Link href={`/coaching/${userId}`}>Öppna chatt med kunden →</Link>
+          </p>
+        )}
 
         <details className={styles.dropdownCard} style={{ marginBottom: 20 }}>
           <summary className={styles.dropdownSummary}>
