@@ -7,17 +7,11 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/brevo";
 import { getBaseUrl } from "@/lib/base-url";
 
-export async function replyToCoachingThread(
-  userId: string,
-  formData: FormData,
-) {
-  await requireCoach();
-
-  const body = String(formData.get("body") ?? "").trim();
-  if (!body) {
-    return;
-  }
-
+// Delad av replyToCoachingThread (manuellt svar) och sendCoachingCheckin
+// (varannan-veckan-avstämningen, se längre ner) — båda ska bete sig
+// identiskt: spara meddelandet, markera ev. olästa kundmeddelanden som
+// lästa, och mejla en notis.
+async function sendCoachMessage(userId: string, body: string) {
   const admin = createAdminClient();
 
   await admin.from("coaching_messages").insert({
@@ -58,9 +52,73 @@ export async function replyToCoachingThread(
         text: `Hej!\n\nDu har fått ett nytt meddelande från din coach på ReAlign Metoden. Logga in för att läsa och svara:\n${chatUrl}\n\nVänliga hälsningar,\nReAlign Metoden`,
       });
     } catch (e) {
-      console.error("replyToCoachingThread — kunde inte skicka mejlnotis:", e);
+      console.error("sendCoachMessage — kunde inte skicka mejlnotis:", e);
     }
   }
+}
+
+export async function replyToCoachingThread(
+  userId: string,
+  formData: FormData,
+) {
+  await requireCoach();
+
+  const body = String(formData.get("body") ?? "").trim();
+  if (!body) {
+    return;
+  }
+
+  await sendCoachMessage(userId, body);
+}
+
+// Varannan-veckan-avstämningen (se "Dags för avstämning" på /coaching) —
+// skickar precis som ett manuellt svar (samma mejlnotis), men nollställer
+// dessutom 14-dagarsklockan i coaching_checkins så kunden inte dyker upp i
+// listan igen förrän om två veckor.
+export async function sendCoachingCheckin(
+  userId: string,
+  message: string,
+): Promise<{ ok: boolean; error?: string }> {
+  await requireCoach();
+
+  const trimmed = message.trim();
+  if (!trimmed) {
+    return { ok: false, error: "Meddelandet kan inte vara tomt." };
+  }
+
+  await sendCoachMessage(userId, trimmed);
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("coaching_checkins")
+    .upsert({ user_id: userId, last_checkin_at: new Date().toISOString() }, { onConflict: "user_id" });
+
+  if (error) {
+    console.error("sendCoachingCheckin — kunde inte uppdatera checkin-tiden:", error);
+  }
+
+  revalidatePath("/coaching");
+  return { ok: true };
+}
+
+// "Hoppa över" på ett avstämningskort — nollställer samma 14-dagarsklocka
+// utan att skicka något, så en kund man medvetet valt att vänta med inte
+// dyker upp igen förrän nästa period.
+export async function dismissCoachingCheckin(userId: string): Promise<{ ok: boolean }> {
+  await requireCoach();
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("coaching_checkins")
+    .upsert({ user_id: userId, last_checkin_at: new Date().toISOString() }, { onConflict: "user_id" });
+
+  if (error) {
+    console.error("dismissCoachingCheckin — kunde inte spara:", error);
+    return { ok: false };
+  }
+
+  revalidatePath("/coaching");
+  return { ok: true };
 }
 
 function buildNewMessageEmailHtml(chatUrl: string) {
