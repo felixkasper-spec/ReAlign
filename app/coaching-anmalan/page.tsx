@@ -16,7 +16,6 @@ export const metadata = pageMetadata({
   title: "Intresseanmälan Premium Coaching — ReAlign Metoden",
   description:
     "Lämna dina uppgifter så ringer jag dig personligen och berättar mer om Premium Coaching.",
-  image: "/og/premium-coaching.png",
   path: "/coaching-anmalan",
 });
 

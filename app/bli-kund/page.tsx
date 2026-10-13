@@ -10,7 +10,6 @@ export const metadata = {
   ...pageMetadata({
     title: "Bli Premium Coaching-kund — ReAlign Metoden",
     description: "Slutför din prenumeration på Premium Coaching.",
-    image: "/og/premium-coaching.png",
     path: "/bli-kund",
   }),
   // Sidan är till för att delas personligen efter ett samtal, inte för att
