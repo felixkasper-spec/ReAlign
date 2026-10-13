@@ -73,7 +73,10 @@ export default async function CustomersPage({
   // om de inte redan finns via en bokning, annars vinner den friskare
   // bokningsdatan.
   for (const c of standaloneCustomers ?? []) {
-    const phone = normalizePhone(c.phone);
+    // c.phone kan vara null nu (konto-bara kund utan telefon ännu, se
+    // migration 0077) — normalizePhone() är inte null-säker (antar alltid
+    // en sträng), så ett direkt anrop med null kraschade hela sidan.
+    const phone = c.phone ? normalizePhone(c.phone) : null;
     const key = rowKey(phone, c.email);
     if (phone && byPhone.has(key)) continue;
     if (!phone && !c.email) continue;
