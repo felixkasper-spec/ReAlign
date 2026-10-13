@@ -18,6 +18,7 @@ type Intake = {
   symptoms: string;
   pain_level: number | null;
   previous_injuries: string | null;
+  movement_limitations: string | null;
   medications: string | null;
   sedentary_work: string | null;
   sleep_habits: string | null;
@@ -331,6 +332,17 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
           />
         </label>
         <label className={styles.field}>
+          Har du några rörelsebegränsningar just nu? T.ex. kan inte böja dig
+          framåt, kan inte stå länge, eller kan inte lyfta armarna fritt.
+          <textarea
+            name="movement_limitations"
+            rows={3}
+            defaultValue={intake?.movement_limitations ?? ""}
+            className={styles.textarea}
+            placeholder="Fyll i ditt svar här..."
+          />
+        </label>
+        <label className={styles.field}>
           Mediciner eller kosttillskott som kan påverka träning eller
           återhämtning
           <textarea
@@ -435,12 +447,13 @@ export default function IntakeForm({ intake }: { intake: Intake }) {
 
       <section className={shellStyles.panel}>
         <div className={shellStyles.panelHead}>
-          <h2>Hållningsfoton</h2>
+          <h2>Hållningsfoton — valfritt</h2>
         </div>
         <p className={styles.help}>
-          Ladda upp fyra bilder — framifrån, bakifrån och från båda sidorna — i
-          vanliga, åtsittande kläder, stående avslappnat. Hjälper Felix göra en
-          hållningsanalys inför ditt program.
+          Helt valfritt, men hjälper Felix göra en bättre hållningsanalys
+          inför ditt program. Om du vill: fyra bilder — framifrån, bakifrån
+          och från båda sidorna — i vanliga, åtsittande kläder, stående
+          avslappnat.
         </p>
         <div className={styles.photoSlots}>
           {PHOTO_SLOTS.map((slot, i) => {

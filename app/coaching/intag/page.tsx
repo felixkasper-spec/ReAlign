@@ -16,7 +16,7 @@ export default async function CoachingIntakePage() {
   const { data: intakes } = await admin
     .from("coaching_intake")
     .select(
-      "id, height_cm, weight_kg, symptoms, pain_level, previous_injuries, medications, sedentary_work, sleep_habits, current_training, equipment_access, session_length, weekly_time_budget, goals, other_info, photo_front_path, photo_back_path, photo_left_path, photo_right_path, submitted_at, profiles(display_name, email)",
+      "id, height_cm, weight_kg, symptoms, pain_level, previous_injuries, movement_limitations, medications, sedentary_work, sleep_habits, current_training, equipment_access, session_length, weekly_time_budget, goals, other_info, photo_front_path, photo_back_path, photo_left_path, photo_right_path, submitted_at, profiles(display_name, email)",
     )
     .order("submitted_at", { ascending: false });
 
@@ -102,6 +102,12 @@ export default async function CoachingIntakePage() {
                   {intake.previous_injuries && (
                     <div className={styles.contactMessage}>
                       <b>Tidigare skador:</b> {intake.previous_injuries}
+                    </div>
+                  )}
+
+                  {intake.movement_limitations && (
+                    <div className={styles.contactMessage}>
+                      <b>Rörelsebegränsningar:</b> {intake.movement_limitations}
                     </div>
                   )}
 

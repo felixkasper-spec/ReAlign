@@ -61,6 +61,7 @@ export async function submitCoachingIntake(
       symptoms,
       pain_level: optionalInt(formData, "pain_level"),
       previous_injuries: optionalText(formData, "previous_injuries"),
+      movement_limitations: optionalText(formData, "movement_limitations"),
       medications: optionalText(formData, "medications"),
       sedentary_work: optionalText(formData, "sedentary_work"),
       sleep_habits: optionalText(formData, "sleep_habits"),
