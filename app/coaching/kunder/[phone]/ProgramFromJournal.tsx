@@ -21,13 +21,20 @@ const INITIAL_STATE: CreateProgramResult = { ok: false, error: "" };
 // programsidan.
 export default function ProgramFromJournal({
   customerPhone,
+  userId,
+  revalidateSlug,
   customerName,
   customerEmail,
   journalEntries,
   exercises,
   baseUrl,
 }: {
-  customerPhone: string;
+  // Exakt en av customerPhone/userId identifierar kunden i journalen —
+  // customerPhone saknas för en ren konto-kund utan telefon (se
+  // migration 0077), som istället identifieras via sitt konto-id.
+  customerPhone?: string;
+  userId?: string;
+  revalidateSlug: string;
   customerName: string;
   customerEmail: string | null;
   journalEntries: JournalEntry[];
@@ -54,8 +61,10 @@ export default function ProgramFromJournal({
   }
 
   const shareLink = state.ok ? `${baseUrl}/p/${state.shareToken}` : null;
+  // Ingen SMS-länk utan ett riktigt telefonnummer — "Skicka via mejl" nedan
+  // (SendLinkForm) täcker det fallet redan.
   const smsHref =
-    state.ok && shareLink
+    state.ok && shareLink && customerPhone
       ? `sms:${toInternationalPhone(customerPhone)}&body=${encodeURIComponent(
           `Hej! Här är länken till ditt träningsprogram, ${state.label}: ${shareLink}`,
         )}`
@@ -65,13 +74,13 @@ export default function ProgramFromJournal({
     <>
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Journal</div>
-        <JournalComposer customerPhone={customerPhone} />
+        <JournalComposer customerPhone={customerPhone} userId={userId} revalidateSlug={revalidateSlug} />
         {journalEntries.length === 0 && <p style={{ color: "var(--text-soft)" }}>Inga journalanteckningar än.</p>}
         {journalEntries.map((entry) => (
           <JournalEntryItem
             key={entry.id}
             entry={entry}
-            customerPhone={customerPhone}
+            revalidateSlug={revalidateSlug}
             onUseInProgram={handleUseInProgram}
           />
         ))}

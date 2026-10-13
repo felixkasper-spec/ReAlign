@@ -6,7 +6,16 @@ import { createJournalAttachmentUploadUrl, addJournalEntry } from "../actions";
 import { COACHING_JOURNAL_BUCKET, MAX_JOURNAL_ATTACHMENT_BYTES } from "@/lib/coaching-journal";
 import styles from "../kunder.module.css";
 
-export default function JournalComposer({ customerPhone }: { customerPhone: string }) {
+export default function JournalComposer({
+  customerPhone,
+  userId,
+  revalidateSlug,
+}: {
+  // Exakt en av customerPhone/userId ska vara satt — se addJournalEntry.
+  customerPhone?: string;
+  userId?: string;
+  revalidateSlug: string;
+}) {
   const [file, setFile] = useState<File | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +77,7 @@ export default function JournalComposer({ customerPhone }: { customerPhone: stri
       if (attachmentPath) formData.set("attachment_path", attachmentPath);
       if (attachmentType) formData.set("attachment_type", attachmentType);
 
-      const result = await addJournalEntry(customerPhone, formData);
+      const result = await addJournalEntry({ customerPhone, userId }, revalidateSlug, formData);
       if (!result.ok) {
         setError(result.error ?? "Något gick fel, försök igen.");
         return;

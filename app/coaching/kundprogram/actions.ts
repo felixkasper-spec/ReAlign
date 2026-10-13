@@ -162,6 +162,9 @@ async function insertClinicProgram(formData: FormData): Promise<CreateProgramRes
   }
 
   if (customerPhone) revalidatePath(`/coaching/kunder/${customerPhone}`);
+  // Kontobaserad kund utan telefon (se migration 0077) nås via en
+  // urlencodad e-post i samma route istället — se app/coaching/kunder/[phone]/page.tsx.
+  else if (customerEmail) revalidatePath(`/coaching/kunder/${encodeURIComponent(customerEmail)}`);
   revalidatePath("/coaching/kundprogram");
   return { ok: true, id: program.id, shareToken, label };
 }

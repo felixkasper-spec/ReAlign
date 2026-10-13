@@ -82,8 +82,16 @@ export async function createJournalAttachmentUploadUrl(
   return { path, token: data.token, type };
 }
 
+// identity: telefon (fysisk/bokad kund) ELLER konto-id (ren prenumerant
+// utan telefon ännu) — coaching_journal_entries stödjer redan båda sedan
+// migration 0069 (minst en av user_id/customer_phone krävs av en
+// check-constraint), så ingen schemaändring behövs för det här.
+// revalidateSlug är bara till för cache-invalidering, inte för att
+// identifiera raden — alltid samma sträng som finns i URL:en
+// (/coaching/kunder/<revalidateSlug>).
 export async function addJournalEntry(
-  customerPhone: string,
+  identity: { customerPhone?: string; userId?: string },
+  revalidateSlug: string,
   formData: FormData,
 ): Promise<{ ok: boolean; error?: string }> {
   await requireCoach();
@@ -96,10 +104,14 @@ export async function addJournalEntry(
   if (!body && !attachmentPath) {
     return { ok: false, error: "Skriv en anteckning eller bifoga en fil." };
   }
+  if (!identity.customerPhone && !identity.userId) {
+    return { ok: false, error: "Ingen kund angiven." };
+  }
 
   const admin = createAdminClient();
   const { error } = await admin.from("coaching_journal_entries").insert({
-    customer_phone: customerPhone,
+    customer_phone: identity.customerPhone ?? null,
+    user_id: identity.userId ?? null,
     body,
     attachment_path: attachmentPath,
     attachment_type: attachmentType,
@@ -111,13 +123,16 @@ export async function addJournalEntry(
     return { ok: false, error: "Kunde inte spara anteckningen, försök igen." };
   }
 
-  revalidatePath(`/coaching/kunder/${customerPhone}`);
+  revalidatePath(`/coaching/kunder/${revalidateSlug}`);
   return { ok: true };
 }
 
+// revalidateSlug: samma sak som i addJournalEntry ovan — bara till för
+// cache-invalidering (telefon eller urlencodad e-post, vad URL:en råkar
+// använda), rör aldrig vilken rad som uppdateras (det gör entry.id).
 export async function updateJournalEntry(
   id: string,
-  customerPhone: string,
+  revalidateSlug: string,
   body: string,
 ): Promise<{ ok: boolean; error?: string }> {
   await requireCoach();
@@ -138,11 +153,11 @@ export async function updateJournalEntry(
     return { ok: false, error: "Kunde inte spara ändringen." };
   }
 
-  revalidatePath(`/coaching/kunder/${customerPhone}`);
+  revalidatePath(`/coaching/kunder/${revalidateSlug}`);
   return { ok: true };
 }
 
-export async function deleteJournalEntry(id: string, customerPhone: string) {
+export async function deleteJournalEntry(id: string, revalidateSlug: string) {
   await requireCoach();
 
   const admin = createAdminClient();
@@ -151,7 +166,7 @@ export async function deleteJournalEntry(id: string, customerPhone: string) {
     console.error("deleteJournalEntry — kunde inte ta bort:", error);
   }
 
-  revalidatePath(`/coaching/kunder/${customerPhone}`);
+  revalidatePath(`/coaching/kunder/${revalidateSlug}`);
 }
 
 export type ProfileMatch = { id: string; email: string; displayName: string | null };

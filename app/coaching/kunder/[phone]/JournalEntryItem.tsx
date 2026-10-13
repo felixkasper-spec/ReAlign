@@ -14,11 +14,14 @@ export type JournalEntry = {
 
 export default function JournalEntryItem({
   entry,
-  customerPhone,
+  revalidateSlug,
   onUseInProgram,
 }: {
   entry: JournalEntry;
-  customerPhone: string;
+  // Bara till för cache-invalidering efter spara/ta bort — samma sträng som
+  // URL:en (telefon eller urlencodad e-post), rör aldrig vilken rad som
+  // uppdateras (det gör entry.id).
+  revalidateSlug: string;
   // Skickar markerad text (eller, om inget är markerat, hela anteckningen)
   // vidare till programbyggaren på samma sida — se ProgramFromJournal.tsx.
   onUseInProgram?: (text: string) => void;
@@ -31,7 +34,7 @@ export default function JournalEntryItem({
   function handleSave() {
     setError(null);
     startTransition(async () => {
-      const result = await updateJournalEntry(entry.id, customerPhone, body);
+      const result = await updateJournalEntry(entry.id, revalidateSlug, body);
       if (!result.ok) {
         setError(result.error ?? "Något gick fel.");
         return;
@@ -70,7 +73,7 @@ export default function JournalEntryItem({
               Redigera
             </button>
           )}
-          <form action={deleteJournalEntry.bind(null, entry.id, customerPhone)}>
+          <form action={deleteJournalEntry.bind(null, entry.id, revalidateSlug)}>
             <button type="submit" className={styles.deleteBtn}>
               Ta bort
             </button>
