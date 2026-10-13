@@ -15,7 +15,7 @@ export default async function CoachingIntakePage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/login?next=/min-sida/coaching/formular");
   }
 
   const [{ data: profile }, subscription, { data: intake }] = await Promise.all(

@@ -5,11 +5,68 @@ import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizePhone } from "@/lib/customer-identity";
 import { upsertCustomerFields } from "@/lib/customer-upsert";
+import { sendEmail } from "@/lib/brevo";
 import {
   COACHING_JOURNAL_BUCKET,
   MAX_JOURNAL_ATTACHMENT_BYTES,
   journalAttachmentTypeFromMime,
 } from "@/lib/coaching-journal";
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function buildIntakeFormEmailHtml(formUrl: string) {
+  return `
+<div style="background:#fafaf7;padding:32px 16px;">
+  <div style="max-width:440px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px 28px;border:1px solid #dadfd8;">
+    <div style="margin-bottom:24px;">
+      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#5e7461;vertical-align:middle;margin-right:8px;"></span
+      ><span style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#2b2e2a;vertical-align:middle;">ReAlign</span>
+    </div>
+    <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#2b2e2a;line-height:1.5;margin:0 0 24px;">
+      Hej! Fyll gärna i kom igång-formuläret så Felix kan sätta ihop ditt skräddarsydda program. Tar cirka 5–10 minuter.
+    </p>
+    <div style="text-align:center;margin:0 0 20px;">
+      <a href="${formUrl}" style="display:inline-block;background:#d98e5c;color:#2b2e2a;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-decoration:none;padding:12px 28px;border-radius:100px;">Fyll i formuläret →</a>
+    </div>
+    <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7267;line-height:1.5;margin:0;">
+      Vänliga hälsningar,<br>ReAlign Metoden
+    </p>
+  </div>
+</div>`;
+}
+
+// Mejlar en länk till kom igång-formuläret — samma action funkar för båda
+// varianterna (den publika token-länken för telefonbaserade kunder, eller
+// /min-sida/coaching/formular för kontobaserade kunder), det är bara
+// formUrl som skiljer. Framförallt till för helt nya kunder som annars
+// aldrig hittar formuläret själva.
+export async function sendIntakeFormEmail(
+  email: string,
+  formUrl: string,
+): Promise<{ ok: boolean; error?: string }> {
+  await requireCoach();
+
+  if (!email || !isValidEmail(email)) {
+    return { ok: false, error: "Ogiltig e-postadress." };
+  }
+
+  try {
+    await sendEmail({
+      to: [{ email }],
+      subject: "Kom igång-formulär — ReAlign Metoden",
+      replyTo: { email: "kontakt@realignmetoden.se", name: "ReAlign Metoden" },
+      html: buildIntakeFormEmailHtml(formUrl),
+      text: `Hej!\n\nFyll gärna i kom igång-formuläret så Felix kan sätta ihop ditt skräddarsydda program:\n${formUrl}\n\nVänliga hälsningar,\nReAlign Metoden`,
+    });
+  } catch (e) {
+    console.error("sendIntakeFormEmail — kunde inte skicka:", e);
+    return { ok: false, error: "Kunde inte skicka mejlet." };
+  }
+
+  return { ok: true };
+}
 
 // Skapar (eller uppdaterar namn/mejl på) en kund direkt, utan att kräva en
 // bokning — se customers-tabellen (migration 0071, som också håller

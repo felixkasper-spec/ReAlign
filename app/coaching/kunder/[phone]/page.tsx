@@ -10,6 +10,7 @@ import ProgramFromJournal from "./ProgramFromJournal";
 import TokenLinkInput from "./TokenLinkInput";
 import LoginLink from "./LoginLink";
 import SetPhoneForm from "./SetPhoneForm";
+import SendIntakeEmailButton from "./SendIntakeEmailButton";
 import listStyles from "../../page.module.css";
 import styles from "../kunder.module.css";
 
@@ -302,10 +303,16 @@ export default async function CustomerDetailPage({
                   </div>
                 </div>
               ) : (
-                <p className={listStyles.empty}>
-                  Formuläret är inte inskickat än. Kunden fyller i det själv
-                  på Min sida om de har Premium Coaching.
-                </p>
+                <div className={`${styles.card}`}>
+                  <p style={{ fontSize: "0.88rem", marginBottom: 10 }}>
+                    Formuläret är inte inskickat än. Kunden fyller i det
+                    själv på Min sida om de har Premium Coaching.
+                  </p>
+                  <SendIntakeEmailButton
+                    email={email}
+                    formUrl={`${baseUrl}/min-sida/coaching/formular`}
+                  />
+                </div>
               )}
             </div>
           </details>
@@ -500,6 +507,9 @@ export default async function CustomerDetailPage({
                       <a href={formSmsHref} className="btn btn-ghost" style={{ border: "1px solid var(--line)" }}>
                         Skicka via sms
                       </a>
+                    )}
+                    {canonical.customer_email && (
+                      <SendIntakeEmailButton email={canonical.customer_email} formUrl={formUrl} />
                     )}
                   </div>
                 </div>
