@@ -9,12 +9,26 @@ import styles from "../page.module.css";
 export const metadata: Metadata = { title: "Kunder — ReAlign Metoden" };
 
 type CustomerRow = {
-  phone: string;
+  phone: string | null;
   name: string;
   email: string | null;
   visitCount: number;
   lastVisit: string;
 };
+
+// Nyckeln för en kundrad i kartan nedan — telefon om den finns, annars
+// e-post (bara konton utan telefon, se migration 0077, saknar båda delarna
+// aldrig samtidigt eftersom customers.email är unikt när den är satt).
+function rowKey(phone: string | null, email: string | null): string {
+  return phone ?? `email:${email}`;
+}
+
+// URL-slug till kundens detaljsida — /coaching/kunder/[phone] accepterar
+// antingen ett telefonnummer eller en URL-encodead e-post när telefon
+// saknas, se [phone]/page.tsx.
+function rowHref(c: CustomerRow): string {
+  return `/coaching/kunder/${c.phone ?? encodeURIComponent(c.email ?? "")}`;
+}
 
 export default async function CustomersPage({
   searchParams,
@@ -53,16 +67,19 @@ export default async function CustomersPage({
     }
   }
 
-  // Kunder som lagts till direkt (kundsidan, eller "Skapa kund" i
-  // kalenderns bokningsskapare) utan att ännu ha någon bokning — läggs bara
-  // till om de inte redan finns via en bokning, annars vinner den friskare
+  // Kunder som lagts till direkt (kundsidan, "Skapa kund" i kalenderns
+  // bokningsskapare, eller automatiskt vid kontoregistrering utan telefon
+  // — se migration 0077) utan att ännu ha någon bokning — läggs bara till
+  // om de inte redan finns via en bokning, annars vinner den friskare
   // bokningsdatan.
   for (const c of standaloneCustomers ?? []) {
     const phone = normalizePhone(c.phone);
-    if (!phone || byPhone.has(phone)) continue;
-    byPhone.set(phone, {
+    const key = rowKey(phone, c.email);
+    if (phone && byPhone.has(key)) continue;
+    if (!phone && !c.email) continue;
+    byPhone.set(key, {
       phone,
-      name: c.name || phone,
+      name: c.name || phone || c.email || "Okänd",
       email: c.email,
       visitCount: 0,
       lastVisit: c.created_at,
@@ -77,7 +94,8 @@ export default async function CustomersPage({
     ? customers.filter(
         (c) =>
           c.name.toLowerCase().includes(q.trim().toLowerCase()) ||
-          c.phone.includes(q.trim().replace(/\D/g, "")),
+          c.email?.toLowerCase().includes(q.trim().toLowerCase()) ||
+          (c.phone && c.phone.includes(q.trim().replace(/\D/g, ""))),
       )
     : customers;
 
@@ -131,11 +149,11 @@ export default async function CustomersPage({
 
         <div className={styles.list}>
           {filtered.map((c) => (
-            <Link key={c.phone} href={`/coaching/kunder/${c.phone}`} className={styles.row}>
+            <Link key={rowKey(c.phone, c.email)} href={rowHref(c)} className={styles.row}>
               <div className={styles.rowInfo}>
                 <div className={styles.name}>{c.name}</div>
                 <div className={styles.preview}>
-                  {c.phone}
+                  {c.phone ?? "Inget telefonnummer"}
                   {c.email ? ` · ${c.email}` : ""} ·{" "}
                   {c.visitCount === 0 ? "Ingen bokning än" : `${c.visitCount} besök`}
                 </div>

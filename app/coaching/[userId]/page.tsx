@@ -54,7 +54,7 @@ export default async function CoachingThreadPage({
   // är öppen för alla inloggade, så det är inte längre givet vem man
   // chattar med bara utifrån att tråden finns.
   const [{ data: linkedCustomer }, { data: subscription }] = await Promise.all([
-    admin.from("customers").select("phone, name").eq("linked_user_id", userId).maybeSingle(),
+    admin.from("customers").select("phone, name, email").eq("linked_user_id", userId).maybeSingle(),
     admin
       .from("subscriptions")
       .select("plan, status")
@@ -110,7 +110,13 @@ export default async function CoachingThreadPage({
               {hasPremiumCoaching ? "Premium Coaching" : "Meddelande"}
             </span>
             <h1>{displayName}</h1>
-            {linkedCustomer && (
+            {linkedCustomer?.phone && (
+              // Visas bara när kunden faktiskt har telefon/bokningshistorik
+              // att visa — varje konto får numera en egen customers-rad
+              // redan vid registrering (se migration 0077), så annars skulle
+              // den här länken synas för alla, inte bara riktiga
+              // klinikkunder, utan att tillföra något jämfört med namnet/
+              // mejlet som redan visas ovan.
               <p style={{ fontSize: "0.88rem", marginTop: 4 }}>
                 Kopplad kund:{" "}
                 <Link href={`/coaching/kunder/${linkedCustomer.phone}`}>

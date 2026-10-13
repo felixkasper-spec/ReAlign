@@ -8,6 +8,7 @@ import { getBaseUrl } from "@/lib/base-url";
 import ProgramFromJournal from "./ProgramFromJournal";
 import TokenLinkInput from "./TokenLinkInput";
 import LoginLink from "./LoginLink";
+import SetPhoneForm from "./SetPhoneForm";
 import listStyles from "../../page.module.css";
 import styles from "../kunder.module.css";
 
@@ -51,8 +52,70 @@ export default async function CustomerDetailPage({
   params: Promise<{ phone: string }>;
 }) {
   await requireCoach();
-  const { phone } = await params;
+  const { phone: rawParam } = await params;
   const admin = createAdminClient();
+
+  // Ett konto utan telefon (ren prenumerant, se migration 0077) nås via sin
+  // e-post istället — urlencoded i routen eftersom "@" annars krockar med
+  // Next.js segment-parsning. Den kunden har per definition ingen bokning/
+  // journal/formulär/kundprogram att visa (allt det är kopplat via telefon,
+  // som saknas) — en egen, enklare vy nedan istället för att tvinga resten
+  // av sidans telefon-beroende frågor genom en null/e-post-sträng.
+  const isEmailKey = rawParam.includes("@");
+  if (isEmailKey) {
+    const email = decodeURIComponent(rawParam);
+    const { data: accountCustomer } = await admin
+      .from("customers")
+      .select("name, email, linked_user_id")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (!accountCustomer) {
+      return (
+        <div className={`wrap ${listStyles.wrap}`}>
+          <Link href="/coaching/kunder" className={listStyles.back}>
+            ← Kundlista
+          </Link>
+          <p className={listStyles.empty}>Ingen kund med den e-posten hittades.</p>
+        </div>
+      );
+    }
+
+    let linkedDisplayName: string | null = null;
+    if (accountCustomer.linked_user_id) {
+      const { data: linkedProfileRow } = await admin
+        .from("profiles")
+        .select("display_name")
+        .eq("id", accountCustomer.linked_user_id)
+        .maybeSingle();
+      linkedDisplayName = linkedProfileRow?.display_name ?? null;
+    }
+
+    return (
+      <div className={`wrap ${listStyles.wrap}`}>
+        <Link href="/coaching/kunder" className={listStyles.back}>
+          ← Kundlista
+        </Link>
+        <span className="eyebrow">Kund</span>
+        <h1>{accountCustomer.name || linkedDisplayName || email}</h1>
+        <p style={{ color: "var(--text-soft)", fontSize: "0.88rem", marginBottom: 20 }}>
+          {email} · Bara konto, inget telefonnummer ännu
+        </p>
+        <p style={{ fontSize: "0.88rem", marginBottom: 20 }}>
+          Den här kunden har registrerat ett konto men inte bokat/ringt in
+          än, så journal, bokningar, kom igång-formulär och kundprogram
+          finns inte att visa. Lägg till telefonnumret när du pratat med
+          dem, så blir hela kundprofilen tillgänglig precis som för övriga
+          kunder.
+        </p>
+        {accountCustomer.linked_user_id && (
+          <SetPhoneForm userId={accountCustomer.linked_user_id} />
+        )}
+      </div>
+    );
+  }
+
+  const phone = rawParam;
 
   const { data: allBookings } = await admin
     .from("bookings")

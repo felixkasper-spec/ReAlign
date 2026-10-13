@@ -192,6 +192,37 @@ export async function linkCustomerLogin(
   await requireCoach();
 
   const admin = createAdminClient();
+
+  // Varje konto får redan en egen kundrad vid registrering (se
+  // handle_new_user-triggern, migration 0077), kopplad via linked_user_id
+  // men ofta utan telefon ännu. Den raden kan alltså redan finnas separat
+  // från den telefon-rad som bokningar/journal hör till — slå ihop dem
+  // istället för att försöka sätta samma telefonnummer på två rader (skulle
+  // krocka med customers.phone:s unika index).
+  const { data: accountRow } = await admin
+    .from("customers")
+    .select("id, email, phone")
+    .eq("linked_user_id", userId)
+    .maybeSingle();
+
+  if (accountRow && accountRow.phone !== phone) {
+    const { error: mergeError } = await upsertCustomerFields(admin, phone, {
+      name: customerName,
+      linked_user_id: userId,
+      ...(accountRow.email ? { email: accountRow.email } : {}),
+    });
+    if (mergeError) {
+      console.error("linkCustomerLogin — kunde inte slå ihop kundraderna:", mergeError);
+      return { ok: false, error: "Kunde inte koppla inlogget." };
+    }
+    if (accountRow.phone === null) {
+      await admin.from("customers").delete().eq("id", accountRow.id);
+    }
+    revalidatePath(`/coaching/kunder/${phone}`);
+    revalidatePath("/coaching");
+    return { ok: true };
+  }
+
   const { error } = await upsertCustomerFields(admin, phone, {
     name: customerName,
     linked_user_id: userId,
@@ -205,6 +236,37 @@ export async function linkCustomerLogin(
   revalidatePath(`/coaching/kunder/${phone}`);
   revalidatePath("/coaching");
   return { ok: true };
+}
+
+// Fyller i telefonnummer på en kund som bara har ett konto (e-postkopplad
+// kundrad utan telefon, se migration 0077) — t.ex. när personen ringer in
+// eller bokar för första gången. Matchar på linked_user_id, inte telefon
+// (som ju saknas), så kan inte träffa fel rad.
+export async function setCustomerPhone(
+  userId: string,
+  phone: string,
+): Promise<{ ok: boolean; error?: string; phone?: string }> {
+  await requireCoach();
+
+  const normalizedPhone = normalizePhone(phone);
+  if (!normalizedPhone) {
+    return { ok: false, error: "Ogiltigt telefonnummer." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("customers")
+    .update({ phone: normalizedPhone })
+    .eq("linked_user_id", userId);
+
+  if (error) {
+    console.error("setCustomerPhone — kunde inte spara:", error);
+    return { ok: false, error: "Kunde inte spara telefonnumret (kanske redan använt av en annan kund)." };
+  }
+
+  revalidatePath(`/coaching/kunder/${normalizedPhone}`);
+  revalidatePath("/coaching/kunder");
+  return { ok: true, phone: normalizedPhone };
 }
 
 export async function unlinkCustomerLogin(phone: string): Promise<{ ok: boolean }> {
