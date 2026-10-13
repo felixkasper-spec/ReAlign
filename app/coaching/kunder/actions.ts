@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizePhone } from "@/lib/customer-identity";
+import { upsertCustomerFields } from "@/lib/customer-upsert";
 import {
   COACHING_JOURNAL_BUCKET,
   MAX_JOURNAL_ATTACHMENT_BYTES,
@@ -12,9 +13,10 @@ import {
 
 // Skapar (eller uppdaterar namn/mejl på) en kund direkt, utan att kräva en
 // bokning — se customers-tabellen (migration 0071, som också håller
-// login-kopplingen). Upsert på telefonnummer rör bara namn/mejl, aldrig
+// login-kopplingen). upsertCustomerFields rör bara namn/mejl, aldrig
 // linked_user_id, så en befintlig inloggningskoppling aldrig nollställs av
-// misstag här.
+// misstag här (ett vanligt .upsert() med ett enda objekt hade gjort precis
+// det, se lib/customer-upsert.ts).
 export async function createCustomer(
   name: string,
   phone: string,
@@ -29,12 +31,10 @@ export async function createCustomer(
   }
 
   const admin = createAdminClient();
-  const { error } = await admin
-    .from("customers")
-    .upsert(
-      { phone: normalizedPhone, name: trimmedName, email: email.trim() || null },
-      { onConflict: "phone" },
-    );
+  const { error } = await upsertCustomerFields(admin, normalizedPhone, {
+    name: trimmedName,
+    email: email.trim() || null,
+  });
 
   if (error) {
     console.error("createCustomer — kunde inte spara:", error);
@@ -192,12 +192,10 @@ export async function linkCustomerLogin(
   await requireCoach();
 
   const admin = createAdminClient();
-  const { error } = await admin
-    .from("customers")
-    .upsert(
-      { phone, name: customerName, linked_user_id: userId },
-      { onConflict: "phone" },
-    );
+  const { error } = await upsertCustomerFields(admin, phone, {
+    name: customerName,
+    linked_user_id: userId,
+  });
 
   if (error) {
     console.error("linkCustomerLogin — kunde inte koppla:", error);

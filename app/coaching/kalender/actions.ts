@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizePhone } from "@/lib/customer-identity";
+import { upsertCustomerFields } from "@/lib/customer-upsert";
 
 const STAFF = ["felix", "christopher"] as const;
 type Staff = (typeof STAFF)[number];
@@ -238,9 +239,10 @@ export async function createBookingAsStaff(
   // inte nollställs av misstag.
   const normalizedPhone = normalizePhone(phone);
   if (normalizedPhone) {
-    const { error: customerError } = await admin
-      .from("customers")
-      .upsert({ phone: normalizedPhone, name, email }, { onConflict: "phone" });
+    const { error: customerError } = await upsertCustomerFields(admin, normalizedPhone, {
+      name,
+      email,
+    });
     if (customerError) {
       console.error("createBookingAsStaff — kunde inte uppdatera kunden:", customerError);
     }
@@ -270,9 +272,7 @@ export async function createCustomerFromCalendar(
   }
 
   const admin = createAdminClient();
-  const { error } = await admin
-    .from("customers")
-    .upsert({ phone: normalizedPhone, name, email }, { onConflict: "phone" });
+  const { error } = await upsertCustomerFields(admin, normalizedPhone, { name, email });
 
   if (error) {
     console.error("createCustomerFromCalendar — kunde inte spara:", error);

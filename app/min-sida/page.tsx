@@ -13,6 +13,7 @@ import Sidebar from "./Sidebar";
 import MobileTabs from "./MobileTabs";
 import WeeklyTrendChart from "@/components/WeeklyTrendChart";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { isClinicStaffEmail } from "@/lib/coach";
 import { stripe } from "@/lib/stripe";
 import { getSubscription } from "@/lib/subscription";
@@ -186,6 +187,29 @@ export default async function MinSidaPage({
   ]);
 
   const progression = await getProgressionStats(supabase, user.id);
+
+  // Kundprogram (/coaching/kundprogram) kopplas till en kund via
+  // telefonnummer, helt separat från inloggningen — men om kundens
+  // customers-rad i sin tur är kopplad till just det här kontot (se
+  // LoginLink/linkCustomerLogin) ska programmet synas här också, inte bara
+  // nås via den separata /p/<token>-länken. customer_phone har ingen
+  // deklarerad FK mot customers.phone (bara ett indexerat textfält), så
+  // PostgREST kan inte embedda det i en join — två steg istället. Båda
+  // tabellerna saknar RLS-policyer (service-role-bara, se migrationerna),
+  // därför admin-klienten och inte den vanliga `supabase`.
+  const admin = createAdminClient();
+  const { data: linkedCustomer } = await admin
+    .from("customers")
+    .select("phone")
+    .eq("linked_user_id", user.id)
+    .maybeSingle();
+  const { data: clinicPrograms } = linkedCustomer?.phone
+    ? await admin
+        .from("clinic_programs")
+        .select("id, label, share_token, created_at")
+        .eq("customer_phone", linkedCustomer.phone)
+        .order("created_at", { ascending: false })
+    : { data: null };
 
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
   const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;
@@ -513,6 +537,23 @@ export default async function MinSidaPage({
               <div className={styles.panelHead}>
                 <h2>Mina program</h2>
               </div>
+              {clinicPrograms && clinicPrograms.length > 0 && (
+                // Program coachen satt ihop åt dig direkt (via /coaching/kundprogram,
+                // kopplat till ditt konto) — inte spärrat bakom Premium, precis som
+                // när programmet delas som fristående länk.
+                <div className={styles.categoryList} style={{ marginBottom: 14 }}>
+                  {clinicPrograms.map((p) => (
+                    <Link
+                      key={p.id}
+                      href={`/p/${p.share_token}`}
+                      className={styles.categoryRow}
+                    >
+                      <span>{p.label}</span>
+                      <span className={styles.link}>Öppna →</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
               {subscription.active ? (
                 <>
                   {(!customPrograms || customPrograms.length === 0) && (
