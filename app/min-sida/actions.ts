@@ -68,6 +68,14 @@ export async function createCheckoutSession(
       plan === "premium" && interval === "month"
         ? [{ coupon: "premium50first" }]
         : undefined,
+    // Stripe tillåter inte discounts + allow_promotion_codes samtidigt —
+    // bara påslaget när den automatiska introrabatten inte redan appliceras,
+    // så den inte krockar med den. Ger ett fält i Checkout där en manuellt
+    // utdelad engångskod (t.ex. för en gratis månad, se Stripe Dashboard →
+    // Coupons → skapa en promotion code kopplad till kundens mejl) kan
+    // lösas in.
+    allow_promotion_codes:
+      plan === "premium" && interval === "month" ? undefined : true,
     customer: existing?.stripe_customer_id ?? undefined,
     customer_email: existing?.stripe_customer_id ? undefined : user.email,
     client_reference_id: user.id,
