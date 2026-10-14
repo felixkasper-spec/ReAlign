@@ -9,6 +9,7 @@ import { replyToCoachingThread } from "../actions";
 import DriveLinkButton from "./DriveLinkButton";
 import ReplyForm from "./ReplyForm";
 import ScrollToLatest from "./ScrollToLatest";
+import FollowupScheduler from "./FollowupScheduler";
 import styles from "../page.module.css";
 
 export default async function CoachingThreadPage({
@@ -88,6 +89,13 @@ export default async function CoachingThreadPage({
     .eq("user_id", userId)
     .eq("sender", "user")
     .is("read_at", null);
+
+  const { data: activeFollowups } = await admin
+    .from("coaching_followups")
+    .select("id, note, remind_at")
+    .eq("user_id", userId)
+    .is("completed_at", null)
+    .order("remind_at", { ascending: true });
 
   const reply = replyToCoachingThread.bind(null, userId);
   const displayName = profile.display_name || profile.email;
@@ -173,6 +181,8 @@ export default async function CoachingThreadPage({
             />
           </div>
         </div>
+
+        <FollowupScheduler userId={userId} active={activeFollowups ?? []} />
       </div>
   );
 }

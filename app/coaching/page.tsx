@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { markContactMessageRead } from "./actions";
+import { markContactMessageRead, completeFollowup } from "./actions";
 import CheckinCard from "./CheckinCard";
 import styles from "./page.module.css";
 
@@ -106,6 +106,33 @@ export default async function CoachingInboxPage({
     })
     .filter((c) => c.daysSince >= CHECKIN_INTERVAL_DAYS)
     .sort((a, b) => b.daysSince - a.daysSince);
+
+  // Manuella uppföljningspåminnelser (se FollowupScheduler i tråden) som
+  // förfallit — remind_at i det förflutna och inte redan klarmarkerade.
+  const { data: dueFollowupRows } = await admin
+    .from("coaching_followups")
+    .select("id, user_id, note, remind_at")
+    .is("completed_at", null)
+    .lte("remind_at", new Date().toISOString())
+    .order("remind_at", { ascending: true });
+
+  const followupUserIds = [...new Set((dueFollowupRows ?? []).map((f) => f.user_id as string))];
+  const { data: followupProfiles } =
+    followupUserIds.length > 0
+      ? await admin.from("profiles").select("id, display_name, email").in("id", followupUserIds)
+      : { data: [] };
+  const followupProfileById = new Map((followupProfiles ?? []).map((p) => [p.id, p]));
+
+  const dueFollowups = (dueFollowupRows ?? []).map((f) => {
+    const profile = followupProfileById.get(f.user_id as string);
+    return {
+      id: f.id as string,
+      userId: f.user_id as string,
+      name: profile?.display_name || profile?.email || "Okänd",
+      note: f.note as string | null,
+      remindAt: f.remind_at as string,
+    };
+  });
 
   const { data: messages } = await admin
     .from("coaching_messages")
@@ -329,6 +356,56 @@ export default async function CoachingInboxPage({
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {dueCheckins.map((c) => (
               <CheckinCard key={c.userId} userId={c.userId} name={c.name} daysSince={c.daysSince} />
+            ))}
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: "var(--surface)",
+            border: "1px solid var(--line)",
+            borderRadius: 14,
+            padding: "16px 18px",
+            marginBottom: 28,
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 600,
+              marginBottom: dueFollowups.length > 0 ? 10 : 0,
+            }}
+          >
+            Påminnelser: {dueFollowups.length}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {dueFollowups.map((f) => (
+              <div
+                key={f.id}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: 10,
+                  fontSize: "0.88rem",
+                  border: "1px solid var(--line)",
+                  borderRadius: 10,
+                  padding: "10px 14px",
+                }}
+              >
+                <span>
+                  <Link href={`/coaching/${f.userId}`}>{f.name}</Link>
+                  {f.note ? ` — ${f.note}` : ""}
+                  <span style={{ color: "var(--text-soft)" }}>
+                    {" "}
+                    · skulle höras av {new Date(f.remindAt).toLocaleDateString("sv-SE", { dateStyle: "medium" })}
+                  </span>
+                </span>
+                <form action={completeFollowup.bind(null, f.id, f.userId)}>
+                  <button type="submit" className="btn btn-ghost" style={{ border: "1px solid var(--line)", flexShrink: 0 }}>
+                    Klar
+                  </button>
+                </form>
+              </div>
             ))}
           </div>
         </div>

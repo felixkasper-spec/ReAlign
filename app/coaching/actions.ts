@@ -276,6 +276,51 @@ export async function updateCoachingDriveLink(userId: string, url: string) {
   return { ok: true };
 }
 
+// Manuell uppföljningspåminnelse (se "Påminnelser" på /coaching) — coachen
+// väljer själv hur många dagar fram och en valfri anteckning, till skillnad
+// från den automatiska varannan-veckan-avstämningen ovan.
+export async function scheduleFollowup(userId: string, formData: FormData): Promise<void> {
+  await requireCoach();
+
+  const days = Number(formData.get("days"));
+  if (!Number.isFinite(days) || days < 1) {
+    return;
+  }
+  const note = String(formData.get("note") ?? "").trim();
+
+  const remindAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("coaching_followups").insert({
+    user_id: userId,
+    note: note || null,
+    remind_at: remindAt.toISOString(),
+  });
+
+  if (error) {
+    console.error("scheduleFollowup — kunde inte spara:", error);
+    return;
+  }
+
+  revalidatePath(`/coaching/${userId}`);
+  revalidatePath("/coaching");
+}
+
+// Markerar en påminnelse som klar — antingen för att coachen faktiskt hörde
+// av sig, eller för att den inte längre behövs.
+export async function completeFollowup(followupId: string, userId: string) {
+  await requireCoach();
+
+  const admin = createAdminClient();
+  await admin
+    .from("coaching_followups")
+    .update({ completed_at: new Date().toISOString() })
+    .eq("id", followupId);
+
+  revalidatePath(`/coaching/${userId}`);
+  revalidatePath("/coaching");
+}
+
 export async function markContactMessageRead(messageId: string) {
   await requireCoach();
 
