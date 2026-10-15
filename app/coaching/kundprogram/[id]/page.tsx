@@ -39,6 +39,18 @@ export default async function ClinicProgramDetailPage({
     .eq("clinic_program_id", id)
     .order("order_index");
 
+  // "+ Nytt kundprogram" ska skapa ett nytt program för SAMMA kund som
+  // programmet man tittar på, inte ett helt tomt program utan kundkoppling
+  // — /coaching/kundprogram/ny stödjer redan att förifyllas via dessa
+  // query-parametrar (se sidan där).
+  const newProgramParams = new URLSearchParams();
+  if (program.customer_phone) newProgramParams.set("phone", program.customer_phone);
+  if (program.customer_name) newProgramParams.set("name", program.customer_name);
+  if (program.customer_email) newProgramParams.set("email", program.customer_email);
+  const newProgramHref = `/coaching/kundprogram/ny${
+    newProgramParams.size > 0 ? `?${newProgramParams.toString()}` : ""
+  }`;
+
   const link = `https://www.realignmetoden.se/p/${program.share_token}`;
   const smsMessage = `Hej! Här är länken till ditt träningsprogram, ${program.label}: ${link}`;
   const smsHref = program.customer_phone
@@ -161,7 +173,7 @@ export default async function ClinicProgramDetailPage({
             Redigera program
           </Link>
           <Link
-            href="/coaching/kundprogram/ny"
+            href={newProgramHref}
             className="btn btn-ghost"
             style={{ border: "1px solid var(--line)" }}
           >
