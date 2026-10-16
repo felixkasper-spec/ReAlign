@@ -189,27 +189,35 @@ export default async function MinSidaPage({
   const progression = await getProgressionStats(supabase, user.id);
 
   // Kundprogram (/coaching/kundprogram) kopplas till en kund via
-  // telefonnummer, helt separat från inloggningen — men om kundens
-  // customers-rad i sin tur är kopplad till just det här kontot (se
-  // LoginLink/linkCustomerLogin) ska programmet synas här också, inte bara
-  // nås via den separata /p/<token>-länken. customer_phone har ingen
-  // deklarerad FK mot customers.phone (bara ett indexerat textfält), så
-  // PostgREST kan inte embedda det i en join — två steg istället. Båda
-  // tabellerna saknar RLS-policyer (service-role-bara, se migrationerna),
-  // därför admin-klienten och inte den vanliga `supabase`.
+  // telefonnummer ELLER mejl (se migration 0068/0077 — en konto-kund utan
+  // telefon identifieras via mejl istället), helt separat från
+  // inloggningen — men om kundens customers-rad i sin tur är kopplad till
+  // just det här kontot (se LoginLink/linkCustomerLogin) ska programmet
+  // synas här också, inte bara nås via den separata /p/<token>-länken.
+  // customer_phone/customer_email har ingen deklarerad FK mot
+  // customers-tabellen (bara indexerade textfält), så PostgREST kan inte
+  // embedda dem i en join — två steg istället. Båda tabellerna saknar
+  // RLS-policyer (service-role-bara, se migrationerna), därför
+  // admin-klienten och inte den vanliga `supabase`.
   const admin = createAdminClient();
   const { data: linkedCustomer } = await admin
     .from("customers")
-    .select("phone")
+    .select("phone, email")
     .eq("linked_user_id", user.id)
     .maybeSingle();
-  const { data: clinicPrograms } = linkedCustomer?.phone
-    ? await admin
-        .from("clinic_programs")
-        .select("id, label, share_token, created_at")
-        .eq("customer_phone", linkedCustomer.phone)
-        .order("created_at", { ascending: false })
-    : { data: null };
+
+  let clinicPrograms: { id: string; label: string; share_token: string; created_at: string }[] | null = null;
+  if (linkedCustomer?.phone || linkedCustomer?.email) {
+    const matchFilters: string[] = [];
+    if (linkedCustomer.phone) matchFilters.push(`customer_phone.eq.${linkedCustomer.phone}`);
+    if (linkedCustomer.email) matchFilters.push(`customer_email.eq.${linkedCustomer.email}`);
+    const { data } = await admin
+      .from("clinic_programs")
+      .select("id, label, share_token, created_at")
+      .or(matchFilters.join(","))
+      .order("created_at", { ascending: false });
+    clinicPrograms = data;
+  }
 
   const hasCoaching = subscription.active && subscription.plan === "premium_coaching";
   const isCoach = !!user.email && user.email === process.env.COACH_EMAIL;

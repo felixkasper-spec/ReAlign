@@ -7,6 +7,7 @@ import ClinicProgramBuilder, { type Exercise } from "../../kundprogram/ClinicPro
 import { createClinicProgramInline, type CreateProgramResult } from "../../kundprogram/actions";
 import CopyLinkButton from "../../kundprogram/[id]/CopyLinkButton";
 import SendLinkForm from "../../kundprogram/[id]/SendLinkForm";
+import SendToChatButton from "../../kundprogram/[id]/SendToChatButton";
 import JournalComposer from "./JournalComposer";
 import JournalEntryItem, { type JournalEntry } from "./JournalEntryItem";
 import styles from "../kunder.module.css";
@@ -103,7 +104,13 @@ export default function ProgramFromJournal({
                   Skicka via sms
                 </a>
               )}
+              {userId && <SendToChatButton userId={userId} clinicProgramId={state.id} />}
             </div>
+            {userId && (
+              <p style={{ fontSize: "0.82rem", color: "var(--text-soft)", marginTop: 10, marginBottom: 0 }}>
+                Programmet syns redan automatiskt under &quot;Mina program&quot; när kunden loggar in.
+              </p>
+            )}
           </div>
         )}
 

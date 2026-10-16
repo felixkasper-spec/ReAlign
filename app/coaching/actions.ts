@@ -276,6 +276,36 @@ export async function updateCoachingDriveLink(userId: string, url: string) {
   return { ok: true };
 }
 
+// Skickar ett redan skapat kundprograms delningslänk som ett chattmeddelande
+// till kunden, istället för (eller utöver) mejl/SMS — se "Skicka i chatt" på
+// kundens sida och den fristående kundprogramsidan. Kräver att kunden har
+// ett kopplat konto (userId) — chatten finns bara för inloggade kunder.
+export async function sendProgramLinkToChat(
+  userId: string,
+  clinicProgramId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  await requireCoach();
+
+  const admin = createAdminClient();
+  const { data: program } = await admin
+    .from("clinic_programs")
+    .select("label, share_token")
+    .eq("id", clinicProgramId)
+    .maybeSingle();
+
+  if (!program) {
+    return { ok: false, error: "Programmet hittades inte." };
+  }
+
+  const link = `https://www.realignmetoden.se/p/${program.share_token}`;
+  await sendCoachMessage(
+    userId,
+    `Här är länken till ditt träningsprogram, "${program.label}": ${link}`,
+  );
+
+  return { ok: true };
+}
+
 // Manuell uppföljningspåminnelse (se "Påminnelser" på /coaching) — coachen
 // väljer själv hur många dagar fram och en valfri anteckning, till skillnad
 // från den automatiska varannan-veckan-avstämningen ovan.

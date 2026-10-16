@@ -7,6 +7,7 @@ import { toInternationalPhone } from "@/lib/customer-identity";
 import { deleteClinicProgram } from "../actions";
 import CopyLinkButton from "./CopyLinkButton";
 import SendLinkForm from "./SendLinkForm";
+import SendToChatButton from "./SendToChatButton";
 import styles from "../../page.module.css";
 
 export const metadata: Metadata = { title: "Kundprogram — ReAlign Metoden" };
@@ -57,6 +58,23 @@ export default async function ClinicProgramDetailPage({
     ? `sms:${toInternationalPhone(program.customer_phone)}&body=${encodeURIComponent(smsMessage)}`
     : null;
 
+  // "Skicka i chatt" kräver ett kopplat konto — slå upp det via telefon
+  // ELLER mejl (samma dubbla identitet som /min-sida använder för att visa
+  // programmet, se där), bara en av dem behöver träffa.
+  let linkedUserId: string | null = null;
+  if (program.customer_phone || program.customer_email) {
+    const matchFilters: string[] = [];
+    if (program.customer_phone) matchFilters.push(`phone.eq.${program.customer_phone}`);
+    if (program.customer_email) matchFilters.push(`email.eq.${program.customer_email}`);
+    const { data: linkedCustomer } = await admin
+      .from("customers")
+      .select("linked_user_id")
+      .or(matchFilters.join(","))
+      .not("linked_user_id", "is", null)
+      .maybeSingle();
+    linkedUserId = linkedCustomer?.linked_user_id ?? null;
+  }
+
   return (
       <div className={`wrap ${styles.wrap}`}>
         <Link href="/coaching/kundprogram" className={styles.back}>
@@ -105,7 +123,13 @@ export default async function ClinicProgramDetailPage({
                 Skicka via sms
               </a>
             )}
+            {linkedUserId && <SendToChatButton userId={linkedUserId} clinicProgramId={program.id} />}
           </div>
+          {linkedUserId && (
+            <p style={{ fontSize: "0.82rem", color: "var(--text-soft)" }}>
+              Programmet syns redan automatiskt under &quot;Mina program&quot; när kunden loggar in.
+            </p>
+          )}
         </div>
 
         <div style={{ marginBottom: 20 }}>
