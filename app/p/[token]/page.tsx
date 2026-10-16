@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
+import PremiumUpsellPrompt from "@/components/PremiumUpsellPrompt";
 import TrainingTips from "@/components/TrainingTips";
 import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { getClinicProgramPlayerData, recordClinicProgramVisit } from "@/lib/clinic-program";
+import { createClient } from "@/lib/supabase/server";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "../../program/[slug]/page.module.css";
 
@@ -36,6 +38,28 @@ export default async function ClinicProgramPage({
   }
 
   await recordClinicProgramVisit(data.id);
+
+  // Samma mönster som /program/[slug], /ovningsbank/[slug] och /5-minuter
+  // redan använder för GuestAccountPrompt (gömmer den för inloggade) — den
+  // här sidan saknade av misstag kontrollen, så "Skapa gratis konto" visades
+  // även för besökare som redan var inloggade. Programmet/övningarna ovan
+  // rörs inte alls av detta, bara rutan längst ner.
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let plan: string | null = null;
+  if (user) {
+    const { data: sub } = await supabase
+      .from("subscriptions")
+      .select("plan, status")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (sub?.status === "active" || sub?.status === "trialing") {
+      plan = sub.plan;
+    }
+  }
 
   return (
     <>
@@ -89,7 +113,8 @@ export default async function ClinicProgramPage({
         </div>
 
         <div style={{ marginTop: 30 }}>
-          <GuestAccountPrompt href={`/signup?source=klinik&ref=${token}`} />
+          {!user && <GuestAccountPrompt href={`/signup?source=klinik&ref=${token}`} />}
+          {user && plan !== "premium_coaching" && <PremiumUpsellPrompt />}
         </div>
 
         <Footer />
