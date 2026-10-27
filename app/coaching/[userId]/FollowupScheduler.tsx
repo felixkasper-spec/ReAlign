@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useState, useTransition } from "react";
 import { scheduleFollowup, completeFollowup } from "../actions";
 import styles from "../page.module.css";
 
@@ -9,8 +12,10 @@ export type FollowupRow = {
 
 // Ad-hoc uppföljningspåminnelse — coachen väljer själv hur många dagar fram
 // (t.ex. efter att ha svarat en kund) och en valfri anteckning om vad som
-// ska följas upp. Rena formulär mot server actions räcker (ingen AI-knapp
-// eller liveValidering som ReplyForm behöver), så ingen "use client" krävs.
+// ska följas upp. "use client" + explicit status krävs numera (till
+// skillnad från tidigare) — ett rent formulär mot server actionen gav
+// ingen som helst signal om sparningen lyckades eller inte, bara tystnad
+// åt bägge hållen.
 export default function FollowupScheduler({
   userId,
   active,
@@ -18,7 +23,27 @@ export default function FollowupScheduler({
   userId: string;
   active: FollowupRow[];
 }) {
-  const schedule = scheduleFollowup.bind(null, userId);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setStatus("idle");
+    setErrorMessage(null);
+    startTransition(async () => {
+      const result = await scheduleFollowup(userId, formData);
+      if (result.ok) {
+        setStatus("success");
+        formRef.current?.reset();
+      } else {
+        setStatus("error");
+        setErrorMessage(result.error ?? "Kunde inte spara påminnelsen.");
+      }
+    });
+  }
 
   return (
     <div className={styles.card} style={{ padding: "16px 18px", marginTop: 16 }}>
@@ -56,7 +81,11 @@ export default function FollowupScheduler({
         </div>
       )}
 
-      <form action={schedule} style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}
+      >
         <label style={{ fontSize: "0.82rem" }}>
           Om hur många dagar?
           <br />
@@ -92,9 +121,15 @@ export default function FollowupScheduler({
             }}
           />
         </label>
-        <button type="submit" className="btn btn-primary">
-          Schemalägg →
+        <button type="submit" className="btn btn-primary" disabled={isPending}>
+          {isPending ? "Sparar..." : "Schemalägg →"}
         </button>
+        {status === "success" && (
+          <span style={{ color: "var(--sage)", fontSize: "0.85rem", width: "100%" }}>✓ Påminnelse schemalagd.</span>
+        )}
+        {status === "error" && (
+          <span style={{ color: "var(--warm)", fontSize: "0.85rem", width: "100%" }}>{errorMessage}</span>
+        )}
       </form>
     </div>
   );

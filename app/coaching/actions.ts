@@ -309,12 +309,20 @@ export async function sendProgramLinkToChat(
 // Manuell uppföljningspåminnelse (se "Påminnelser" på /coaching) — coachen
 // väljer själv hur många dagar fram och en valfri anteckning, till skillnad
 // från den automatiska varannan-veckan-avstämningen ovan.
-export async function scheduleFollowup(userId: string, formData: FormData): Promise<void> {
+// Returnerar {ok:false, error} istället för att bara svälja fel — formuläret
+// (FollowupScheduler.tsx) gav tidigare ingen som helst signal om det
+// sparats eller inte, varken vid ett lyckat sparande eller ett misslyckat
+// (t.ex. ogiltigt antal dagar, eller att coaching_followups-migrationen
+// inte var körd) — bara total tystnad åt bägge hållen.
+export async function scheduleFollowup(
+  userId: string,
+  formData: FormData,
+): Promise<{ ok: boolean; error?: string }> {
   await requireCoach();
 
   const days = Number(formData.get("days"));
   if (!Number.isFinite(days) || days < 1) {
-    return;
+    return { ok: false, error: "Ange minst 1 dag." };
   }
   const note = String(formData.get("note") ?? "").trim();
 
@@ -329,11 +337,12 @@ export async function scheduleFollowup(userId: string, formData: FormData): Prom
 
   if (error) {
     console.error("scheduleFollowup — kunde inte spara:", error);
-    return;
+    return { ok: false, error: "Kunde inte spara påminnelsen — kontrollera att migration 0081 har körts." };
   }
 
   revalidatePath(`/coaching/${userId}`);
   revalidatePath("/coaching");
+  return { ok: true };
 }
 
 // Markerar en påminnelse som klar — antingen för att coachen faktiskt hörde
