@@ -3,8 +3,9 @@
 import { randomBytes } from "crypto";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { requireClinicStaff } from "@/lib/coach";
+import { requireClinicStaff, isClinicStaffEmail } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { sendEmail, escapeHtml } from "@/lib/brevo";
 import {
   CLINIC_PROGRAM_VIDEO_BUCKET,
@@ -29,7 +30,25 @@ export async function createClinicProgramVideoUploadUrl(
   | { ok: true; path: string; token: string; publicUrl: string }
   | { ok: false; error: string }
 > {
-  await requireClinicStaff();
+  // Medvetet INTE requireClinicStaff() här (som redirectar) — den här
+  // funktionen anropas direkt från klientkoden (ClinicProgramBuilder,
+  // addCustom) mitt i en potentiellt lång video-komprimering/uppladdning,
+  // inte via ett formulär. En redirect() från en server action som anropas
+  // så gör en RIKTIG sidnavigering i webbläsaren, vilket raderade HELA det
+  // redan ihopbyggda kundprogrammet (inklusive övningar tillagda på vanligt
+  // sätt) om sessionen av någon anledning hann bli ogiltig under
+  // väntetiden. Returnerar ett fel istället, som addCustom() redan visar
+  // snyggt utan att röra `selected`-listan.
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!isClinicStaffEmail(user?.email)) {
+    return {
+      ok: false,
+      error: "Du verkar inte vara inloggad längre — logga in på nytt (ditt redan ihopbyggda program finns kvar här, bara videouppladdningen misslyckades).",
+    };
+  }
 
   if (!mime.startsWith("video/")) {
     return { ok: false, error: "Bara videofiler kan laddas upp." };
