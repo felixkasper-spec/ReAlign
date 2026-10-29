@@ -2,12 +2,7 @@ import Link from "next/link";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { markContactMessageRead, completeFollowup } from "./actions";
-import CheckinCard from "./CheckinCard";
 import styles from "./page.module.css";
-
-// Hur ofta en Premium Coaching-kund ska stämmas av — gäller alla, ingen
-// per-kund-växel (till skillnad från Cleers coaching_cadence_enabled).
-const CHECKIN_INTERVAL_DAYS = 14;
 
 type ThreadRow = {
   userId: string;
@@ -67,45 +62,6 @@ export default async function CoachingInboxPage({
       ? await admin.from("profiles").select("id, display_name, email").in("id", intakeUserIds)
       : { data: [] };
   const intakeProfileById = new Map((intakeProfiles ?? []).map((p) => [p.id, p]));
-
-  // Avstämningskort — alla aktiva Premium Coaching-prenumeranter som inte
-  // stämts av (skickat till ELLER hoppats över, se coaching_checkins) på
-  // minst CHECKIN_INTERVAL_DAYS dagar. Ingen checkin-rad alls = aldrig
-  // avstämd, då räknas från prenumerationens startdatum istället.
-  const [{ data: coachingSubs }, { data: checkins }] = await Promise.all([
-    admin
-      .from("subscriptions")
-      .select("user_id, created_at")
-      .eq("plan", "premium_coaching")
-      .in("status", ["active", "trialing"]),
-    admin.from("coaching_checkins").select("user_id, last_checkin_at"),
-  ]);
-
-  const checkinByUserId = new Map(
-    (checkins ?? []).map((c) => [c.user_id as string, c.last_checkin_at as string]),
-  );
-  const coachingUserIds = (coachingSubs ?? []).map((s) => s.user_id as string);
-  const { data: coachingProfiles } =
-    coachingUserIds.length > 0
-      ? await admin.from("profiles").select("id, display_name, email").in("id", coachingUserIds)
-      : { data: [] };
-  const coachingProfileById = new Map((coachingProfiles ?? []).map((p) => [p.id, p]));
-
-  const nowMs = Date.now();
-  const DAY_MS = 24 * 60 * 60 * 1000;
-  const dueCheckins = (coachingSubs ?? [])
-    .map((s) => {
-      const reference = checkinByUserId.get(s.user_id as string) ?? (s.created_at as string);
-      const daysSince = (nowMs - new Date(reference).getTime()) / DAY_MS;
-      const profile = coachingProfileById.get(s.user_id as string);
-      return {
-        userId: s.user_id as string,
-        name: profile?.display_name || profile?.email || "Okänd",
-        daysSince,
-      };
-    })
-    .filter((c) => c.daysSince >= CHECKIN_INTERVAL_DAYS)
-    .sort((a, b) => b.daysSince - a.daysSince);
 
   // Manuella uppföljningspåminnelser (se FollowupScheduler i tråden) som
   // förfallit — remind_at i det förflutna och inte redan klarmarkerade.
@@ -361,36 +317,6 @@ export default async function CoachingInboxPage({
               </div>
             );
           })}
-        </div>
-
-        <div
-          style={{
-            background: "var(--surface)",
-            border: "1px solid var(--line)",
-            borderRadius: 14,
-            padding: "16px 18px",
-            marginBottom: 28,
-          }}
-        >
-          <div
-            style={{
-              fontWeight: 600,
-              marginBottom: dueCheckins.length > 0 ? 10 : 0,
-            }}
-          >
-            Dags för avstämning: {dueCheckins.length}
-          </div>
-          {dueCheckins.length > 0 && (
-            <p style={{ fontSize: "0.82rem", color: "var(--text-soft)", marginBottom: 12 }}>
-              Premium Coaching-kunder det gått minst {CHECKIN_INTERVAL_DAYS} dagar sedan senaste
-              avstämningen med.
-            </p>
-          )}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {dueCheckins.map((c) => (
-              <CheckinCard key={c.userId} userId={c.userId} name={c.name} daysSince={c.daysSince} />
-            ))}
-          </div>
         </div>
 
         <div
