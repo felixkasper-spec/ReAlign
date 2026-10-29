@@ -182,7 +182,7 @@ export default async function CoachingThreadPage({
           </div>
         </div>
 
-        <FollowupScheduler userId={userId} active={activeFollowups ?? []} />
+        <FollowupScheduler userId={userId} customerName={displayName} active={activeFollowups ?? []} />
       </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { scheduleFollowup, completeFollowup } from "../actions";
+import { CADENCE_MESSAGE_TEMPLATES } from "@/lib/cadence-messages";
 import styles from "../page.module.css";
 
 export type FollowupRow = {
@@ -18,15 +19,28 @@ export type FollowupRow = {
 // åt bägge hållen.
 export default function FollowupScheduler({
   userId,
+  customerName,
   active,
 }: {
   userId: string;
+  customerName: string;
   active: FollowupRow[];
 }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
+  const noteRef = useRef<HTMLTextAreaElement>(null);
+
+  // Fyller bara i anteckningsfältet med den färdiga mallens text — fältet
+  // är fortfarande fritt redigerbart efteråt, och select:en nollställs
+  // direkt så den inte ser "fastlåst" på ett val ut.
+  function applyTemplate(e: React.ChangeEvent<HTMLSelectElement>) {
+    const template = CADENCE_MESSAGE_TEMPLATES.find((t) => t.label === e.target.value);
+    e.target.value = "";
+    if (!template || !noteRef.current) return;
+    noteRef.current.value = template.build(customerName);
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -104,13 +118,12 @@ export default function FollowupScheduler({
             }}
           />
         </label>
-        <label style={{ fontSize: "0.82rem", flex: 1, minWidth: 180 }}>
+        <label style={{ fontSize: "0.82rem", flex: 1, minWidth: 220 }}>
           Anteckning (valfritt)
           <br />
-          <input
-            type="text"
-            name="note"
-            placeholder="Vad ska följas upp?"
+          <select
+            onChange={applyTemplate}
+            defaultValue=""
             style={{
               border: "1px solid var(--line)",
               borderRadius: 8,
@@ -118,6 +131,29 @@ export default function FollowupScheduler({
               width: "100%",
               fontFamily: "inherit",
               boxSizing: "border-box",
+              marginBottom: 6,
+            }}
+          >
+            <option value="">Eller välj ett färdigt meddelande från kadensen...</option>
+            {CADENCE_MESSAGE_TEMPLATES.map((t) => (
+              <option key={t.label} value={t.label}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+          <textarea
+            ref={noteRef}
+            name="note"
+            placeholder="Vad ska följas upp?"
+            rows={3}
+            style={{
+              border: "1px solid var(--line)",
+              borderRadius: 8,
+              padding: "6px 10px",
+              width: "100%",
+              fontFamily: "inherit",
+              boxSizing: "border-box",
+              resize: "vertical",
             }}
           />
         </label>

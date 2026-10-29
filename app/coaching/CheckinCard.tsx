@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { sendCoachingCheckin, dismissCoachingCheckin } from "./actions";
+import { buildCheckinMessage } from "@/lib/cadence-messages";
 import styles from "./page.module.css";
 
 // Ett kort per Premium Coaching-kund som är "mogen" för en
@@ -17,10 +18,7 @@ export default function CheckinCard({
   name: string;
   daysSince: number;
 }) {
-  const firstName = name.trim().split(/\s+/)[0] || name;
-  const [message, setMessage] = useState(
-    `Hej ${firstName}! Hur går det med träningen? Känns övningarna rätt fortfarande, eller är det dags att se över och eventuellt lägga till något nytt? Hör av dig om du har frågor!`,
-  );
+  const [message, setMessage] = useState(() => buildCheckinMessage(name));
   const [sent, setSent] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [error, setError] = useState<string | null>(null);
