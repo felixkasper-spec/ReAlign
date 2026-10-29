@@ -134,6 +134,39 @@ export default async function CoachingInboxPage({
     };
   });
 
+  // Schemalagda men ännu inte förfallna påminnelser — syntes tidigare
+  // ingenstans, så "Påminnelser: 0" såg ut som att schemaläggningen inte
+  // sparats alls trots att den gjort det (remind_at ligger bara i
+  // framtiden än).
+  const { data: upcomingFollowupRows } = await admin
+    .from("coaching_followups")
+    .select("id, user_id, note, remind_at")
+    .is("completed_at", null)
+    .gt("remind_at", new Date().toISOString())
+    .order("remind_at", { ascending: true });
+
+  const upcomingFollowupUserIds = [
+    ...new Set((upcomingFollowupRows ?? []).map((f) => f.user_id as string)),
+  ];
+  const { data: upcomingFollowupProfiles } =
+    upcomingFollowupUserIds.length > 0
+      ? await admin.from("profiles").select("id, display_name, email").in("id", upcomingFollowupUserIds)
+      : { data: [] };
+  const upcomingFollowupProfileById = new Map(
+    (upcomingFollowupProfiles ?? []).map((p) => [p.id, p]),
+  );
+
+  const upcomingFollowups = (upcomingFollowupRows ?? []).map((f) => {
+    const profile = upcomingFollowupProfileById.get(f.user_id as string);
+    return {
+      id: f.id as string,
+      userId: f.user_id as string,
+      name: profile?.display_name || profile?.email || "Okänd",
+      note: f.note as string | null,
+      remindAt: f.remind_at as string,
+    };
+  });
+
   const { data: messages } = await admin
     .from("coaching_messages")
     .select("user_id, sender, body, created_at, read_at")
@@ -408,6 +441,45 @@ export default async function CoachingInboxPage({
               </div>
             ))}
           </div>
+
+          {upcomingFollowups.length > 0 && (
+            <details style={{ marginTop: dueFollowups.length > 0 ? 14 : 0 }}>
+              <summary style={{ cursor: "pointer", color: "var(--text-soft)", fontSize: "0.88rem" }}>
+                Kommande påminnelser ({upcomingFollowups.length})
+              </summary>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}>
+                {upcomingFollowups.map((f) => (
+                  <div
+                    key={f.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 10,
+                      fontSize: "0.88rem",
+                      border: "1px solid var(--line)",
+                      borderRadius: 10,
+                      padding: "10px 14px",
+                    }}
+                  >
+                    <span>
+                      <Link href={`/coaching/${f.userId}`}>{f.name}</Link>
+                      {f.note ? ` — ${f.note}` : ""}
+                      <span style={{ color: "var(--text-soft)" }}>
+                        {" "}
+                        · hörs av {new Date(f.remindAt).toLocaleDateString("sv-SE", { dateStyle: "medium" })}
+                      </span>
+                    </span>
+                    <form action={completeFollowup.bind(null, f.id, f.userId)}>
+                      <button type="submit" className="btn btn-ghost" style={{ border: "1px solid var(--line)", flexShrink: 0 }}>
+                        Klar
+                      </button>
+                    </form>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
 
         {threads.length > 0 && (
