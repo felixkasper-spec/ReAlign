@@ -216,17 +216,21 @@ export async function createClinicProgramInline(
   return insertClinicProgram(formData);
 }
 
-export async function updateClinicProgram(
+export type UpdateProgramResult = { ok: true } | { ok: false; error: string };
+
+// Delad av updateClinicProgram (redirectar till programmets egen sida) och
+// updateClinicProgramInline (returnerar resultatet istället, för att kunna
+// redigera kundens tidigare program direkt i kundchatten utan att lämna
+// sidan — se CustomerPrograms.tsx).
+async function applyClinicProgramUpdate(
   clinicProgramId: string,
   formData: FormData,
-) {
-  await requireClinicStaff();
-
+): Promise<UpdateProgramResult> {
   const label = (formData.get("label") as string)?.trim();
   const rowCount = formData.getAll("exerciseIds").length;
 
   if (!label || rowCount === 0) {
-    return;
+    return { ok: false, error: "Namn och minst en övning krävs." };
   }
 
   const admin = createAdminClient();
@@ -250,14 +254,42 @@ export async function updateClinicProgram(
   });
   if (rowsError) {
     console.error("replace_clinic_program_exercises failed (update)", rowsError);
-    redirect(
-      `/coaching/kundprogram/${clinicProgramId}/redigera?error=1&detail=${encodeURIComponent(rowsError.message)}`,
-    );
+    return { ok: false, error: "Kunde inte spara ändringarna." };
   }
 
   revalidatePath("/coaching/kundprogram");
   revalidatePath(`/coaching/kundprogram/${clinicProgramId}`);
+  revalidatePath("/coaching");
+  return { ok: true };
+}
+
+export async function updateClinicProgram(
+  clinicProgramId: string,
+  formData: FormData,
+) {
+  await requireClinicStaff();
+
+  const result = await applyClinicProgramUpdate(clinicProgramId, formData);
+  if (!result.ok) {
+    redirect(
+      `/coaching/kundprogram/${clinicProgramId}/redigera?error=1&detail=${encodeURIComponent(result.error)}`,
+    );
+  }
+
   redirect(`/coaching/kundprogram/${clinicProgramId}`);
+}
+
+// Samma uppdateringslogik som updateClinicProgram, men returnerar resultatet
+// istället för att redirecta — används med useActionState() i
+// CustomerPrograms.tsx så ett kundprogram kan redigeras direkt i
+// coaching-tråden, utan att lämna sidan.
+export async function updateClinicProgramInline(
+  clinicProgramId: string,
+  _prevState: UpdateProgramResult,
+  formData: FormData,
+): Promise<UpdateProgramResult> {
+  await requireClinicStaff();
+  return applyClinicProgramUpdate(clinicProgramId, formData);
 }
 
 export async function sendClinicProgramLink(

@@ -10,6 +10,8 @@ import DriveLinkButton from "./DriveLinkButton";
 import ReplyForm from "./ReplyForm";
 import ScrollToLatest from "./ScrollToLatest";
 import FollowupScheduler from "./FollowupScheduler";
+import CustomerPrograms, { type CustomerProgram } from "./CustomerPrograms";
+import type { SelectedRow } from "../kundprogram/ClinicProgramBuilder";
 import styles from "../page.module.css";
 
 export default async function CoachingThreadPage({
@@ -64,6 +66,63 @@ export default async function CoachingThreadPage({
       .maybeSingle(),
   ]);
   const hasPremiumCoaching = subscription?.plan === "premium_coaching";
+
+  // Kundens tidigare kundprogram, redigerbara direkt här (se
+  // CustomerPrograms.tsx) — matchar på telefon ELLER mejl, samma mönster
+  // som min-sida/page.tsx fick rättat tidigare: en kontoenbart-kopplad kund
+  // (bara mejl, inget telefonnummer sparat) ska också hitta sina program,
+  // inte bara de med en fullständig customers-koppling.
+  let customerPrograms: CustomerProgram[] = [];
+  if (linkedCustomer?.phone || linkedCustomer?.email || profile.email) {
+    const orParts: string[] = [];
+    if (linkedCustomer?.phone) orParts.push(`customer_phone.eq.${linkedCustomer.phone}`);
+    if (linkedCustomer?.email) orParts.push(`customer_email.eq.${linkedCustomer.email}`);
+    if (profile.email && profile.email !== linkedCustomer?.email) {
+      orParts.push(`customer_email.eq.${profile.email}`);
+    }
+
+    const { data: programs } = await admin
+      .from("clinic_programs")
+      .select("id, label, created_at")
+      .or(orParts.join(","))
+      .order("created_at", { ascending: false });
+
+    customerPrograms = await Promise.all(
+      (programs ?? []).map(async (program) => {
+        const { data: rows } = await admin
+          .from("clinic_program_exercises")
+          .select("id, notes, order_index, custom_title, custom_video_url, exercises ( id, title )")
+          .eq("clinic_program_id", program.id)
+          .order("order_index");
+
+        const initialSelected: SelectedRow[] = (rows ?? []).map((r) => {
+          const ex = r.exercises as unknown as { id: string; title: string } | null;
+          if (ex) {
+            return { rowId: r.id, id: ex.id, title: ex.title, notes: r.notes ?? "" };
+          }
+          return {
+            rowId: r.id,
+            id: `custom-${r.id}`,
+            title: r.custom_title ?? "Egen övning",
+            notes: r.notes ?? "",
+            isCustom: true,
+            customVideoUrl: r.custom_video_url ?? "",
+          };
+        });
+
+        return {
+          id: program.id as string,
+          label: program.label as string,
+          createdAt: program.created_at as string,
+          initialSelected,
+        };
+      }),
+    );
+  }
+
+  const { data: programExercises } = customerPrograms.length
+    ? await admin.from("exercises").select("id, slug, title, body_part").order("body_part").order("title")
+    : { data: [] };
 
   const { data: messages } = await admin
     .from("coaching_messages")
@@ -183,6 +242,8 @@ export default async function CoachingThreadPage({
         </div>
 
         <FollowupScheduler userId={userId} customerName={displayName} active={activeFollowups ?? []} />
+
+        <CustomerPrograms programs={customerPrograms} exercises={programExercises ?? []} />
       </div>
   );
 }
