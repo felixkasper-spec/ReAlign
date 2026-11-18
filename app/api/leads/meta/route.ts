@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createCleerAdminClient } from "@/lib/supabase/cleer-admin";
 import { notifyNewLead } from "@/lib/pushover";
 
 // Tar emot leads från Metas inbyggda "Snabba formulär" (Instant Form/Lead
@@ -44,6 +45,25 @@ export async function POST(request: Request) {
   if (error) {
     console.error("Meta lead-webhook — kunde inte spara leadet:", error);
     return Response.json({ ok: false }, { status: 500 });
+  }
+
+  // TEMPORÄR spegling till Cleer Kliniks leads-admin — se
+  // lib/supabase/cleer-admin.ts. Får aldrig låta webhooken misslyckas även
+  // om detta gör det, leadet är redan säkert sparat i ReAligns egen tabell.
+  const cleerAdmin = createCleerAdminClient();
+  if (cleerAdmin) {
+    const { error: cleerError } = await cleerAdmin.from("coaching_leads").insert({
+      name,
+      phone,
+      email: email || null,
+      situation: `[ReAlign] ${situation}`,
+      utm_source: "meta",
+      utm_medium: "lead_ad",
+      utm_campaign: formName || null,
+    });
+    if (cleerError) {
+      console.error("Meta lead-webhook — kunde inte spegla leadet till Cleer:", cleerError);
+    }
   }
 
   await notifyNewLead({ name, phone, situation });

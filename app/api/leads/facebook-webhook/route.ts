@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createCleerAdminClient } from "@/lib/supabase/cleer-admin";
 import { notifyNewLead } from "@/lib/pushover";
 import { getCurrentLeadOwner } from "@/lib/lead-owner";
 
@@ -150,6 +151,26 @@ export async function POST(request: Request) {
       if (error) {
         console.error("Meta leadgen-webhook — kunde inte spara leadet:", error);
         continue;
+      }
+
+      // TEMPORÄR spegling till Cleer Kliniks leads-admin — se
+      // lib/supabase/cleer-admin.ts. Får aldrig stoppa resten av loopen
+      // eller svaret till Meta även om detta misslyckas.
+      const cleerAdmin = createCleerAdminClient();
+      if (cleerAdmin) {
+        const { error: cleerError } = await cleerAdmin.from("coaching_leads").insert({
+          name: lead.name,
+          phone: lead.phone,
+          email: lead.email || null,
+          situation: `[ReAlign] ${situation}`,
+          utm_source: "meta",
+          utm_medium: "lead_ad",
+          utm_campaign: change.value.form_id,
+          owner,
+        });
+        if (cleerError) {
+          console.error("Meta leadgen-webhook — kunde inte spegla leadet till Cleer:", cleerError);
+        }
       }
 
       await notifyNewLead({ name: lead.name, phone: lead.phone, situation });
