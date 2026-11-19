@@ -3,13 +3,14 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toInternationalPhone } from "@/lib/customer-identity";
-import ClinicProgramBuilder, { type Exercise } from "../../kundprogram/ClinicProgramBuilder";
+import ClinicProgramBuilder, { type Exercise, type SelectedRow } from "../../kundprogram/ClinicProgramBuilder";
 import { createClinicProgramInline, type CreateProgramResult } from "../../kundprogram/actions";
 import CopyLinkButton from "../../kundprogram/[id]/CopyLinkButton";
 import SendLinkForm from "../../kundprogram/[id]/SendLinkForm";
 import SendToChatButton from "../../kundprogram/[id]/SendToChatButton";
 import JournalComposer from "./JournalComposer";
 import JournalEntryItem, { type JournalEntry } from "./JournalEntryItem";
+import PreviousProgramsPanel, { type CustomerProgram } from "./PreviousProgramsPanel";
 import styles from "../kunder.module.css";
 
 const INITIAL_STATE: CreateProgramResult = { ok: false, error: "" };
@@ -29,6 +30,7 @@ export default function ProgramFromJournal({
   journalEntries,
   exercises,
   baseUrl,
+  previousPrograms,
 }: {
   // Exakt en av customerPhone/userId identifierar kunden i journalen —
   // customerPhone saknas för en ren konto-kund utan telefon (se
@@ -41,8 +43,13 @@ export default function ProgramFromJournal({
   journalEntries: JournalEntry[];
   exercises: Exercise[];
   baseUrl: string;
+  // Kundens tidigare program med övningarna redan uppslagna — visas i
+  // "Tidigare program"-rutan (se PreviousProgramsPanel.tsx) så man kan
+  // kika/kopiera därifrån utan att lämna sidan.
+  previousPrograms: CustomerProgram[];
 }) {
   const [prefillText, setPrefillText] = useState("");
+  const [prefillSelected, setPrefillSelected] = useState<SelectedRow[] | null>(null);
   const [prefillVersion, setPrefillVersion] = useState(0);
   const [state, formAction] = useActionState(createClinicProgramInline, INITIAL_STATE);
   const router = useRouter();
@@ -57,6 +64,19 @@ export default function ProgramFromJournal({
 
   function handleUseInProgram(text: string) {
     setPrefillText(text);
+    setPrefillSelected(null);
+    setPrefillVersion((v) => v + 1);
+    document.getElementById("program-builder")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Kopierar ett tidigare programs övningar rakt in i byggaren nedanför,
+  // som om man precis lagt till dem för hand — till skillnad från
+  // handleUseInProgram (journalen) går detta INTE via textparsning, utan
+  // sätter exakt samma rader (samma matchade övning, samma sets/reps) som
+  // i det gamla programmet.
+  function handleCopyToBuilder(rows: SelectedRow[]) {
+    setPrefillSelected(rows);
+    setPrefillText("");
     setPrefillVersion((v) => v + 1);
     document.getElementById("program-builder")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -123,6 +143,7 @@ export default function ProgramFromJournal({
           exercises={exercises}
           action={formAction}
           initialLabel={customerName ? `${customerName} — nytt program` : ""}
+          initialSelected={prefillSelected ?? []}
           initialNotesText={prefillText}
           autoParseInitial={prefillText.trim().length > 0}
           customerPhone={customerPhone}
@@ -130,6 +151,9 @@ export default function ProgramFromJournal({
           customerEmail={customerEmail ?? undefined}
           submitLabel="Skapa program →"
           submitPendingText="Skapar..."
+          afterSelectedSlot={
+            <PreviousProgramsPanel programs={previousPrograms} onCopyToBuilder={handleCopyToBuilder} />
+          }
         />
       </div>
     </>

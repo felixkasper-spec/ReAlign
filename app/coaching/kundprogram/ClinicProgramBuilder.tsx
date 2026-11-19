@@ -266,6 +266,7 @@ export default function ClinicProgramBuilder({
   customerEmail,
   initialNotesText = "",
   autoParseInitial = false,
+  afterSelectedSlot = null,
 }: {
   exercises: Exercise[];
   action: (formData: FormData) => void | Promise<void>;
@@ -282,6 +283,12 @@ export default function ClinicProgramBuilder({
   // Kör "Tolka text" direkt vid montering istället för att kräva ett extra
   // klick — bara meningsfullt tillsammans med initialNotesText.
   autoParseInitial?: boolean;
+  // Valfritt innehåll mellan "Kundens program"+spara-knappen och "Klistra
+  // in anteckningar" — används av kundsidan för en "Tidigare program"-ruta
+  // (se PreviousProgramsPanel.tsx). Hålls generiskt här så att övriga
+  // ställen som använder byggaren (kundprogram/ny, /redigera) är helt
+  // opåverkade — de skickar bara inte med den.
+  afterSelectedSlot?: React.ReactNode;
 }) {
   const formId = useId();
   const [label, setLabel] = useState(initialLabel);
@@ -580,6 +587,8 @@ export default function ClinicProgramBuilder({
             {submitLabel}
           </SubmitButton>
         </div>
+
+        {afterSelectedSlot}
 
         <details className={styles.panel}>
           <summary className={styles.panelSummary}>Alla övningar</summary>

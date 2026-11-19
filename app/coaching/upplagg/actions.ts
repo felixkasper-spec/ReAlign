@@ -4,7 +4,13 @@ import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-export async function createPackage(name: string): Promise<{ ok: boolean; error?: string }> {
+export async function createPackage(
+  name: string,
+  // Sätts när upplägget skapas direkt från kundsidan (se
+  // app/coaching/kunder/[phone]/UpplaggCard.tsx) — kopplar raden till rätt
+  // kund deterministiskt istället för att bara ha fritextnamnet att gå på.
+  customerPhone?: string | null,
+): Promise<{ ok: boolean; error?: string }> {
   await requireCoach();
 
   const trimmed = name.trim();
@@ -13,7 +19,9 @@ export async function createPackage(name: string): Promise<{ ok: boolean; error?
   }
 
   const admin = createAdminClient();
-  const { error } = await admin.from("client_packages").insert({ customer_name: trimmed });
+  const { error } = await admin
+    .from("client_packages")
+    .insert({ customer_name: trimmed, customer_phone: customerPhone || null });
 
   if (error) {
     console.error("createPackage — kunde inte spara:", error);
@@ -21,6 +29,7 @@ export async function createPackage(name: string): Promise<{ ok: boolean; error?
   }
 
   revalidatePath("/coaching/upplagg");
+  if (customerPhone) revalidatePath(`/coaching/kunder/${customerPhone}`);
   return { ok: true };
 }
 

@@ -11,8 +11,52 @@ import TokenLinkInput from "./TokenLinkInput";
 import LoginLink from "./LoginLink";
 import SetPhoneForm from "./SetPhoneForm";
 import SendIntakeEmailButton from "./SendIntakeEmailButton";
+import UpplaggCard from "./UpplaggCard";
+import type { CustomerProgram } from "./PreviousProgramsPanel";
+import type { SelectedRow } from "../../kundprogram/ClinicProgramBuilder";
 import listStyles from "../../page.module.css";
 import styles from "../kunder.module.css";
+
+// Slår upp övningarna i varje tidigare program i förväg — visas i
+// "Tidigare program"-rutan (se PreviousProgramsPanel.tsx) så man kan
+// kika/kopiera utan extra laddning när man expanderar ett program. Delad
+// mellan båda grenarna nedan (konto-kund via e-post resp. telefonkund).
+async function loadPreviousPrograms(
+  admin: ReturnType<typeof createAdminClient>,
+  programs: { id: string; label: string; created_at: string }[] | null,
+): Promise<CustomerProgram[]> {
+  return Promise.all(
+    (programs ?? []).map(async (program): Promise<CustomerProgram> => {
+      const { data: rows } = await admin
+        .from("clinic_program_exercises")
+        .select("id, notes, order_index, custom_title, custom_video_url, exercises ( id, title )")
+        .eq("clinic_program_id", program.id)
+        .order("order_index");
+
+      const initialSelected: SelectedRow[] = (rows ?? []).map((r) => {
+        const ex = r.exercises as unknown as { id: string; title: string } | null;
+        if (ex) {
+          return { rowId: r.id, id: ex.id, title: ex.title, notes: r.notes ?? "" };
+        }
+        return {
+          rowId: r.id,
+          id: `custom-${r.id}`,
+          title: r.custom_title ?? "Egen övning",
+          notes: r.notes ?? "",
+          isCustom: true,
+          customVideoUrl: r.custom_video_url ?? "",
+        };
+      });
+
+      return {
+        id: program.id,
+        label: program.label,
+        createdAt: program.created_at,
+        initialSelected,
+      };
+    }),
+  );
+}
 
 export const metadata: Metadata = { title: "Kund — ReAlign Metoden" };
 
@@ -217,6 +261,7 @@ export default async function CustomerDetailPage({
 
     const baseUrl = await getBaseUrl();
     const displayName = accountCustomer.name || linkedDisplayName || email;
+    const previousPrograms = await loadPreviousPrograms(admin, programs);
 
     return (
       <div className={`wrap ${listStyles.wrap}`}>
@@ -321,38 +366,13 @@ export default async function CustomerDetailPage({
               )}
             </div>
           </details>
-
-          <details className={styles.dropdownCard}>
-            <summary className={styles.dropdownSummary}>
-              Tidigare program
-              <span className={styles.dropdownHint}>{programs?.length ?? 0}</span>
-            </summary>
-            <div className={styles.dropdownBody}>
-              <a
-                href="#program-builder"
-                className="btn btn-primary"
-                style={{ padding: "6px 14px", display: "inline-block", marginBottom: 10 }}
-              >
-                + Skapa nytt program
-              </a>
-              {(!programs || programs.length === 0) && (
-                <p className={listStyles.empty}>Inga program skapade än.</p>
-              )}
-              {(programs ?? []).map((p) => (
-                <Link key={p.id} href={`/coaching/kundprogram/${p.id}`} className={styles.card} style={{ display: "block" }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{p.label}</div>
-                  <div style={{ fontSize: "0.82rem", color: "var(--text-soft)" }}>
-                    Skapat{" "}
-                    {new Date(p.created_at).toLocaleString("sv-SE", {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })}
-                    {p.visit_count > 0 ? ` · Öppnad ${p.visit_count} ${p.visit_count === 1 ? "gång" : "gånger"}` : " · Inte öppnat än"}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </details>
+          {/* "Tidigare program"-rutan som satt här togs bort — samma
+              information (plus kopiera/redigera) finns redan i "Tidigare
+              program"-panelen längre ner, inuti programbyggaren (se
+              PreviousProgramsPanel.tsx), så den var redundant här. Ingen
+              Upplägg-ruta i den här grenen (konto-kund utan telefon) —
+              upplägg är kopplade via telefonnummer, se den andra grenen
+              nedan.  */}
         </div>
 
         <ProgramFromJournal
@@ -363,6 +383,7 @@ export default async function CustomerDetailPage({
           journalEntries={journalWithUrls}
           exercises={exercises ?? []}
           baseUrl={baseUrl}
+          previousPrograms={previousPrograms}
         />
       </div>
     );
@@ -458,6 +479,14 @@ export default async function CustomerDetailPage({
     .select("id, slug, title, body_part")
     .order("body_part")
     .order("title");
+
+  const { data: upplaggPackages } = await admin
+    .from("client_packages")
+    .select("id, sessions_used, sessions_purchased, note_1")
+    .eq("customer_phone", phone)
+    .order("created_at", { ascending: false });
+
+  const previousPrograms = await loadPreviousPrograms(admin, programs);
 
   let linkedProfile: { userId: string; email: string; displayName: string | null } | null = null;
   if (standaloneCustomer?.linked_user_id) {
@@ -582,37 +611,16 @@ export default async function CustomerDetailPage({
             </div>
           </details>
 
-          <details className={styles.dropdownCard}>
-            <summary className={styles.dropdownSummary}>
-              Tidigare program
-              <span className={styles.dropdownHint}>{programs?.length ?? 0}</span>
-            </summary>
-            <div className={styles.dropdownBody}>
-              <a
-                href="#program-builder"
-                className="btn btn-primary"
-                style={{ padding: "6px 14px", display: "inline-block", marginBottom: 10 }}
-              >
-                + Skapa nytt program
-              </a>
-              {(!programs || programs.length === 0) && (
-                <p className={listStyles.empty}>Inga program skapade än.</p>
-              )}
-              {(programs ?? []).map((p) => (
-                <Link key={p.id} href={`/coaching/kundprogram/${p.id}`} className={styles.card} style={{ display: "block" }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{p.label}</div>
-                  <div style={{ fontSize: "0.82rem", color: "var(--text-soft)" }}>
-                    Skapat{" "}
-                    {new Date(p.created_at).toLocaleString("sv-SE", {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })}
-                    {p.visit_count > 0 ? ` · Öppnad ${p.visit_count} ${p.visit_count === 1 ? "gång" : "gånger"}` : " · Inte öppnat än"}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </details>
+          {/* "Tidigare program"-rutan som satt här togs bort — samma
+              information (plus kopiera/redigera) finns redan i "Tidigare
+              program"-panelen längre ner, inuti programbyggaren (se
+              PreviousProgramsPanel.tsx), så den var redundant här. Upplägg
+              tar nu den tredje platsen i raden istället. */}
+          <UpplaggCard
+            customerPhone={phone}
+            customerName={canonical.customer_name}
+            packages={upplaggPackages ?? []}
+          />
         </div>
 
         <ProgramFromJournal
@@ -623,6 +631,7 @@ export default async function CustomerDetailPage({
           journalEntries={journalWithUrls}
           exercises={exercises ?? []}
           baseUrl={baseUrl}
+          previousPrograms={previousPrograms}
         />
     </div>
   );
