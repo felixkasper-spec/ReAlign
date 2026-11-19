@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireCoach } from "@/lib/coach";
+import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LeadOwner } from "@/lib/lead-owner";
 
@@ -15,15 +16,39 @@ type LeadStatus = (typeof LEAD_STATUSES)[number];
 
 const LEAD_OWNERS = ["felix", "christopher"] as const;
 
-export async function updateLeadStatus(leadId: string, status: string | null) {
-  await requireCoach();
+// Returnerar {ok:false} istället för att bara svälja fel — LeadControls
+// pekar annars själva statusen som "sparad" (optimistisk UI) utan att
+// kunna veta att skrivningen faktiskt misslyckades (t.ex. nätverksfel på
+// mobilt bygge med dåligt signal), så ändringen tyst försvinner tills nästa
+// sidladdning visar den gamla statusen igen.
+//
+// Medvetet INTE requireCoach() här (som redirectar vid ogiltig session) —
+// den funktionen anropas direkt från klientkoden (LeadControls, inte via
+// ett formulär) inuti ett try/catch. En redirect() som kastas därifrån
+// fångas tyst av catchen och visas som samma generiska "Kunde inte
+// spara"-fel istället för att faktiskt navigera, vilket gömde den riktiga
+// orsaken (utloggad/för gammal session) bakom ett missvisande meddelande.
+export async function updateLeadStatus(
+  leadId: string,
+  status: string | null,
+): Promise<{ ok: boolean; error?: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || !process.env.COACH_EMAIL || user.email !== process.env.COACH_EMAIL) {
+    return {
+      ok: false,
+      error: "Du verkar inte vara inloggad längre — ladda om sidan och logga in igen.",
+    };
+  }
 
   if (status !== null && !LEAD_STATUSES.includes(status as LeadStatus)) {
-    return;
+    return { ok: false, error: "Ogiltig status." };
   }
 
   const admin = createAdminClient();
-  await admin
+  const { error } = await admin
     .from("coaching_leads")
     .update({
       status,
@@ -37,7 +62,13 @@ export async function updateLeadStatus(leadId: string, status: string | null) {
     })
     .eq("id", leadId);
 
+  if (error) {
+    console.error("updateLeadStatus — kunde inte spara:", error);
+    return { ok: false, error: "Kunde inte spara statusen, försök igen." };
+  }
+
   revalidatePath("/coaching/leads");
+  return { ok: true };
 }
 
 // Loggar att coachen faktiskt ringde IGEN utan att statusen ändras (den är

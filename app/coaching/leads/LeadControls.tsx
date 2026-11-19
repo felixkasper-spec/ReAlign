@@ -96,6 +96,7 @@ export default function LeadControls({
   const [pending, startTransition] = useTransition();
   const [deleting, setDeleting] = useState(false);
   const [smsPick, setSmsPick] = useState("");
+  const [statusError, setStatusError] = useState<string | null>(null);
 
   function handleOwnerChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
@@ -115,10 +116,32 @@ export default function LeadControls({
   }
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const previous = status;
     const value = e.target.value;
     setStatus(value);
+    setStatusError(null);
     startTransition(async () => {
-      await updateLeadStatus(leadId, value || null);
+      // Optimistisk UI ovan kunde tidigare lämna en status som "sparad" i
+      // gränssnittet trots att skrivningen misslyckades (t.ex. nätverksfel)
+      // — en sidladdning visade då den gamla statusen igen utan förklaring.
+      // Backar nu tillbaka valet och visar ett fel istället.
+      let ok = false;
+      let error: string | undefined;
+      try {
+        const result = await updateLeadStatus(leadId, value || null);
+        ok = result.ok;
+        error = result.error;
+      } catch (err) {
+        // Visa den faktiska undantagstexten (t.ex. "Failed to fetch" vid
+        // ett avbrutet anrop) istället för att bara svälja den — annars ser
+        // varje möjlig orsak likadan ut och går inte att skilja åt.
+        ok = false;
+        error = `Tekniskt fel: ${err instanceof Error ? err.message : String(err)}`;
+      }
+      if (!ok) {
+        setStatus(previous);
+        setStatusError(error ?? "Kunde inte spara statusen, försök igen.");
+      }
     });
   }
 
@@ -152,6 +175,9 @@ export default function LeadControls({
           </option>
         ))}
       </select>
+      {statusError && (
+        <span style={{ color: "var(--warm)", fontSize: "0.8rem" }}>{statusError}</span>
+      )}
       <select
         value={owner}
         onChange={handleOwnerChange}

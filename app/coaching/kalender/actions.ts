@@ -5,6 +5,7 @@ import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizePhone } from "@/lib/customer-identity";
 import { upsertCustomerFields } from "@/lib/customer-upsert";
+import { fetchAllPages } from "@/lib/supabase-paginate";
 
 const STAFF = ["felix", "christopher"] as const;
 type Staff = (typeof STAFF)[number];
@@ -375,22 +376,61 @@ export async function searchCustomers(query: string): Promise<CustomerMatch[]> {
   if (q.length < 2) return [];
 
   const admin = createAdminClient();
-  const { data: bookings } = await admin
-    .from("bookings")
-    .select("customer_name, customer_phone, customer_email, start_at")
-    .order("start_at", { ascending: false });
+  const [{ data: bookings }, { data: standaloneCustomers }] = await Promise.all([
+    fetchAllPages<{
+      customer_name: string;
+      customer_phone: string;
+      customer_email: string | null;
+      start_at: string;
+    }>((from, to) =>
+      admin
+        .from("bookings")
+        .select("customer_name, customer_phone, customer_email, start_at")
+        .order("start_at", { ascending: false })
+        .range(from, to),
+    ),
+    fetchAllPages<{
+      phone: string | null;
+      name: string | null;
+      email: string | null;
+      created_at: string;
+    }>((from, to) =>
+      admin
+        .from("customers")
+        .select("phone, name, email, created_at")
+        .order("created_at", { ascending: false })
+        .range(from, to),
+    ),
+  ]);
 
   const digits = q.replace(/\D/g, "");
+  // Bara en meningsfull telefonsökning om siffrorna faktiskt utgör
+  // merparten av det som skrevs in — annars räckte det med två stray
+  // siffror i ett namn eller mejl (t.ex. "adolfsson23") för att av misstag
+  // träffa vilket telefonnummer som helst som råkade innehålla just den
+  // sekvensen någonstans.
+  const looksLikePhoneQuery = digits.length >= 4 && digits.length >= q.replace(/\s/g, "").length * 0.5;
+
+  function matches(name: string | null, email: string | null, phone: string): boolean {
+    const nameMatch = name?.toLowerCase().includes(q);
+    const emailMatch = email?.toLowerCase().includes(q);
+    const phoneMatch = looksLikePhoneQuery && phone.includes(digits);
+    return Boolean(nameMatch || emailMatch || phoneMatch);
+  }
+
   const byPhone = new Map<string, CustomerMatch>();
-  for (const b of bookings ?? []) {
+  for (const b of bookings) {
     const phone = normalizePhone(b.customer_phone);
     if (!phone || byPhone.has(phone)) continue;
-
-    const nameMatch = b.customer_name?.toLowerCase().includes(q);
-    const emailMatch = b.customer_email?.toLowerCase().includes(q);
-    const phoneMatch = digits.length >= 2 && phone.includes(digits);
-    if (nameMatch || emailMatch || phoneMatch) {
+    if (matches(b.customer_name, b.customer_email, phone)) {
       byPhone.set(phone, { name: b.customer_name, phone, email: b.customer_email });
+    }
+  }
+  for (const c of standaloneCustomers) {
+    const phone = c.phone ? normalizePhone(c.phone) : null;
+    if (!phone || byPhone.has(phone)) continue;
+    if (matches(c.name, c.email, phone)) {
+      byPhone.set(phone, { name: c.name || phone, phone, email: c.email });
     }
   }
 

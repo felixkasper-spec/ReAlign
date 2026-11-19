@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireCoach } from "@/lib/coach";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizePhone } from "@/lib/customer-identity";
+import { fetchAllPages } from "@/lib/supabase-paginate";
 import AddCustomerForm from "./AddCustomerForm";
 import styles from "../page.module.css";
 
@@ -39,13 +40,46 @@ export default async function CustomersPage({
   const { q } = await searchParams;
   const admin = createAdminClient();
 
-  const [{ data: bookings }, { data: standaloneCustomers }] = await Promise.all([
-    admin
-      .from("bookings")
-      .select("customer_name, customer_phone, customer_email, start_at")
-      .order("start_at", { ascending: false }),
-    admin.from("customers").select("phone, name, email, created_at"),
+  const [
+    { data: bookings, error: bookingsError },
+    { data: standaloneCustomers, error: standaloneError },
+  ] = await Promise.all([
+    fetchAllPages<{
+      customer_name: string;
+      customer_phone: string;
+      customer_email: string | null;
+      start_at: string;
+    }>((from, to) =>
+      admin
+        .from("bookings")
+        .select("customer_name, customer_phone, customer_email, start_at")
+        .order("start_at", { ascending: false })
+        .range(from, to),
+    ),
+    fetchAllPages<{
+      phone: string | null;
+      name: string | null;
+      email: string | null;
+      created_at: string;
+    }>((from, to) =>
+      admin
+        .from("customers")
+        .select("phone, name, email, created_at")
+        .order("created_at", { ascending: false })
+        .range(from, to),
+    ),
   ]);
+
+  // Båda frågorna lästes tidigare helt utan felkontroll — ett misslyckat
+  // anrop gav bara en kortare lista utan något spår av VARFÖR, så kunder
+  // som bara finns direkt i customers-tabellen (ingen bokning än) kunde
+  // försvinna helt ur listan utan att varken sidan eller loggarna visade
+  // att något gått fel.
+  const loadError = bookingsError ?? standaloneError;
+  const hasLoadError = Boolean(loadError);
+  if (loadError) {
+    console.error("CustomersPage — kunde inte hämta kundlistan:", loadError);
+  }
 
   const byPhone = new Map<string, CustomerRow>();
   for (const b of bookings ?? []) {
@@ -109,6 +143,23 @@ export default async function CustomersPage({
         Alla kunder, med bokningshistorik, journal och kom igång-formulär
         samlat per kund.
       </p>
+
+      {hasLoadError && (
+        <p
+          style={{
+            background: "var(--warm-soft)",
+            color: "var(--text)",
+            borderRadius: 12,
+            padding: "12px 16px",
+            fontSize: "0.9rem",
+            marginBottom: 24,
+          }}
+        >
+          Kunde inte hämta hela kundlistan just nu — listan nedan kan vara
+          ofullständig. Ladda om sidan eller hör av dig till utvecklaren om
+          det kvarstår.
+        </p>
+      )}
 
       <AddCustomerForm />
 
