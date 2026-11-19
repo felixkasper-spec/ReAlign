@@ -1,0 +1,260 @@
+.root {
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + var(--cookie-banner-clearance, 0px));
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Stängd: en pill med ikon + text ("Chatta") — en ren rund ikonknapp gav
+   ingen indikation alls om att det går att chatta här. Texten gör själva
+   knappen självförklarande, oavsett om nudge-bubblan (se .nudge) redan
+   visats/stängts. */
+.toggle {
+  height: 56px;
+  padding: 0 18px;
+  border-radius: 100px;
+  border: none;
+  background: var(--warm);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.toggle span:first-child {
+  font-size: 1.25rem;
+}
+
+.toggleOpen {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.4rem;
+}
+
+.toggle:hover {
+  transform: translateY(-2px);
+}
+
+.nudge {
+  position: relative;
+  max-width: 200px;
+  background: #fff;
+  color: var(--text);
+  border-radius: 14px;
+  padding: 10px 30px 10px 14px;
+  font-size: 0.86rem;
+  line-height: 1.3;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  animation: nudgeIn 0.4s ease, nudgeBounce 2.4s ease-in-out 0.6s infinite;
+}
+
+.nudge button {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  border: none;
+  background: none;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+}
+
+@keyframes nudgeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nudgeBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nudge {
+    animation: none;
+  }
+}
+
+.panel {
+  width: min(340px, calc(100vw - 40px));
+  max-height: min(480px, calc(100vh - 140px));
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--warm);
+  color: #fff;
+  font-weight: 600;
+}
+
+.headSub {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.head button {
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bubble {
+  max-width: 85%;
+  padding: 9px 12px;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.bubble a {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.assistant {
+  align-self: flex-start;
+  background: var(--surface);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+
+.user {
+  align-self: flex-end;
+  background: var(--warm);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.error {
+  color: var(--warm);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.form input {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 9px 14px;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.form input:focus {
+  outline: none;
+  border-color: var(--warm);
+  box-shadow: 0 0 0 3px rgba(217, 142, 92, 0.22);
+}
+
+.form button {
+  border: none;
+  background: var(--warm);
+  color: #fff;
+  border-radius: 100px;
+  padding: 0 16px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.doneNote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--line);
+}
+
+.doneNote p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+.bookLink {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 11px 16px;
+  border-radius: 100px;
+  background: var(--warm);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.bookLink:hover {
+  filter: brightness(0.95);
+}
+
+@media (max-width: 480px) {
+  .root {
+    right: 12px;
+    bottom: calc(12px + var(--cookie-banner-clearance, 0px));
+  }
+}

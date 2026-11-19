@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import CookieConsent from "@/components/CookieConsent";
+import ChatWidget from "@/components/ChatWidget";
 import "./globals.css";
 
 const GTM_ID = "GTM-K7H75K8X";
@@ -117,6 +118,7 @@ export default function RootLayout({
         />
         {children}
         <CookieConsent />
+        <ChatWidget />
         <Analytics />
         <SpeedInsights />
       </body>
