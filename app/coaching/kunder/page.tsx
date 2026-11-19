@@ -36,8 +36,16 @@ export default async function CustomersPage({
 }: {
   searchParams: Promise<{ q?: string }>;
 }) {
-  await requireCoach();
   const { q } = await searchParams;
+  return <CustomersContent q={q} />;
+}
+
+// Själva innehållet, utbrutet så att popup-varianten av sidan
+// (app/coaching/@modal/(.)kunder/page.tsx) kan återanvända exakt samma
+// logik/JSX istället för att duplicera den — direktlänk/refresh fortsätter
+// gå via CustomersPage ovan precis som innan.
+export async function CustomersContent({ q }: { q?: string }) {
+  await requireCoach();
   const admin = createAdminClient();
 
   const [

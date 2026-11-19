@@ -16,8 +16,10 @@ export const dynamic = "force-dynamic";
 // layouten gör bara det visuella skalet, inte behörighetskontrollen.
 export default async function CoachingLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   const admin = createAdminClient();
   const { data: services } = await admin
@@ -31,6 +33,7 @@ export default async function CoachingLayout({
         <AdminSidebar services={services ?? []} />
         <div className={shellStyles.mainContent}>{children}</div>
       </div>
+      {modal}
     </div>
   );
 }

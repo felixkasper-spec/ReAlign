@@ -40,9 +40,25 @@ export default async function CoachingLeadsPage({
 }: {
   searchParams: Promise<{ status?: string; owner?: string; q?: string }>;
 }) {
+  const { status, owner, q } = await searchParams;
+  return <LeadsContent status={status} owner={owner} q={q} />;
+}
+
+// Själva innehållet, utbrutet så att popup-varianten av sidan
+// (app/coaching/@modal/(.)leads/page.tsx) kan återanvända exakt samma
+// logik/JSX istället för att duplicera den — direktlänk/refresh fortsätter
+// gå via CoachingLeadsPage ovan precis som innan.
+export async function LeadsContent({
+  status: statusFilter,
+  owner: ownerFilter,
+  q,
+}: {
+  status?: string;
+  owner?: string;
+  q?: string;
+}) {
   await requireCoach();
   const admin = createAdminClient();
-  const { status: statusFilter, owner: ownerFilter, q } = await searchParams;
   const currentOwner = await getCurrentLeadOwner();
 
   const { data: allLeads, error: leadsError } = await admin

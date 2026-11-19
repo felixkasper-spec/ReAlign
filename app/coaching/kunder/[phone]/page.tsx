@@ -143,8 +143,16 @@ export default async function CustomerDetailPage({
 }: {
   params: Promise<{ phone: string }>;
 }) {
-  await requireCoach();
   const { phone: rawParam } = await params;
+  return <KundDetailContent phone={rawParam} />;
+}
+
+// Själva innehållet, utbrutet så att popup-varianten av sidan
+// (app/coaching/@modal/(.)kunder/[phone]/page.tsx) kan återanvända exakt
+// samma logik/JSX istället för att duplicera den — direktlänk/refresh
+// fortsätter gå via CustomerDetailPage ovan precis som innan.
+export async function KundDetailContent({ phone: rawParam }: { phone: string }) {
+  await requireCoach();
   const admin = createAdminClient();
 
   // Ett konto utan telefon (ren prenumerant, se migration 0077) nås via sin
