@@ -119,6 +119,7 @@ export default function CalendarGrid({
   blockedSlots,
   bookings,
   services,
+  prefillCustomer,
 }: {
   view: "week" | "day";
   date: Date;
@@ -129,6 +130,9 @@ export default function CalendarGrid({
   blockedSlots: BlockedRow[];
   bookings: Booking[];
   services: Service[];
+  // Från "📅 Boka" på ett lead — kunduppgifterna fylls i direkt i
+  // QuickBookingModal när en tom cell klickas.
+  prefillCustomer?: { name: string; phone: string; email: string };
 }) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [quickBookAt, setQuickBookAt] = useState<{ startAt: Date; staff: LeadOwner } | null>(null);
@@ -562,6 +566,7 @@ export default function CalendarGrid({
           staff={staffFilter}
           view={view}
           onClose={() => setPickerOpen(false)}
+          prefillCustomer={prefillCustomer}
         />
       )}
 
@@ -571,6 +576,7 @@ export default function CalendarGrid({
           staff={quickBookAt.staff}
           services={services}
           onClose={() => setQuickBookAt(null)}
+          prefill={prefillCustomer}
         />
       )}
 

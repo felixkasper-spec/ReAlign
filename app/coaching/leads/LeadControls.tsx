@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import {
   updateLeadStatus,
   updateLeadNotes,
@@ -39,6 +40,11 @@ const OWNER_OPTIONS: { value: "" | LeadOwner; label: string }[] = [
 // Metoden" om ägaren är okänd.
 const SMS_TEMPLATES = [
   {
+    label: "Boka direkt · förstakontakt",
+    text: (firstName: string, sender: string) =>
+      `Hej ${firstName} 😊\n\nKul att du anmält dig om Premium Coaching!\n\nFörsta träffen innebär hållnings- och funktionsanalys, genomgång av dina mål samt en första uppsättning posturala övningar skräddarsydda för dig.\nTid 70 minuter.\n\nJag håller till på Hulda Lindgrens gata 8 i Högsbo.\n\nJag har en tid [ANGE TID OCH DAG] ledig. Funkar den? Annars tittar jag på andra tider.\nJag behöver svar ganska snabbt för att tiden säkert ska finnas kvar.\n\nVänlig hälsning\n${sender}, ReAlign Metoden 🤗`,
+  },
+  {
     label: "SMS 1 · missat samtal",
     text: (firstName: string, sender: string) =>
       `Hej ${firstName}! ${sender} här på ReAlign Metoden — försökte ringa dig angående din intresseanmälan för Premium Coaching. Hör gärna av dig när det passar, annars ringer jag igen! 🙂`,
@@ -70,6 +76,7 @@ export default function LeadControls({
   leadId,
   name,
   phone,
+  email,
   initialStatus,
   initialNotes,
   initialOwner,
@@ -77,6 +84,7 @@ export default function LeadControls({
   leadId: string;
   name: string;
   phone: string;
+  email: string | null;
   initialStatus: string | null;
   initialNotes: string | null;
   initialOwner: string | null;
@@ -165,6 +173,13 @@ export default function LeadControls({
         disabled={deleting}
       />
       <div className={styles.leadControlsRow}>
+        <Link
+          href={`/coaching/kalender?staff=${owner || "felix"}&leadName=${encodeURIComponent(name)}&leadPhone=${encodeURIComponent(phone)}&leadEmail=${encodeURIComponent(email ?? "")}`}
+          className={styles.markReadBtn}
+          style={{ textDecoration: "none", display: "inline-block" }}
+        >
+          📅 Boka
+        </Link>
         <a
           href={`tel:${phone}`}
           className={styles.markReadBtn}

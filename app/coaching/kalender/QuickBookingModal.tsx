@@ -24,18 +24,22 @@ export default function QuickBookingModal({
   staff,
   services,
   onClose,
+  prefill,
 }: {
   startAt: Date;
   staff: LeadOwner;
   services: Service[];
   onClose: () => void;
+  // Från "📅 Boka" på ett lead — kunduppgifterna följer med hit och fylls i
+  // direkt istället för att behöva skrivas av för hand.
+  prefill?: { name: string; phone: string; email: string };
 }) {
   const [serviceId, setServiceId] = useState(services[0]?.id ?? "");
   const [price, setPrice] = useState(String(services[0]?.price_sek ?? 0));
   const [color, setColor] = useState(DEFAULT_BOOKING_COLOR);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(prefill?.name ?? "");
+  const [phone, setPhone] = useState(prefill?.phone ?? "");
+  const [email, setEmail] = useState(prefill?.email ?? "");
   const [notes, setNotes] = useState("");
   const [suggestions, setSuggestions] = useState<CustomerMatch[]>([]);
   const [activeField, setActiveField] = useState<"name" | "phone" | "email" | null>(null);

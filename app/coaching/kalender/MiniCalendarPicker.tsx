@@ -21,11 +21,13 @@ export default function MiniCalendarPicker({
   staff,
   view,
   onClose,
+  prefillCustomer,
 }: {
   selectedDate: Date;
   staff: StaffFilter;
   view: "week" | "day";
   onClose: () => void;
+  prefillCustomer?: { name: string; phone: string; email: string };
 }) {
   const router = useRouter();
   const [visibleMonth, setVisibleMonth] = useState(
@@ -43,8 +45,15 @@ export default function MiniCalendarPicker({
     cells.push(new Date(Date.UTC(visibleMonth.getUTCFullYear(), visibleMonth.getUTCMonth(), d)));
   }
 
+  // Håller kvar leadName/leadPhone/leadEmail i querysträngen vid
+  // datumnavigering — annars tappas de så fort man byter dag/vecka via
+  // minikalendern.
+  const leadQuery = prefillCustomer
+    ? `&leadName=${encodeURIComponent(prefillCustomer.name)}&leadPhone=${encodeURIComponent(prefillCustomer.phone)}&leadEmail=${encodeURIComponent(prefillCustomer.email)}`
+    : "";
+
   function pickDate(d: Date) {
-    router.push(`/coaching/kalender?staff=${staff}&view=${view}&date=${dateStr(d)}`);
+    router.push(`/coaching/kalender?staff=${staff}&view=${view}&date=${dateStr(d)}${leadQuery}`);
     onClose();
   }
 

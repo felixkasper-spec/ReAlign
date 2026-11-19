@@ -300,6 +300,7 @@ export default async function CoachingLeadsPage({
                     leadId={l.id}
                     name={l.name}
                     phone={l.phone}
+                    email={l.email}
                     initialStatus={l.status}
                     initialNotes={l.notes}
                     initialOwner={l.owner}

@@ -36,10 +36,36 @@ const WEEKDAYS = [
 export default async function CalendarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ staff?: string; view?: string; date?: string; edit?: string }>;
+  searchParams: Promise<{
+    staff?: string;
+    view?: string;
+    date?: string;
+    edit?: string;
+    leadName?: string;
+    leadPhone?: string;
+    leadEmail?: string;
+  }>;
 }) {
   await requireCoach();
-  const { staff: staffParam, view: viewParam, date: dateParam, edit: editParam } = await searchParams;
+  const {
+    staff: staffParam,
+    view: viewParam,
+    date: dateParam,
+    edit: editParam,
+    leadName,
+    leadPhone,
+    leadEmail,
+  } = await searchParams;
+  // Från "📅 Boka" på ett lead — kunduppgifterna följer med hit och fylls i
+  // direkt i bokningsmodalen istället för att behöva skrivas av för hand.
+  const prefillCustomer =
+    leadName && leadPhone ? { name: leadName, phone: leadPhone, email: leadEmail ?? "" } : undefined;
+  // Håller kvar kunduppgifterna i alla länkar på sidan (byt behandlare,
+  // öppna/stäng tider) — annars tappas de så fort man klickar något annat
+  // än själva kalenderrutnätets vecko-/dagsnavigering.
+  const leadQuery = prefillCustomer
+    ? `&leadName=${encodeURIComponent(prefillCustomer.name)}&leadPhone=${encodeURIComponent(prefillCustomer.phone)}&leadEmail=${encodeURIComponent(prefillCustomer.email)}`
+    : "";
   const editMode = editParam === "1";
   const staffFilter: StaffFilter =
     staffParam === "alla" ? "alla" : staffParam === "christopher" ? "christopher" : "felix";
@@ -159,6 +185,33 @@ export default async function CalendarPage({
 
   return (
     <>
+      {prefillCustomer && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexWrap: "wrap",
+            background: "rgba(0, 196, 245, 0.1)",
+            border: "1px solid var(--line)",
+            borderRadius: 100,
+            padding: "8px 16px",
+            marginBottom: 12,
+            fontSize: "0.85rem",
+          }}
+        >
+          <span>
+            Bokar åt: <b>{prefillCustomer.name}</b> · {prefillCustomer.phone}
+            {prefillCustomer.email && ` · ${prefillCustomer.email}`}
+          </span>
+          <Link
+            href={`/coaching/kalender?staff=${staffFilter}&view=${view}&date=${dateStr(gridDate)}`}
+            className={styles.leadFilterPill}
+          >
+            Rensa
+          </Link>
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -172,7 +225,7 @@ export default async function CalendarPage({
         {(["felix", "christopher", "alla"] as const).map((s) => (
           <Link
             key={s}
-            href={`/coaching/kalender?staff=${s}&view=${view}&date=${dateStr(gridDate)}`}
+            href={`/coaching/kalender?staff=${s}&view=${view}&date=${dateStr(gridDate)}${leadQuery}`}
             className={styles.leadFilterPill}
             data-active={staffFilter === s || undefined}
           >
@@ -180,7 +233,7 @@ export default async function CalendarPage({
           </Link>
         ))}
         <Link
-          href={`/coaching/kalender?staff=${staffFilter}&view=${view}&date=${dateStr(gridDate)}${editMode ? "" : "&edit=1"}`}
+          href={`/coaching/kalender?staff=${staffFilter}&view=${view}&date=${dateStr(gridDate)}${editMode ? "" : "&edit=1"}${leadQuery}`}
           className={styles.leadFilterPill}
           style={{ margin: "0 auto" }}
           data-active={editMode || undefined}
@@ -209,6 +262,7 @@ export default async function CalendarPage({
         }))}
         bookings={gridBookings}
         services={activeServices}
+        prefillCustomer={prefillCustomer}
       />
 
       <h2 style={{ fontSize: "1.1rem", fontWeight: 500, marginBottom: 12 }}>Kommande bokningar</h2>
