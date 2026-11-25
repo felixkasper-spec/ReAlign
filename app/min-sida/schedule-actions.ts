@@ -79,9 +79,17 @@ export async function logSessionNow(formData: FormData) {
   revalidatePath("/min-sida");
 }
 
+// doneCount/totalCount är valfria — anropas utan dem från den vanliga
+// "slutfört programmet"-vägen (oförändrat beteende), och med dem från
+// ProgramPlayer (se logProgramProgress-anropet i komponenten) både vid en
+// full genomkörning och när man avslutar i förtid. doneCount < totalCount
+// loggas ändå som ett genomfört pass (ansträngningen räknas), bara med
+// antalet synligt i anteckningen.
 export async function logProgramCompletion(
   programId: string,
   title: string,
+  doneCount?: number,
+  totalCount?: number,
 ) {
   const supabase = await createClient();
   const {
@@ -102,17 +110,33 @@ export async function logProgramCompletion(
     .gte("created_at", new Date(Date.now() - 10_000).toISOString())
     .maybeSingle();
 
+  const partial = doneCount != null && totalCount != null && doneCount < totalCount;
+
   if (!recentDuplicate) {
     await supabase.from("logged_sessions").insert({
       user_id: user.id,
       program_id: programId,
       title,
+      notes: partial ? `${doneCount} av ${totalCount} övningar` : null,
       completed_at: new Date().toISOString(),
     });
   }
 
   revalidatePath("/min-sida");
   revalidatePath("/program/[slug]", "page");
+}
+
+// Ren form-action-kompatibel variant av logProgramCompletion ovan — en
+// <form action={...}> kräver att sista parametern är FormData, vilket
+// doneCount/totalCount-utökningen bröt för de manuella "✓ Markera som
+// klar"-knapparna (5-minuter/page.tsx, program/[slug]/page.tsx). Samma
+// logik, bara en hel genomkörning (inga räknare).
+export async function logProgramCompletionForm(
+  programId: string,
+  title: string,
+  _formData: FormData,
+) {
+  await logProgramCompletion(programId, title);
 }
 
 export async function markSessionDone(sessionId: string) {

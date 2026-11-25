@@ -6,7 +6,7 @@ import ShareButton from "@/components/ShareButton";
 import TrainingTips from "@/components/TrainingTips";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import SubmitButton from "@/components/SubmitButton";
-import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
+import { logProgramCompletionForm } from "@/app/min-sida/schedule-actions";
 import { createClient } from "@/lib/supabase/server";
 import { programMeta } from "@/lib/program-meta";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -141,7 +141,7 @@ export default async function FiveMinutesPage() {
 
         <div className={styles.ctaRow}>
           {user && (
-            <form action={logProgramCompletion.bind(null, program.id, program.title)}>
+            <form action={logProgramCompletionForm.bind(null, program.id, program.title)}>
               <SubmitButton className="btn btn-primary" pendingText="Loggar...">
                 ✓ Markera som klar
               </SubmitButton>

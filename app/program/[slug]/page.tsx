@@ -8,7 +8,7 @@ import TrainingTips from "@/components/TrainingTips";
 import GuestAccountPrompt from "@/components/GuestAccountPrompt";
 import LockedContentNudge from "@/components/LockedContentNudge";
 import SubmitButton from "@/components/SubmitButton";
-import { logProgramCompletion } from "@/app/min-sida/schedule-actions";
+import { logProgramCompletionForm } from "@/app/min-sida/schedule-actions";
 import { hasThumbnail } from "@/app/ovningsbank/thumbnails";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
@@ -276,7 +276,7 @@ export default async function ProgramPage({
 
         <div className={styles.ctaRow}>
           {!locked && user && (
-            <form action={logProgramCompletion.bind(null, program.id, program.title)}>
+            <form action={logProgramCompletionForm.bind(null, program.id, program.title)}>
               <SubmitButton className="btn btn-primary" pendingText="Loggar...">
                 ✓ Markera som klar
               </SubmitButton>

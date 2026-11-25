@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import VimeoEmbed from "./VimeoEmbed";
 import GuestAccountPrompt from "./GuestAccountPrompt";
-import SubmitButton from "./SubmitButton";
 import type { PlayerExercise } from "@/lib/player-data";
 import { isVimeoUrl } from "@/lib/video-url";
 import styles from "./ProgramPlayer.module.css";
@@ -42,12 +42,18 @@ export default function ProgramPlayer({
   programTitle: string;
   backHref: string;
   loggedIn: boolean;
-  completeAction?: (formData: FormData) => void | Promise<void>;
+  // Antal avklarade/totalt — anropas automatiskt, både vid en full
+  // genomkörning och när man avslutar i förtid (se handleExit), istället
+  // för att vänta på ett manuellt knapptryck.
+  completeAction?: (doneCount: number, totalCount: number) => void | Promise<void>;
   initialIndex?: number;
   signupHref?: string;
 }) {
+  const router = useRouter();
   const [index, setIndex] = useState(initialIndex);
   const [done, setDone] = useState(false);
+  const [completionPending, startCompletion] = useTransition();
+  const [completionLogged, setCompletionLogged] = useState(false);
   const [instructionsOpen, setInstructionsOpen] = useState(false);
   const current = exercises[index];
   // blurb ovanför är redan första stycket av instructions — dropdownen ska
@@ -72,6 +78,12 @@ export default function ProgramPlayer({
   function goNext() {
     if (isLast) {
       setDone(true);
+      if (loggedIn && completeAction) {
+        startCompletion(async () => {
+          await completeAction(exercises.length, exercises.length);
+          setCompletionLogged(true);
+        });
+      }
     } else {
       setIndex((i) => i + 1);
     }
@@ -79,6 +91,16 @@ export default function ProgramPlayer({
 
   function goPrev() {
     if (index > 0) setIndex((i) => i - 1);
+  }
+
+  // Lämnar man innan sista övningen (index är hur många som redan är
+  // avklarade, eftersom den bara räknas upp via goNext ovan) loggas det
+  // ändå som ett pass, bara med hur många av totalen man hann med.
+  function handleExit() {
+    if (index > 0 && loggedIn && completeAction) {
+      void completeAction(index, exercises.length);
+    }
+    router.push(backHref);
   }
 
   if (done) {
@@ -89,11 +111,9 @@ export default function ProgramPlayer({
           <h1>Bra jobbat!</h1>
           <p>Du klarade hela {programTitle}.</p>
           {loggedIn && completeAction ? (
-            <form action={completeAction}>
-              <SubmitButton className="btn btn-primary" pendingText="Loggar...">
-                ✓ Markera som klar
-              </SubmitButton>
-            </form>
+            <p className={styles.loggedNote}>
+              {completionPending ? "Loggar..." : completionLogged ? "✓ Loggat på Mina program" : ""}
+            </p>
           ) : (
             <GuestAccountPrompt href={signupHref} />
           )}
@@ -108,9 +128,9 @@ export default function ProgramPlayer({
   return (
     <div className={styles.wrap}>
       <div className={styles.topBar}>
-        <Link href={backHref} className={styles.exitLink}>
+        <button type="button" className={styles.exitLink} onClick={handleExit}>
           ← Tillbaka till programöversikt
-        </Link>
+        </button>
         <div className={styles.dots}>
           {exercises.map((ex, i) => (
             <span
