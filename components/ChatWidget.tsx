@@ -100,6 +100,9 @@ export default function ChatWidget() {
     !CHAT_WIDGET_ENABLED || EXCLUDED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
   const [open, setOpen] = useState(false);
+  // En gång per besökares chattsession — grupperar ihop meddelandena i
+  // chat_messages (se lib/chat-widget-actions.ts) till en tråd i admin-vyn.
+  const [sessionId] = useState(() => crypto.randomUUID());
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
@@ -151,7 +154,7 @@ export default function ChatWidget() {
     setPending(true);
     setError(null);
 
-    const result = await sendChatMessage(nextHistory);
+    const result = await sendChatMessage(nextHistory, sessionId);
     setPending(false);
 
     if (result.type === "error") {

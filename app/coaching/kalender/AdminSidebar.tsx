@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/coaching/kalender", label: "Kalender" },
   { href: "/coaching/kunder", label: "Kunder" },
   { href: "/coaching/leads", label: "Leads" },
+  { href: "/coaching/chattbot", label: "Chattbot" },
   { href: "/coaching/upplagg", label: "Upplägg" },
   { href: "/coaching/intag", label: "Intag" },
 ];

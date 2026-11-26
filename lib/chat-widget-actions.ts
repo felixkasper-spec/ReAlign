@@ -3,14 +3,17 @@
 // Server-sidan för den publika lead-chattboten (ChatWidget.tsx) — en AI-
 // assistent på hela den publika sajten vars ENDA uppgift är att kvalificera
 // besökare och samla in namn/telefon/situation, aldrig ge tränings- eller
-// medicinska råd (se SYSTEM_PROMPT). Konversationen hålls bara i klientens
-// state, ingen egen databastabell — när botten har tillräckligt med
-// information anropar den save_lead-verktyget, som återanvänder EXAKT samma
+// medicinska råd (se SYSTEM_PROMPT). Varje meddelande loggas till
+// chat_messages (se migration 0084), grupperat på sessionId (genererad en
+// gång per besökare i ChatWidget.tsx) — syns i adminet under
+// app/coaching/chattbot. När botten har tillräckligt med information
+// anropar den save_lead-verktyget, som återanvänder EXAKT samma
 // insert/notis/konverteringsspårning som det vanliga anmälan-formuläret
 // (submitCoachingLead i app/coaching-anmalan/actions.ts), så leadet dyker
 // upp i adminets Leads-lista precis som vanligt. Portat från Cleer Klinik.
 import Anthropic from "@anthropic-ai/sdk";
 import { submitCoachingLead } from "@/app/coaching-anmalan/actions";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -77,13 +80,25 @@ const SAVE_LEAD_TOOL: Anthropic.Tool = {
   },
 };
 
-export async function sendChatMessage(history: ChatMessage[]): Promise<ChatResult> {
+// Tyst — en trasig logg ska aldrig störa själva chattupplevelsen för
+// besökaren, bara synas i serverloggarna om något är fel.
+async function logChatMessage(sessionId: string, role: "user" | "assistant", content: string) {
+  const admin = createAdminClient();
+  const { error } = await admin.from("chat_messages").insert({ session_id: sessionId, role, content });
+  if (error) {
+    console.error("logChatMessage — kunde inte spara:", error);
+  }
+}
+
+export async function sendChatMessage(history: ChatMessage[], sessionId: string): Promise<ChatResult> {
   if (!process.env.ANTHROPIC_API_KEY) {
     return { type: "error", error: "Chatten är inte konfigurerad just nu — mejla oss istället." };
   }
   if (history.length === 0 || history[history.length - 1].role !== "user") {
     return { type: "error", error: "Något gick fel, försök igen." };
   }
+
+  void logChatMessage(sessionId, "user", history[history.length - 1].content);
 
   const client = new Anthropic();
 
@@ -121,17 +136,17 @@ export async function sendChatMessage(history: ChatMessage[]): Promise<ChatResul
         return { type: "error", error: "Kunde inte spara dina uppgifter — försök igen om en liten stund." };
       }
 
-      return {
-        type: "lead_saved",
-        text: "Tack! Vi har fått dina uppgifter och hör av oss, oftast samma dag.",
-        bookingUrl: null,
-      };
+      const leadSavedText = "Tack! Vi har fått dina uppgifter och hör av oss, oftast samma dag.";
+      void logChatMessage(sessionId, "assistant", leadSavedText);
+
+      return { type: "lead_saved", text: leadSavedText, bookingUrl: null };
     }
 
     const textBlock = response.content.find((b) => b.type === "text");
     if (!textBlock || textBlock.type !== "text") {
       return { type: "error", error: "Fick inget svar, försök igen." };
     }
+    void logChatMessage(sessionId, "assistant", textBlock.text);
     return { type: "message", text: textBlock.text };
   } catch (err) {
     console.error("Chattbot-fel:", err);
