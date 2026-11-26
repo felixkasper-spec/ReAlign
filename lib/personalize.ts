@@ -107,7 +107,7 @@ function buildKneeRecommendation(answers: QuizAnswers): Recommendation {
       },
     ],
     category: null,
-    closestFreeOverride: "hofter-niva-1",
+    closestFreeOverride: "helkropp-niva-1",
   };
 }
 

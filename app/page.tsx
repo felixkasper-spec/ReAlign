@@ -358,7 +358,7 @@ export default async function Home() {
               <p className={styles.tierPrice}>0 kr</p>
               <ul className={styles.tierList}>
                 <li>Bläddra bland alla program</li>
-                <li>Helkropp Nivå 1–2, Nivå 1 i övriga kategorier — helt gratis</li>
+                <li>Helkropp Nivå 1 — helt gratis</li>
                 <li>Läs ergonomiguider för sitta, stå och lyfta</li>
               </ul>
             </div>
