@@ -200,7 +200,27 @@ export default async function PremiumPage() {
           <span className="eyebrow" style={{ color: "var(--warm-soft)" }}>
             {alreadyPremium ? "Du är redan medlem" : "Premium"}
           </span>
-          {!user || alreadyPremium ? <h2>149 kr/mån</h2> : <h2>Välj hur du vill betala</h2>}
+          {alreadyPremium ? (
+            <h2>149 kr/mån</h2>
+          ) : user ? (
+            <h2>Välj hur du vill betala</h2>
+          ) : (
+            <h2>30 dagar gratis</h2>
+          )}
+
+          {!alreadyPremium && (
+            <div className={styles.ctaChecklist}>
+              <span className={styles.ctaCheckItem}>
+                <span className={styles.ctaCheckIc}>✓</span>Full tillgång direkt
+              </span>
+              <span className={styles.ctaCheckItem}>
+                <span className={styles.ctaCheckIc}>✓</span>Ingen bindningstid
+              </span>
+              <span className={styles.ctaCheckItem}>
+                <span className={styles.ctaCheckIc}>✓</span>Avsluta online
+              </span>
+            </div>
+          )}
 
           {alreadyPremium ? (
             <>
@@ -238,8 +258,8 @@ export default async function PremiumPage() {
             </div>
           ) : (
             <>
-              <p>Skapa ett konto för att komma igång.</p>
-              <Link className="btn btn-primary btn-lg" href="/signup">
+              <p>149 kr/mån efter din gratis provmånad — avsluta när du vill, ingen kostnad under provperioden.</p>
+              <Link className="btn btn-primary btn-lg" href="/signup?next=%2Fpremium">
                 Skapa konto →
               </Link>
             </>

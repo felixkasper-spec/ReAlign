@@ -193,6 +193,27 @@
   font-size: 0.94rem;
 }
 
+.ctaChecklist {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 0 auto 22px;
+}
+
+.ctaCheckItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.86rem;
+  color: #dce4da;
+}
+
+.ctaCheckIc {
+  color: var(--warm);
+  font-weight: 700;
+}
+
 .planToggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
