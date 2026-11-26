@@ -6,7 +6,7 @@ import FaqAccordion, { type FaqGroup } from "@/components/FaqAccordion";
 import { testimonials } from "@/lib/testimonials";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
-import { createCheckoutSession } from "@/app/min-sida/actions";
+import { createCheckoutSession, createPromoCheckoutSession } from "@/app/min-sida/actions";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
@@ -54,7 +54,17 @@ const faqGroups: FaqGroup[] = [
   },
 ];
 
-export default async function PremiumPage() {
+export default async function PremiumPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ promo?: string }>;
+}) {
+  const { promo } = await searchParams;
+  // ?promo=1 — t.ex. en länk Felix delar ut personligen vid kontorsbesök —
+  // byter ut den automatiska 50%-introrabatten mot ett kodfält i Stripe
+  // Checkout, så en manuellt utdelad engångskod (en gratis månad) kan lösas
+  // in istället. Se usePromoCode i createCheckoutSession.
+  const usePromoCode = promo === "1";
   const supabase = await createClient();
   const {
     data: { user },
@@ -79,25 +89,37 @@ export default async function PremiumPage() {
 
         <div className={styles.offerBand}>
           <div>
-            <span className={styles.offerEyebrow}>Introerbjudande</span>
-            <p className={styles.offerTitle}>50% första månaden</p>
+            <span className={styles.offerEyebrow}>
+              {usePromoCode ? "Din kod" : "Introerbjudande"}
+            </span>
+            <p className={styles.offerTitle}>
+              {usePromoCode ? "Lös in din kod vid kassan" : "50% första månaden"}
+            </p>
             <p className={styles.offerText}>
-              74,50 kr första månaden, sen 149 kr/mån. Ingen kod, ingen
-              bindningstid — dras automatiskt vid kassan. Vill du hellre
-              betala årsvis och spara 25% direkt? Se prisalternativen
-              nedan.
+              {usePromoCode
+                ? "Ingen bindningstid — ange koden du fått i rutan för rabattkod hos Stripe."
+                : "74,50 kr första månaden, sen 149 kr/mån. Ingen kod, ingen bindningstid — dras automatiskt vid kassan. Vill du hellre betala årsvis och spara 25% direkt? Se prisalternativen nedan."}
             </p>
           </div>
           {!alreadyPremium && (
             <>
               {user ? (
-                <form action={createCheckoutSession.bind(null, "premium", "month")}>
+                <form
+                  action={(usePromoCode ? createPromoCheckoutSession : createCheckoutSession).bind(
+                    null,
+                    "premium",
+                    "month",
+                  )}
+                >
                   <SubmitButton className="btn btn-primary btn-lg" pendingText="Öppnar Stripe...">
                     Bli Premium →
                   </SubmitButton>
                 </form>
               ) : (
-                <Link className="btn btn-primary btn-lg" href="/signup">
+                <Link
+                  className="btn btn-primary btn-lg"
+                  href={`/signup?next=${encodeURIComponent(usePromoCode ? "/premium?promo=1" : "/premium")}`}
+                >
                   Skapa konto →
                 </Link>
               )}
@@ -215,9 +237,17 @@ export default async function PremiumPage() {
                 <span className={styles.planLabel}>Månadsvis</span>
                 <p className={styles.planPrice}>149 kr/mån</p>
                 <p className={styles.planSub}>
-                  Första månaden 74,50 kr — ingen bindningstid.
+                  {usePromoCode
+                    ? "Lös in din kod vid kassan — ingen bindningstid."
+                    : "Första månaden 74,50 kr — ingen bindningstid."}
                 </p>
-                <form action={createCheckoutSession.bind(null, "premium", "month")}>
+                <form
+                  action={(usePromoCode ? createPromoCheckoutSession : createCheckoutSession).bind(
+                    null,
+                    "premium",
+                    "month",
+                  )}
+                >
                   <SubmitButton className="btn btn-primary" pendingText="Öppnar Stripe...">
                     Bli Premium →
                   </SubmitButton>
