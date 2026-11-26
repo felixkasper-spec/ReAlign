@@ -692,6 +692,9 @@ export default async function MinSidaPage({
                         ).toLocaleDateString("sv-SE")
                       : "okänt datum"}
                   </p>
+                  <Link href="/min-sida/coaching" className="btn btn-ghost" style={{ width: "100%", textAlign: "center", display: "block", border: "1px solid var(--line)", marginBottom: 8 }}>
+                    Till chatten →
+                  </Link>
                   <form action={openBillingPortal}>
                     <button
                       className="btn btn-ghost"
@@ -720,7 +723,7 @@ export default async function MinSidaPage({
                   )}
                   <div style={{ borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 16 }}>
                     <p className={styles.premiumText} style={{ marginBottom: 8 }}>
-                      Vill du ha direktkontakt med en coach?
+                      Vill du ha ett skräddarsytt program och aktiv coachning?
                     </p>
                     <Link
                       href="/premium-coaching"

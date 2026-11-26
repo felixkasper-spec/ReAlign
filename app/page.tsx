@@ -389,6 +389,7 @@ export default async function Home() {
                 <li>Bläddra &amp; sök i hela övningsbanken</li>
                 <li>Ladda ner program som PDF</li>
                 <li>Veckobrev med tips och uppföljning</li>
+                <li>Chatta med en coach — frågor, vägledning och feedback på hållningsbilder</li>
               </ul>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>
               <p className={styles.friskvard}>✓ Går att betala med friskvårdsbidrag</p>
@@ -409,9 +410,9 @@ export default async function Home() {
               <p className={styles.tierPrice}>249 kr/mån</p>
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Premium&quot;</li>
-                <li>Direktkontakt med en coach via chatt</li>
-                <li>Feedback på teknik och skräddarsydda program</li>
-                <li>Skräddarsydd träningsplan utefter dina förutsättningar</li>
+                <li>Aktiv coachning — som en online-PT för postural träning</li>
+                <li>Skräddarsytt program byggt utefter dina förutsättningar</li>
+                <li>Löpande uppföljning och justering, inte bara svar på frågor</li>
                 <li>Svar inom 1–2 vardagar</li>
               </ul>
               <p className={styles.friskvard}>✓ Ingen bindningstid, avsluta när du vill</p>

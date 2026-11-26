@@ -43,6 +43,10 @@ const faqGroups: FaqGroup[] = [
         a: "Ja, absolut. Postural träning kompletterar annan träning bra eftersom den bygger upp de djupa musklerna som stabiliserar kroppen, vilket ofta förbättrar prestationen i annan träning också.",
       },
       {
+        q: "Ingår kontakt med en coach?",
+        a: "Ja — du kan chatta med en riktig coach direkt i Min sida för frågor, vägledning till rätt program eller nivå, och skicka hållningsbilder för feedback. Vill du ha ett skräddarsytt program och aktiv, löpande coachning är det Premium Coaching som passar bäst.",
+      },
+      {
         q: "Kan jag uppgradera till Premium Coaching senare?",
         a: "Ja, när som helst från Min sida — ingen ny registrering, du byter bara nivå och betalar mellanskillnaden.",
       },
@@ -138,6 +142,10 @@ export default async function PremiumPage() {
             <div className={styles.reason}>
               <b>Veckobrev</b>Tips och uppföljning direkt i mejlen, så du
               håller farten uppe.
+            </div>
+            <div className={styles.reason}>
+              <b>Chatt med coach</b>Fråga om vad som helst, bli pekad åt rätt
+              håll, eller skicka en hållningsbild och få feedback.
             </div>
           </div>
         </div>

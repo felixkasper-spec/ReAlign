@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 export const metadata = pageMetadata({
   title: "Premium Coaching — ReAlign Metoden",
   description:
-    "Allt i Premium, plus direktkontakt med en coach via chatt. 249 kr/mån, begränsat antal platser.",
+    "Allt i Premium, plus ett skräddarsytt program och aktiv coachning — som en online-PT för postural träning. 249 kr/mån, begränsat antal platser.",
   path: "/premium-coaching",
 });
 
@@ -34,59 +34,52 @@ export default async function PremiumCoachingPage() {
       <div className={`wrap ${styles.wrap}`}>
         <header className={styles.pageHead}>
           <span className="eyebrow">Premium Coaching</span>
-          <h1>Direktkontakt med en coach, när du behöver den.</h1>
+          <h1>En online-PT, fast för postural träning.</h1>
           <p>
-            Allt som ingår i Premium — plus en riktig coach på kliniken som
-            svarar på dina frågor om övningar, upplägg och hur kroppen känns,
-            via chatt direkt i Min sida.
+            Allt som ingår i Premium — plus ett program jag bygger och
+            justerar åt dig löpande, utefter dina förutsättningar och hur
+            kroppen svarar. Inte bara svar på frågor när de dyker upp, utan
+            en coach som faktiskt driver din träning framåt.
           </p>
         </header>
 
         <div className={styles.section}>
           <div className={styles.sectionHead}>
             <span className="eyebrow">Vad ingår</span>
-            <h2>Samma som Premium — plus en coach i fickan.</h2>
+            <h2>Samma som Premium — plus aktiv coachning.</h2>
           </div>
 
           <div className={styles.spotlight}>
             <div className={styles.spotlightHead}>
               <span className="eyebrow" style={{ color: "var(--sage)" }}>
-                Direktkontakt via chatt
+                Aktiv coachning
               </span>
               <h3>Det här är kärnan i Premium Coaching.</h3>
               <p className={styles.spotlightIntro}>
-                En direktlinje till mig, för allt du annars skulle behöva gissa
-                dig till eller boka tid för. Så här använder de flesta sin
-                chatt:
+                Premium ger dig chatt för frågor och hållningsbilder — Premium
+                Coaching lägger till att jag faktiskt bygger och driver
+                programmet åt dig:
               </p>
             </div>
             <div className={styles.checklist}>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
+                Ett program byggt från grunden utefter dina förutsättningar,
+                inte ett färdigt standardprogram
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
+                Löpande justering av nivå och övningar baserat på hur du
+                faktiskt mår och presterar — inte bara när du frågar
+              </div>
+              <div className={styles.checkItem}>
+                <span className={styles.checkIc}>✓</span>
                 Skicka video eller bild på din teknik och få konkret feedback
+                som direkt påverkar ditt program
               </div>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
-                Gör en övning ont eller känns fel — få en anpassad variant
-                direkt
-              </div>
-              <div className={styles.checkItem}>
-                <span className={styles.checkIc}>✓</span>
-                Hjälp att justera ditt program eller välja rätt nivå utifrån hur
-                du mår
-              </div>
-              <div className={styles.checkItem}>
-                <span className={styles.checkIc}>✓</span>
-                Kört fast eller tappat farten — få konkreta nästa steg
-              </div>
-              <div className={styles.checkItem}>
-                <span className={styles.checkIc}>✓</span>
-                Fråga om återkommande stelhet, spänningar eller andra besvär
-              </div>
-              <div className={styles.checkItem}>
-                <span className={styles.checkIc}>✓</span>
-                Ergonomiråd för just din vardag — bilen, skrivbordet, din
-                situation
+                Strukturerad progression mot ett tydligt mål, inte ad hoc-svar
               </div>
               <div className={styles.checkItem}>
                 <span className={styles.checkIc}>✓</span>
@@ -97,16 +90,16 @@ export default async function PremiumCoachingPage() {
               Behöver du en fullständig utredning — en terapeut som ser dig röra
               dig live och bygger ett program helt från grunden — då
               rekommenderar jag istället en{" "}
-              <Link href="/videosamtal">videosamtals-analys</Link>. Chatten är
-              till för det löpande — analysen för djupdykningen.
+              <Link href="/videosamtal">videosamtals-analys</Link> som
+              startpunkt, innan du går vidare med löpande coachning.
             </p>
           </div>
 
           <div className={styles.reasonGrid}>
             <div className={styles.reason}>
               <b>Allt i Premium</b>Alla programnivåer, Postural Gymträning, alla
-              övningsvideor, PDF-nedladdning, progressionsspårning och
-              veckobrev.
+              övningsvideor, PDF-nedladdning, progressionsspårning, veckobrev
+              och chatt med coach.
             </div>
             <div className={styles.reason}>
               <b>Svar inom 1–2 vardagar</b>En riktig person på kliniken läser
@@ -115,7 +108,7 @@ export default async function PremiumCoachingPage() {
             <div className={styles.reason}>
               <b>Begränsat antal platser</b>Vi tar in ett begränsat antal
               Premium Coaching-medlemmar åt gången för att kunna hålla
-              svarstiderna.
+              kvaliteten på coachningen.
             </div>
           </div>
         </div>

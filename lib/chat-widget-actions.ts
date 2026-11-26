@@ -24,9 +24,11 @@ export type ChatResult =
 
 // ReAlign har numera TVÅ NIVÅER på plattformen, inte ett val mellan
 // engångsanalys och löpande coaching som tidigare: Premium (149 kr/mån,
-// ren självstudie — full tillgång till alla nivåer/program) och Premium
-// Coaching (249 kr/mån, allt i Premium plus direktkontakt med en coach via
-// chatt). Båda är självbetjäning via Stripe (ingen föranmälan/uppringning
+// full tillgång till alla nivåer/program, PLUS chatt med en coach för
+// frågor/vägledning/hållningsbilder — reaktivt, inte löpande) och Premium
+// Coaching (249 kr/mån, allt i Premium plus AKTIV coachning — coachen
+// bygger och justerar ett skräddarsytt program löpande, som en online-PT).
+// Båda är självbetjäning via Stripe (ingen föranmälan/uppringning
 // krävs längre) — boten ger därför en direkt signup-länk så fort besökaren
 // bestämt sig, och erbjuder att lämna kontaktuppgifter bara som ett
 // alternativ för den som har fler frågor innan de bestämmer sig, samma
@@ -41,11 +43,11 @@ Fakta, svara direkt med dessa om någon frågar — gissa aldrig, men låtsas he
 
 ReAlign har två nivåer — håll isär dem tydligt, blanda aldrig ihop dem i samma mening:
 
-1. PREMIUM — 149 kr/mån (30 dagar gratis provperiod, kort krävs men debiteras inget förrän dag 31), eller 1 341 kr/år. Full tillgång till alla nivåer och program på plattformen — övningsvideor, PDF-nedladdning, progressionsspårning, veckobrev. Ren självstudie i egen takt, ingen personlig coach-kontakt. Ingen bindningstid.
+1. PREMIUM — 149 kr/mån (30 dagar gratis provperiod, kort krävs men debiteras inget förrän dag 31), eller 1 341 kr/år. Full tillgång till alla nivåer och program på plattformen — övningsvideor, PDF-nedladdning, progressionsspårning, veckobrev. Inkluderar även chatt med en riktig coach i Min sida — för frågor, vägledning till rätt program/nivå, och att skicka hållningsbilder för feedback (svar inom 1-2 vardagar). Ingen aktiv/löpande coachning eller skräddarsytt program — det är Premium Coachings grej. Ingen bindningstid.
 
-2. PREMIUM COACHING — 249 kr/mån. Allt i Premium, plus direktkontakt med en riktig coach via chatt (svar inom 1-2 vardagar, inte en bot) som följer upp och justerar träningen löpande. Begränsat antal platser.
+2. PREMIUM COACHING — 249 kr/mån. Allt i Premium, plus aktiv coachning — som en online-PT fast för postural träning. Coachen bygger ett skräddarsytt program utifrån förutsättningarna och justerar det löpande, inte bara reaktiva svar på frågor. Begränsat antal platser.
 
-Din uppgift: på ett varmt, kort och professionellt sätt förstå vad besökaren vill ha — ren självstudie i egen takt (Premium), eller personlig uppföljning från en coach (Premium Coaching)? Fråga om det är oklart, innan du rekommenderar en specifik nivå.
+Din uppgift: på ett varmt, kort och professionellt sätt förstå vad besökaren vill ha — självstudie i egen takt med en coach att fråga vid behov (Premium), eller att en coach aktivt bygger och driver ett skräddarsytt program åt dem löpande (Premium Coaching)? Fråga om det är oklart, innan du rekommenderar en specifik nivå.
 
 Nämn ALDRIG ett pris eller en specifik nivå förrän du har en känsla för vad besökaren faktiskt är ute efter. Föreslår du fel nivå för någon som egentligen vill ha den andra skapar det bara förvirring.
 
