@@ -89,34 +89,53 @@ const SAVE_LEAD_TOOL: Anthropic.Tool = {
 };
 
 // Ger botten ett sätt att faktiskt slå upp sidans innehåll istället för att
-// gissa eller hitta på — t.ex. "hur många program finns det?" kunde den
-// tidigare bara svara på med en gissning eller ett "det vet jag inte",
-// trots att svaret finns rakt av i databasen (programs-tabellen).
+// gissa eller hitta på — t.ex. "hur många program/övningar finns det?"
+// kunde den tidigare bara svara på med en gissning eller ett "det vet jag
+// inte", trots att svaret finns rakt av i databasen (programs- resp.
+// exercises-tabellen). Hämtar båda i samma anrop eftersom de ofta frågas
+// om tillsammans/efter varandra i samma konversation.
 const SITE_INFO_TOOL: Anthropic.Tool = {
   name: "get_site_info",
   description:
-    "Hämtar verklig, aktuell information om vad som faktiskt finns på sidan just nu — antal träningsprogram, hur de fördelar sig mellan gratis och Premium, och vilka kategorier som finns. Används för frågor om sidans FAKTISKA INNEHÅLL, inte priser/nivåer (de står redan i din instruktion).",
+    "Hämtar verklig, aktuell information om vad som faktiskt finns på sidan just nu — antal träningsprogram (och hur de fördelar sig mellan gratis och Premium, samt kategorier) OCH antal enskilda övningar i övningsbanken (och hur de fördelar sig på kroppsdelar). Används för frågor om sidans FAKTISKA INNEHÅLL, inte priser/nivåer (de står redan i din instruktion).",
   input_schema: { type: "object", properties: {} },
 };
 
 async function getSiteInfo(): Promise<string> {
   const admin = createAdminClient();
-  const { data, error } = await admin.from("programs").select("category, tier");
-  if (error || !data) {
+  const [{ data: programs, error: programsError }, { data: exercises, error: exercisesError }] = await Promise.all([
+    admin.from("programs").select("category, tier"),
+    admin.from("exercises").select("body_part"),
+  ]);
+
+  if (programsError || !programs) {
     return JSON.stringify({ error: "Kunde inte hämta programdata just nu." });
   }
 
   const categoryCounts = new Map<string, number>();
-  for (const row of data) {
+  for (const row of programs) {
     categoryCounts.set(row.category, (categoryCounts.get(row.category) ?? 0) + 1);
   }
 
-  return JSON.stringify({
-    totalPrograms: data.length,
-    freePrograms: data.filter((r) => r.tier === "free").length,
-    premiumPrograms: data.filter((r) => r.tier === "premium").length,
-    categories: [...categoryCounts.entries()].map(([category, count]) => ({ category, count })),
-  });
+  const result: Record<string, unknown> = {
+    totalPrograms: programs.length,
+    freePrograms: programs.filter((r) => r.tier === "free").length,
+    premiumPrograms: programs.filter((r) => r.tier === "premium").length,
+    programCategories: [...categoryCounts.entries()].map(([category, count]) => ({ category, count })),
+  };
+
+  if (exercisesError || !exercises) {
+    result.exercisesError = "Kunde inte hämta övningsdata just nu.";
+  } else {
+    const bodyPartCounts = new Map<string, number>();
+    for (const row of exercises) {
+      bodyPartCounts.set(row.body_part, (bodyPartCounts.get(row.body_part) ?? 0) + 1);
+    }
+    result.totalExercises = exercises.length;
+    result.exercisesByBodyPart = [...bodyPartCounts.entries()].map(([bodyPart, count]) => ({ bodyPart, count }));
+  }
+
+  return JSON.stringify(result);
 }
 
 // Tyst — en trasig logg ska aldrig störa själva chattupplevelsen för
