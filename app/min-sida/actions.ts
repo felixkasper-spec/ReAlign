@@ -11,22 +11,9 @@ import {
   attachmentTypeFromMime,
 } from "@/lib/coaching-attachments";
 
-// En <form action={...}> kräver att den bundna funktionens enda kvarvarande
-// parameter är FormData — ett tredje, valfritt argument på
-// createCheckoutSession hade brutit ALLA befintliga tvåparameters-.bind()-
-// anrop i resten av koden (se logProgramCompletionForm-mönstret, samma
-// klass av problem). Delad privat implementation istället: två separata,
-// var och en fortfarande tvåparametrar, publika funktioner.
-async function createCheckoutSessionInternal(
-  plan: "premium" | "premium_coaching",
-  interval: "month" | "year",
-  // Satt när besökaren kom via en länk med ?promo=1 (se app/premium/page.tsx)
-  // — t.ex. en kod utdelad personligen vid kontorsbesök för en gratis
-  // månad. Stripe tillåter inte en automatisk rabatt (discounts) och ett
-  // kodfält (allow_promotion_codes) i samma Checkout Session, så den
-  // vanliga 50%-introrabatten stängs av just för den här sessionen istället
-  // för att krocka med kodfältet.
-  usePromoCode: boolean,
+export async function createCheckoutSession(
+  plan: "premium" | "premium_coaching" = "premium",
+  interval: "month" | "year" = "month",
 ) {
   const supabase = await createClient();
   const {
@@ -71,24 +58,21 @@ async function createCheckoutSessionInternal(
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
-    // 50% rabatt första månaden, bara för nya Premium-prenumeranter som
+    // 30 dagar gratis provperiod för alla nya Premium-prenumeranter som
     // betalar månadsvis — den här kodvägen nås aldrig av någon som redan
     // har ett aktivt abonnemang (de skickas till byt-plan istället, se
-    // ovan), så rabatten kan aldrig råka appliceras på ett planbyte.
-    // Årsvis har redan 25% rabatt inbakat i priset och kombineras inte
-    // med introrabatten.
-    discounts:
-      plan === "premium" && interval === "month" && !usePromoCode
-        ? [{ coupon: "premium50first" }]
+    // ovan), så ingen kan få en andra provperiod genom att byta plan.
+    // Årsvis har redan 25% rabatt inbakat i priset och får ingen separat
+    // provperiod.
+    subscription_data:
+      plan === "premium" && interval === "month"
+        ? { trial_period_days: 30 }
         : undefined,
-    // Stripe tillåter inte discounts + allow_promotion_codes samtidigt —
-    // bara påslaget när den automatiska introrabatten inte redan appliceras
-    // (eller uttryckligen stängdes av via usePromoCode), så den inte
-    // krockar med den. Ger ett fält i Checkout där en manuellt utdelad
-    // engångskod (t.ex. för en gratis månad, se Stripe Dashboard → Coupons
-    // → skapa en promotion code) kan lösas in.
-    allow_promotion_codes:
-      plan === "premium" && interval === "month" && !usePromoCode ? undefined : true,
+    // Kort krävs redan vid starten av provperioden (Stripes standard för
+    // subscription-mode, men satt explicit här) — debiteras automatiskt
+    // 149 kr/mån när provperioden går ut om inget avslutas dessförinnan.
+    payment_method_collection: "always",
+    allow_promotion_codes: true,
     customer: existing?.stripe_customer_id ?? undefined,
     customer_email: existing?.stripe_customer_id ? undefined : user.email,
     client_reference_id: user.id,
@@ -104,22 +88,6 @@ async function createCheckoutSessionInternal(
   }
 
   redirect(session.url);
-}
-
-export async function createCheckoutSession(
-  plan: "premium" | "premium_coaching" = "premium",
-  interval: "month" | "year" = "month",
-) {
-  return createCheckoutSessionInternal(plan, interval, false);
-}
-
-// Samma checkout, bara med ett kodfält istället för den automatiska
-// introrabatten — se usePromoCode-kommentaren ovan.
-export async function createPromoCheckoutSession(
-  plan: "premium" | "premium_coaching" = "premium",
-  interval: "month" | "year" = "month",
-) {
-  return createCheckoutSessionInternal(plan, interval, true);
 }
 
 export async function confirmPlanChange(

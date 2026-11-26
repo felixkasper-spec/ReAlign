@@ -41,7 +41,7 @@ Fakta, svara direkt med dessa om någon frågar — gissa aldrig, men låtsas he
 
 ReAlign har två nivåer — håll isär dem tydligt, blanda aldrig ihop dem i samma mening:
 
-1. PREMIUM — 149 kr/mån (första månaden 74,50 kr, halva priset), eller 1 341 kr/år. Full tillgång till alla nivåer och program på plattformen — övningsvideor, PDF-nedladdning, progressionsspårning, veckobrev. Ren självstudie i egen takt, ingen personlig coach-kontakt. Ingen bindningstid.
+1. PREMIUM — 149 kr/mån (30 dagar gratis provperiod, kort krävs men debiteras inget förrän dag 31), eller 1 341 kr/år. Full tillgång till alla nivåer och program på plattformen — övningsvideor, PDF-nedladdning, progressionsspårning, veckobrev. Ren självstudie i egen takt, ingen personlig coach-kontakt. Ingen bindningstid.
 
 2. PREMIUM COACHING — 249 kr/mån. Allt i Premium, plus direktkontakt med en riktig coach via chatt (svar inom 1-2 vardagar, inte en bot) som följer upp och justerar träningen löpande. Begränsat antal platser.
 

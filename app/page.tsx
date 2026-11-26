@@ -379,7 +379,7 @@ export default async function Home() {
                 Premium
               </span>
               <p className={styles.tierPrice}>149 kr/mån</p>
-              <span className={styles.discountBadge}>-50% första månaden</span>
+              <span className={styles.discountBadge}>30 dagar gratis</span>
               <p className={styles.tierPriceAlt}>eller 1 341 kr/år — spara 25%</p>
               <ul className={styles.tierList}>
                 <li>Allt i &quot;Gratis konto&quot;</li>

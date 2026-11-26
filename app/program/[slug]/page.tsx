@@ -196,7 +196,7 @@ export default async function ProgramPage({
             </h3>
             <p style={{ color: "var(--text)", fontSize: "0.92rem", marginBottom: 18 }}>
               Lås upp {program.title} och resten av programbiblioteket —
-              första månaden till halva priset, 74,50 kr, sen 149 kr/mån.
+              30 dagar gratis, sen 149 kr/mån.
             </p>
             <Link className="btn btn-primary" href="/premium">
               Läs mer om Premium →

@@ -6,14 +6,14 @@ import FaqAccordion, { type FaqGroup } from "@/components/FaqAccordion";
 import { testimonials } from "@/lib/testimonials";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscription } from "@/lib/subscription";
-import { createCheckoutSession, createPromoCheckoutSession } from "@/app/min-sida/actions";
+import { createCheckoutSession } from "@/app/min-sida/actions";
 import { pageMetadata } from "@/lib/page-metadata";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "Premium — ReAlign Metoden",
   description:
-    "Alla nivåer, alla program, hela vägen — 149 kr/mån, första månaden till halva priset. Ingen bindningstid.",
+    "Alla nivåer, alla program, hela vägen — 149 kr/mån, 30 dagar gratis. Ingen bindningstid.",
   image: "/og/premium.png",
   path: "/premium",
 });
@@ -23,12 +23,12 @@ const faqGroups: FaqGroup[] = [
     eyebrow: "Innan du bestämmer dig",
     items: [
       {
-        q: "Hur fungerar 50%-rabatten?",
-        a: "Din första månad kostar automatiskt halva priset, 74,50 kr — ingen kod behövs, det dras direkt vid kassan. Från månad två gäller ordinarie pris, 149 kr/mån. Gäller vid månadsvis betalning.",
+        q: "Hur fungerar de 30 gratisdagarna?",
+        a: "Du skapar kontot och lägger in kortuppgifter som vanligt, men debiteras ingenting förrän 30 dagar har gått. Vill du inte fortsätta avslutar du när du vill under provperioden, helt utan kostnad. Gäller vid månadsvis betalning.",
       },
       {
         q: "Kan jag betala årsvis istället?",
-        a: "Ja — 1 341 kr/år, vilket motsvarar 25% rabatt jämfört med att betala månadsvis (149 kr/mån × 12 = 1 788 kr). Priset är detsamma varje år, ingen ny rabatt att hålla koll på. Årsvis kombineras inte med 50%-rabatten på första månaden, eftersom rabatten redan är inbakad i årspriset.",
+        a: "Ja — 1 341 kr/år, vilket motsvarar 25% rabatt jämfört med att betala månadsvis (149 kr/mån × 12 = 1 788 kr). Priset är detsamma varje år, ingen ny rabatt att hålla koll på. Årsvis har ingen gratis provperiod, eftersom rabatten redan är inbakad i årspriset.",
       },
       {
         q: "Är jag bunden till något?",
@@ -54,17 +54,7 @@ const faqGroups: FaqGroup[] = [
   },
 ];
 
-export default async function PremiumPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ promo?: string }>;
-}) {
-  const { promo } = await searchParams;
-  // ?promo=1 — t.ex. en länk Felix delar ut personligen vid kontorsbesök —
-  // byter ut den automatiska 50%-introrabatten mot ett kodfält i Stripe
-  // Checkout, så en manuellt utdelad engångskod (en gratis månad) kan lösas
-  // in istället. Se usePromoCode i createCheckoutSession.
-  const usePromoCode = promo === "1";
+export default async function PremiumPage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -89,37 +79,25 @@ export default async function PremiumPage({
 
         <div className={styles.offerBand}>
           <div>
-            <span className={styles.offerEyebrow}>
-              {usePromoCode ? "Din kod" : "Introerbjudande"}
-            </span>
-            <p className={styles.offerTitle}>
-              {usePromoCode ? "Lös in din kod vid kassan" : "50% första månaden"}
-            </p>
+            <span className={styles.offerEyebrow}>Introerbjudande</span>
+            <p className={styles.offerTitle}>30 dagar gratis</p>
             <p className={styles.offerText}>
-              {usePromoCode
-                ? "Ingen bindningstid — ange koden du fått i rutan för rabattkod hos Stripe."
-                : "74,50 kr första månaden, sen 149 kr/mån. Ingen kod, ingen bindningstid — dras automatiskt vid kassan. Vill du hellre betala årsvis och spara 25% direkt? Se prisalternativen nedan."}
+              Full tillgång i 30 dagar, sen 149 kr/mån. Inget du behöver komma
+              ihåg att göra — avsluta när du vill under provperioden så
+              debiteras du ingenting. Vill du hellre betala årsvis och spara
+              25% direkt? Se prisalternativen nedan.
             </p>
           </div>
           {!alreadyPremium && (
             <>
               {user ? (
-                <form
-                  action={(usePromoCode ? createPromoCheckoutSession : createCheckoutSession).bind(
-                    null,
-                    "premium",
-                    "month",
-                  )}
-                >
+                <form action={createCheckoutSession.bind(null, "premium", "month")}>
                   <SubmitButton className="btn btn-primary btn-lg" pendingText="Öppnar Stripe...">
                     Bli Premium →
                   </SubmitButton>
                 </form>
               ) : (
-                <Link
-                  className="btn btn-primary btn-lg"
-                  href={`/signup?next=${encodeURIComponent(usePromoCode ? "/premium?promo=1" : "/premium")}`}
-                >
+                <Link className="btn btn-primary btn-lg" href="/signup?next=%2Fpremium">
                   Skapa konto →
                 </Link>
               )}
@@ -236,18 +214,8 @@ export default async function PremiumPage({
               <div className={styles.planOption}>
                 <span className={styles.planLabel}>Månadsvis</span>
                 <p className={styles.planPrice}>149 kr/mån</p>
-                <p className={styles.planSub}>
-                  {usePromoCode
-                    ? "Lös in din kod vid kassan — ingen bindningstid."
-                    : "Första månaden 74,50 kr — ingen bindningstid."}
-                </p>
-                <form
-                  action={(usePromoCode ? createPromoCheckoutSession : createCheckoutSession).bind(
-                    null,
-                    "premium",
-                    "month",
-                  )}
-                >
+                <p className={styles.planSub}>30 dagar gratis — ingen bindningstid.</p>
+                <form action={createCheckoutSession.bind(null, "premium", "month")}>
                   <SubmitButton className="btn btn-primary" pendingText="Öppnar Stripe...">
                     Bli Premium →
                   </SubmitButton>
